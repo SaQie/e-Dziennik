@@ -62,5 +62,37 @@ ALTER TABLE student
 
 ALTER TABLE teacher
     ADD supervising_school_class_id INT UNIQUE,
-    ADD FOREIGN KEY (supervising_school_class_id) REFERENCES school_class(supervising_teacher_id);
+    ADD FOREIGN KEY (supervising_school_class_id) REFERENCES school_class (supervising_teacher_id);
 
+CREATE TABLE subject
+(
+    subject_id  SERIAL PRIMARY KEY,
+    name        varchar(255) NOT NULL UNIQUE,
+    description varchar(255),
+    id_teacher  INT          NOT NULL REFERENCES teacher (teacher_id)
+);
+
+CREATE TABLE subject_class
+(
+    subject_class_id SERIAL PRIMARY KEY,
+    id_subject       INT NOT NULL REFERENCES subject (subject_id),
+    id_school        INT NOT NULL REFERENCES school (school_id),
+    id_school_class  INT NOT NULL REFERENCES school_class (school_class_id)
+);
+
+
+CREATE TABLE rating
+(
+    rating_id   SERIAL PRIMARY KEY,
+    rating      INT NOT NULL,
+    weight      INT NOT NULL,
+    description varchar(255)
+);
+
+CREATE TABLE rating_subject_student
+(
+    rating_subject_student_id SERIAL PRIMARY KEY,
+    id_student INT NOT NULL REFERENCES student(student_id),
+    id_rating INT NOT NULL REFERENCES rating(rating_id),
+    id_subject INT NOT NULL REFERENCES subject(subject_id)
+);
