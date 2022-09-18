@@ -9,27 +9,22 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Subject {
+public class Rating {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private int rating;
+    private int weight;
     private String description;
-    private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "teacher_id")
-    private Teacher teacher;
-
-    @OneToMany(mappedBy = "subject")
+    @OneToMany(mappedBy = "rating")
     private Set<RatingSubjectStudentLink> ratingSubjectStudentLinks;
 
-    public void addRatingSubjectStudentLink(RatingSubjectStudentLink ratingSubjectStudentLink){
+    public void addRatingSubjectStudentLinks(RatingSubjectStudentLink ratingSubjectStudentLink){
         ratingSubjectStudentLinks.add(ratingSubjectStudentLink);
-        ratingSubjectStudentLink.setSubject(this);
+        ratingSubjectStudentLink.setRating(this);
     }
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
-    }
+
 }

@@ -30,4 +30,9 @@ public class Teacher extends BasicUser{
     @OneToMany(mappedBy = "teacher")
     private Set<Subject> subjects = new HashSet<>();
 
+    public void addSubject(Subject subject){
+        subjects.add(subject);
+        subject.setTeacher(this);
+    }
+
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -15,5 +16,13 @@ public class SchoolLevel {
     private Long id;
 
     private String name;
+
+    @OneToMany(mappedBy = "schoolLevel")
+    private Set<School> schools;
+
+    public void addSchool(School school){
+        schools.add(school);
+        school.setSchoolLevel(this);
+    }
 
 }

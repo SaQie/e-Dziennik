@@ -20,7 +20,13 @@ public class SchoolClass {
     @OneToMany(mappedBy = "schoolClass")
     private Set<Student> students;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supervising_teacher_id")
     private Teacher teacher;
+
+
+    public void addStudent(Student student) {
+        students.add(student);
+        student.setSchoolClass(this);
+    }
 }

@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -22,7 +24,21 @@ public class School {
     private String regon;
     private String phoneNumber;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "school_level_id")
     private SchoolLevel schoolLevel;
+
+    @OneToMany(mappedBy = "school")
+    private Set<Student> students = new HashSet<>();
+
+    public void addStudent(Student student){
+        students.add(student);
+        student.setSchool(this);
+    }
+
+    public void setSchoolLevel(SchoolLevel schoolLevel) {
+        this.schoolLevel = schoolLevel;
+    }
+
+
 }
