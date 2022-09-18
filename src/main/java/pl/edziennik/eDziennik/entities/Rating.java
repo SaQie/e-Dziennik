@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -20,7 +21,9 @@ public class Rating {
     private String description;
 
     @OneToMany(mappedBy = "rating")
-    private Set<RatingSubjectStudentLink> ratingSubjectStudentLinks;
+    private Set<RatingSubjectStudentLink> ratingSubjectStudentLinks = new HashSet<>();
+
+
 
     public void addRatingSubjectStudentLinks(RatingSubjectStudentLink ratingSubjectStudentLink){
         ratingSubjectStudentLinks.add(ratingSubjectStudentLink);

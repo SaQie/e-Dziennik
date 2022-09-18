@@ -31,6 +31,14 @@ public class School {
     @OneToMany(mappedBy = "school")
     private Set<Student> students = new HashSet<>();
 
+    @OneToMany(mappedBy = "school")
+    private Set<SubjectClassLink> subjectClassLinks = new HashSet<>();
+
+    public void addSubjectClassLinks(SubjectClassLink subjectClassLink){
+        subjectClassLinks.add(subjectClassLink);
+        subjectClassLink.setSchool(this);
+    }
+
     public void addStudent(Student student){
         students.add(student);
         student.setSchool(this);
