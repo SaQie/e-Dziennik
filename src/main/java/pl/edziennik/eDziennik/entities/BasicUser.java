@@ -14,13 +14,13 @@ import javax.persistence.MappedSuperclass;
 @Setter
 public class BasicUser {
 
+    private String adress;
     private String username;
     private String password;
-
-    private String adress;
     private String firstName;
     private String lastName;
     private String postalCode;
     private String PESEL;
+    private String city;
 
 }
