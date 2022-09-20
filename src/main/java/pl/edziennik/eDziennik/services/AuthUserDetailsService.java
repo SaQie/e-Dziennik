@@ -31,6 +31,6 @@ public class AuthUserDetailsService implements UserDetailsService {
         if (student != null){
             return new StudentUserDetails(student);
         }
-        throw new EntityNotFoundException("Nie udalo sie odnalezc uzytkownika o nazwie " + username);
+        throw new EntityNotFoundException("User with name " + username + "could not be found.");
     }
 }
