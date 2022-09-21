@@ -3,6 +3,7 @@ package pl.edziennik.eDziennik.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +22,8 @@ import java.time.ZonedDateTime;
 @Slf4j
 public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+    @Autowired
+    private JwtUtils jwtUtils;
     private final int expTime;
     private final String secret;
 
@@ -31,14 +34,17 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        String token = JWT.create()
-                .withSubject(principal.getUsername())
-                .withExpiresAt(Instant.ofEpochMilli(ZonedDateTime.now(ZoneId.systemDefault())
-                        .toInstant().toEpochMilli() + expTime))
-                .sign(Algorithm.HMAC256(secret));
-        response.addHeader("Authorization", "Bearer " +token);
+        UserDetails principal = jwtUtils.getPrincipal(authentication);
+        String token = jwtUtils.generateJwtToken(principal);
+        String refreshToken = jwtUtils.generateRefreshToken(principal);
+        setRequiredHeadersAndPrintTokenToUser(response, token, refreshToken);
+    }
+
+    private void setRequiredHeadersAndPrintTokenToUser(HttpServletResponse response, String token, String refreshToken) throws IOException {
+        response.addHeader("Authorization", "Bearer " + token);
+        response.addHeader("RefreshToken", refreshToken);
         response.addHeader("Content-Type", "application/json");
-        response.getWriter().write("{\"token\": \""+token+"\"}");
+        response.getWriter().write("{\"token\": \""+ token +"\"}");
+        response.getWriter().write("{\"refresh_token\": \""+ refreshToken +"\"}");
     }
 }

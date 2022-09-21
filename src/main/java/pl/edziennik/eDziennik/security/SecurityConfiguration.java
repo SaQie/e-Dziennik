@@ -20,24 +20,24 @@ public class SecurityConfiguration {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private JwtUtils jwtUtils;
 
     private final AuthUserDetailsService authUserDetailsService;
     private final AuthSuccessHandler successHandler;
     private final AuthFailureHandler failureHandler;
     private final AuthLogoutHandler logoutHandler;
-    private final String secret;
     private final String unauthorizedMessage;
     private final String accessDeniedMessage;
 
 
     public SecurityConfiguration(AuthUserDetailsService authUserDetailsService, AuthSuccessHandler successHandler,
-                                 AuthFailureHandler failureHandler, AuthLogoutHandler logoutHandler, @Value("${jwt.secret}") String secret, @Value("${jwt.unauthorized.message}") String unauthorizedMessage,
+                                 AuthFailureHandler failureHandler, AuthLogoutHandler logoutHandler, @Value("${jwt.unauthorized.message}") String unauthorizedMessage,
                                  @Value("${jwt.accessDenied.message}") String accessDeniedMessage) {
         this.authUserDetailsService = authUserDetailsService;
         this.successHandler = successHandler;
         this.failureHandler = failureHandler;
         this.logoutHandler = logoutHandler;
-        this.secret = secret;
         this.unauthorizedMessage = unauthorizedMessage;
         this.accessDeniedMessage = accessDeniedMessage;
     }
@@ -57,6 +57,7 @@ public class SecurityConfiguration {
                         try {
                             auth
                                     .antMatchers("/").permitAll()
+                                    .antMatchers("/jwt/**").permitAll()
                                     .antMatchers("/register").permitAll()
                                     .antMatchers("/teacher/moderator").hasRole("MODERATOR")
                                     .antMatchers("/teacher/teacher").hasRole("TEACHER")
@@ -69,7 +70,7 @@ public class SecurityConfiguration {
                                     .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/").addLogoutHandler(logoutHandler)
                                     .and()
                                     .addFilter(authenticationFilter())
-                                    .addFilter(new JwtAuthorizationFilter(authenticationManager, authUserDetailsService, secret))
+                                    .addFilter(new JwtAuthorizationFilter(authenticationManager, authUserDetailsService, jwtUtils))
                                     .exceptionHandling()
                                     .accessDeniedHandler(((request, response, accessDeniedException) -> {
                                         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
@@ -115,7 +116,7 @@ public class SecurityConfiguration {
                                     .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/").addLogoutHandler(logoutHandler)
                                     .and()
                                     .addFilter(authenticationFilter())
-                                    .addFilter(new JwtAuthorizationFilter(authenticationManager, authUserDetailsService, secret))
+                                    .addFilter(new JwtAuthorizationFilter(authenticationManager, authUserDetailsService, jwtUtils))
                                     .exceptionHandling()
                                     .accessDeniedHandler(((request, response, accessDeniedException) -> {
                                         response.setStatus(HttpServletResponse.SC_FORBIDDEN);

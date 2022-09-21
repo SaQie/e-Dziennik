@@ -1,10 +1,9 @@
 package pl.edziennik.eDziennik.security;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,23 +14,22 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-    private static final String TOKEN_PREFIX = "Bearer ";
-    private final UserDetailsService loginService;
-    private final String secret;
+    private final UserDetailsService userDetailsService;
+    private JwtUtils jwtUtils;
 
-
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserDetailsService loginService, String secret) {
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserDetailsService userDetailsService, JwtUtils jwtUtils) {
         super(authenticationManager);
-        this.loginService = loginService;
-        this.secret = secret;
+        this.userDetailsService = userDetailsService;
+        this.jwtUtils = jwtUtils;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        UsernamePasswordAuthenticationToken auth = getAuthentication(request);
+        UsernamePasswordAuthenticationToken auth = getAuthentication(request, response);
         if (auth == null){
             chain.doFilter(request,response);
             return;
@@ -40,17 +38,21 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         chain.doFilter(request,response);
     }
 
-    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (token == null || !token.startsWith(TOKEN_PREFIX)){
+    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+            String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+            if (jwtUtils.isTokenNotExist(token)) return null;
+            String login = jwtUtils.getUsernameFromToken(token);
+            Collection<SimpleGrantedAuthority> authorities = jwtUtils.getRolesFromTokenIfNeeded(token);
+            if (login == null) return null;
+            UserDetails userDetails = userDetailsService.loadUserByUsername(login);
+            return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, authorities);
+        }catch (Exception e){
+            response.setHeader("error", e.getMessage());
+            response.setContentType("application/json");
+            response.getWriter().write(e.getMessage());
             return null;
         }
-        String login = JWT.require(Algorithm.HMAC256(secret))
-                .build()
-                .verify(token.replace(TOKEN_PREFIX, ""))
-                .getSubject();
-        if (login == null) return null;
-        UserDetails userDetails = loginService.loadUserByUsername(login);
-        return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
     }
+
 }
