@@ -1,4 +1,4 @@
-package pl.edziennik.eDziennik.security;
+package pl.edziennik.eDziennik.utils;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
