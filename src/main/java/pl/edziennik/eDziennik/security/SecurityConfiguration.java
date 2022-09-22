@@ -15,7 +15,7 @@ import pl.edziennik.eDziennik.security.jwt.AuthSuccessHandler;
 import pl.edziennik.eDziennik.security.jwt.JsonObjectAuthenticationFilter;
 import pl.edziennik.eDziennik.security.jwt.JwtAuthorizationFilter;
 import pl.edziennik.eDziennik.services.AuthUserDetailsService;
-import pl.edziennik.eDziennik.utils.JwtUtils;
+import pl.edziennik.eDziennik.security.JwtUtils;
 
 import javax.servlet.http.HttpServletResponse;
 
