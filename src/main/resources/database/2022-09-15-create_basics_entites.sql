@@ -1,7 +1,7 @@
 CREATE TABLE school_level
 (
-    id SERIAL PRIMARY KEY,
-    name            varchar(255) NOT NULL UNIQUE
+    id   SERIAL PRIMARY KEY,
+    name varchar(255) NOT NULL UNIQUE
 );
 
 INSERT INTO school_level(id, name)
@@ -11,7 +11,7 @@ VALUES (1, 'Szkoła podstawowa'),
 
 CREATE TABLE school
 (
-    id       SERIAL PRIMARY KEY,
+    id              SERIAL PRIMARY KEY,
     name            varchar(255) NOT NULL UNIQUE,
     adress          varchar(255) NOT NULL,
     postal_code     varchar(9)   NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE school
 
 CREATE TABLE student
 (
-    id          SERIAL PRIMARY KEY,
+    id                  SERIAL PRIMARY KEY,
     username            varchar(255) NOT NULL UNIQUE,
     password            varchar(255) NOT NULL,
     first_name          varchar(255) NOT NULL,
@@ -36,11 +36,13 @@ CREATE TABLE student
     parent_first_name   varchar(255) NOT NULL,
     parent_last_name    varchar(255) NOT NULL,
     parent_phone_number varchar(9)   NOT NULL,
-    school_id           INT          NOT NULL REFERENCES school (id)
+    school_id           INT          REFERENCES school (id)
 );
 CREATE TABLE teacher
 (
-    id   SERIAL PRIMARY KEY,
+    id           SERIAL PRIMARY KEY,
+    username     varchar(255) NOT NULL UNIQUE,
+    password     varchar(255) NOT NULL,
     first_name   varchar(255) NOT NULL,
     last_name    varchar(255) NOT NULL,
     adress       varchar(255) NOT NULL,
@@ -48,12 +50,12 @@ CREATE TABLE teacher
     city         varchar(255) NOT NULL,
     pesel        varchar(11)  NOT NULL UNIQUE,
     phone_number varchar(9)   NOT NULL,
-    school_id    INT          NOT NULL REFERENCES school (id)
+    school_id    INT          REFERENCES school (id)
 );
 
 CREATE TABLE school_class
 (
-    id        SERIAL PRIMARY KEY,
+    id                     SERIAL PRIMARY KEY,
     class_name             varchar(255) NOT NULL UNIQUE,
     supervising_teacher_id INT          NOT NULL UNIQUE REFERENCES teacher (id)
 );
@@ -68,7 +70,7 @@ ALTER TABLE teacher
 
 CREATE TABLE subject
 (
-    id  SERIAL PRIMARY KEY,
+    id          SERIAL PRIMARY KEY,
     name        varchar(255) NOT NULL UNIQUE,
     description varchar(255),
     id_teacher  INT          NOT NULL REFERENCES teacher (id)
@@ -76,16 +78,16 @@ CREATE TABLE subject
 
 CREATE TABLE subject_class
 (
-    id SERIAL PRIMARY KEY,
-    id_subject       INT NOT NULL REFERENCES subject (id),
-    id_school        INT NOT NULL REFERENCES school (id),
-    id_school_class  INT NOT NULL REFERENCES school_class (id)
+    id              SERIAL PRIMARY KEY,
+    id_subject      INT NOT NULL REFERENCES subject (id),
+    id_school       INT NOT NULL REFERENCES school (id),
+    id_school_class INT NOT NULL REFERENCES school_class (id)
 );
 
 
 CREATE TABLE rating
 (
-    id   SERIAL PRIMARY KEY,
+    id          SERIAL PRIMARY KEY,
     rating      INT NOT NULL,
     weight      INT NOT NULL,
     description varchar(255)
@@ -93,14 +95,14 @@ CREATE TABLE rating
 
 CREATE TABLE rating_subject_student
 (
-    id SERIAL PRIMARY KEY,
-    id_student                INT NOT NULL REFERENCES student (id),
-    id_rating                 INT NOT NULL REFERENCES rating (id),
-    id_subject                INT NOT NULL REFERENCES subject (id)
+    id         SERIAL PRIMARY KEY,
+    id_student INT NOT NULL REFERENCES student (id),
+    id_rating  INT NOT NULL REFERENCES rating (id),
+    id_subject INT NOT NULL REFERENCES subject (id)
 );
 
 CREATE TABLE teacher_roles
 (
     teacher_id SERIAL PRIMARY KEY,
-    role varchar(255) NOT NULL
+    role       varchar(255) NOT NULL
 )
