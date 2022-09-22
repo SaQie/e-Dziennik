@@ -3,7 +3,7 @@ package pl.edziennik.eDziennik.services;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import pl.edziennik.eDziennik.security.JwtUtils;
+import pl.edziennik.eDziennik.utils.JwtUtils;
 
 @Service
 @AllArgsConstructor

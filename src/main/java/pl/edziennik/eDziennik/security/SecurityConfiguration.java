@@ -11,7 +11,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import pl.edziennik.eDziennik.security.jwt.AuthSuccessHandler;
+import pl.edziennik.eDziennik.security.jwt.JsonObjectAuthenticationFilter;
+import pl.edziennik.eDziennik.security.jwt.JwtAuthorizationFilter;
 import pl.edziennik.eDziennik.services.AuthUserDetailsService;
+import pl.edziennik.eDziennik.utils.JwtUtils;
 
 import javax.servlet.http.HttpServletResponse;
 

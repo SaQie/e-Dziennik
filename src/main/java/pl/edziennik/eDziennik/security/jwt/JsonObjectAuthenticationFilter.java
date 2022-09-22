@@ -1,4 +1,4 @@
-package pl.edziennik.eDziennik.security;
+package pl.edziennik.eDziennik.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
