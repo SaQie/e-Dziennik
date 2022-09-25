@@ -22,6 +22,9 @@ CREATE TABLE school
     school_level_id INT          NOT NULL REFERENCES school_level (id)
 );
 
+INSERT INTO school(id,name, adress, postal_code, city, nip, regon, phone_number, school_level_id) values
+                                                                                                    (1,'test','test','123','asd','asd','asd','asd',1);
+
 CREATE TABLE student
 (
     id                  SERIAL PRIMARY KEY,
@@ -36,7 +39,7 @@ CREATE TABLE student
     parent_first_name   varchar(255) NOT NULL,
     parent_last_name    varchar(255) NOT NULL,
     parent_phone_number varchar(9)   NOT NULL,
-    school_id           INT          REFERENCES school (id)
+    school_id           INT NOT NULL          REFERENCES school (id)
 );
 CREATE TABLE teacher
 (
@@ -50,7 +53,7 @@ CREATE TABLE teacher
     city         varchar(255) NOT NULL,
     pesel        varchar(11)  NOT NULL UNIQUE,
     phone_number varchar(9)   NOT NULL,
-    school_id    INT          REFERENCES school (id)
+    school_id    INT NOT NULL        REFERENCES school (id)
 );
 
 CREATE TABLE school_class
@@ -61,7 +64,7 @@ CREATE TABLE school_class
 );
 
 ALTER TABLE student
-    ADD school_class_id INT,
+    ADD school_class_id INT NOT NULL,
     ADD FOREIGN KEY (school_class_id) REFERENCES school_class (id);
 
 ALTER TABLE teacher

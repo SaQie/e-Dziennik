@@ -109,6 +109,7 @@ public class SecurityConfiguration {
                             auth
                                     .antMatchers("/").permitAll()
                                     .antMatchers("/register").permitAll()
+                                    .antMatchers("/schools").hasRole("ADMIN")
                                     .antMatchers("/teacher/moderator").hasRole("MODERATOR")
                                     .antMatchers("/teacher/teacher").hasRole("TEACHER")
                                     .antMatchers("/teacher/admin").hasRole("ADMIN")

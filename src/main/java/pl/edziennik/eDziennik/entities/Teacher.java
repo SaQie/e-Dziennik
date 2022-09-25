@@ -28,6 +28,9 @@ public class Teacher extends BasicUser{
     @OneToMany(mappedBy = "teacher")
     private Set<Subject> subjects = new HashSet<>();
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private School school;
+
     public void addSubject(Subject subject){
         subjects.add(subject);
         subject.setTeacher(this);
