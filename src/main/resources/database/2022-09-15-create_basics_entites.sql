@@ -22,9 +22,6 @@ CREATE TABLE school
     school_level_id INT          NOT NULL REFERENCES school_level (id)
 );
 
-INSERT INTO school(id,name, adress, postal_code, city, nip, regon, phone_number, school_level_id) values
-                                                                                                    (1,'test','test','123','asd','asd','asd','asd',1);
-
 CREATE TABLE student
 (
     id                  SERIAL PRIMARY KEY,
@@ -39,7 +36,7 @@ CREATE TABLE student
     parent_first_name   varchar(255) NOT NULL,
     parent_last_name    varchar(255) NOT NULL,
     parent_phone_number varchar(9)   NOT NULL,
-    school_id           INT NOT NULL          REFERENCES school (id)
+    school_id           INT          NOT NULL REFERENCES school (id)
 );
 CREATE TABLE teacher
 (
@@ -53,14 +50,14 @@ CREATE TABLE teacher
     city         varchar(255) NOT NULL,
     pesel        varchar(11)  NOT NULL UNIQUE,
     phone_number varchar(9)   NOT NULL,
-    school_id    INT NOT NULL        REFERENCES school (id)
+    school_id    INT REFERENCES school (id)
 );
 
 CREATE TABLE school_class
 (
     id                     SERIAL PRIMARY KEY,
     class_name             varchar(255) NOT NULL UNIQUE,
-    supervising_teacher_id INT          NOT NULL UNIQUE REFERENCES teacher (id)
+    supervising_teacher_id INT UNIQUE REFERENCES teacher (id)
 );
 
 ALTER TABLE student
@@ -104,8 +101,12 @@ CREATE TABLE rating_subject_student
     id_subject INT NOT NULL REFERENCES subject (id)
 );
 
-CREATE TABLE teacher_roles
+CREATE TABLE role
 (
-    teacher_id SERIAL PRIMARY KEY,
-    role       varchar(255) NOT NULL
-)
+    id SERIAL PRIMARY KEY,
+    name varchar(255) NOT NULL UNIQUE
+);
+
+insert into role(id, name) values (1,'ROLE_ADMIN'), (2,'ROLE_TEACHER'), (3,'ROLE_MODERATOR');
+
+ALTER TABLE teacher ADD role_id INT REFERENCES role(id);

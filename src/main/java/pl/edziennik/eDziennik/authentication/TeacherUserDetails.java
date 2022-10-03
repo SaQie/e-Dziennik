@@ -3,8 +3,7 @@ package pl.edziennik.eDziennik.authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import pl.edziennik.eDziennik.entities.Role;
-import pl.edziennik.eDziennik.entities.Teacher;
+import pl.edziennik.eDziennik.server.teacher.Teacher;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -21,9 +20,7 @@ public class TeacherUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
-        for (Role role : teacher.getRoles()) {
-            authorities.add(new SimpleGrantedAuthority(role.name()));
-        }
+        authorities.add(new SimpleGrantedAuthority(teacher.getRole().getName()));
         return authorities;
     }
 
