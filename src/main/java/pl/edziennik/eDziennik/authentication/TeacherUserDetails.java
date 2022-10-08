@@ -3,7 +3,7 @@ package pl.edziennik.eDziennik.authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import pl.edziennik.eDziennik.server.teacher.Teacher;
+import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 
 import java.util.Collection;
 import java.util.HashSet;

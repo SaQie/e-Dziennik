@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pl.edziennik.eDziennik.dto.school.SchoolRequestDto;
-import pl.edziennik.eDziennik.dto.school.SchoolResponseApiDto;
+import pl.edziennik.eDziennik.server.school.domain.dto.SchoolRequestApiDto;
+import pl.edziennik.eDziennik.server.school.domain.dto.SchoolResponseApiDto;
 import pl.edziennik.eDziennik.server.school.SchoolService;
 import java.net.URI;
 import java.util.List;
@@ -18,7 +18,7 @@ class SchoolController {
     private final SchoolService service;
 
     @PostMapping()
-    public ResponseEntity<SchoolResponseApiDto> createNewSchool(@RequestBody SchoolRequestDto dto) {
+    public ResponseEntity<SchoolResponseApiDto> createNewSchool(@RequestBody SchoolRequestApiDto dto) {
         SchoolResponseApiDto newSchool = service.createNewSchool(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")

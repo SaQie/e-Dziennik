@@ -2,7 +2,7 @@ package pl.edziennik.eDziennik.authentication;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import pl.edziennik.eDziennik.server.student.Student;
+import pl.edziennik.eDziennik.server.student.domain.Student;
 
 import java.util.Collection;
 

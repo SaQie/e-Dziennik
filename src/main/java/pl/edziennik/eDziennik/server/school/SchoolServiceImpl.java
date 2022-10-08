@@ -2,11 +2,10 @@ package pl.edziennik.eDziennik.server.school;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.edziennik.eDziennik.dto.school.SchoolRequestDto;
-import pl.edziennik.eDziennik.dto.school.SchoolResponseApiDto;
-import pl.edziennik.eDziennik.dto.school.mapper.SchoolMapper;
-import pl.edziennik.eDziennik.server.basics.AbstractMapper;
-import pl.edziennik.eDziennik.server.repositories.SchoolRepository;
+import pl.edziennik.eDziennik.server.school.domain.dto.SchoolRequestApiDto;
+import pl.edziennik.eDziennik.server.school.domain.dto.SchoolResponseApiDto;
+import pl.edziennik.eDziennik.server.school.domain.dto.mapper.SchoolMapper;
+import pl.edziennik.eDziennik.server.school.domain.School;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -21,7 +20,7 @@ class SchoolServiceImpl implements SchoolService{
     private final SchoolPrivService privService;
 
     @Override
-    public SchoolResponseApiDto createNewSchool(SchoolRequestDto dto) {
+    public SchoolResponseApiDto createNewSchool(SchoolRequestApiDto dto) {
         School school = mapper.toEntity(dto);
         privService.findSchoolLevelAndAssignToSchool(school, dto.getSchoolLevel());
         School schoolAfterSave = repository.save(school);

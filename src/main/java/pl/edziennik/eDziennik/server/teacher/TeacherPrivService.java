@@ -2,9 +2,9 @@ package pl.edziennik.eDziennik.server.teacher;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.edziennik.eDziennik.dto.teacher.TeacherRequestDto;
-import pl.edziennik.eDziennik.server.repositories.RoleRepository;
-import pl.edziennik.eDziennik.server.repositories.SchoolRepository;
+import pl.edziennik.eDziennik.server.role.RoleRepository;
+import pl.edziennik.eDziennik.server.school.SchoolRepository;
+import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -15,18 +15,18 @@ class TeacherPrivService {
     private final RoleRepository roleRepository;
     private final SchoolRepository schoolRepository;
 
-    protected void checkRoleExist(TeacherRequestDto dto, Teacher teacher) {
-        if (dto.getRole() != null){
-            roleRepository.findByName(dto.getRole()).ifPresentOrElse(teacher::setRole, () -> {
-                throw new EntityNotFoundException("Role with name " + dto.getRole() + " not exist");
+    protected void checkRoleExist(String role, Teacher teacher) {
+        if (role != null){
+            roleRepository.findByName(role).ifPresentOrElse(teacher::setRole, () -> {
+                throw new EntityNotFoundException("Role with name " + role + " not exist");
             });
         }
     }
 
-    protected void checkSchoolExist(TeacherRequestDto dto, Teacher teacher) {
-        if (dto.getSchool() != null) {
-            schoolRepository.findById(dto.getSchool()).ifPresentOrElse(school -> school.addTeacher(teacher), () -> {
-                throw new EntityNotFoundException("school with given id " + dto.getSchool() + " not exist");
+    protected void checkSchoolExist(Long idSchool, Teacher teacher) {
+        if (idSchool != null) {
+            schoolRepository.findById(idSchool).ifPresentOrElse(school -> school.addTeacher(teacher), () -> {
+                throw new EntityNotFoundException("school with given id " + idSchool + " not exist");
             });
         }
     }

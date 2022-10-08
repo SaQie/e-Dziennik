@@ -1,27 +1,20 @@
 package pl.edziennik.eDziennik.server.student;
 
-import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import pl.edziennik.eDziennik.dto.AuthCredentials;
-import pl.edziennik.eDziennik.server.repositories.StudentRepository;
+import pl.edziennik.eDziennik.server.student.domain.dto.StudentRequestApiDto;
+import pl.edziennik.eDziennik.server.student.domain.dto.StudentResponseApiDto;
 
-@Service
-@AllArgsConstructor
-public class StudentService {
+import java.util.List;
 
-    private final StudentRepository studentRepository;
-    private final PasswordEncoder passwordEncoder;
+public interface StudentService {
 
-    public void registerStudent(AuthCredentials authCredentials){
-        Student student = new Student();
-        student.setUsername(authCredentials.getUsername());
-        student.setPassword(passwordEncoder.encode(authCredentials.getPassword()));
-        student.setCity("asd");
-        student.setAdress("asd");
-        student.setFirstName("asdasd");
-        student.setLastName("asdasd");
-        studentRepository.save(student);
-    }
+
+    StudentResponseApiDto register(final StudentRequestApiDto dto);
+
+    StudentResponseApiDto findStudentById(final Long id);
+
+    void deleteStudentById(final Long id);
+
+    List<StudentResponseApiDto> findAllStudents();
+
 
 }

@@ -62,7 +62,9 @@ public class SecurityConfiguration {
                             auth
                                     .antMatchers("/api/teachers").permitAll()
                                     .antMatchers("/api/schools").permitAll()
-                                    .antMatchers("/api/**").hasRole("MODERATOR")
+                                    .antMatchers("/api/students").permitAll()
+                                    .antMatchers("/api/schoolclasses").permitAll()
+                                    .antMatchers("/api/**").permitAll()
                                     .antMatchers("/jwt/**").permitAll()
                                     .antMatchers("/register").permitAll()
                                     .antMatchers("/teacher/moderator").hasRole("MODERATOR")
@@ -109,7 +111,7 @@ public class SecurityConfiguration {
                     .authorizeHttpRequests((auth) -> {
                         try {
                             auth
-                                    .antMatchers("/api/**").hasRole("MODERATOR")
+                                    .antMatchers("/api/**").permitAll()
                                     .antMatchers("/register").permitAll()
                                     .antMatchers("/schools").hasRole("ADMIN")
                                     .antMatchers("/teacher/moderator").hasRole("MODERATOR")

@@ -3,13 +3,12 @@ package pl.edziennik.eDziennik.server.teacher;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.edziennik.eDziennik.dto.teacher.TeacherRequestDto;
-import pl.edziennik.eDziennik.dto.teacher.TeacherResponseApiDto;
-import pl.edziennik.eDziennik.dto.teacher.mapper.TeacherMapper;
-import pl.edziennik.eDziennik.server.role.Role;
-import pl.edziennik.eDziennik.server.repositories.RoleRepository;
-import pl.edziennik.eDziennik.server.repositories.SchoolRepository;
-import pl.edziennik.eDziennik.server.repositories.TeacherRepository;
+import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
+import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherResponseApiDto;
+import pl.edziennik.eDziennik.server.teacher.domain.dto.mapper.TeacherMapper;
+import pl.edziennik.eDziennik.server.role.domain.Role;
+import pl.edziennik.eDziennik.server.role.RoleRepository;
+import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
@@ -26,12 +25,12 @@ class TeacherServiceImpl implements TeacherService{
     private final TeacherMapper mapper;
 
     @Override
-    public TeacherResponseApiDto register(TeacherRequestDto dto) {
+    public TeacherResponseApiDto register(TeacherRequestApiDto dto) {
         Teacher teacher = mapper.toEntity(dto);
         teacher.setPassword(passwordEncoder.encode(dto.getPassword()));
-        privService.checkSchoolExist(dto, teacher);
-        privService.checkRoleExist(dto, teacher);
-        teacher.setRole(roleRepository.findById(Role.RoleConst.ROLE_ADMIN.id).get());
+        privService.checkSchoolExist(dto.getSchool(), teacher);
+        privService.checkRoleExist(dto.getRole(), teacher);
+        teacher.setRole(roleRepository.findById(Role.RoleConst.ROLE_ADMIN.getId()).get());
         Teacher savedTeacher = repository.save(teacher);
         return mapper.toDto(savedTeacher);
     }

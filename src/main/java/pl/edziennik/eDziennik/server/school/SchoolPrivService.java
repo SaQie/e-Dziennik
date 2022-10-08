@@ -2,7 +2,8 @@ package pl.edziennik.eDziennik.server.school;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.edziennik.eDziennik.server.repositories.SchoolLevelRepository;
+import pl.edziennik.eDziennik.server.school.domain.School;
+import pl.edziennik.eDziennik.server.schoollevel.SchoolLevelRepository;
 
 import javax.persistence.EntityNotFoundException;
 

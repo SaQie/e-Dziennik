@@ -5,10 +5,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import pl.edziennik.eDziennik.server.student.Student;
-import pl.edziennik.eDziennik.server.teacher.Teacher;
-import pl.edziennik.eDziennik.server.repositories.StudentRepository;
-import pl.edziennik.eDziennik.server.repositories.TeacherRepository;
+import pl.edziennik.eDziennik.server.student.domain.Student;
+import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
+import pl.edziennik.eDziennik.server.student.StudentRepository;
+import pl.edziennik.eDziennik.server.teacher.TeacherRepository;
 
 import javax.persistence.EntityNotFoundException;
 
