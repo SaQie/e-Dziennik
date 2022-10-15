@@ -18,41 +18,40 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 class TeacherServiceImpl implements TeacherService{
 
-    private final TeacherRepository repository;
+    private final TeacherDao dao;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final TeacherPrivService privService;
-    private final TeacherMapper mapper;
 
     @Override
     public TeacherResponseApiDto register(TeacherRequestApiDto dto) {
-        Teacher teacher = mapper.toEntity(dto);
+        Teacher teacher = TeacherMapper.toEntity(dto);
         teacher.setPassword(passwordEncoder.encode(dto.getPassword()));
         privService.checkSchoolExist(dto.getSchool(), teacher);
         privService.checkRoleExist(dto.getRole(), teacher);
         teacher.setRole(roleRepository.findById(Role.RoleConst.ROLE_ADMIN.getId()).get());
-        Teacher savedTeacher = repository.save(teacher);
-        return mapper.toDto(savedTeacher);
+        Teacher savedTeacher = dao.saveOrUpdate(teacher);
+        return TeacherMapper.toDto(savedTeacher);
     }
 
 
     @Override
     public TeacherResponseApiDto findTeacherById(Long id) {
-        Teacher teacher = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Teacher with given id " + id + " not found."));
-        return mapper.toDto(teacher);
+        Teacher teacher = dao.find(id).orElseThrow(() -> new EntityNotFoundException("Teacher with given id " + id + " not found."));
+        return TeacherMapper.toDto(teacher);
     }
 
     @Override
     public void deleteTeacherById(Long id) {
-        Teacher teacher = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Teacher with given id " + id + " not exist"));
-        repository.delete(teacher);
+        Teacher teacher = dao.find(id).orElseThrow(() -> new EntityNotFoundException("Teacher with given id " + id + " not exist"));
+        dao.remove(teacher);
     }
 
     @Override
     public List<TeacherResponseApiDto> findAllTeachers() {
-        return repository.findAll()
+        return dao.findAll()
                 .stream()
-                .map(mapper::toDto)
+                .map(TeacherMapper::toDto)
                 .collect(Collectors.toList());
     }
 }

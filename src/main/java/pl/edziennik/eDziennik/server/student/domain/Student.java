@@ -2,11 +2,10 @@ package pl.edziennik.eDziennik.server.student.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
-import pl.edziennik.eDziennik.server.basics.BasicEntity;
 import pl.edziennik.eDziennik.server.basics.BasicUser;
 import pl.edziennik.eDziennik.server.ratingsubjectstudent.domain.RatingSubjectStudentLink;
 import pl.edziennik.eDziennik.server.school.domain.School;
+import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ import java.util.Collection;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Student extends BasicUser implements BasicEntity {
+public class Student extends BasicUser{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

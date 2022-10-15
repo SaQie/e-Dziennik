@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import pl.edziennik.eDziennik.server.ratingsubjectstudent.domain.RatingSubjectStudentLink;
 import pl.edziennik.eDziennik.server.subjectclass.domain.SubjectClassLink;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
-import pl.edziennik.eDziennik.server.basics.BasicEntity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import java.util.Collection;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Subject implements BasicEntity {
+public class Subject{
 
 
     @Id
@@ -28,8 +27,8 @@ public class Subject implements BasicEntity {
     @JoinColumn(name = "id_teacher")
     private Teacher teacher;
 
-    @OneToMany(mappedBy = "subject")
-    private Collection<RatingSubjectStudentLink> ratingSubjectStudentLinks = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    private RatingSubjectStudentLink ratingSubjectStudentLink;
 
     @OneToMany(mappedBy = "subject")
     private Collection<SubjectClassLink> subjectClassLinks = new ArrayList<>();
@@ -42,11 +41,6 @@ public class Subject implements BasicEntity {
     public void addSubjectClassLinks(SubjectClassLink subjectClassLink){
         subjectClassLinks.add(subjectClassLink);
         subjectClassLink.setSubject(this);
-    }
-
-    public void addRatingSubjectStudentLink(RatingSubjectStudentLink ratingSubjectStudentLink){
-        ratingSubjectStudentLinks.add(ratingSubjectStudentLink);
-        ratingSubjectStudentLink.setSubject(this);
     }
     public void setTeacher(Teacher teacher) {
         this.teacher = teacher;

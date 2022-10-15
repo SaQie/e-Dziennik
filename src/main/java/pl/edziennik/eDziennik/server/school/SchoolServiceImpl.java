@@ -15,35 +15,34 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 class SchoolServiceImpl implements SchoolService{
 
-    private final SchoolRepository repository;
-    private final SchoolMapper mapper;
+    private final SchoolDao dao;
     private final SchoolPrivService privService;
 
     @Override
     public SchoolResponseApiDto createNewSchool(SchoolRequestApiDto dto) {
-        School school = mapper.toEntity(dto);
+        School school = SchoolMapper.toEntity(dto);
         privService.findSchoolLevelAndAssignToSchool(school, dto.getSchoolLevel());
-        School schoolAfterSave = repository.save(school);
-        return mapper.toDto(schoolAfterSave);
+        School schoolAfterSave = dao.saveOrUpdate(school);
+        return SchoolMapper.toDto(schoolAfterSave);
     }
 
     @Override
     public SchoolResponseApiDto findSchoolById(Long id) {
-        School school = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("School with given id " + id + " not exist"));
-        return mapper.toDto(school);
+        School school = dao.find(id).orElseThrow(() -> new EntityNotFoundException("School with given id " + id + " not exist"));
+        return SchoolMapper.toDto(school);
     }
 
     @Override
     public void deleteSchoolById(Long id) {
-        School school = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("School with given id " + id + " not exist"));
-        repository.delete(school);
+        School school = dao.find(id).orElseThrow(() -> new EntityNotFoundException("School with given id " + id + " not exist"));
+        dao.remove(school);
     }
 
     @Override
     public List<SchoolResponseApiDto> findAllSchools() {
-        return repository.findAll()
+        return dao.findAll()
                 .stream()
-                .map(mapper::toDto)
+                .map(SchoolMapper::toDto)
                 .collect(Collectors.toList());
     }
 }

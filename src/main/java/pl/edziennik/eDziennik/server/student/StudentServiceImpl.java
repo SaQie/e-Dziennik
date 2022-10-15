@@ -17,24 +17,23 @@ import java.util.stream.Collectors;
 class StudentServiceImpl implements StudentService{
 
     private final StudentRepository repository;
-    private final StudentMapper mapper;
     private final PasswordEncoder passwordEncoder;
     private final StudentPrivService privService;
 
     @Override
     public StudentResponseApiDto register(StudentRequestApiDto dto) {
-        Student student = mapper.toEntity(dto);
+        Student student = StudentMapper.toEntity(dto);
         student.setPassword(passwordEncoder.encode(dto.getPassword()));
         privService.checkSchoolExist(dto.getSchool(), student);
         privService.checkSchoolClassExist(dto.getSchoolClass(), student);
         Student savedStudent = repository.save(student);
-        return mapper.toDto(savedStudent);
+        return StudentMapper.toDto(savedStudent);
     }
 
     @Override
     public StudentResponseApiDto findStudentById(Long id) {
         Student student = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Student with given id " + id + " not exist"));
-        return mapper.toDto(student);
+        return StudentMapper.toDto(student);
     }
 
     @Override
@@ -47,7 +46,7 @@ class StudentServiceImpl implements StudentService{
     public List<StudentResponseApiDto> findAllStudents() {
         return repository.findAll()
                 .stream()
-                .map(mapper::toDto)
+                .map(StudentMapper::toDto)
                 .collect(Collectors.toList());
     }
 }

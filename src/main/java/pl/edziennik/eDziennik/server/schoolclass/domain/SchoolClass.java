@@ -1,20 +1,21 @@
 package pl.edziennik.eDziennik.server.schoolclass.domain;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.student.domain.Student;
 import pl.edziennik.eDziennik.server.subjectclass.domain.SubjectClassLink;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
-import pl.edziennik.eDziennik.server.basics.BasicEntity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
 @NoArgsConstructor
 @Getter
-public class SchoolClass implements BasicEntity {
+public class SchoolClass implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

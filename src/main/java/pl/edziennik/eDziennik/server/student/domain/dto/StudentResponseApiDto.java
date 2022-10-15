@@ -3,10 +3,9 @@ package pl.edziennik.eDziennik.server.student.domain.dto;
 import lombok.Getter;
 import pl.edziennik.eDziennik.server.school.domain.dto.SchoolResponseApiDto;
 import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassResponseApiDto;
-import pl.edziennik.eDziennik.server.basics.AbstractDto;
 
 @Getter
-public class StudentResponseApiDto extends AbstractDto {
+public class StudentResponseApiDto{
 
     private Long id;
     private String firstName;

@@ -1,10 +1,9 @@
 package pl.edziennik.eDziennik.server.role.domain.dto;
 
 import lombok.Getter;
-import pl.edziennik.eDziennik.server.basics.AbstractDto;
 
 @Getter
-public class RoleResponseApiDto extends AbstractDto {
+public class RoleResponseApiDto{
 
     private Long id;
     private String name;

@@ -1,0 +1,30 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    mapping-resources:
+      /mappings/TeacherDao.hbm.xml,
+      /mappings/TestDao.hbm.xml
+  datasource:
+    url: jdbc:postgresql://localhost:5432/diary_db
+    username: postgres
+    password: admin
+  liquibase:
+    change-log: classpath:liquibase-changeLog.xml
+
+jwt:
+  secret: testtt
+  expiration: 3600000
+  refresh:
+    expiration: 4800000
+  token:
+    prefix: Bearer
+  unauthorized:
+    message: Nie jestes zalogowany
+  accessDenied:
+    message: nie masz dostepu do tej strony

@@ -3,7 +3,7 @@ package pl.edziennik.eDziennik.server.school;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edziennik.eDziennik.server.school.domain.School;
-import pl.edziennik.eDziennik.server.schoollevel.SchoolLevelRepository;
+import pl.edziennik.eDziennik.server.schoollevel.SchoolLevelDao;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -11,10 +11,10 @@ import javax.persistence.EntityNotFoundException;
 @AllArgsConstructor
 class SchoolPrivService {
 
-    private final SchoolLevelRepository schoolLevelRepository;
+    private final SchoolLevelDao dao;
 
     protected void findSchoolLevelAndAssignToSchool(School school, Long idSchoolLevel){
-        schoolLevelRepository.findById(idSchoolLevel).ifPresentOrElse(school::setSchoolLevel, () -> {
+        dao.find(idSchoolLevel).ifPresentOrElse(school::setSchoolLevel, () -> {
             throw new EntityNotFoundException("School level with given id " + idSchoolLevel + " not exist");
         });
     }

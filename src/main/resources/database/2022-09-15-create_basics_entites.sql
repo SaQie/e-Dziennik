@@ -4,29 +4,24 @@ CREATE TABLE school_level
     name varchar(255) NOT NULL UNIQUE
 );
 
-INSERT INTO school_level(id, name)
-VALUES (1, 'Szkoła podstawowa'),
-       (2, 'Szkoła średnia'),
-       (3, 'Szkoła wyższa');
-
 CREATE TABLE school
 (
     id              SERIAL PRIMARY KEY,
     name            varchar(255) NOT NULL UNIQUE,
-    adress          varchar(255) NOT NULL,
+    adress          varchar(255) NOT NULL UNIQUE,
     postal_code     varchar(9)   NOT NULL,
     city            varchar(255) NOT NULL,
     nip             varchar(10)  NOT NULL UNIQUE,
     regon           varchar(8)   NOT NULL UNIQUE,
     phone_number    varchar(9)   NOT NULL UNIQUE,
-    school_level_id INT          NOT NULL REFERENCES school_level (id)
+    school_level_id int          NOT NULL REFERENCES school_level (id)
 );
 
-CREATE TABLE student
+CREATE TABLE STUDENT
 (
     id                  SERIAL PRIMARY KEY,
     username            varchar(255) NOT NULL UNIQUE,
-    password            varchar(255) NOT NULL,
+    PASSWORD            varchar(255) NOT NULL,
     first_name          varchar(255) NOT NULL,
     last_name           varchar(255) NOT NULL,
     adress              varchar(255) NOT NULL,
@@ -38,11 +33,12 @@ CREATE TABLE student
     parent_phone_number varchar(9)   NOT NULL,
     school_id           INT          NOT NULL REFERENCES school (id)
 );
+
 CREATE TABLE teacher
 (
     id           SERIAL PRIMARY KEY,
     username     varchar(255) NOT NULL UNIQUE,
-    password     varchar(255) NOT NULL,
+    PASSWORD     varchar(255) NOT NULL,
     first_name   varchar(255) NOT NULL,
     last_name    varchar(255) NOT NULL,
     adress       varchar(255) NOT NULL,
@@ -65,16 +61,12 @@ ALTER TABLE student
     ADD school_class_id INT NOT NULL,
     ADD FOREIGN KEY (school_class_id) REFERENCES school_class (id);
 
-ALTER TABLE teacher
-    ADD supervising_school_class_id INT UNIQUE,
-    ADD FOREIGN KEY (supervising_school_class_id) REFERENCES school_class (supervising_teacher_id);
-
 CREATE TABLE subject
 (
     id          SERIAL PRIMARY KEY,
     name        varchar(255) NOT NULL UNIQUE,
     description varchar(255),
-    id_teacher  INT          NOT NULL REFERENCES teacher (id)
+    id_teacher  INT REFERENCES teacher (id)
 );
 
 CREATE TABLE subject_class
@@ -83,7 +75,6 @@ CREATE TABLE subject_class
     id_subject      INT NOT NULL REFERENCES subject (id),
     id_school_class INT NOT NULL REFERENCES school_class (id)
 );
-
 
 CREATE TABLE rating
 (
@@ -101,16 +92,25 @@ CREATE TABLE rating_subject_student
     id_subject INT NOT NULL REFERENCES subject (id)
 );
 
-CREATE TABLE role
+CREATE TABLE ROLE
 (
     id   SERIAL PRIMARY KEY,
     name varchar(255) NOT NULL UNIQUE
 );
 
-insert into role(id, name)
-values (1, 'ROLE_ADMIN'),
-       (2, 'ROLE_TEACHER'),
-       (3, 'ROLE_MODERATOR');
+INSERT
+INTO ROLE(id,
+          name)
+VALUES (1,
+        'ROLE_ADMIN'),
+       (2,
+        'ROLE_TEACHER'),
+       (3,
+        'ROLE_MODERATOR');
 
 ALTER TABLE teacher
-    ADD role_id INT REFERENCES role (id);
+    ADD role_id INT REFERENCES ROLE (id);
+
+CREATE UNIQUE INDEX student_subject_indx ON
+    rating_subject_student (id_student,
+                            id_subject);

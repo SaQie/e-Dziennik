@@ -3,7 +3,6 @@ package pl.edziennik.eDziennik.server.role.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
-import pl.edziennik.eDziennik.server.basics.BasicEntity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,7 +11,7 @@ import java.util.Collection;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Role implements BasicEntity {
+public class Role{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

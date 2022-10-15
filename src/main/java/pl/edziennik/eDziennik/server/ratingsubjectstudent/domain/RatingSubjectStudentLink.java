@@ -1,6 +1,6 @@
 package pl.edziennik.eDziennik.server.ratingsubjectstudent.domain;
 
-import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.edziennik.eDziennik.server.rating.domain.Rating;
@@ -8,13 +8,15 @@ import pl.edziennik.eDziennik.server.student.domain.Student;
 import pl.edziennik.eDziennik.server.subject.domain.Subject;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Setter
+@Getter
 @Table(name = "rating_subject_student")
-public class RatingSubjectStudentLink{
+public class RatingSubjectStudentLink {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,16 +24,17 @@ public class RatingSubjectStudentLink{
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "student_id")
+    @JoinColumn(name = "id_student")
     private Student student;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rating_id")
-    private Rating rating;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_rating")
+    private List<Rating> ratings = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "subject_id")
-    private Subject subject;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_subject")
+    private List<Subject> subjects = new ArrayList<>();
+
 
 
 }

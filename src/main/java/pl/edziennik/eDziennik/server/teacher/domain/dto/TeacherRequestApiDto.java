@@ -4,12 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import pl.edziennik.eDziennik.server.basics.AbstractDto;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class TeacherRequestApiDto extends AbstractDto {
+public class TeacherRequestApiDto{
 
     private String username;
     private String firstName;

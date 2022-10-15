@@ -1,25 +1,21 @@
 package pl.edziennik.eDziennik.server.role.domain.dto.mapper;
 
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.server.role.domain.Role;
-import pl.edziennik.eDziennik.server.basics.AbstractMapper;
 import pl.edziennik.eDziennik.server.role.domain.dto.RoleResponseApiDto;
 
-@Component
-@AllArgsConstructor
-public class RoleMapper implements AbstractMapper<RoleResponseApiDto, Role> {
+public class RoleMapper {
 
-    @Override
-    public RoleResponseApiDto toDto(Role entity) {
+    private RoleMapper() {
+    }
+
+    public static RoleResponseApiDto toDto(Role entity) {
         return new RoleResponseApiDto(
                 entity.getId(),
                 entity.getName()
         );
     }
 
-    @Override
-    public Role toEntity(RoleResponseApiDto dto) {
+    public static Role toEntity(RoleResponseApiDto dto) {
         return new Role(
                 dto.getId(),
                 dto.getName());

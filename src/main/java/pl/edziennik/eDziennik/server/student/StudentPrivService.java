@@ -2,8 +2,8 @@ package pl.edziennik.eDziennik.server.student;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.edziennik.eDziennik.server.school.SchoolDao;
 import pl.edziennik.eDziennik.server.schoolclass.SchoolClassRepository;
-import pl.edziennik.eDziennik.server.school.SchoolRepository;
 import pl.edziennik.eDziennik.server.student.domain.Student;
 
 import javax.persistence.EntityNotFoundException;
@@ -12,11 +12,11 @@ import javax.persistence.EntityNotFoundException;
 @AllArgsConstructor
 class StudentPrivService {
 
-    private final SchoolRepository schoolRepository;
+    private final SchoolDao dao;
     private final SchoolClassRepository schoolClassRepository;
 
     protected void checkSchoolExist(Long idSchool, Student student) {
-        schoolRepository.findById(idSchool).ifPresentOrElse(student::setSchool, () -> {
+        dao.find(idSchool).ifPresentOrElse(student::setSchool, () -> {
             throw new EntityNotFoundException("School with given id " +idSchool + " not exist");
         });
     }

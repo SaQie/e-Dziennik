@@ -4,6 +4,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import pl.edziennik.eDziennik.server.ratingsubjectstudent.domain.RatingSubjectStudentLink;
 
+import java.util.List;
+
 @Repository
-public interface RatingSubjectStudentLinkRepository extends JpaRepository<RatingSubjectStudentLink, Long> {
+public interface RatingSubjectStudentRepository extends JpaRepository<RatingSubjectStudentLink, Long> {
+
+
+
 }

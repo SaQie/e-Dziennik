@@ -1,21 +1,17 @@
 package pl.edziennik.eDziennik.server.school.domain.dto.mapper;
 
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.school.domain.dto.SchoolRequestApiDto;
 import pl.edziennik.eDziennik.server.school.domain.dto.SchoolResponseApiDto;
 import pl.edziennik.eDziennik.server.schoollevel.domain.dto.mapper.SchoolLevelMapper;
-import pl.edziennik.eDziennik.server.school.domain.School;
-import pl.edziennik.eDziennik.server.basics.AbstractMapper;
 
-@Component
-@AllArgsConstructor
-public class SchoolMapper implements AbstractMapper<SchoolResponseApiDto, School> {
+public class SchoolMapper{
 
-    private final SchoolLevelMapper schoolLevelMapper;
+    private SchoolMapper() {
+    }
 
-    @Override
-    public SchoolResponseApiDto toDto(School entity) {
+    public static SchoolResponseApiDto toDto(School entity) {
         return new SchoolResponseApiDto(
                 entity.getId(),
                 entity.getName(),
@@ -24,16 +20,10 @@ public class SchoolMapper implements AbstractMapper<SchoolResponseApiDto, School
                 entity.getNip(),
                 entity.getRegon(),
                 entity.getPhoneNumber(),
-                schoolLevelMapper.toDto(entity.getSchoolLevel())
+                SchoolLevelMapper.toDto(entity.getSchoolLevel())
         );
     }
-
-    @Override
-    public School toEntity(SchoolResponseApiDto dto) {
-        return null;
-    }
-
-    public School toEntity(SchoolRequestApiDto dto){
+    public static School toEntity(SchoolRequestApiDto dto){
         return new School(
                 dto.getName(),
                 dto.getAdress(),

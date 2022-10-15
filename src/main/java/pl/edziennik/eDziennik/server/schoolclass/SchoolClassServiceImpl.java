@@ -17,21 +17,20 @@ class SchoolClassServiceImpl implements SchoolClassService{
 
     private final SchoolClassRepository repository;
     private final SchoolClassPrivService privService;
-    private final SchoolClassMapper mapper;
 
     @Override
     public SchoolClassResponseApiDto createSchoolClass(SchoolClassRequestApiDto dto) {
-        SchoolClass schoolClass = mapper.toEntity(dto);
+        SchoolClass schoolClass = SchoolClassMapper.toEntity(dto);
         privService.checkSupervisingTeacherExist(dto.getSupervisingTeacherId(), schoolClass);
         privService.checkSchoolExist(dto.getSchool(), schoolClass);
         SchoolClass savedSchoolClass = repository.save(schoolClass);
-        return mapper.toDto(savedSchoolClass);
+        return SchoolClassMapper.toDto(savedSchoolClass);
     }
 
     @Override
     public SchoolClassResponseApiDto findSchoolClassById(Long id) {
         SchoolClass schoolClass = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("School class with given id " + id + " not exist"));
-        return mapper.toDto(schoolClass);
+        return SchoolClassMapper.toDto(schoolClass);
     }
 
     @Override
@@ -44,7 +43,7 @@ class SchoolClassServiceImpl implements SchoolClassService{
     public List<SchoolClassResponseApiDto> findAllSchoolClasses() {
         return repository.findAll()
                 .stream()
-                .map(mapper::toDto)
+                .map(SchoolClassMapper::toDto)
                 .collect(Collectors.toList());
     }
 

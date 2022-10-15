@@ -3,7 +3,7 @@ package pl.edziennik.eDziennik.server.teacher;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edziennik.eDziennik.server.role.RoleRepository;
-import pl.edziennik.eDziennik.server.school.SchoolRepository;
+import pl.edziennik.eDziennik.server.school.SchoolDao;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 
 import javax.persistence.EntityNotFoundException;
@@ -13,7 +13,7 @@ import javax.persistence.EntityNotFoundException;
 class TeacherPrivService {
 
     private final RoleRepository roleRepository;
-    private final SchoolRepository schoolRepository;
+    private final SchoolDao dao;
 
     protected void checkRoleExist(String role, Teacher teacher) {
         if (role != null){
@@ -25,7 +25,7 @@ class TeacherPrivService {
 
     protected void checkSchoolExist(Long idSchool, Teacher teacher) {
         if (idSchool != null) {
-            schoolRepository.findById(idSchool).ifPresentOrElse(school -> school.addTeacher(teacher), () -> {
+            dao.find(idSchool).ifPresentOrElse(school -> school.addTeacher(teacher), () -> {
                 throw new EntityNotFoundException("school with given id " + idSchool + " not exist");
             });
         }

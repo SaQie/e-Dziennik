@@ -1,8 +1,7 @@
 package pl.edziennik.eDziennik.server.rating.domain;
 
-import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import pl.edziennik.eDziennik.server.basics.BasicEntity;
 import pl.edziennik.eDziennik.server.ratingsubjectstudent.domain.RatingSubjectStudentLink;
 
 import javax.persistence.*;
@@ -10,27 +9,28 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
-public class Rating implements BasicEntity {
+@Getter
+public class Rating{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int rating;
+    @Enumerated
+    private RatingConst rating;
     private int weight;
     private String description;
 
-    @OneToMany(mappedBy = "rating")
-    private Collection<RatingSubjectStudentLink> ratingSubjectStudentLinks = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    private RatingSubjectStudentLink ratingSubjectStudentLink;
 
-
-
-    public void addRatingSubjectStudentLinks(RatingSubjectStudentLink ratingSubjectStudentLink){
-        ratingSubjectStudentLinks.add(ratingSubjectStudentLink);
-        ratingSubjectStudentLink.setRating(this);
+    public Rating(RatingConst rating, int weight, String description) {
+        this.rating = rating;
+        this.weight = weight;
+        this.description = description;
     }
+
 
     public enum RatingConst {
 
@@ -50,6 +50,15 @@ public class Rating implements BasicEntity {
 
         public int getRating(){
             return rating;
+        }
+
+        public static RatingConst getByRating(int rating){
+            for (RatingConst ratingConst : RatingConst.values()){
+                if (ratingConst.rating == rating){
+                    return ratingConst;
+                }
+            }
+            throw new EntityNotFoundException("Rating " + rating + " not found");
         }
     }
 
