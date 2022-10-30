@@ -2,46 +2,34 @@ package pl.edziennik.eDziennik.server.subject.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import pl.edziennik.eDziennik.server.ratingsubjectstudent.domain.RatingSubjectStudentLink;
-import pl.edziennik.eDziennik.server.subjectclass.domain.SubjectClassLink;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.io.Serializable;
 
 @Entity
 @NoArgsConstructor
 @Getter
-public class Subject{
+public class Subject implements Serializable {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subject_id_seq")
+    @SequenceGenerator(name = "subject_id_seq", sequenceName = "subject_id_seq", allocationSize = 1)
     private Long id;
 
     private String description;
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_teacher")
     private Teacher teacher;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private RatingSubjectStudentLink ratingSubjectStudentLink;
-
-    @OneToMany(mappedBy = "subject")
-    private Collection<SubjectClassLink> subjectClassLinks = new ArrayList<>();
 
     public Subject(String name, String description) {
         this.description = description;
         this.name = name;
     }
 
-    public void addSubjectClassLinks(SubjectClassLink subjectClassLink){
-        subjectClassLinks.add(subjectClassLink);
-        subjectClassLink.setSubject(this);
-    }
     public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
     }

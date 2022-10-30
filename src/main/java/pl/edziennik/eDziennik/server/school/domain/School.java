@@ -18,7 +18,8 @@ import java.util.Collection;
 public class School implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "school_id_seq")
+    @SequenceGenerator(name = "school_id_seq", sequenceName = "school_id_seq", allocationSize = 1)
     private Long id;
 
     private String name;
@@ -30,16 +31,15 @@ public class School implements Serializable {
     private String phoneNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "school_level_id")
     private SchoolLevel schoolLevel;
 
-    @OneToMany(mappedBy = "school")
+    @OneToMany(mappedBy = "school", orphanRemoval = true)
     private Collection<SchoolClass> schoolClasses = new ArrayList<>();
 
-    @OneToMany(mappedBy = "school")
+    @OneToMany(mappedBy = "school", orphanRemoval = true)
     private Collection<Student> students = new ArrayList<>();
 
-    @OneToMany(mappedBy = "school")
+    @OneToMany(mappedBy = "school", orphanRemoval = true)
     private Collection<Teacher> teachers = new ArrayList<>();
 
     public School(String name, String adress, String postalCode, String city, String nip, String regon, String phoneNumber) {

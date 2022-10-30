@@ -20,7 +20,7 @@ public class SchoolMapper{
                 entity.getNip(),
                 entity.getRegon(),
                 entity.getPhoneNumber(),
-                SchoolLevelMapper.toDto(entity.getSchoolLevel())
+                entity.getSchoolLevel().getId()
         );
     }
     public static School toEntity(SchoolRequestApiDto dto){

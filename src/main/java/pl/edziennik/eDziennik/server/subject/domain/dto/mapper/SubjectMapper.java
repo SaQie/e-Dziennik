@@ -16,7 +16,7 @@ public class SubjectMapper {
                 entity.getId(),
                 entity.getName(),
                 entity.getDescription(),
-                TeacherMapper.toDto(entity.getTeacher())
+                entity.getTeacher().getId()
         );
     }
 

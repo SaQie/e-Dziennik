@@ -10,4 +10,6 @@ class EDziennikApplicationTests {
 	void contextLoads() {
 	}
 
+
+
 }

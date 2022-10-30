@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassRequestApiDto;
 import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassResponseApiDto;
-import pl.edziennik.eDziennik.server.schoolclass.SchoolClassService;
+import pl.edziennik.eDziennik.server.schoolclass.services.SchoolClassService;
 
 import java.net.URI;
 
@@ -22,13 +22,13 @@ public class SchoolClassController {
 
 
     @PostMapping()
-    public ResponseEntity<SchoolClassResponseApiDto> createSchoolClass(@RequestBody SchoolClassRequestApiDto dto){
+    public ResponseEntity<?> createSchoolClass(@RequestBody SchoolClassRequestApiDto dto){
         SchoolClassResponseApiDto newSchoolClass = service.createSchoolClass(dto);
        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(newSchoolClass.getId())
                 .toUri();
-        return ResponseEntity.created(uri).body(newSchoolClass);
+        return ResponseEntity.created(uri).body(uri);
     }
 
 }

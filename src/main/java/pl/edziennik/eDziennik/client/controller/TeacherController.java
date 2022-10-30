@@ -7,7 +7,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.eDziennik.authentication.AuthCredentials;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherResponseApiDto;
-import pl.edziennik.eDziennik.server.teacher.TeacherService;
+import pl.edziennik.eDziennik.server.teacher.services.TeacherService;
 
 import java.net.URI;
 import java.util.List;
@@ -24,13 +24,13 @@ class TeacherController {
 
     }
     @PostMapping()
-    public ResponseEntity<TeacherResponseApiDto> register(@RequestBody TeacherRequestApiDto dto){
+    public ResponseEntity<?> register(@RequestBody TeacherRequestApiDto dto){
         TeacherResponseApiDto savedTeacher = service.register(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(savedTeacher.getId())
                 .toUri();
-        return ResponseEntity.created(uri).body(savedTeacher);
+        return ResponseEntity.created(uri).body(uri);
     }
 
     @GetMapping("/{id}")

@@ -7,20 +7,20 @@ import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassResponseA
 @Getter
 public class StudentResponseApiDto{
 
-    private Long id;
-    private String firstName;
-    private String lastName;
-    private String adress;
-    private String postalCode;
-    private String city;
-    private String pesel;
-    private String parentFirstName;
-    private String parentLastName;
-    private String parentPhoneNumber;
-    private SchoolResponseApiDto school;
-    private SchoolClassResponseApiDto schoolClass;
+    private final Long id;
+    private final String firstName;
+    private final String lastName;
+    private final String adress;
+    private final String postalCode;
+    private final String city;
+    private final String pesel;
+    private final String parentFirstName;
+    private final String parentLastName;
+    private final String parentPhoneNumber;
+    private final Long idSchool;
+    private final Long idSchoolClass;
 
-    public StudentResponseApiDto(Long id, String firstName, String lastName, String adress, String postalCode, String city, String pesel, String parentFirstName, String parentLastName, String parentPhoneNumber, SchoolResponseApiDto school, SchoolClassResponseApiDto schoolClass) {
+    public StudentResponseApiDto(Long id, String firstName, String lastName, String adress, String postalCode, String city, String pesel, String parentFirstName, String parentLastName, String parentPhoneNumber, Long idSchool, Long idSchoolClass) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -31,7 +31,7 @@ public class StudentResponseApiDto{
         this.parentFirstName = parentFirstName;
         this.parentLastName = parentLastName;
         this.parentPhoneNumber = parentPhoneNumber;
-        this.school = school;
-        this.schoolClass = schoolClass;
+        this.idSchool = idSchool;
+        this.idSchoolClass = idSchoolClass;
     }
 }

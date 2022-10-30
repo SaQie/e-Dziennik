@@ -23,8 +23,8 @@ public class TeacherMapper {
                     entity.getCity(),
                     entity.getPESEL(),
                     entity.getPhoneNumber(),
-                    RoleMapper.toDto(entity.getRole()),
-                    SchoolMapper.toDto(entity.getSchool())
+                    entity.getRole().getId(),
+                    entity.getSchool().getId()
             );
         }
         return new TeacherResponseApiDto(
@@ -36,7 +36,7 @@ public class TeacherMapper {
                 entity.getCity(),
                 entity.getPESEL(),
                 entity.getPhoneNumber(),
-                RoleMapper.toDto(entity.getRole())
+                entity.getRole().getId()
         );
     }
 

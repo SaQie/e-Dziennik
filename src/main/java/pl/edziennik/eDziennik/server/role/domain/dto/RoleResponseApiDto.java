@@ -5,8 +5,8 @@ import lombok.Getter;
 @Getter
 public class RoleResponseApiDto{
 
-    private Long id;
-    private String name;
+    private final Long id;
+    private final String name;
 
     public RoleResponseApiDto(Long id, String name) {
         this.id = id;

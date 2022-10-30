@@ -53,7 +53,7 @@ CREATE TABLE school_class
 (
     id                     SERIAL PRIMARY KEY,
     class_name             varchar(255) NOT NULL UNIQUE,
-    supervising_teacher_id INT UNIQUE REFERENCES teacher (id),
+    teacher_id INT UNIQUE REFERENCES teacher (id),
     school_id              INT REFERENCES school (id)
 );
 
@@ -66,37 +66,36 @@ CREATE TABLE subject
     id          SERIAL PRIMARY KEY,
     name        varchar(255) NOT NULL UNIQUE,
     description varchar(255),
-    id_teacher  INT REFERENCES teacher (id)
+    teacher_id  INT REFERENCES teacher (id)
 );
 
-CREATE TABLE subject_class
-(
-    id              SERIAL PRIMARY KEY,
-    id_subject      INT NOT NULL REFERENCES subject (id),
-    id_school_class INT NOT NULL REFERENCES school_class (id)
-);
-
-CREATE TABLE rating
+CREATE TABLE grade
 (
     id          SERIAL PRIMARY KEY,
-    rating      INT NOT NULL,
+    grade      INT NOT NULL,
     weight      INT NOT NULL,
     description varchar(255)
 );
 
-CREATE TABLE rating_subject_student
-(
-    id         SERIAL PRIMARY KEY,
-    id_student INT NOT NULL REFERENCES student (id),
-    id_rating  INT NOT NULL REFERENCES rating (id),
-    id_subject INT NOT NULL REFERENCES subject (id)
-);
 
 CREATE TABLE ROLE
 (
     id   SERIAL PRIMARY KEY,
     name varchar(255) NOT NULL UNIQUE
 );
+
+CREATE TABLE student_subject
+(
+
+    id SERIAL PRIMARY KEY,
+    student_id INT REFERENCES student(id),
+    subject_id INT REFERENCES subject(id)
+);
+
+CREATE UNIQUE INDEX idx_student_subject ON student_subject(student_id, subject_id);
+
+
+ALTER TABLE grade ADD student_subject_id INT REFERENCES student_subject(id);
 
 INSERT
 INTO ROLE(id,
@@ -111,6 +110,4 @@ VALUES (1,
 ALTER TABLE teacher
     ADD role_id INT REFERENCES ROLE (id);
 
-CREATE UNIQUE INDEX student_subject_indx ON
-    rating_subject_student (id_student,
-                            id_subject);
+INSERT INTO school_level(id,name) values (1,'PODSTAWOWA');

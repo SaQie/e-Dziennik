@@ -4,9 +4,17 @@
                  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm
         http://java.sun.com/xml/ns/persistence/orm_2_0.xsd ">
 
-    <!--find all books ordered by pages descending-->
-    <named-query name="Teacher.findByUsername">
-        <query>SELECT t FROM Teacher t where t.username = :username</query>
+    <named-query name="Teacher.getByUsername">
+        <query>
+            SELECT
+            t
+            FROM
+            Teacher t
+            JOIN FETCH
+            t.role
+            where
+            t.username = :username
+        </query>
     </named-query>
 
 

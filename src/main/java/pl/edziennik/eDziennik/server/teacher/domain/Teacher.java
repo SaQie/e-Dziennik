@@ -18,16 +18,16 @@ import java.util.Collection;
 public class Teacher extends BasicUser implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teacher_id_seq")
+    @SequenceGenerator(name = "teacher_id_seq", sequenceName = "teacher_id_seq", allocationSize = 1)
     private Long id;
 
     private String phoneNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id")
     private Role role;
 
-    @OneToMany(mappedBy = "teacher")
+    @OneToMany(mappedBy = "teacher", orphanRemoval = true)
     private Collection<Subject> subjects = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)

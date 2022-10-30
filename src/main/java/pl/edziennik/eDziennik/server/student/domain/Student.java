@@ -1,23 +1,26 @@
 package pl.edziennik.eDziennik.server.student.domain;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import pl.edziennik.eDziennik.server.basics.BasicUser;
-import pl.edziennik.eDziennik.server.ratingsubjectstudent.domain.RatingSubjectStudentLink;
 import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.io.Serializable;
 
 @Entity
 @NoArgsConstructor
 @Getter
-public class Student extends BasicUser{
+@Setter
+@EqualsAndHashCode
+public class Student extends BasicUser implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_id_seq")
+    @SequenceGenerator(name = "student_id_seq", sequenceName = "student_id_seq", allocationSize = 1)
     private Long id;
 
     private String parentFirstName;
@@ -25,15 +28,10 @@ public class Student extends BasicUser{
     private String parentPhoneNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "school_class_id")
     private SchoolClass schoolClass;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "school_id")
     private School school;
-
-    @OneToMany(mappedBy = "student")
-    private Collection<RatingSubjectStudentLink> ratingSubjectStudentLinks = new ArrayList<>();
 
     public Student(String adress, String username, String password, String firstName, String lastName, String postalCode, String PESEL, String city, String parentFirstName, String parentLastName, String parentPhoneNumber) {
         super(adress, username, password, firstName, lastName, postalCode, PESEL, city);
@@ -44,11 +42,6 @@ public class Student extends BasicUser{
 
     public void setSchoolClass(SchoolClass schoolClass) {
         this.schoolClass = schoolClass;
-    }
-
-    public void addRatingSubjectStudentLink(RatingSubjectStudentLink ratingSubjectStudentLink){
-        ratingSubjectStudentLinks.add(ratingSubjectStudentLink);
-        ratingSubjectStudentLink.setStudent(this);
     }
 
     public void setSchool(School school) {

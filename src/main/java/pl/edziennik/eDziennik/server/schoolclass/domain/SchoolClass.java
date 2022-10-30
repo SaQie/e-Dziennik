@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.student.domain.Student;
-import pl.edziennik.eDziennik.server.subjectclass.domain.SubjectClassLink;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 
 import javax.persistence.*;
@@ -18,24 +17,20 @@ import java.util.Collection;
 public class SchoolClass implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "school_class_id_seq")
+    @SequenceGenerator(name = "school_class_id_seq", sequenceName = "school_class_id_seq", allocationSize = 1)
     private Long id;
 
     private String className;
 
-    @OneToMany(mappedBy = "schoolClass")
+    @OneToMany(mappedBy = "schoolClass", orphanRemoval = true)
     private Collection<Student> students = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "supervising_teacher_id")
     private Teacher teacher;
 
-    @ManyToOne
-    @JoinColumn(name = "school_id")
+    @ManyToOne(fetch = FetchType.LAZY)
     private School school;
-
-    @OneToMany(mappedBy = "schoolClass")
-    private Collection<SubjectClassLink> subjectClassLinks = new ArrayList<>();
 
     public SchoolClass(String className) {
         this.className = className;
@@ -43,11 +38,6 @@ public class SchoolClass implements Serializable {
 
     public void setTeacher(Teacher teacher){
         this.teacher = teacher;
-    }
-
-    public void addSubjectClassLinks(SubjectClassLink subjectClassLink) {
-        subjectClassLinks.add(subjectClassLink);
-        subjectClassLink.setSchoolClass(this);
     }
 
     public void setSchool(School school){

@@ -24,8 +24,8 @@ public class StudentMapper {
                 entity.getParentFirstName(),
                 entity.getParentLastName(),
                 entity.getParentPhoneNumber(),
-                SchoolMapper.toDto(entity.getSchool()),
-                SchoolClassMapper.toDto(entity.getSchoolClass())
+                entity.getSchool().getId(),
+                entity.getSchoolClass().getId()
         );
     }
 

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectResponseApiDto;
-import pl.edziennik.eDziennik.server.subject.SubjectService;
+import pl.edziennik.eDziennik.server.subject.services.SubjectService;
 
 import java.net.URI;
 
@@ -21,13 +21,13 @@ public class SubjectController {
     private final SubjectService service;
 
     @PostMapping()
-    public ResponseEntity<SubjectResponseApiDto> create(@RequestBody SubjectRequestApiDto dto){
+    public ResponseEntity<?> create(@RequestBody SubjectRequestApiDto dto){
         SubjectResponseApiDto subject = service.createNewSubject(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(subject.getId())
                 .toUri();
-        return ResponseEntity.created(uri).body(subject);
+        return ResponseEntity.created(uri).body(uri);
     }
 
 }

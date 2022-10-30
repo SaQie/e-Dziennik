@@ -9,7 +9,9 @@ spring:
     show-sql: true
     mapping-resources:
       /mappings/TeacherDao.hbm.xml,
-      /mappings/TestDao.hbm.xml
+      /mappings/RoleDao.hbm.xml,
+      /mappings/StudentDao.hbm.xml,
+      /mappings/StudentSubjectDao.hbm.xml
   datasource:
     url: jdbc:postgresql://localhost:5432/diary_db
     username: postgres

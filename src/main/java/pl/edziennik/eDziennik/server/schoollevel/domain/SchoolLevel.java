@@ -15,12 +15,13 @@ import java.util.Collection;
 public class SchoolLevel implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "school_level_id_seq")
+    @SequenceGenerator(name = "school_level_id_seq", sequenceName = "school_level_id_seq", allocationSize = 1)
     private Long id;
 
     private String name;
 
-    @OneToMany(mappedBy = "schoolLevel")
+    @OneToMany(mappedBy = "schoolLevel", orphanRemoval = true)
     private Collection<School> schools = new ArrayList<>();
 
     public SchoolLevel(Long id, String name) {

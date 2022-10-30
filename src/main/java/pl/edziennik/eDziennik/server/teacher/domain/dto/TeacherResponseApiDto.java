@@ -5,21 +5,21 @@ import pl.edziennik.eDziennik.server.role.domain.dto.RoleResponseApiDto;
 import pl.edziennik.eDziennik.server.school.domain.dto.SchoolResponseApiDto;
 
 @Getter
-public class TeacherResponseApiDto{
+public class TeacherResponseApiDto {
 
     private Long id;
 
-    private String firstName;
-    private String lastName;
-    private String adress;
-    private String postalCode;
-    private String city;
-    private String pesel;
-    private String phoneNumber;
-    private RoleResponseApiDto role;
-    private SchoolResponseApiDto school;
+    private final String firstName;
+    private final String lastName;
+    private final String adress;
+    private final String postalCode;
+    private final String city;
+    private final String pesel;
+    private final String phoneNumber;
+    private final Long idRole;
+    private final Long idSchool;
 
-    public TeacherResponseApiDto(Long id, String firstName, String lastName, String adress, String postalCode, String city, String pesel, String phoneNumber, RoleResponseApiDto role, SchoolResponseApiDto school) {
+    public TeacherResponseApiDto(Long id, String firstName, String lastName, String adress, String postalCode, String city, String pesel, String phoneNumber, Long idRole, Long idSchool) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -28,11 +28,11 @@ public class TeacherResponseApiDto{
         this.city = city;
         this.pesel = pesel;
         this.phoneNumber = phoneNumber;
-        this.role = role;
-        this.school = school;
+        this.idRole = idRole;
+        this.idSchool = idSchool;
     }
 
-    public TeacherResponseApiDto(Long id, String firstName, String lastName, String adress, String postalCode, String city, String pesel, String phoneNumber, RoleResponseApiDto role) {
+    public TeacherResponseApiDto(Long id, String firstName, String lastName, String adress, String postalCode, String city, String pesel, String phoneNumber, Long idRole) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -41,6 +41,7 @@ public class TeacherResponseApiDto{
         this.city = city;
         this.pesel = pesel;
         this.phoneNumber = phoneNumber;
-        this.role = role;
+        this.idRole = idRole;
+        this.idSchool = null;
     }
 }

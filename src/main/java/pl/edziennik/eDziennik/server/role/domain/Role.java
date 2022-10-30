@@ -5,16 +5,18 @@ import lombok.NoArgsConstructor;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
 @NoArgsConstructor
 @Getter
-public class Role{
+public class Role implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_id_seq")
+    @SequenceGenerator(name = "role_id_seq", sequenceName = "role_id_seq", allocationSize = 1)
     private Long id;
 
     private String name;
@@ -24,7 +26,7 @@ public class Role{
         this.name = name;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "role")
+    @OneToMany(mappedBy = "role")
     private Collection<Teacher> teachers = new ArrayList<>();
 
     public enum RoleConst{

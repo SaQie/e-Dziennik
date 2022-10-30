@@ -1,13 +1,12 @@
 package pl.edziennik.eDziennik.server.basics;
 
 import org.springframework.stereotype.Service;
-import pl.edziennik.eDziennik.exceptions.NotFoundException;
-
+import javax.persistence.EntityNotFoundException;
 import java.io.Serializable;
 import java.util.List;
 
 @Service
-public abstract class BaseService<E> implements IBaseService<E> {
+public abstract class BaseService<E extends Serializable> implements IBaseService<E> {
 
     private IBaseDao<E> dao;
 
@@ -30,7 +29,7 @@ public abstract class BaseService<E> implements IBaseService<E> {
 
     @Override
     public E find(Long id) {
-        return dao.find(id).orElseThrow(() -> new NotFoundException(dao.getClazzName() + " not found !"));
+        return dao.find(id).orElseThrow(() -> new EntityNotFoundException(dao.getClazzName() + " not found !"));
     }
 
     @Override

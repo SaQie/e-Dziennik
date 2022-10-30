@@ -8,6 +8,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
@@ -34,6 +35,17 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
         body.put("path", request.getDescription(false).substring(4));
         LOGGER.log(Level.SEVERE, "ERROR ON PATH " + request.getDescription(false) + " ERROR MESSAGE: " + exception.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+    }
+
+    @ExceptionHandler(value = EntityExistsException.class)
+    protected ResponseEntity<?> handleExistException(PersistenceException e, WebRequest request){
+        Map<String,Object> body = new LinkedHashMap<>();
+        body.put("timestamp",LocalDateTime.now());
+        body.put("message", e.getMessage());
+        body.put("code", HttpStatus.CONFLICT.value());
+        body.put("patch", request.getDescription(false).substring(4));
+        LOGGER.log(Level.SEVERE, "ERROR ON PATH " + request.getDescription(false) + " ERROR MESSAGE: " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
     }
 
     @InitBinder

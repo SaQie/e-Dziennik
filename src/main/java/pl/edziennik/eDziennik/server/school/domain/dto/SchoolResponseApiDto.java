@@ -6,16 +6,16 @@ import pl.edziennik.eDziennik.server.schoollevel.domain.dto.SchoolLevelResponseA
 @Getter
 public class SchoolResponseApiDto{
 
-    private Long id;
-    private String name;
-    private String postalCode;
-    private String city;
-    private String nip;
-    private String regon;
-    private String phoneNumber;
-    private SchoolLevelResponseApiDto schoolLevel;
+    private final Long id;
+    private final String name;
+    private final String postalCode;
+    private final String city;
+    private final String nip;
+    private final String regon;
+    private final String phoneNumber;
+    private final Long idSchoolLevel;
 
-    public SchoolResponseApiDto(Long id, String name, String postalCode, String city, String nip, String regon, String phoneNumber, SchoolLevelResponseApiDto schoolLevelResponseApiDto) {
+    public SchoolResponseApiDto(Long id, String name, String postalCode, String city, String nip, String regon, String phoneNumber, Long idSchoolLevel) {
         this.id = id;
         this.name = name;
         this.postalCode = postalCode;
@@ -23,6 +23,6 @@ public class SchoolResponseApiDto{
         this.nip = nip;
         this.regon = regon;
         this.phoneNumber = phoneNumber;
-        this.schoolLevel = schoolLevelResponseApiDto;
+        this.idSchoolLevel = idSchoolLevel;
     }
 }
