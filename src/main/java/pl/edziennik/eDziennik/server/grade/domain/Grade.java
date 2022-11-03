@@ -4,9 +4,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.edziennik.eDziennik.server.studensubject.domain.StudentSubject;
+import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
@@ -27,11 +30,26 @@ public class Grade implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private StudentSubject studentSubject;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Teacher teacher;
+
+    private LocalDate createdDate;
+
 
     public Grade(GradeConst grade, int weight, String description) {
         this.grade = grade;
         this.weight = weight;
         this.description = description;
+    }
+
+    @PrePersist
+    protected void onCreate(){
+        this.createdDate = LocalDate.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate(){
+        this.createdDate = LocalDate.now();
     }
 
 

@@ -11,6 +11,7 @@ import pl.edziennik.eDziennik.server.schoolclass.domain.dto.mapper.SchoolClassMa
 import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -2,8 +2,10 @@ package pl.edziennik.eDziennik.client.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pl.edziennik.eDziennik.authentication.TeacherUserDetails;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.AllStudentSubjectGradesResponseDto;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.request.StudentSubjectRatingRequestDto;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentSubjectRatingResponseDto;
@@ -11,6 +13,7 @@ import pl.edziennik.eDziennik.server.studensubject.domain.dto.request.StudentSub
 import pl.edziennik.eDziennik.server.studensubject.services.StudentSubjectService;
 
 import java.net.URI;
+import java.security.Principal;
 
 @RestController
 @AllArgsConstructor
@@ -27,8 +30,8 @@ public class StudentSubjectController {
     }
 
     @PatchMapping("/{idStudent}/subjects/{idSubject}/ratings")
-    public ResponseEntity<?> assignRatingToStudentSubject(@RequestBody StudentSubjectRatingRequestDto dto, @PathVariable Long idStudent, @PathVariable Long idSubject){
-        service.assignRatingToStudentSubject(idStudent, idSubject, dto);
+    public ResponseEntity<?> assignRatingToStudentSubject(@RequestBody StudentSubjectRatingRequestDto dto, @PathVariable Long idStudent, @PathVariable Long idSubject, Principal teacher){
+        service.assignRatingToStudentSubject(idStudent, idSubject, dto, teacher.getName());
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .buildAndExpand()
                 .toUri();

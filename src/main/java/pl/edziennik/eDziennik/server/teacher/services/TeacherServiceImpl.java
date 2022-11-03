@@ -12,6 +12,8 @@ import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherResponseApiDto;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.mapper.TeacherMapper;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,5 +55,16 @@ class TeacherServiceImpl implements TeacherService{
                 .stream()
                 .map(TeacherMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public boolean updateTeacherLastLoginDate(String username) {
+        Teacher teacher = dao.getByUsername(username);
+        if (teacher != null){
+            teacher.setLastLoginDate(LocalDateTime.now());
+            return true;
+        }
+        return false;
     }
 }

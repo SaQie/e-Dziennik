@@ -1,6 +1,7 @@
 package pl.edziennik.eDziennik.server.basics;
 
 import liquibase.pro.packaged.T;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.io.Serializable;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+@Transactional(readOnly = true)
 public interface IBaseDao<E extends Serializable>{
 
     List<E> findAll();

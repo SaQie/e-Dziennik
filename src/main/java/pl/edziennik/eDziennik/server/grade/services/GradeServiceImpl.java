@@ -10,6 +10,7 @@ import pl.edziennik.eDziennik.server.grade.domain.dto.GradeResponseApiDto;
 import pl.edziennik.eDziennik.server.grade.domain.dto.mapper.GradeMapper;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -1,4 +1,4 @@
-package pl.edziennik.eDziennik.server.config.security;
+package pl.edziennik.eDziennik.server.config.security.jwt;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;

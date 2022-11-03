@@ -2,6 +2,7 @@ package pl.edziennik.eDziennik.server.studensubject.domain.dto.response;
 
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -24,12 +25,16 @@ public class SubjectGradesResponseDto {
         private final int grade;
         private final int weight;
         private final String description;
+        private final Long teacher;
+        private final LocalDate createdDate;
 
-        public GradesDto(Long id, int grade, int weight, String description) {
+        public GradesDto(Long id, int grade, int weight, String description, Long teacher, LocalDate createdDate) {
             this.id = id;
             this.grade = grade;
             this.weight = weight;
             this.description = description;
+            this.createdDate = createdDate;
+            this.teacher = teacher;
         }
     }
 

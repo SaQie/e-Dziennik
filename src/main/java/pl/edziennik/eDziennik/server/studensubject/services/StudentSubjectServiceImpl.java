@@ -11,6 +11,8 @@ import pl.edziennik.eDziennik.server.studensubject.domain.dto.request.StudentSub
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.request.StudentSubjectRequestDto;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.AllStudentSubjectGradesResponseDto;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentSubjectRatingResponseDto;
+import pl.edziennik.eDziennik.server.teacher.dao.TeacherDao;
+import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 
 import java.util.List;
 
@@ -19,6 +21,7 @@ import java.util.List;
 class StudentSubjectServiceImpl implements StudentSubjectService {
 
     private final StudentSubjectDao dao;
+    private final TeacherDao teacherDao;
     private final StudentSubjectPrivService privService;
 
     @Override
@@ -33,11 +36,13 @@ class StudentSubjectServiceImpl implements StudentSubjectService {
 
     @Override
     @Transactional
-    public void assignRatingToStudentSubject(Long idStudent, Long idSubject, StudentSubjectRatingRequestDto dto) {
+    public void assignRatingToStudentSubject(Long idStudent, Long idSubject, StudentSubjectRatingRequestDto dto, String teacherName) {
         StudentSubject studentSubject = privService.checkStudentSubjectExist(idSubject, idStudent);
         Grade grade = dao.find(Grade.class, dto.getRating()).get();
+        Teacher teacher = teacherDao.getByUsername(teacherName);
         studentSubject.addRating(grade);
         grade.setStudentSubject(studentSubject);
+        grade.setTeacher(teacher);
         dao.saveOrUpdate(studentSubject);
     }
 

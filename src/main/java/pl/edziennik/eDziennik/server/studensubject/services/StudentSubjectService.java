@@ -9,7 +9,7 @@ public interface StudentSubjectService {
 
     void assignStudentToSubject(final StudentSubjectRequestDto dto, final Long idStudent);
 
-    void assignRatingToStudentSubject(final Long idStudent,final Long idSubject,final StudentSubjectRatingRequestDto dto);
+    void assignRatingToStudentSubject(final Long idStudent,final Long idSubject,final StudentSubjectRatingRequestDto dto, final String teacherName);
 
 
     StudentSubjectRatingResponseDto getStudentSubjectRatings(final Long idStudent, final Long idSubject);

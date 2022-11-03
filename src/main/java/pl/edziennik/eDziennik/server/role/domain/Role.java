@@ -26,9 +26,6 @@ public class Role implements Serializable {
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "role")
-    private Collection<Teacher> teachers = new ArrayList<>();
-
     public enum RoleConst{
         ROLE_ADMIN(1L),
         ROLE_MODERATOR(2L),

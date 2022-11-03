@@ -5,7 +5,10 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.Optional;
 
-public class PersistanceHelper {
+public final class PersistanceHelper {
+
+    private PersistanceHelper() {
+    }
 
     public static Object getSingleResultOrNull(Query query){
         try {

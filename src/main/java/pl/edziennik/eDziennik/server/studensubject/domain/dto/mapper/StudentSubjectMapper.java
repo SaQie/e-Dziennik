@@ -22,7 +22,7 @@ public class StudentSubjectMapper {
         for (StudentSubject entity : entites){
             List<SubjectGradesResponseDto.GradesDto> grades = new ArrayList<>();
             for (Grade grade : entity.getGrades()) {
-                grades.add(new SubjectGradesResponseDto.GradesDto(grade.getId(), grade.getGrade().grade, grade.getWeight(), grade.getDescription()));
+                grades.add(new SubjectGradesResponseDto.GradesDto(grade.getId(), grade.getGrade().grade, grade.getWeight(), grade.getDescription(), grade.getTeacher().getId(),grade.getCreatedDate()));
             }
             Subject subject = entity.getSubject();
             subjectRatingsList.add(new SubjectGradesResponseDto(subject.getId(), subject.getName(), grades));
@@ -33,8 +33,9 @@ public class StudentSubjectMapper {
 
     public static StudentSubjectRatingResponseDto toStudentSubjectRatingsDto(StudentSubject entity) {
         List<SubjectGradesResponseDto.GradesDto> ratings = new ArrayList<>();
+
         for (Grade grade : entity.getGrades()) {
-            ratings.add(new SubjectGradesResponseDto.GradesDto(grade.getId(), grade.getGrade().grade, grade.getWeight(), grade.getDescription()));
+            ratings.add(new SubjectGradesResponseDto.GradesDto(grade.getId(), grade.getGrade().grade, grade.getWeight(), grade.getDescription(), grade.getTeacher().getId(), grade.getCreatedDate()));
         }
         Subject subject = entity.getSubject();
         SubjectGradesResponseDto subjectGradesResponseDto = new SubjectGradesResponseDto(subject.getId(), subject.getName(), ratings);

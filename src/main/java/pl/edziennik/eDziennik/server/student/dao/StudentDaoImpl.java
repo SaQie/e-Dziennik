@@ -1,6 +1,7 @@
 package pl.edziennik.eDziennik.server.student.dao;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.server.basics.BaseDao;
 import pl.edziennik.eDziennik.server.student.domain.Student;
 import pl.edziennik.eDziennik.server.utils.PersistanceHelper;

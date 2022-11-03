@@ -10,6 +10,8 @@ import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
@@ -33,8 +35,16 @@ public class Student extends BasicUser implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private School school;
 
+
+    public Student(String adress, String username, String password, String firstName, String lastName, String postalCode, String PESEL, String city, String parentFirstName, String parentLastName, String parentPhoneNumber, LocalDate createDate, LocalDateTime lastLoginTime, LocalDateTime updatedDate) {
+        super(adress, username, password, firstName, lastName, postalCode, PESEL, city, createDate, updatedDate, lastLoginTime);
+        this.parentFirstName = parentFirstName;
+        this.parentLastName = parentLastName;
+        this.parentPhoneNumber = parentPhoneNumber;
+    }
+
     public Student(String adress, String username, String password, String firstName, String lastName, String postalCode, String PESEL, String city, String parentFirstName, String parentLastName, String parentPhoneNumber) {
-        super(adress, username, password, firstName, lastName, postalCode, PESEL, city);
+        super(adress, username, password, firstName, lastName, postalCode, PESEL, city, null, null, null);
         this.parentFirstName = parentFirstName;
         this.parentLastName = parentLastName;
         this.parentPhoneNumber = parentPhoneNumber;

@@ -8,6 +8,7 @@ import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -32,6 +33,8 @@ public class SchoolClass implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private School school;
 
+    private LocalDate createdDate;
+
     public SchoolClass(String className) {
         this.className = className;
     }
@@ -44,7 +47,15 @@ public class SchoolClass implements Serializable {
         this.school = school;
     }
 
+    public void setCreatedDate(LocalDate date){
+        this.createdDate = date;
+    }
 
+
+    @PrePersist
+    protected void onCreate(){
+        this.createdDate = LocalDate.now();
+    }
     public void addStudent(Student student) {
         students.add(student);
         student.setSchoolClass(this);

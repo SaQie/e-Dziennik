@@ -1,13 +1,11 @@
 package pl.edziennik.eDziennik.server.basics;
 
-import liquibase.pro.packaged.e;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -17,7 +15,7 @@ import java.util.function.Consumer;
 
 @Repository
 @SuppressWarnings("unchecked")
-@Transactional
+@Transactional(readOnly = true)
 public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
 
     private final Class<E> clazz;
@@ -42,6 +40,7 @@ public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
     }
 
     @Override
+    @Transactional
     public E saveOrUpdate(final E entity){
         if (em.contains(entity)){
             return em.merge(entity);
@@ -51,6 +50,7 @@ public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
     }
 
     @Override
+    @Transactional
     public void remove(final E entity) {
         em.remove(em.contains(entity) ? entity : em.merge(entity));
     }
@@ -79,6 +79,7 @@ public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
     }
 
     @Override
+    @Transactional
     public void remove(Long id) {
         E e = em.find(clazz, id);
         if (e != null) {

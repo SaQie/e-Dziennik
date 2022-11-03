@@ -5,8 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @MappedSuperclass
 @AllArgsConstructor
@@ -24,5 +29,18 @@ public class BasicUser{
     private String postalCode;
     private String PESEL;
     private String city;
+    private LocalDate createdDate;
+    private LocalDateTime updatedDate;
+    private LocalDateTime lastLoginDate;
+
+    @PrePersist
+    protected void onCreate(){
+        this.createdDate = LocalDate.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate(){
+        this.updatedDate = LocalDateTime.now();
+    }
 
 }

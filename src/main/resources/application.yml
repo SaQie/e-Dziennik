@@ -27,6 +27,8 @@ jwt:
   token:
     prefix: Bearer
   unauthorized:
-    message: Nie jestes zalogowany
+    message: You are not logged in !
   accessDenied:
-    message: nie masz dostepu do tej strony
+    message: You do not have access to this site !
+  authFailure:
+    message: Wrong username or password !

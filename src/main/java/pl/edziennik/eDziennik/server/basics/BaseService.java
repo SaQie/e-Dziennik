@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.server.basics;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.io.Serializable;
@@ -8,7 +9,8 @@ import java.util.List;
 @Service
 public abstract class BaseService<E extends Serializable> implements IBaseService<E> {
 
-    private IBaseDao<E> dao;
+    @Autowired
+    protected IBaseDao<E> dao;
 
     public BaseService() {
     }

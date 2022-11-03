@@ -14,7 +14,7 @@ public class TestController {
 
     @GetMapping("/asd")
     public void asdasd(){
-        Teacher test = dao.findByUsername("K1a1m1i1l1222");
+        Teacher test = dao.getByUsername("K1a1m1i1l1222");
         System.out.println("asdasd");
     }
 

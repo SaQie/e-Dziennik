@@ -1,25 +1,27 @@
 package pl.edziennik.eDziennik;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 import pl.edziennik.eDziennik.server.basics.BaseDao;
 import pl.edziennik.eDziennik.server.student.domain.Student;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 @ActiveProfiles("test")
-@Rollback
 @SpringBootTest
 public class DaoTest extends BaseTest {
 
-
     @Autowired
     BaseDao<Student> dao;
-
 
     @Test
     public void shouldInsert() {

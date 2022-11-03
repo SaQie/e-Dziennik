@@ -14,4 +14,6 @@ public interface TeacherService {
     void deleteTeacherById(final Long id);
 
     List<TeacherResponseApiDto> findAllTeachers();
+
+    boolean updateTeacherLastLoginDate(final String username);
 }

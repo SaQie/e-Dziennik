@@ -21,7 +21,7 @@ public class AuthUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Teacher teacher = teacherDao.findByUsername(username);
+        Teacher teacher = teacherDao.getByUsername(username);
         if (teacher != null){
             return new TeacherUserDetails(teacher);
         }
@@ -29,6 +29,6 @@ public class AuthUserDetailsService implements UserDetailsService {
         if (student != null){
             return new StudentUserDetails(student);
         }
-        throw new EntityNotFoundException("User with name " + username + "could not be found.");
+        throw new EntityNotFoundException("User with name " + username + " could not be found.");
     }
 }
