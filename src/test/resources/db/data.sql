@@ -1,3 +1,4 @@
+
 INSERT INTO school_level(id, name) values (1,'Primary');
 INSERT INTO school_level(id, name) values (2,'Secondary');
 INSERT INTO school_level(id, name) values (3,'High school');
