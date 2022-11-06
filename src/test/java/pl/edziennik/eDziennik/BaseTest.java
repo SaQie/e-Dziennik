@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
+import java.sql.SQLException;
 
 
 /**
@@ -44,7 +45,12 @@ public class BaseTest {
     }
 
     protected void clearDb(){
-
+        ResourceDatabasePopulator populator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource("/db/clearData.sql"));
+        populator.execute(dataSource);
     }
+
+    protected final Long ROLE_ADMIN = 1L;
+    protected final Long ROLE_MODERATOR = 2L;
+    protected final Long ROLE_TEACHER = 3L;
 
 }

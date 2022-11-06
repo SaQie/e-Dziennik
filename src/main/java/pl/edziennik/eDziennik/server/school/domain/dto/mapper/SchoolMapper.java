@@ -19,6 +19,7 @@ public class SchoolMapper{
                 entity.getCity(),
                 entity.getNip(),
                 entity.getRegon(),
+                entity.getAdress(),
                 entity.getPhoneNumber(),
                 entity.getSchoolLevel().getId()
         );

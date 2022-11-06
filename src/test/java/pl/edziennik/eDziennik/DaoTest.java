@@ -2,6 +2,7 @@ package pl.edziennik.eDziennik;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +23,12 @@ public class DaoTest extends BaseTest {
 
     @Autowired
     BaseDao<Student> dao;
+
+    @BeforeEach
+    public void prepareDb(){
+        clearDb();
+        fillDbWithData();
+    }
 
     @Test
     public void shouldInsert() {

@@ -2,6 +2,7 @@ package pl.edziennik.eDziennik.server.student.services;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.server.school.dao.SchoolDao;
 import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.server.student.domain.Student;

@@ -23,7 +23,7 @@ class TeacherPrivService {
                 throw new EntityNotFoundException("Role with name " + role + " not exist");
             });
         }
-        teacher.setRole(dao.get(Role.class,Role.RoleConst.ROLE_ADMIN.getId()));
+        teacher.setRole(dao.get(Role.class,Role.RoleConst.ROLE_TEACHER.getId()));
     }
 
     protected void checkSchoolExist(Long idSchool, Teacher teacher) {
