@@ -6,11 +6,11 @@ import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
 /**
  * Util class for Teacher integration tests {@link TeacherIntegrationTest}
  */
-class TeacherIntegrationTestUtil {
+public class TeacherIntegrationTestUtil {
 
     protected final String defaultRole = Role.RoleConst.ROLE_TEACHER.name();
 
-    protected TeacherRequestApiDto prepareTeacherRequestDto(){
+    public TeacherRequestApiDto prepareTeacherRequestDto(){
         return new TeacherRequestApiDto(
                 "Kamil",
                 "Nowak",
@@ -27,7 +27,7 @@ class TeacherIntegrationTestUtil {
     }
 
 
-    protected TeacherRequestApiDto prepareTeacherRequestDto(final Long idSchool){
+    public TeacherRequestApiDto prepareTeacherRequestDto(final Long idSchool){
         return new TeacherRequestApiDto(
                 "Kamil",
                 "Nowak",
@@ -43,7 +43,7 @@ class TeacherIntegrationTestUtil {
         );
     }
 
-    protected TeacherRequestApiDto prepareTeacherRequestDto(final Role.RoleConst role){
+    public TeacherRequestApiDto prepareTeacherRequestDto(final Role.RoleConst role){
         return new TeacherRequestApiDto(
                 "Kamil",
                 "Nowak",
@@ -59,7 +59,7 @@ class TeacherIntegrationTestUtil {
         );
     }
 
-    protected TeacherRequestApiDto prepareTeacherRequestDto(final String role){
+    public TeacherRequestApiDto prepareTeacherRequestDto(final String role){
         return new TeacherRequestApiDto(
                 "Kamil",
                 "Nowak",
@@ -75,7 +75,7 @@ class TeacherIntegrationTestUtil {
         );
     }
 
-    protected TeacherRequestApiDto prepareTeacherRequestDto(final String username, final String firstName, final String pesel){
+    public TeacherRequestApiDto prepareTeacherRequestDto(final String username, final String firstName, final String pesel){
         return new TeacherRequestApiDto(
                 "Kamil",
                 "Nowak",

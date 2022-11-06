@@ -12,6 +12,5 @@ public class SubjectRequestApiDto{
     private String name;
     private String description;
     private Long teacher;
-    private Long schoolClass;
 
 }

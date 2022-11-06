@@ -12,12 +12,20 @@ public class SubjectMapper {
     }
 
     public static SubjectResponseApiDto toDto(Subject entity) {
-        return new SubjectResponseApiDto(
-                entity.getId(),
-                entity.getName(),
-                entity.getDescription(),
-                entity.getTeacher().getId()
-        );
+        if (entity.getTeacher() != null) {
+            return new SubjectResponseApiDto(
+                    entity.getId(),
+                    entity.getName(),
+                    entity.getDescription(),
+                    entity.getTeacher().getId()
+            );
+        }else{
+            return new SubjectResponseApiDto(
+                    entity.getId(),
+                    entity.getName(),
+                    entity.getDescription()
+            );
+        }
     }
 
     public static Subject toEntity(SubjectRequestApiDto dto) {
