@@ -78,7 +78,7 @@ public class Grade implements Serializable {
                     return ratingConst;
                 }
             }
-            throw new EntityNotFoundException("Rating " + grade + " not found");
+            throw new EntityNotFoundException("Grade " + grade + " not found");
         }
     }
 

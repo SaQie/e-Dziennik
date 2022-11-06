@@ -7,16 +7,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
-import pl.edziennik.eDziennik.server.basics.BaseDao;
 import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.school.domain.dto.SchoolRequestApiDto;
 import pl.edziennik.eDziennik.server.school.domain.dto.SchoolResponseApiDto;
 import pl.edziennik.eDziennik.server.school.services.SchoolService;
-import pl.edziennik.eDziennik.server.schoollevel.domain.SchoolLevel;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ActiveProfiles("test")
 @SpringBootTest

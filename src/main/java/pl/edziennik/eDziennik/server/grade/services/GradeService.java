@@ -10,9 +10,9 @@ public interface GradeService {
 
     GradeResponseApiDto addNewGrade(final GradeRequestApiDto dto);
 
-    GradeResponseApiDto findRatingById(final Long id);
+    GradeResponseApiDto findGradeById(final Long id);
 
     void deleteRatingById(final Long id);
 
-    List<GradeResponseApiDto> findAllRatings();
+    List<GradeResponseApiDto> findAllGrades();
 }

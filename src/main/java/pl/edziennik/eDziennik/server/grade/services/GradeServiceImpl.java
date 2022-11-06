@@ -29,7 +29,7 @@ class GradeServiceImpl implements GradeService {
     }
 
     @Override
-    public GradeResponseApiDto findRatingById(Long id) {
+    public GradeResponseApiDto findGradeById(Long id) {
         Grade grade = dao.find(id).orElseThrow(() -> new EntityNotFoundException("Rating with given id " + id + "not exist"));
         return GradeMapper.toDto(grade);
     }
@@ -41,7 +41,7 @@ class GradeServiceImpl implements GradeService {
     }
 
     @Override
-    public List<GradeResponseApiDto> findAllRatings() {
+    public List<GradeResponseApiDto> findAllGrades() {
         return dao.findAll()
                 .stream()
                 .map(GradeMapper::toDto)

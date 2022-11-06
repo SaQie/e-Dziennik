@@ -30,12 +30,12 @@ public class GradeController {
 
     @GetMapping()
     public ResponseEntity<List<GradeResponseApiDto>> findAllRatings(){
-        return ResponseEntity.ok(service.findAllRatings());
+        return ResponseEntity.ok(service.findAllGrades());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<GradeResponseApiDto> findRatingById(@PathVariable Long id){
-        return ResponseEntity.ok(service.findRatingById(id));
+        return ResponseEntity.ok(service.findGradeById(id));
     }
 
     @DeleteMapping("/{id}")
