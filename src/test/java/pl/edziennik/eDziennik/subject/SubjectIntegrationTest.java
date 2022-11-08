@@ -89,8 +89,8 @@ public class SubjectIntegrationTest extends BaseTest {
     @Test
     public void shouldThrowsExceptionWhenSaveNewSubjectAndTeacherNotExist(){
         // given
-        Long idTeacher = 1L;
-        SubjectRequestApiDto expected = util.prepareSubjectRequestDto(1L);
+        Long idTeacher = 222L;
+        SubjectRequestApiDto expected = util.prepareSubjectRequestDto(idTeacher);
 
         // when
         Throwable throwable = catchThrowable(() -> service.createNewSubject(expected));

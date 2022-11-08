@@ -75,10 +75,10 @@ public class TeacherIntegrationTest extends BaseTest {
     }
 
     @Test
-    public void shouldFindListOfStudents(){
+    public void shouldFindListOfTeachers(){
         // given
         TeacherRequestApiDto firstTeacher = util.prepareTeacherRequestDto();
-        TeacherRequestApiDto secondTeacher = util.prepareTeacherRequestDto("TEST", "TESTOWY", "12356");
+        TeacherRequestApiDto secondTeacher = util.prepareTeacherRequestDto("TEST1", "TESTOWY2", "12356");
         Long firstTeacherId = service.register(firstTeacher).getId();
         Long secondTeacherId = service.register(secondTeacher).getId();
         assertNotNull(firstTeacherId);

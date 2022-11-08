@@ -13,4 +13,3 @@ INSERT INTO school_class(id, class_name, created_date, teacher_id, school_id) VA
 INSERT INTO role(id, name) VALUES (1, 'ROLE_ADMIN');
 INSERT INTO role(id, name) VALUES (2, 'ROLE_MODERATOR');
 INSERT INTO role(id, name) VALUES (3, 'ROLE_TEACHER');
-

@@ -10,12 +10,21 @@ public class SchoolClassMapper {
     }
 
     public static SchoolClassResponseApiDto toDto(SchoolClass entity) {
-        return new SchoolClassResponseApiDto(
-                entity.getId(),
-                entity.getClassName(),
-                entity.getSchool().getId(),
-                entity.getTeacher().getId()
-        );
+        if (entity.getTeacher() != null) {
+            return new SchoolClassResponseApiDto(
+                    entity.getId(),
+                    entity.getClassName(),
+                    entity.getSchool().getId(),
+                    entity.getTeacher().getId()
+            );
+        }else{
+            return new SchoolClassResponseApiDto(
+                    entity.getId(),
+                    entity.getClassName(),
+                    entity.getSchool().getId(),
+                    null
+            );
+        }
     }
 
     public static SchoolClass toEntity(SchoolClassRequestApiDto dto) {
