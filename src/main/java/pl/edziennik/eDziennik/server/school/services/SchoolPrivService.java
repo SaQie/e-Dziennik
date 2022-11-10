@@ -14,7 +14,7 @@ class SchoolPrivService {
     private final SchoolLevelDao dao;
 
     protected void findSchoolLevelAndAssignToSchool(School school, Long idSchoolLevel){
-        dao.findWithExistCheck(idSchoolLevel, school::setSchoolLevel);
+        dao.findWithExecute(idSchoolLevel, school::setSchoolLevel);
     }
 
 }

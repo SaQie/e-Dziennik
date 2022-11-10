@@ -7,10 +7,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
+import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
+import pl.edziennik.eDziennik.server.basics.BaseDao;
+import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassRequestApiDto;
 import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassResponseApiDto;
 import pl.edziennik.eDziennik.server.schoolclass.services.SchoolClassService;
+import pl.edziennik.eDziennik.server.schoollevel.domain.SchoolLevel;
+import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.teacher.services.TeacherService;
 import pl.edziennik.eDziennik.teacher.TeacherIntegrationTestUtil;
@@ -100,10 +105,11 @@ public class SchoolClassIntegrationTest extends BaseTest {
         SchoolClassRequestApiDto expected = util.prepareSchoolClassRequest(idTeacher);
 
         // when
-        Throwable throwable = catchThrowable(() -> service.createSchoolClass(expected));
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> service.createSchoolClass(expected));
 
         // then
-        assertThat(throwable).hasMessageContaining("Teacher with id " + idTeacher + " not found");
+        assertEquals(exception.getMessage(), BaseDao.BaseDaoExceptionMessage.createNotFoundExceptionMessage(Teacher.class.getSimpleName(), idTeacher));
 
     }
 
@@ -119,10 +125,10 @@ public class SchoolClassIntegrationTest extends BaseTest {
         SchoolClassRequestApiDto expected = util.prepareSchoolClassRequest(idTeacher, idSchool);
 
         // when
-        Throwable throwable = catchThrowable(() -> service.createSchoolClass(expected));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> service.createSchoolClass(expected));
 
         // then
-        assertThat(throwable).hasMessageContaining("School with id " + idSchool + " not found");
+        assertEquals(exception.getMessage(), BaseDao.BaseDaoExceptionMessage.createNotFoundExceptionMessage(School.class.getSimpleName(), idSchool));
     }
 
 

@@ -17,11 +17,11 @@ class StudentSubjectPrivService {
     private final StudentSubjectDao dao;
 
     protected Student checkStudentExist(final Long idStudent){
-        return dao.findWithExistCheck(Student.class, idStudent);
+        return dao.get(Student.class, idStudent);
     }
 
     protected Subject checkSubjectExist(final Long idSubject){
-        return dao.findWithExistCheck(Subject.class, idSubject);
+        return dao.get(Subject.class, idSubject);
     }
 
     protected void isStudentSubjectAlreadyExist(Long idSubject, Long idStudent) {

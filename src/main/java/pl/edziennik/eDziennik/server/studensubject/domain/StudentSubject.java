@@ -25,7 +25,7 @@ public class StudentSubject implements Serializable {
     @SequenceGenerator(name = "student_subject_id_seq", sequenceName = "student_subject_id_seq", allocationSize = 1)
     private Long id;
 
-    @OneToMany(mappedBy = "studentSubject", orphanRemoval = true)
+    @OneToMany(mappedBy = "studentSubject")
     private List<Grade> grades = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)

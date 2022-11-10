@@ -31,13 +31,13 @@ class SchoolServiceImpl implements SchoolService{
 
     @Override
     public SchoolResponseApiDto findSchoolById(Long id) {
-        School school = dao.find(id).orElseThrow(() -> new EntityNotFoundException("School with given id " + id + " not exist"));
+        School school = dao.get(id);
         return SchoolMapper.toDto(school);
     }
 
     @Override
     public void deleteSchoolById(Long id) {
-        School school = dao.find(id).orElseThrow(() -> new EntityNotFoundException("School with given id " + id + " not exist"));
+        School school = dao.get(id);
         dao.remove(school);
     }
 

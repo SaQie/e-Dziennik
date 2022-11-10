@@ -9,15 +9,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
+import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
+import pl.edziennik.eDziennik.server.basics.BaseDao;
 import pl.edziennik.eDziennik.server.grade.domain.Grade;
 import pl.edziennik.eDziennik.server.grade.domain.dto.GradeRequestApiDto;
 import pl.edziennik.eDziennik.server.grade.domain.dto.GradeResponseApiDto;
 import pl.edziennik.eDziennik.server.grade.services.GradeService;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -37,6 +37,7 @@ public class GradeIntegrationTest extends BaseTest {
 
     public GradeIntegrationTest() {
         this.util = new GradeIntegrationTestUtil();
+
     }
 
     @ParameterizedTest
@@ -61,12 +62,12 @@ public class GradeIntegrationTest extends BaseTest {
     public void shouldThrowsExceptionWhenTryingToSaveGradeThatNotExist(int grade){
         // given
         GradeRequestApiDto expected = util.prepareRequestApi(grade, 1);
+        String expectedExceptionMessage = "Grade " + grade + " not found";
 
         // when
-        Throwable throwable = catchThrowable(() -> service.addNewGrade(expected));
-
         // then
-        assertThat(throwable).hasMessage("Grade " + grade + " not found");
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> service.addNewGrade(expected));
+        assertEquals(exception.getMessage(), expectedExceptionMessage);
     }
 
     @Test

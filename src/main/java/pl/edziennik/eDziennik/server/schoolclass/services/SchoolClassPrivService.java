@@ -16,11 +16,11 @@ class SchoolClassPrivService {
 
     protected void checkSupervisingTeacherExist(Long supervisingTeacherId, SchoolClass schoolClass) {
         if (supervisingTeacherId != null){
-            dao.findWithExistCheck(Teacher.class, supervisingTeacherId, schoolClass::setTeacher);
+            dao.findWithExecute(Teacher.class, supervisingTeacherId, schoolClass::setTeacher);
         }
     }
 
     public void checkSchoolExist(Long schoolId, SchoolClass schoolClass) {
-        dao.findWithExistCheck(schoolId, schoolClass::setSchool);
+        dao.findWithExecute(schoolId, schoolClass::setSchool);
     }
 }

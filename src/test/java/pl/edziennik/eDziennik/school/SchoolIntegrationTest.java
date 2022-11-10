@@ -7,15 +7,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
+import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
+import pl.edziennik.eDziennik.server.basics.BaseDao;
 import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.school.domain.dto.SchoolRequestApiDto;
 import pl.edziennik.eDziennik.server.school.domain.dto.SchoolResponseApiDto;
 import pl.edziennik.eDziennik.server.school.services.SchoolService;
+import pl.edziennik.eDziennik.server.schoollevel.domain.SchoolLevel;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -65,10 +67,10 @@ public class SchoolIntegrationTest extends BaseTest {
         SchoolRequestApiDto dto = util.prepareSchoolRequestApi(idSchoolLevel);
 
         // when
-        Throwable throwable = catchThrowable(() -> service.createNewSchool(dto));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> service.createNewSchool(dto));
 
         // then
-        assertThat(throwable).hasMessageContaining("SchoolLevel with id " + idSchoolLevel + " not found");
+        assertEquals(exception.getMessage(), BaseDao.BaseDaoExceptionMessage.createNotFoundExceptionMessage(SchoolLevel.class.getSimpleName(), idSchoolLevel));
     }
 
     @Test
@@ -95,10 +97,10 @@ public class SchoolIntegrationTest extends BaseTest {
         // given
         Long idSchool = 99L;
         // when
-        Throwable throwable = catchThrowable(() -> service.deleteSchoolById(idSchool));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> service.deleteSchoolById(idSchool));
 
         // then
-        assertThat(throwable).hasMessageContaining("School with given id " + idSchool + " not exist");
+        assertEquals(exception.getMessage(), BaseDao.BaseDaoExceptionMessage.createNotFoundExceptionMessage(School.class.getSimpleName(), idSchool));
 
     }
 

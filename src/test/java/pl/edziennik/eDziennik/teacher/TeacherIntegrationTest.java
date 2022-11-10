@@ -7,12 +7,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
+import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
+import pl.edziennik.eDziennik.server.basics.BaseDao;
+import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherResponseApiDto;
 import pl.edziennik.eDziennik.server.teacher.services.TeacherService;
-
-import javax.persistence.EntityNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
@@ -71,7 +72,8 @@ public class TeacherIntegrationTest extends BaseTest {
         service.deleteTeacherById(id);
 
         // then
-        assertThrows(EntityNotFoundException.class, () -> service.findTeacherById(id));
+        Exception exception = assertThrows(pl.edziennik.eDziennik.exceptions.EntityNotFoundException.class, () -> service.findTeacherById(id));
+        assertEquals(exception.getMessage(), BaseDao.BaseDaoExceptionMessage.createNotFoundExceptionMessage(Teacher.class.getSimpleName(), id));
     }
 
     @Test
@@ -117,13 +119,14 @@ public class TeacherIntegrationTest extends BaseTest {
     public void shouldThrowsExceptionWhenRoleNotExist(){
         // given
         String role = "TEST";
+        String expectedRoleExceptionMessage = "Role with name " + role + " not exist";
         TeacherRequestApiDto dto = util.prepareTeacherRequestDto(role);
 
         // when
-        Throwable throwable = catchThrowable(() -> service.register(dto));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> service.register(dto));
 
         // then
-        assertThat(throwable).hasMessage("Role with name " + role + " not exist");
+        assertEquals(exception.getMessage(), expectedRoleExceptionMessage);
     }
     @Test
     public void shouldAssignDefaultRoleIfRoleIsEmpty(){
@@ -145,10 +148,10 @@ public class TeacherIntegrationTest extends BaseTest {
         TeacherRequestApiDto dto = util.prepareTeacherRequestDto(idSchool);
 
         // when
-        Throwable throwable = catchThrowable(() -> service.register(dto));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> service.register(dto));
 
         // then
-        assertThat(throwable).hasMessageContaining("School with id " + idSchool + " not found");
+        assertEquals(exception.getMessage(), BaseDao.BaseDaoExceptionMessage.createNotFoundExceptionMessage(School.class.getSimpleName(), idSchool));
     }
 
 

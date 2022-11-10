@@ -25,7 +25,7 @@ public class AuthUserDetailsService implements UserDetailsService {
         if (teacher != null){
             return new TeacherUserDetails(teacher);
         }
-        Student student = studentDao.findByUsername(username);
+        Student student = studentDao.getByUsername(username);
         if (student != null){
             return new StudentUserDetails(student);
         }

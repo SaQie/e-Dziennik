@@ -16,7 +16,7 @@ class SubjectPrivService {
 
     protected void checkTeacherExist(Long teacherId, Subject subject) {
         if (teacherId != null) {
-            dao.findWithExistCheck(teacherId, subject::setTeacher);
+            dao.findWithExecute(teacherId, subject::setTeacher);
         }
     }
 

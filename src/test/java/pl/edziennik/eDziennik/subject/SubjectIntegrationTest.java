@@ -7,10 +7,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
+import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
+import pl.edziennik.eDziennik.server.basics.BaseDao;
+import pl.edziennik.eDziennik.server.student.domain.Student;
 import pl.edziennik.eDziennik.server.subject.domain.Subject;
 import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectResponseApiDto;
 import pl.edziennik.eDziennik.server.subject.services.SubjectService;
+import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.teacher.services.TeacherService;
 import pl.edziennik.eDziennik.teacher.TeacherIntegrationTestUtil;
@@ -93,10 +97,10 @@ public class SubjectIntegrationTest extends BaseTest {
         SubjectRequestApiDto expected = util.prepareSubjectRequestDto(idTeacher);
 
         // when
-        Throwable throwable = catchThrowable(() -> service.createNewSubject(expected));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> service.createNewSubject(expected));
 
         // then
-        assertThat(throwable).hasMessageContaining("Teacher with id "+ idTeacher +" not found" );
+        assertEquals(exception.getMessage(), BaseDao.BaseDaoExceptionMessage.createNotFoundExceptionMessage(Teacher.class.getSimpleName(), idTeacher));
     }
 
     @Test

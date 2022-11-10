@@ -40,13 +40,13 @@ class StudentServiceImpl implements StudentService{
 
     @Override
     public StudentResponseApiDto findStudentById(Long id) {
-        Student student = dao.find(id).orElseThrow(() -> new EntityNotFoundException("Student with given id " + id + " not exist"));
+        Student student = dao.get(id);
         return StudentMapper.toDto(student);
     }
 
     @Override
     public void deleteStudentById(Long id) {
-        Student student = dao.find(id).orElseThrow(() -> new EntityNotFoundException("Student with given id " + id + " not exist"));
+        Student student = dao.get(id);
         dao.remove(student);
     }
 
@@ -61,7 +61,7 @@ class StudentServiceImpl implements StudentService{
     @Override
     @Transactional
     public boolean updateStudentLastLoginDate(String username) {
-        Student student = dao.findByUsername(username);
+        Student student = dao.getByUsername(username);
         if (student != null){
             student.setLastLoginDate(LocalDateTime.now());
             return true;

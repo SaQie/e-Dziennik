@@ -16,10 +16,10 @@ class StudentPrivService {
     private final SchoolDao dao;
 
     protected void checkSchoolExist(Long idSchool, Student student) {
-        dao.findWithExistCheck(idSchool, student::setSchool);
+        dao.findWithExecute(idSchool, student::setSchool);
     }
 
     protected void checkSchoolClassExist(Long idSchoolClass, Student student) {
-        dao.findWithExistCheck(SchoolClass.class, idSchoolClass, student::setSchoolClass);
+        dao.findWithExecute(SchoolClass.class, idSchoolClass, student::setSchoolClass);
     }
 }

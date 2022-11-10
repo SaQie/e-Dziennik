@@ -16,7 +16,11 @@ public interface IBaseDao<E extends Serializable>{
 
     E saveOrUpdate(final E entity);
 
+    List<E> saveAll(final List<E> entities);
+
     Optional<E> find(final Long id);
+
+    E get(final Long id);
 
     boolean exist(final Long id);
 
@@ -32,12 +36,34 @@ public interface IBaseDao<E extends Serializable>{
 
     <T> Optional<T> find(Class<T> clazz, final Long id);
 
+    /**
+     * Return object or throws EntityNotFoundException when not exist
+     *
+     * @param clazz
+     * @param id
+     * @param <T>
+     * @return
+     */
     <T> T get(Class<T> clazz, final Long id);
-    E findWithExistCheck(final Long id);
-    <T> void findWithExistCheck(final Long id, final Consumer<T> consumer);
 
-    // Find by Found check?
-    <T> T findWithExistCheck(Class<T> clazz,final Long id);
-    <T> void findWithExistCheck(Class<T> clazz,final Long id, final Consumer<T> consumer);
+    /**
+     * Execute consumer on found object or throws EntityNotFoundException if not exist
+     *
+     * @param id
+     * @param consumer
+     * @param <T>
+     */
+    <T> void findWithExecute(final Long id, final Consumer<T> consumer);
+
+
+    /**
+     * Execute consumer on found object or throws EntityNotFoundException if not exist
+     *
+     * @param clazz
+     * @param id
+     * @param consumer
+     * @param <T>
+     */
+    <T> void findWithExecute(Class<T> clazz,final Long id, final Consumer<T> consumer);
 
 }

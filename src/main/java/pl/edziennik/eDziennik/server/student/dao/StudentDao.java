@@ -5,6 +5,6 @@ import pl.edziennik.eDziennik.server.student.domain.Student;
 
 public interface StudentDao extends IBaseDao<Student> {
 
-    Student findByUsername(String username);
+    Student getByUsername(String username);
 
 }

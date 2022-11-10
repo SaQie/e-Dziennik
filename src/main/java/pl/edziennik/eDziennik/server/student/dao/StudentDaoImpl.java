@@ -11,7 +11,7 @@ import javax.persistence.TypedQuery;
 @Repository
 class StudentDaoImpl extends BaseDao<Student> implements StudentDao {
     @Override
-    public Student findByUsername(String username) {
+    public Student getByUsername(String username) {
         TypedQuery<Student> query = em.createNamedQuery(Queries.GET_STUDENT_BY_USERNAME, Student.class);
         query.setParameter(Parameters.USERNAME, username);
         return (Student) PersistanceHelper.getSingleResultOrNull(query);

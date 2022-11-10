@@ -24,7 +24,7 @@ public class SchoolClass implements Serializable {
 
     private String className;
 
-    @OneToMany(mappedBy = "schoolClass", orphanRemoval = true)
+    @OneToMany(mappedBy = "schoolClass")
     private Collection<Student> students = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY)

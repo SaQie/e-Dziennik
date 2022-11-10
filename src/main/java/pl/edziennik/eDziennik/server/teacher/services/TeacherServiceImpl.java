@@ -39,13 +39,13 @@ class TeacherServiceImpl implements TeacherService{
 
     @Override
     public TeacherResponseApiDto findTeacherById(Long id) {
-        Teacher teacher = dao.find(id).orElseThrow(() -> new EntityNotFoundException("Teacher with given id " + id + " not found."));
+        Teacher teacher = dao.get(id);
         return TeacherMapper.toDto(teacher);
     }
 
     @Override
     public void deleteTeacherById(Long id) {
-        Teacher teacher = dao.find(id).orElseThrow(() -> new EntityNotFoundException("Teacher with given id " + id + " not exist"));
+        Teacher teacher = dao.get(id);
         dao.remove(teacher);
     }
 

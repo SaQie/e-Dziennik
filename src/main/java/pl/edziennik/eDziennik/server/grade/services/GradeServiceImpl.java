@@ -9,8 +9,6 @@ import pl.edziennik.eDziennik.server.grade.domain.dto.GradeRequestApiDto;
 import pl.edziennik.eDziennik.server.grade.domain.dto.GradeResponseApiDto;
 import pl.edziennik.eDziennik.server.grade.domain.dto.mapper.GradeMapper;
 
-import javax.persistence.EntityNotFoundException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,13 +28,13 @@ class GradeServiceImpl implements GradeService {
 
     @Override
     public GradeResponseApiDto findGradeById(Long id) {
-        Grade grade = dao.find(id).orElseThrow(() -> new EntityNotFoundException("Rating with given id " + id + "not exist"));
+        Grade grade = dao.get(id);
         return GradeMapper.toDto(grade);
     }
 
     @Override
     public void deleteRatingById(Long id) {
-        Grade grade = dao.find(id).orElseThrow(() -> new EntityNotFoundException("Rating with given id " + id + "not exist"));
+        Grade grade = dao.get(id);
         dao.remove(grade);
     }
 
