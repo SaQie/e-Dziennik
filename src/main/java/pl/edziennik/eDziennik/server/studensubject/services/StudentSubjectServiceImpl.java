@@ -7,10 +7,11 @@ import pl.edziennik.eDziennik.server.grade.domain.Grade;
 import pl.edziennik.eDziennik.server.studensubject.dao.StudentSubjectDao;
 import pl.edziennik.eDziennik.server.studensubject.domain.StudentSubject;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.mapper.StudentSubjectMapper;
-import pl.edziennik.eDziennik.server.studensubject.domain.dto.request.StudentSubjectRatingRequestDto;
+import pl.edziennik.eDziennik.server.studensubject.domain.dto.request.StudentSubjectGradeRequestDto;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.request.StudentSubjectRequestDto;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.AllStudentSubjectGradesResponseDto;
-import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentSubjectRatingResponseDto;
+import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentSubjectGradesResponseDto;
+import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentSubjectsResponseDto;
 import pl.edziennik.eDziennik.server.teacher.dao.TeacherDao;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 
@@ -36,9 +37,9 @@ class StudentSubjectServiceImpl implements StudentSubjectService {
 
     @Override
     @Transactional
-    public void assignRatingToStudentSubject(Long idStudent, Long idSubject, StudentSubjectRatingRequestDto dto, String teacherName) {
+    public void assignGradeToStudentSubject(Long idStudent, Long idSubject, StudentSubjectGradeRequestDto dto, String teacherName) {
         StudentSubject studentSubject = privService.checkStudentSubjectExist(idSubject, idStudent);
-        Grade grade = dao.find(Grade.class, dto.getRating()).get();
+        Grade grade = dao.find(Grade.class, dto.getGrade()).get();
         Teacher teacher = teacherDao.getByUsername(teacherName);
         studentSubject.addRating(grade);
         grade.setStudentSubject(studentSubject);
@@ -47,7 +48,7 @@ class StudentSubjectServiceImpl implements StudentSubjectService {
     }
 
     @Override
-    public StudentSubjectRatingResponseDto getStudentSubjectRatings(Long idStudent, Long idSubject) {
+    public StudentSubjectGradesResponseDto getStudentSubjectRatings(Long idStudent, Long idSubject) {
         StudentSubject studentSubject = privService.checkStudentSubjectExist(idSubject, idStudent);
         return StudentSubjectMapper.toStudentSubjectRatingsDto(studentSubject);
     }
@@ -56,5 +57,11 @@ class StudentSubjectServiceImpl implements StudentSubjectService {
     public AllStudentSubjectGradesResponseDto getStudentAllSubjectsRatings(Long idStudent) {
         List<StudentSubject> entities = dao.findAllStudentSubjectsForStudent(idStudent);
         return StudentSubjectMapper.toAllStudentSubjectRatingDto(entities);
+    }
+
+    @Override
+    public StudentSubjectsResponseDto getStudentSubjects(Long idStudent) {
+        List<StudentSubject> entities = dao.findAllStudentSubjectsForStudent(idStudent);
+        return StudentSubjectMapper.toStudentSubjectsResponseDto(entities);
     }
 }

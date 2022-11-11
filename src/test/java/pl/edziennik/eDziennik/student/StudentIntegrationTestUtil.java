@@ -5,9 +5,9 @@ import pl.edziennik.eDziennik.server.student.domain.dto.StudentRequestApiDto;
 /**
  * Util class for student integration tests {@link StudentIntegrationTest}
  */
-class StudentIntegrationTestUtil {
+public class StudentIntegrationTestUtil {
 
-    protected StudentRequestApiDto prepareStudentRequestDto() {
+    public StudentRequestApiDto prepareStudentRequestDto() {
         return new StudentRequestApiDto(
                 "Test",
                 "Test123",

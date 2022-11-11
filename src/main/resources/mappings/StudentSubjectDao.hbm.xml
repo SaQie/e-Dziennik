@@ -13,6 +13,4 @@
         <query>SELECT ss FROM StudentSubject ss where ss.student.id = :idStudent AND ss.subject.id = :idSubject</query>
     </named-query>
 
-
-
 </entity-mappings>

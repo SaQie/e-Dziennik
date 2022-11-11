@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class StudentSubjectRatingRequestDto {
+public class StudentSubjectGradeRequestDto {
 
 
-    private Long rating;
+    private Long grade;
 
 
 }

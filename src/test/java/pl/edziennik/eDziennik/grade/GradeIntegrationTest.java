@@ -10,13 +10,10 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
 import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
-import pl.edziennik.eDziennik.server.basics.BaseDao;
 import pl.edziennik.eDziennik.server.grade.domain.Grade;
 import pl.edziennik.eDziennik.server.grade.domain.dto.GradeRequestApiDto;
-import pl.edziennik.eDziennik.server.grade.domain.dto.GradeResponseApiDto;
 import pl.edziennik.eDziennik.server.grade.services.GradeService;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")

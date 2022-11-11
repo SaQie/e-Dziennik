@@ -5,9 +5,9 @@ import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectRequestApiDto;
 /**
  * Util class for Subject integration tests {@link SubjectIntegrationTest}
  */
-class SubjectIntegrationTestUtil {
+public class SubjectIntegrationTestUtil {
 
-    protected SubjectRequestApiDto prepareSubjectRequestDto(final Long idTeacher){
+    public SubjectRequestApiDto prepareSubjectRequestDto(final Long idTeacher){
         return new SubjectRequestApiDto(
                 "Przyroda",
                 "Nauka o przyrodzie",
@@ -15,7 +15,7 @@ class SubjectIntegrationTestUtil {
         );
     }
 
-    protected SubjectRequestApiDto prepareSubjectRequestDto(final String name,final Long idTeacher){
+    public SubjectRequestApiDto prepareSubjectRequestDto(final String name,final Long idTeacher){
         return new SubjectRequestApiDto(
                 "Przyroda",
                 "Nauka o przyrodzie",

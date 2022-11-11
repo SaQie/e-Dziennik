@@ -2,13 +2,11 @@ package pl.edziennik.eDziennik.client.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pl.edziennik.eDziennik.authentication.TeacherUserDetails;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.AllStudentSubjectGradesResponseDto;
-import pl.edziennik.eDziennik.server.studensubject.domain.dto.request.StudentSubjectRatingRequestDto;
-import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentSubjectRatingResponseDto;
+import pl.edziennik.eDziennik.server.studensubject.domain.dto.request.StudentSubjectGradeRequestDto;
+import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentSubjectGradesResponseDto;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.request.StudentSubjectRequestDto;
 import pl.edziennik.eDziennik.server.studensubject.services.StudentSubjectService;
 
@@ -30,8 +28,8 @@ public class StudentSubjectController {
     }
 
     @PatchMapping("/{idStudent}/subjects/{idSubject}/ratings")
-    public ResponseEntity<?> assignRatingToStudentSubject(@RequestBody StudentSubjectRatingRequestDto dto, @PathVariable Long idStudent, @PathVariable Long idSubject, Principal teacher){
-        service.assignRatingToStudentSubject(idStudent, idSubject, dto, teacher.getName());
+    public ResponseEntity<?> assignGradeToStudentSubject(@RequestBody StudentSubjectGradeRequestDto dto, @PathVariable Long idStudent, @PathVariable Long idSubject, Principal teacher){
+        service.assignGradeToStudentSubject(idStudent, idSubject, dto, teacher.getName());
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .buildAndExpand()
                 .toUri();
@@ -39,8 +37,8 @@ public class StudentSubjectController {
     }
 
     @GetMapping("/{idStudent}/subjects/{idSubject}/ratings")
-    public ResponseEntity<StudentSubjectRatingResponseDto> getStudentSubjectRatings(@PathVariable Long idStudent, @PathVariable Long idSubject){
-        StudentSubjectRatingResponseDto responseDto = service.getStudentSubjectRatings(idStudent, idSubject);
+    public ResponseEntity<StudentSubjectGradesResponseDto> getStudentSubjectRatings(@PathVariable Long idStudent, @PathVariable Long idSubject){
+        StudentSubjectGradesResponseDto responseDto = service.getStudentSubjectRatings(idStudent, idSubject);
         return ResponseEntity.ok(responseDto);
     }
 
