@@ -14,7 +14,5 @@ public interface SchoolClassService {
     void deleteSchoolClassById(final Long id);
 
     List<SchoolClassResponseApiDto> findAllSchoolClasses();
-
-
-
+    SchoolClassResponseApiDto updateSchoolClass(final Long id, final SchoolClassRequestApiDto dto);
 }

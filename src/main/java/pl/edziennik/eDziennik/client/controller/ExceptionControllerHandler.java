@@ -9,10 +9,10 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
-import org.springframework.beans.factory.annotation.Value;
+import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
+
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
@@ -27,7 +27,7 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
     private static final Logger LOGGER = Logger.getLogger("Controller logger");
 
     @ExceptionHandler(value = {EntityNotFoundException.class, NoResultException.class})
-    protected ResponseEntity<?> handleException(PersistenceException exception, WebRequest request){
+    protected ResponseEntity<?> handleException(RuntimeException exception, WebRequest request){
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("message", exception.getMessage());

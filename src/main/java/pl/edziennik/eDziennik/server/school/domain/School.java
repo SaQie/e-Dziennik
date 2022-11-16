@@ -2,6 +2,7 @@ package pl.edziennik.eDziennik.server.school.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.server.schoollevel.domain.SchoolLevel;
 import pl.edziennik.eDziennik.server.student.domain.Student;
@@ -15,6 +16,7 @@ import java.util.Collection;
 @Entity
 @NoArgsConstructor
 @Getter
+@Setter
 public class School implements Serializable {
 
     @Id

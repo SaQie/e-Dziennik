@@ -4,15 +4,18 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.schoolclass.dao.SchoolClassDao;
 import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassRequestApiDto;
 import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassResponseApiDto;
 import pl.edziennik.eDziennik.server.schoolclass.domain.dto.mapper.SchoolClassMapper;
 import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
+import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,13 +37,13 @@ class SchoolClassServiceImpl implements SchoolClassService{
 
     @Override
     public SchoolClassResponseApiDto findSchoolClassById(Long id) {
-        SchoolClass schoolClass = dao.find(id).orElseThrow(() -> new EntityNotFoundException("School class with given id " + id + " not exist"));
+        SchoolClass schoolClass = dao.get(id);
         return SchoolClassMapper.toDto(schoolClass);
     }
 
     @Override
     public void deleteSchoolClassById(Long id) {
-        SchoolClass schoolClass = dao.find(id).orElseThrow(() -> new EntityNotFoundException("School class with given id " + id + " not exist"));
+        SchoolClass schoolClass = dao.get(id);
         dao.remove(schoolClass);
     }
 
@@ -52,5 +55,21 @@ class SchoolClassServiceImpl implements SchoolClassService{
                 .collect(Collectors.toList());
     }
 
+    @Override
+    @Transactional
+    public SchoolClassResponseApiDto updateSchoolClass(Long id, SchoolClassRequestApiDto dto) {
+        // TODO -> Walidacja
+        Optional<SchoolClass> schoolClassOptional = dao.find(id);
 
+        if (schoolClassOptional.isPresent()){
+            SchoolClass schoolClass = schoolClassOptional.get();
+            schoolClass.setSchool(dao.get(School.class,dto.getSchool()));
+            schoolClass.setTeacher(dao.get(Teacher.class, dto.getSupervisingTeacherId()));
+            return SchoolClassMapper.toDto(schoolClass);
+        }
+
+        SchoolClass schoolClass = dao.saveOrUpdate(SchoolClassMapper.toEntity(dto));
+        return SchoolClassMapper.toDto(schoolClass);
+
+    }
 }

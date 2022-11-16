@@ -15,4 +15,5 @@ public interface SubjectService {
 
     List<SubjectResponseApiDto> findAllSubjects();
 
+    SubjectResponseApiDto updateSubject(final Long id, final SubjectRequestApiDto requestApiDto);
 }

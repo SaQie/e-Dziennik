@@ -11,6 +11,7 @@ import pl.edziennik.eDziennik.server.subject.domain.dto.mapper.SubjectMapper;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,5 +48,18 @@ class SubjectServiceImpl implements SubjectService{
                 .stream()
                 .map(SubjectMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public SubjectResponseApiDto updateSubject(Long id, SubjectRequestApiDto requestApiDto) {
+        Optional<Subject> optionalSubject = dao.find(id);
+        if (optionalSubject.isPresent()){
+            Subject subject = optionalSubject.get();
+            subject.setName(requestApiDto.getName());
+            subject.setDescription(requestApiDto.getDescription());
+        }
+        Subject subject = dao.saveOrUpdate(SubjectMapper.toEntity(requestApiDto));
+        return SubjectMapper.toDto(subject);
     }
 }

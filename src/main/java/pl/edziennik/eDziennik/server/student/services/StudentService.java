@@ -7,7 +7,7 @@ import pl.edziennik.eDziennik.server.student.domain.dto.StudentResponseApiDto;
 
 import java.util.List;
 
-public interface StudentService{
+public interface StudentService {
 
 
     StudentResponseApiDto register(final StudentRequestApiDto dto);
@@ -18,7 +18,7 @@ public interface StudentService{
 
     List<StudentResponseApiDto> findAllStudents();
 
-    boolean updateStudentLastLoginDate(String username);
+    boolean updateStudentLastLoginDate(final String username);
 
-
+    StudentResponseApiDto updateStudent(final Long id, final StudentRequestApiDto requestApiDto);
 }

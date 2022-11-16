@@ -45,4 +45,19 @@ public class StudentController {
         return ResponseEntity.ok(service.findAllStudents());
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateStudent(@PathVariable Long id, @RequestBody StudentRequestApiDto requestApiDto){
+        StudentResponseApiDto responseApiDto = service.updateStudent(id, requestApiDto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/api/students")
+                .path("/{id}")
+                .buildAndExpand(responseApiDto.getId())
+                .toUri();
+        if (responseApiDto.getId().equals(id)){
+            return ResponseEntity.ok(uri);
+        }
+        return ResponseEntity.created(uri).body(uri);
+    }
+
+
 }

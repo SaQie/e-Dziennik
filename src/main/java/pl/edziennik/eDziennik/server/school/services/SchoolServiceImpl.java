@@ -11,6 +11,7 @@ import pl.edziennik.eDziennik.server.school.domain.School;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,5 +48,25 @@ class SchoolServiceImpl implements SchoolService{
                 .stream()
                 .map(SchoolMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public SchoolResponseApiDto updateSchool(Long id, SchoolRequestApiDto dto) {
+        // TODO -> Walidacja
+        Optional<School> optionalSchool = dao.find(id);
+        if (optionalSchool.isPresent()){
+            School school = optionalSchool.get();
+            school.setCity(dto.getCity());
+            school.setName(dto.getName());
+            school.setNip(dto.getNip());
+            school.setAdress(dto.getAdress());
+            school.setRegon(dto.getRegon());
+            school.setPhoneNumber(dto.getPhoneNumber());
+            school.setPostalCode(dto.getPostalCode());
+            return SchoolMapper.toDto(school);
+        }
+        School school = dao.saveOrUpdate(SchoolMapper.toEntity(dto));
+        return SchoolMapper.toDto(school);
     }
 }

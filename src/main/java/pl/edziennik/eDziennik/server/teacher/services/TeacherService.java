@@ -16,4 +16,6 @@ public interface TeacherService {
     List<TeacherResponseApiDto> findAllTeachers();
 
     boolean updateTeacherLastLoginDate(final String username);
+
+    TeacherResponseApiDto updateTeacher(final Long id, final TeacherRequestApiDto requestApiDto);
 }

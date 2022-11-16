@@ -22,9 +22,9 @@ public interface IBaseDao<E extends Serializable>{
 
     E get(final Long id);
 
-    boolean exist(final Long id);
+    boolean isExist(final Long id);
 
-    <T> boolean exist(Class<T> clazz, final Long id);
+    <T> boolean isExist(Class<T> clazz, final Long id);
 
     void remove(final E entity);
 

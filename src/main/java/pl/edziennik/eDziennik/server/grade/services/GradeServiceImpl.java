@@ -1,6 +1,8 @@
 package pl.edziennik.eDziennik.server.grade.services;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.server.grade.dao.GradeDao;
@@ -10,6 +12,7 @@ import pl.edziennik.eDziennik.server.grade.domain.dto.GradeResponseApiDto;
 import pl.edziennik.eDziennik.server.grade.domain.dto.mapper.GradeMapper;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +39,25 @@ class GradeServiceImpl implements GradeService {
     public void deleteRatingById(Long id) {
         Grade grade = dao.get(id);
         dao.remove(grade);
+    }
+
+    @Override
+    @Transactional
+    public GradeResponseApiDto updateGrade(Long id, GradeRequestApiDto dto) {
+        // TODO -> Walidacja
+        Optional<Grade> optionalGrade = dao.find(id);
+
+        if (optionalGrade.isPresent()) {
+            Grade grade = optionalGrade.get();
+            grade.setGrade(Grade.GradeConst.getByRating(dto.getGrade()));
+            grade.setWeight(dto.getWeight());
+            grade.setDescription(dto.getDescription());
+            return GradeMapper.toDto(grade);
+        }
+
+        Grade grade = dao.saveOrUpdate(GradeMapper.toEntity(dto));
+        return GradeMapper.toDto(grade);
+
     }
 
     @Override

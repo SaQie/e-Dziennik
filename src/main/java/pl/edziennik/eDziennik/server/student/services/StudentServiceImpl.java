@@ -15,6 +15,7 @@ import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -67,5 +68,27 @@ class StudentServiceImpl implements StudentService{
             return true;
         }
         return false;
+    }
+
+
+    @Override
+    @Transactional
+    public StudentResponseApiDto updateStudent(Long id, StudentRequestApiDto requestApiDto) {
+        Optional<Student> optionalStudent = dao.find(id);
+        if (optionalStudent.isPresent()){
+            Student student = optionalStudent.get();
+            student.setFirstName(requestApiDto.getFirstName());
+            student.setLastName(requestApiDto.getLastName());
+            student.setAdress(requestApiDto.getAdress());
+            student.setCity(requestApiDto.getCity());
+            student.setPESEL(requestApiDto.getPesel());
+            student.setPostalCode(requestApiDto.getPostalCode());
+            student.setParentFirstName(requestApiDto.getParentFirstName());
+            student.setParentLastName(requestApiDto.getParentLastName());
+            student.setParentPhoneNumber(requestApiDto.getParentPhoneNumber());
+            return StudentMapper.toDto(student);
+        }
+        Student student = dao.saveOrUpdate(StudentMapper.toEntity(requestApiDto));
+        return StudentMapper.toDto(student);
     }
 }

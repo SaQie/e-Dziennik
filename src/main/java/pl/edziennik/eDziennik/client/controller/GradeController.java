@@ -43,4 +43,18 @@ public class GradeController {
         service.deleteRatingById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateGrade(@PathVariable Long id, @RequestBody GradeRequestApiDto dto){
+        GradeResponseApiDto responseDto = service.updateGrade(id, dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/api/grades")
+                .path("/{id}")
+                .buildAndExpand(responseDto.getId())
+                .toUri();
+        if (responseDto.getId().equals(id)){
+            return ResponseEntity.ok(uri);
+        }
+        return ResponseEntity.created(uri).body(uri);
+    }
 }

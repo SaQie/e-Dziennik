@@ -99,13 +99,13 @@ public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
     }
 
     @Override
-    public boolean exist(Long id) {
+    public boolean isExist(Long id) {
         E e = em.find(clazz, id);
         return e != null;
     }
 
     @Override
-    public <T> boolean exist(Class<T> clazz, Long id) {
+    public <T> boolean isExist(Class<T> clazz, Long id) {
         T t = em.find(clazz, id);
         return t != null;
     }

@@ -44,6 +44,20 @@ class SchoolController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateSchool(@PathVariable Long id, @RequestBody SchoolRequestApiDto dto){
+        SchoolResponseApiDto responseDto = service.updateSchool(id, dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/api/schools")
+                .path("/{id}")
+                .buildAndExpand(responseDto.getId())
+                .toUri();
+        if (responseDto.getId().equals(id)){
+            return ResponseEntity.ok(uri);
+        }
+        return ResponseEntity.created(uri).body(uri);
+    }
+
 
 
 
