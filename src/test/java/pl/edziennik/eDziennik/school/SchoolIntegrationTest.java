@@ -61,6 +61,31 @@ public class SchoolIntegrationTest extends BaseTest {
     }
 
     @Test
+    public void shouldUpdateSchool(){
+        // given
+        SchoolRequestApiDto dto = util.prepareSchoolRequestApi();
+        Long id = service.createNewSchool(dto).getId();
+        SchoolRequestApiDto expected = util.prepareSchoolRequestApi("afterEdit", "555555", "555555");
+
+        // when
+        Long updated = service.updateSchool(id, expected).getId();
+
+        // then
+        assertNotNull(updated);
+        assertEquals(updated,id);
+        School actual = find(School.class, updated);
+        assertNotNull(actual);
+        assertEquals(expected.getName(), actual.getName());
+        assertEquals(expected.getAdress(), actual.getAdress());
+        assertEquals(expected.getNip(), actual.getNip());
+        assertEquals(expected.getCity(), actual.getCity());
+        assertEquals(expected.getPostalCode(), actual.getPostalCode());
+        assertEquals(expected.getRegon(), actual.getRegon());
+        assertEquals(expected.getSchoolLevel(), actual.getSchoolLevel().getId());
+
+    }
+
+    @Test
     public void shouldThrowsExceptionWhenSchoolLevelNotExist() {
         // given
         Long idSchoolLevel = 99L;

@@ -62,6 +62,31 @@ public class TeacherIntegrationTest extends BaseTest {
     }
 
     @Test
+    public void shouldUpdateTeacher(){
+        // given
+        TeacherRequestApiDto dto = util.prepareTeacherRequestDto();
+        Long id = service.register(dto).getId();
+        TeacherRequestApiDto expected = util.prepareTeacherRequestDto("AfterEdit", "AfterEdit2", "5555551");
+
+        // when
+        Long updated = service.updateTeacher(id, expected).getId();
+
+        // then
+        assertNotNull(updated);
+        assertEquals(updated,id);
+        Teacher actual = find(Teacher.class, updated);
+
+        assertEquals(expected.getFirstName(), actual.getFirstName());
+        assertEquals(expected.getLastName(), actual.getLastName());
+        assertEquals(expected.getAdress(), actual.getAdress());
+        assertEquals(expected.getPesel(), actual.getPESEL());
+        assertEquals(expected.getCity(), actual.getCity());
+        assertEquals(expected.getUsername(), actual.getUsername());
+        assertEquals(util.defaultRole, actual.getRole().getName());
+
+    }
+
+    @Test
     public void shouldDeleteTeacher(){
         // given
         TeacherRequestApiDto dto = util.prepareTeacherRequestDto();

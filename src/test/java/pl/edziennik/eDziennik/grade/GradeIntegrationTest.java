@@ -86,4 +86,24 @@ public class GradeIntegrationTest extends BaseTest {
 
     }
 
+    @Test
+    public void shouldUpdateGrade(){
+        // given
+        GradeRequestApiDto dto = util.prepareRequestApi(1, 1);
+        Long gradeId = service.addNewGrade(dto).getId();
+        GradeRequestApiDto expected = util.prepareRequestApi(2, 2);
+
+        // when
+        Long updated = service.updateGrade(gradeId, expected).getId();
+
+        // then
+        assertNotNull(updated);
+        assertEquals(updated,gradeId);
+        Grade actual = find(Grade.class, updated);
+        assertNotNull(actual);
+        assertEquals(expected.getGrade(), actual.getGrade().grade);
+        assertEquals(expected.getWeight(), actual.getWeight());
+        assertEquals(expected.getDescription(), actual.getDescription());
+    }
+
 }

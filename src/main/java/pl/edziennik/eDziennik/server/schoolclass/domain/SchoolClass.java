@@ -51,6 +51,10 @@ public class SchoolClass implements Serializable {
         this.createdDate = date;
     }
 
+    public void setClassName(String className){
+        this.className = className;
+    }
+
 
     @PrePersist
     protected void onCreate(){

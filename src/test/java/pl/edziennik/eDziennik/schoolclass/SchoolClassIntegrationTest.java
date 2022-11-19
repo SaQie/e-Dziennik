@@ -67,6 +67,29 @@ public class SchoolClassIntegrationTest extends BaseTest {
     }
 
     @Test
+    public void shouldUpdateSchoolClass(){
+        // given
+        TeacherRequestApiDto teacherRequest = teacherUtil.prepareTeacherRequestDto();
+        Long teacherId = teacherService.register(teacherRequest).getId();
+        SchoolClassRequestApiDto dto = util.prepareSchoolClassRequest();
+        Long id = service.createSchoolClass(dto).getId();
+        SchoolClassRequestApiDto expected = util.prepareSchoolClassRequest("5B",teacherId);
+
+        // when
+        Long updated = service.updateSchoolClass(id, expected).getId();
+
+        // then
+        assertNotNull(updated);
+        assertEquals(id,updated);
+
+        SchoolClass actual = find(SchoolClass.class, updated);
+        assertEquals(expected.getSchool(), actual.getSchool().getId());
+        assertEquals(expected.getSupervisingTeacherId(), actual.getTeacher().getId());
+        assertEquals(expected.getClassName(), actual.getClassName());
+
+    }
+
+    @Test
     public void shouldDeteleSchoolClass(){
         // given
         SchoolClassRequestApiDto expected = util.prepareSchoolClassRequest();

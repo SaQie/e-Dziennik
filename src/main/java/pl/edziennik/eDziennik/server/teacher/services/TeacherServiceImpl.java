@@ -86,6 +86,7 @@ class TeacherServiceImpl implements TeacherService{
             teacher.setPhoneNumber(requestApiDto.getPhoneNumber());
             teacher.setPostalCode(requestApiDto.getPostalCode());
             teacher.setPESEL(requestApiDto.getPesel());
+            return TeacherMapper.toDto(teacher);
         }
         Teacher teacher = dao.saveOrUpdate(TeacherMapper.toEntity(requestApiDto));
         return TeacherMapper.toDto(teacher);

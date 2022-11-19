@@ -16,6 +16,14 @@ public class SchoolClassIntergrationTestUtil {
         );
     }
 
+    public SchoolClassRequestApiDto prepareSchoolClassRequest(final String className, final Long idTeacher) {
+        return new SchoolClassRequestApiDto(
+                className,
+                idTeacher,
+                1L
+        );
+    }
+
     public SchoolClassRequestApiDto prepareSchoolClassRequest(final Long idTeacher) {
         return new SchoolClassRequestApiDto(
                 "3B",

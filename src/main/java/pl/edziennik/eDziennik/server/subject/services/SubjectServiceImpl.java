@@ -58,6 +58,7 @@ class SubjectServiceImpl implements SubjectService{
             Subject subject = optionalSubject.get();
             subject.setName(requestApiDto.getName());
             subject.setDescription(requestApiDto.getDescription());
+            return SubjectMapper.toDto(subject);
         }
         Subject subject = dao.saveOrUpdate(SubjectMapper.toEntity(requestApiDto));
         return SubjectMapper.toDto(subject);

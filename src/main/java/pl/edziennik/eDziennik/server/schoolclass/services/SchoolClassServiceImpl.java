@@ -64,6 +64,7 @@ class SchoolClassServiceImpl implements SchoolClassService{
         if (schoolClassOptional.isPresent()){
             SchoolClass schoolClass = schoolClassOptional.get();
             schoolClass.setSchool(dao.get(School.class,dto.getSchool()));
+            schoolClass.setClassName(dto.getClassName());
             schoolClass.setTeacher(dao.get(Teacher.class, dto.getSupervisingTeacherId()));
             return SchoolClassMapper.toDto(schoolClass);
         }

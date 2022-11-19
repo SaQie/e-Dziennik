@@ -73,6 +73,31 @@ public class SubjectIntegrationTest extends BaseTest {
     }
 
     @Test
+    public void shouldUpdateSubject(){
+        // given
+        TeacherRequestApiDto teacherDto = teacherUtil.prepareTeacherRequestDto();
+        Long teacherId = teacherService.register(teacherDto).getId();
+        assertNotNull(teacherId);
+
+        SubjectRequestApiDto dto = util.prepareSubjectRequestDto(teacherId);
+        Long subjectId = service.createNewSubject(dto).getId();
+        SubjectRequestApiDto expected = util.prepareSubjectRequestDto("Chemia", teacherId);
+
+        // when
+        Long updated = service.updateSubject(subjectId, expected).getId();
+
+        // then
+        assertNotNull(updated);
+        assertEquals(updated,subjectId);
+        Subject actual = find(Subject.class, updated);
+        assertNotNull(actual);
+
+        assertEquals(expected.getName(), actual.getName());
+        assertEquals(expected.getDescription(), actual.getDescription());
+        assertEquals(expected.getTeacher(), actual.getTeacher().getId());
+    }
+
+    @Test
     public void shouldSaveNewSubjectWithoutTeacher(){
         // given
         SubjectRequestApiDto expected = util.prepareSubjectRequestDto(null);

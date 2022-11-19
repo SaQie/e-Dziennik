@@ -64,6 +64,32 @@ public class StudentIntegrationTest extends BaseTest {
     }
 
     @Test
+    public void shouldUpdateStudent(){
+        // given
+        StudentRequestApiDto dto = util.prepareStudentRequestDto();
+        Long id = service.register(dto).getId();
+        StudentRequestApiDto expected = util.prepareStudentRequestDto("AfterEdit", "AfterEdit1", "AfterEdit2", "999999");
+
+        // when
+        Long updated = service.updateStudent(id, expected).getId();
+
+        // then
+        assertNotNull(updated);
+        assertEquals(updated,id);
+        Student actual = find(Student.class, updated);
+        assertEquals(expected.getFirstName(), actual.getFirstName());
+        assertEquals(expected.getLastName(), actual.getLastName());
+        assertEquals(expected.getAdress(), actual.getAdress());
+        assertEquals(expected.getPesel(), actual.getPESEL());
+        assertEquals(expected.getCity(), actual.getCity());
+        assertEquals(expected.getUsername(), actual.getUsername());
+        assertEquals(expected.getParentFirstName(), actual.getParentFirstName());
+        assertEquals(expected.getParentPhoneNumber(), actual.getParentPhoneNumber());
+        assertEquals(expected.getParentLastName(), actual.getParentLastName());
+
+    }
+
+    @Test
     public void shouldDeleteStudent() {
         // given
         StudentRequestApiDto dto = util.prepareStudentRequestDto();
