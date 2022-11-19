@@ -30,6 +30,7 @@ public class StudentSubjectController {
     @PatchMapping("/{idStudent}/subjects/{idSubject}/ratings")
     public ResponseEntity<?> assignGradeToStudentSubject(@RequestBody StudentSubjectGradeRequestDto requestApiDto, @PathVariable Long idStudent, @PathVariable Long idSubject, Principal teacher){
         service.assignGradeToStudentSubject(idStudent, idSubject, requestApiDto, teacher.getName());
+        // TODO -> Przemyslec opakowanie tego w jednego DTOS'a - ta metoda wyzej ma za duzo parametrow
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .buildAndExpand()
                 .toUri();

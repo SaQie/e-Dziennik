@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.client.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
@@ -22,9 +23,8 @@ import java.util.logging.Logger;
 
 @ControllerAdvice
 @RestController
+@Slf4j
 public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
-
-    private static final Logger LOGGER = Logger.getLogger("Controller logger");
 
     @ExceptionHandler(value = {EntityNotFoundException.class, NoResultException.class})
     protected ResponseEntity<?> handleException(RuntimeException exception, WebRequest request){
@@ -33,7 +33,7 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
         body.put("message", exception.getMessage());
         body.put("code", HttpStatus.NOT_FOUND.value());
         body.put("path", request.getDescription(false).substring(4));
-        LOGGER.log(Level.SEVERE, "ERROR ON PATH " + request.getDescription(false) + " ERROR MESSAGE: " + exception.getMessage());
+        log.error("ERROR ON PATH " + request.getDescription(false) + " ERROR MESSAGE: " + exception.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
 
@@ -44,7 +44,7 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
         body.put("message", e.getMessage());
         body.put("code", HttpStatus.CONFLICT.value());
         body.put("patch", request.getDescription(false).substring(4));
-        LOGGER.log(Level.SEVERE, "ERROR ON PATH " + request.getDescription(false) + " ERROR MESSAGE: " + e.getMessage());
+        log.error("ERROR ON PATH " + request.getDescription(false) + " ERROR MESSAGE: " + e.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
     }
 
@@ -53,6 +53,6 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
         HttpServletRequest request = ((ServletWebRequest) webRequest).getRequest();
         String method = request.getMethod().toLowerCase();
         String URI = request.getRequestURI();
-        LOGGER.log(Level.INFO,"CALLED | " + URI + " | METHOD USED: | " + method + " | WITH OBJECT | " + binder.getObjectName() + " |");
+        log.info("CALLED | " + URI + " | METHOD USED: | " + method + " | WITH OBJECT | " + binder.getObjectName() + " |");
     }
 }

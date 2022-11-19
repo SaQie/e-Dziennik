@@ -22,6 +22,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 class TeacherServiceImpl implements TeacherService{
 
+    // TODO -> Zrob cos takiego ze kazdy serwis musi dziedziczyc bo base serwis, tam dodaj metody add,update,get,validate
+    // TODO -> Ta klasa bedzie klasa abstrakcyjna
+
     private final TeacherDao dao;
     private final PasswordEncoder passwordEncoder;
     private final TeacherPrivService privService;
