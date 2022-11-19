@@ -50,4 +50,16 @@ public class ApiResponse<T> {
                 .build();
     }
 
+    public static<T> ApiResponse<T> buildApiResponse(HttpMethod method, HttpStatus status, URI url, List<ApiErrorsDto> errors){
+        return ApiResponse.
+                <T>builder()
+                .method(method.name())
+                .status(status.name())
+                .code(status.value())
+                .url(url)
+                .errors(errors)
+                .executionTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .build();
+    }
+
 }
