@@ -19,11 +19,11 @@ public class GradeController {
     private final GradeService service;
 
     @PostMapping()
-    public ResponseEntity<?> createNewRating(@RequestBody GradeRequestApiDto dto){
-        GradeResponseApiDto savedRating = service.addNewGrade(dto);
+    public ResponseEntity<?> createNewRating(@RequestBody GradeRequestApiDto requestApiDto){
+        GradeResponseApiDto responseApiDto = service.addNewGrade(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(savedRating.getId())
+                .buildAndExpand(responseApiDto.getId())
                 .toUri();
         return ResponseEntity.created(uri).body(uri);
     }
@@ -45,14 +45,14 @@ public class GradeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateGrade(@PathVariable Long id, @RequestBody GradeRequestApiDto dto){
-        GradeResponseApiDto responseDto = service.updateGrade(id, dto);
+    public ResponseEntity<?> updateGrade(@PathVariable Long id, @RequestBody GradeRequestApiDto requestApiDto){
+        GradeResponseApiDto responseApiDto = service.updateGrade(id, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/grades")
                 .path("/{id}")
-                .buildAndExpand(responseDto.getId())
+                .buildAndExpand(responseApiDto.getId())
                 .toUri();
-        if (responseDto.getId().equals(id)){
+        if (responseApiDto.getId().equals(id)){
             return ResponseEntity.ok(uri);
         }
         return ResponseEntity.created(uri).body(uri);

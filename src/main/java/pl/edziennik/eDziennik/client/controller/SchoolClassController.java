@@ -21,19 +21,19 @@ public class SchoolClassController {
 
 
     @PostMapping()
-    public ResponseEntity<?> createSchoolClass(@RequestBody SchoolClassRequestApiDto dto) {
-        SchoolClassResponseApiDto newSchoolClass = service.createSchoolClass(dto);
+    public ResponseEntity<?> createSchoolClass(@RequestBody SchoolClassRequestApiDto requestApiDto) {
+        SchoolClassResponseApiDto responseApiDto = service.createSchoolClass(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(newSchoolClass.getId())
+                .buildAndExpand(responseApiDto.getId())
                 .toUri();
         return ResponseEntity.created(uri).body(uri);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<SchoolClassResponseApiDto> findSchoolClassById(@PathVariable Long id) {
-        SchoolClassResponseApiDto findedSchoolClassDto = service.findSchoolClassById(id);
-        return ResponseEntity.ok(findedSchoolClassDto);
+        SchoolClassResponseApiDto responseApiDto = service.findSchoolClassById(id);
+        return ResponseEntity.ok(responseApiDto);
     }
 
     @GetMapping()

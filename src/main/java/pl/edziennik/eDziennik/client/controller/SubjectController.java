@@ -19,11 +19,11 @@ public class SubjectController {
     private final SubjectService service;
 
     @PostMapping()
-    public ResponseEntity<?> createSubject(@RequestBody SubjectRequestApiDto dto){
-        SubjectResponseApiDto subject = service.createNewSubject(dto);
+    public ResponseEntity<?> createSubject(@RequestBody SubjectRequestApiDto requestApiDto){
+        SubjectResponseApiDto responseApiDto = service.createNewSubject(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(subject.getId())
+                .buildAndExpand(responseApiDto.getId())
                 .toUri();
         return ResponseEntity.created(uri).body(uri);
     }

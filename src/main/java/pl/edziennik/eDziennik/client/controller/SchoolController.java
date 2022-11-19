@@ -18,11 +18,11 @@ class SchoolController {
     private final SchoolService service;
 
     @PostMapping()
-    public ResponseEntity<?> createNewSchool(@RequestBody SchoolRequestApiDto dto) {
-        SchoolResponseApiDto newSchool = service.createNewSchool(dto);
+    public ResponseEntity<?> createNewSchool(@RequestBody SchoolRequestApiDto requestApiDto) {
+        SchoolResponseApiDto responseApiDto = service.createNewSchool(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(newSchool.getId())
+                .buildAndExpand(responseApiDto.getId())
                 .toUri();
         return ResponseEntity.created(uri).body(uri);
     }
@@ -34,8 +34,8 @@ class SchoolController {
 
     @GetMapping("/{id}")
     public ResponseEntity<SchoolResponseApiDto> findSchoolById(@PathVariable Long id){
-        SchoolResponseApiDto findedSchool = service.findSchoolById(id);
-        return ResponseEntity.ok(findedSchool);
+        SchoolResponseApiDto responseApiDto = service.findSchoolById(id);
+        return ResponseEntity.ok(responseApiDto);
     }
 
     @DeleteMapping("/{id}")
@@ -45,14 +45,14 @@ class SchoolController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateSchool(@PathVariable Long id, @RequestBody SchoolRequestApiDto dto){
-        SchoolResponseApiDto responseDto = service.updateSchool(id, dto);
+    public ResponseEntity<?> updateSchool(@PathVariable Long id, @RequestBody SchoolRequestApiDto requestApiDto){
+        SchoolResponseApiDto responseApiDto = service.updateSchool(id, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/schools")
                 .path("/{id}")
-                .buildAndExpand(responseDto.getId())
+                .buildAndExpand(responseApiDto.getId())
                 .toUri();
-        if (responseDto.getId().equals(id)){
+        if (responseApiDto.getId().equals(id)){
             return ResponseEntity.ok(uri);
         }
         return ResponseEntity.created(uri).body(uri);

@@ -22,14 +22,14 @@ public class StudentSubjectController {
 
 
     @PatchMapping("/{idStudent}/subjects")
-    public ResponseEntity<?> assignStudentToSubject(@RequestBody StudentSubjectRequestDto dto, @PathVariable Long idStudent){
-        service.assignStudentToSubject(dto, idStudent);
+    public ResponseEntity<?> assignStudentToSubject(@RequestBody StudentSubjectRequestDto requestApiDto, @PathVariable Long idStudent){
+        service.assignStudentToSubject(requestApiDto, idStudent);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{idStudent}/subjects/{idSubject}/ratings")
-    public ResponseEntity<?> assignGradeToStudentSubject(@RequestBody StudentSubjectGradeRequestDto dto, @PathVariable Long idStudent, @PathVariable Long idSubject, Principal teacher){
-        service.assignGradeToStudentSubject(idStudent, idSubject, dto, teacher.getName());
+    public ResponseEntity<?> assignGradeToStudentSubject(@RequestBody StudentSubjectGradeRequestDto requestApiDto, @PathVariable Long idStudent, @PathVariable Long idSubject, Principal teacher){
+        service.assignGradeToStudentSubject(idStudent, idSubject, requestApiDto, teacher.getName());
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .buildAndExpand()
                 .toUri();
@@ -38,14 +38,14 @@ public class StudentSubjectController {
 
     @GetMapping("/{idStudent}/subjects/{idSubject}/ratings")
     public ResponseEntity<StudentSubjectGradesResponseDto> getStudentSubjectRatings(@PathVariable Long idStudent, @PathVariable Long idSubject){
-        StudentSubjectGradesResponseDto responseDto = service.getStudentSubjectRatings(idStudent, idSubject);
-        return ResponseEntity.ok(responseDto);
+        StudentSubjectGradesResponseDto responseApiDto = service.getStudentSubjectRatings(idStudent, idSubject);
+        return ResponseEntity.ok(responseApiDto);
     }
 
     @GetMapping("/{idStudent}/subjects/ratings")
     public ResponseEntity<AllStudentSubjectGradesResponseDto> getStudentAllSubjectsRatings(@PathVariable Long idStudent){
-        AllStudentSubjectGradesResponseDto responseDto = service.getStudentAllSubjectsRatings(idStudent);
-        return ResponseEntity.ok(responseDto);
+        AllStudentSubjectGradesResponseDto responseApiDto = service.getStudentAllSubjectsRatings(idStudent);
+        return ResponseEntity.ok(responseApiDto);
     }
 
 

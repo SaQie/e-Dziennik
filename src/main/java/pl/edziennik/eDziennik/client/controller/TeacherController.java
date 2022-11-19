@@ -24,19 +24,19 @@ class TeacherController {
 
     }
     @PostMapping()
-    public ResponseEntity<?> register(@RequestBody TeacherRequestApiDto dto){
-        TeacherResponseApiDto savedTeacher = service.register(dto);
+    public ResponseEntity<?> register(@RequestBody TeacherRequestApiDto requestApiDto){
+        TeacherResponseApiDto responseApiDto = service.register(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(savedTeacher.getId())
+                .buildAndExpand(responseApiDto.getId())
                 .toUri();
         return ResponseEntity.created(uri).body(uri);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TeacherResponseApiDto> findTeacher(@PathVariable Long id){
-        TeacherResponseApiDto dto = service.findTeacherById(id);
-        return ResponseEntity.ok(dto);
+        TeacherResponseApiDto responseApiDto = service.findTeacherById(id);
+        return ResponseEntity.ok(responseApiDto);
     }
 
     @GetMapping

@@ -19,11 +19,11 @@ public class StudentController {
     private final StudentService service;
 
     @PostMapping()
-    public ResponseEntity<?> register(@RequestBody StudentRequestApiDto dto){
-        StudentResponseApiDto savedStudent = service.register(dto);
+    public ResponseEntity<?> register(@RequestBody StudentRequestApiDto requestApiDto){
+        StudentResponseApiDto responseApiDto = service.register(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(savedStudent.getId())
+                .buildAndExpand(responseApiDto.getId())
                 .toUri();
         return ResponseEntity.created(uri).body(uri);
     }
@@ -36,8 +36,8 @@ public class StudentController {
 
     @GetMapping("/{id}")
     public ResponseEntity<StudentResponseApiDto> findStudentById(@PathVariable Long id){
-        StudentResponseApiDto dto = service.findStudentById(id);
-        return ResponseEntity.ok(dto);
+        StudentResponseApiDto responseApiDto = service.findStudentById(id);
+        return ResponseEntity.ok(responseApiDto);
     }
 
     @GetMapping
