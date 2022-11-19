@@ -25,7 +25,7 @@ class TeacherController {
     }
     @PostMapping()
     public ResponseEntity<?> register(@RequestBody TeacherRequestApiDto requestApiDto){
-        TeacherResponseApiDto responseApiDto = service.register(dto);
+        TeacherResponseApiDto responseApiDto = service.register(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(responseApiDto.getId())
