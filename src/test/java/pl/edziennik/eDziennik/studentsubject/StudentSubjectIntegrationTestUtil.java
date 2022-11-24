@@ -1,6 +1,5 @@
 package pl.edziennik.eDziennik.studentsubject;
 
-import pl.edziennik.eDziennik.server.studensubject.domain.dto.request.StudentSubjectGradeRequestDto;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.request.StudentSubjectRequestDto;
 import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.subject.SubjectIntegrationTestUtil;
@@ -24,8 +23,5 @@ public class StudentSubjectIntegrationTestUtil {
         return new StudentSubjectRequestDto(idSubject);
     }
 
-    public StudentSubjectGradeRequestDto prepareStudentSubjectGradeRequestDto(Long idGrade){
-        return new StudentSubjectGradeRequestDto(idGrade);
-    }
 
 }

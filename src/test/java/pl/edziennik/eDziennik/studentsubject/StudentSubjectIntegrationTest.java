@@ -12,9 +12,8 @@ import pl.edziennik.eDziennik.grade.GradeIntegrationTestUtil;
 import pl.edziennik.eDziennik.server.basics.BaseDao;
 import pl.edziennik.eDziennik.server.grade.domain.dto.GradeRequestApiDto;
 import pl.edziennik.eDziennik.server.grade.services.GradeService;
-import pl.edziennik.eDziennik.server.studensubject.domain.dto.request.StudentSubjectGradeRequestDto;
+import pl.edziennik.eDziennik.server.grade.services.managment.GradeManagmentService;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.request.StudentSubjectRequestDto;
-import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.AllStudentSubjectGradesResponseDto;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentSubjectGradesResponseDto;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentSubjectsResponseDto;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.SubjectGradesResponseDto;
@@ -34,7 +33,8 @@ import pl.edziennik.eDziennik.teacher.TeacherIntegrationTestUtil;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -59,7 +59,7 @@ public class StudentSubjectIntegrationTest extends BaseTest {
     private SubjectService subjectService;
 
     @Autowired
-    private GradeService gradeService;
+    private GradeManagmentService gradeManagmentService;
 
     public StudentSubjectIntegrationTest() {
         this.util = new StudentSubjectIntegrationTestUtil();
@@ -158,20 +158,16 @@ public class StudentSubjectIntegrationTest extends BaseTest {
         Long subjectId = subjectService.createNewSubject(expectedSubject).getId();
 
         GradeRequestApiDto expectedGrade = gradeUtil.prepareRequestApi(5, 5);
-        Long gradeId = gradeService.addNewGrade(expectedGrade).getId();
+        expectedGrade.setTeacherName(find(Teacher.class, teacherId).getUsername());
 
         StudentSubjectRequestDto studentSubjectRequestDto = util.prepareStudentSubjectRequestDto(subjectId);
         service.assignStudentToSubject(studentSubjectRequestDto, studentId);
 
-        StudentSubjectGradeRequestDto requestDto = util.prepareStudentSubjectGradeRequestDto(gradeId);
-
-        String teacherUsername = find(Teacher.class, teacherId).getUsername();
-
         // when
-        service.assignGradeToStudentSubject(studentId,subjectId,requestDto,teacherUsername);
+        gradeManagmentService.assignGradeToStudentSubject(studentId,subjectId,expectedGrade);
 
         // then
-        StudentSubjectGradesResponseDto studentSubjectGrades = service.getStudentSubjectRatings(studentId, subjectId);
+        StudentSubjectGradesResponseDto studentSubjectGrades = service.getStudentSubjectGrades(studentId, subjectId);
 
         SubjectGradesResponseDto actualSubject = studentSubjectGrades.getSubject();
         assertEquals(expectedSubject.getName(), actualSubject.getName());

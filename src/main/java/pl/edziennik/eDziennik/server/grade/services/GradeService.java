@@ -17,4 +17,5 @@ public interface GradeService {
     void deleteRatingById(final Long id);
 
     List<GradeResponseApiDto> findAllGrades();
+
 }

@@ -5,7 +5,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.Optional;
 
-public final class PersistanceHelper {
+public abstract class PersistanceHelper {
 
     private PersistanceHelper() {
     }

@@ -14,6 +14,7 @@ import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherResponseApiDto;
 import pl.edziennik.eDziennik.server.teacher.services.TeacherService;
+import pl.edziennik.eDziennik.server.utils.ExecutionTimer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;

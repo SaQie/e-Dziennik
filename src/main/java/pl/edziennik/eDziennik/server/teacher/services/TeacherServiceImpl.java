@@ -10,6 +10,7 @@ import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherResponseApiDto;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.mapper.TeacherMapper;
+import pl.edziennik.eDziennik.server.utils.ExecutionTimer;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;

@@ -23,7 +23,7 @@ public class GradeController {
     private final GradeService service;
 
     @PostMapping()
-    public ResponseEntity<ApiResponse> createNewRating(@RequestBody GradeRequestApiDto requestApiDto){
+    public ResponseEntity<ApiResponse> createNewGrade(@RequestBody GradeRequestApiDto requestApiDto){
         GradeResponseApiDto responseApiDto = service.addNewGrade(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -33,21 +33,21 @@ public class GradeController {
     }
 
     @GetMapping()
-    public ResponseEntity<ApiResponse> findAllRatings(){
+    public ResponseEntity<ApiResponse> findAllGrades(){
         List<GradeResponseApiDto> responseApiDtos = service.findAllGrades();
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ResponseEntity.ok(ApiResponse.buildApiResponse(HttpMethod.GET,HttpStatus.OK, responseApiDtos, uri));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse> findRatingById(@PathVariable Long id){
+    public ResponseEntity<ApiResponse> findGradeById(@PathVariable Long id){
         GradeResponseApiDto responseApiDto = service.findGradeById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ResponseEntity.ok(ApiResponse.buildApiResponse(HttpMethod.GET,HttpStatus.OK, responseApiDto, uri));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse> deleteRatingById(@PathVariable Long id){
+    public ResponseEntity<ApiResponse> deleteGradeById(@PathVariable Long id){
         service.deleteRatingById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ResponseEntity.ok(ApiResponse.buildApiResponse(HttpMethod.DELETE,HttpStatus.OK,"Grade deleted successfully",uri));

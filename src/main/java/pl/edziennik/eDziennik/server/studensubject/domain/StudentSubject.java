@@ -35,7 +35,7 @@ public class StudentSubject implements Serializable {
     private Subject subject;
 
 
-    public void addRating(Grade grade){
+    public void addGrade(Grade grade){
         this.grades.add(grade);
         grade.setStudentSubject(this);
     }

@@ -2,15 +2,13 @@ package pl.edziennik.eDziennik.server.studensubject.domain.dto.mapper;
 
 import pl.edziennik.eDziennik.server.grade.domain.Grade;
 import pl.edziennik.eDziennik.server.studensubject.domain.StudentSubject;
-import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.AllStudentSubjectGradesResponseDto;
-import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentSubjectGradesResponseDto;
-import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentSubjectsResponseDto;
-import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.SubjectGradesResponseDto;
+import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.*;
 import pl.edziennik.eDziennik.server.student.domain.Student;
 import pl.edziennik.eDziennik.server.subject.domain.Subject;
 import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectResponseApiDto;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class StudentSubjectMapper {
@@ -45,6 +43,13 @@ public class StudentSubjectMapper {
         return new StudentSubjectGradesResponseDto(student.getId(), student.getFirstName(), student.getLastName(), subjectGradesResponseDto);
     }
 
+    public static StudentSubjectResponseDto toStudentSubjectResponseDto(StudentSubject entity){
+        Student student = entity.getStudent();
+        Subject subject = entity.getSubject();
+        List<SubjectResponseApiDto> subjects = List.of(new SubjectResponseApiDto(subject.getId(), subject.getName(), subject.getDescription(), subject.getTeacher().getId()));
+        return new StudentSubjectResponseDto(student.getId(), student.getFirstName(),student.getLastName(), subjects);
+    }
+
 
     public static StudentSubjectsResponseDto toStudentSubjectsResponseDto(List<StudentSubject> entites){
         Student student = entites.get(0).getStudent();
@@ -56,5 +61,7 @@ public class StudentSubjectMapper {
         }
         return new StudentSubjectsResponseDto(student.getId(), student.getFirstName(), student.getLastName(), subjects);
     }
+
+
 
 }
