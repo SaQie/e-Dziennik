@@ -8,7 +8,6 @@ import pl.edziennik.eDziennik.server.subject.domain.Subject;
 import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectResponseApiDto;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class StudentSubjectMapper {
@@ -16,7 +15,7 @@ public class StudentSubjectMapper {
     private StudentSubjectMapper() {
     }
 
-    public static AllStudentSubjectGradesResponseDto toAllStudentSubjectRatingDto(List<StudentSubject> entites) {
+    public static AllStudentsGradesInSubjectsDto toAllStudentSubjectRatingDto(List<StudentSubject> entites) {
 
         List<SubjectGradesResponseDto> subjectRatingsList = new ArrayList<>();
         for (StudentSubject entity : entites){
@@ -28,10 +27,10 @@ public class StudentSubjectMapper {
             subjectRatingsList.add(new SubjectGradesResponseDto(subject.getId(), subject.getName(), grades));
         }
         Student student = entites.get(0).getStudent();
-        return new AllStudentSubjectGradesResponseDto(student.getId(), student.getFirstName(), student.getLastName(), subjectRatingsList);
+        return new AllStudentsGradesInSubjectsDto(student.getId(), student.getFirstName(), student.getLastName(), subjectRatingsList);
     }
 
-    public static StudentSubjectGradesResponseDto toStudentSubjectRatingsDto(StudentSubject entity) {
+    public static StudentGradesInSubject toStudentSubjectRatingsDto(StudentSubject entity) {
         List<SubjectGradesResponseDto.GradesDto> ratings = new ArrayList<>();
 
         for (Grade grade : entity.getGrades()) {
@@ -40,7 +39,7 @@ public class StudentSubjectMapper {
         Subject subject = entity.getSubject();
         SubjectGradesResponseDto subjectGradesResponseDto = new SubjectGradesResponseDto(subject.getId(), subject.getName(), ratings);
         Student student = entity.getStudent();
-        return new StudentSubjectGradesResponseDto(student.getId(), student.getFirstName(), student.getLastName(), subjectGradesResponseDto);
+        return new StudentGradesInSubject(student.getId(), student.getFirstName(), student.getLastName(), subjectGradesResponseDto);
     }
 
     public static StudentSubjectResponseDto toStudentSubjectResponseDto(StudentSubject entity){

@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class AllStudentSubjectGradesResponseDto {
+public class AllStudentsGradesInSubjectsDto {
 
     private final Long id;
 
@@ -14,7 +14,7 @@ public class AllStudentSubjectGradesResponseDto {
 
     private final List<SubjectGradesResponseDto> subjects;
 
-    public AllStudentSubjectGradesResponseDto(Long id, String firstName, String lastName, List<SubjectGradesResponseDto> subjects) {
+    public AllStudentsGradesInSubjectsDto(Long id, String firstName, String lastName, List<SubjectGradesResponseDto> subjects) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

@@ -4,14 +4,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.exceptions.BusinessException;
-import pl.edziennik.eDziennik.server.grade.dao.GradeDao;
 import pl.edziennik.eDziennik.server.grade.domain.Grade;
 import pl.edziennik.eDziennik.server.grade.domain.dto.GradeRequestApiDto;
 import pl.edziennik.eDziennik.server.grade.services.GradeService;
 import pl.edziennik.eDziennik.server.studensubject.dao.StudentSubjectDao;
 import pl.edziennik.eDziennik.server.studensubject.domain.StudentSubject;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.mapper.StudentSubjectMapper;
-import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentSubjectGradesResponseDto;
+import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentGradesInSubject;
 import pl.edziennik.eDziennik.server.studensubject.services.StudentSubjectPrivService;
 import pl.edziennik.eDziennik.server.teacher.dao.TeacherDao;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
@@ -30,7 +29,7 @@ public class GradeManagmentServiceImpl implements GradeManagmentService{
 
     @Override
     @Transactional
-    public StudentSubjectGradesResponseDto assignGradeToStudentSubject(Long idStudent, Long idSubject, GradeRequestApiDto dto) {
+    public StudentGradesInSubject assignGradeToStudentSubject(Long idStudent, Long idSubject, GradeRequestApiDto dto) {
         StudentSubject studentSubject = privService.checkStudentSubjectExist(idSubject, idStudent);
         Teacher teacher = teacherDao.getByUsername(dto.getTeacherName());
         Long gradeId = gradeService.addNewGrade(dto).getId();
@@ -50,7 +49,7 @@ public class GradeManagmentServiceImpl implements GradeManagmentService{
     }
 
     @Override
-    public StudentSubjectGradesResponseDto updateStudentSubjectGrade(Long idStudent, Long idSubject, Long idGrade, GradeRequestApiDto requestApiDto) {
+    public StudentGradesInSubject updateStudentSubjectGrade(Long idStudent, Long idSubject, Long idGrade, GradeRequestApiDto requestApiDto) {
         StudentSubject studentSubject = privService.checkStudentSubjectExist(idSubject, idStudent);
         Optional<Grade> optionalGrade = dao.find(Grade.class, idGrade);
         if (optionalGrade.isPresent()){

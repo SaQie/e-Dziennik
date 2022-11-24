@@ -44,6 +44,7 @@ public class GradeController {
         GradeResponseApiDto responseApiDto = service.findGradeById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ResponseEntity.ok(ApiResponse.buildApiResponse(HttpMethod.GET,HttpStatus.OK, responseApiDto, uri));
+        
     }
 
     @DeleteMapping("/{id}")

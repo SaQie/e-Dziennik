@@ -8,10 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.eDziennik.server.basics.ApiResponse;
 import pl.edziennik.eDziennik.server.grade.domain.dto.GradeRequestApiDto;
-import pl.edziennik.eDziennik.server.grade.services.GradeService;
 import pl.edziennik.eDziennik.server.grade.services.managment.GradeManagmentService;
-import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentSubjectGradesResponseDto;
-import pl.edziennik.eDziennik.server.studensubject.services.StudentSubjectService;
+import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentGradesInSubject;
 
 import java.net.URI;
 import java.security.Principal;
@@ -27,7 +25,7 @@ public class GradeManagmentController {
     @PostMapping("/students/{idStudent}/subjects/{idSubject}/grades")
     public ResponseEntity<ApiResponse> assignGradeToStudentSubject(@PathVariable Long idStudent, @PathVariable Long idSubject, @RequestBody GradeRequestApiDto requestApiDto, Principal teacher){
         requestApiDto.setTeacherName(teacher.getName());
-        StudentSubjectGradesResponseDto responseApiDto = service.assignGradeToStudentSubject(idStudent, idSubject, requestApiDto);
+        StudentGradesInSubject responseApiDto = service.assignGradeToStudentSubject(idStudent, idSubject, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/students/{idStudent}/subjects/{idSubject}/grades")
                 .buildAndExpand(idStudent,idSubject)
@@ -48,7 +46,7 @@ public class GradeManagmentController {
     @PutMapping("/students/{idStudent}/subjects/{idSubject}/grades/{idGrade}")
     public ResponseEntity<ApiResponse> updateStudentSubjectGrade(@PathVariable Long idStudent, @PathVariable Long idSubject, @PathVariable Long idGrade, @RequestBody GradeRequestApiDto requestApiDto, Principal teacher){
         requestApiDto.setTeacherName(teacher.getName());
-        StudentSubjectGradesResponseDto responseApiDto = service.updateStudentSubjectGrade(idStudent, idSubject, idGrade, requestApiDto);
+        StudentGradesInSubject responseApiDto = service.updateStudentSubjectGrade(idStudent, idSubject, idGrade, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/students/{idStudent}/subjects/{idSubject}/grades")
                 .buildAndExpand(idStudent,idSubject)
