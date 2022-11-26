@@ -25,7 +25,7 @@ class SubjectServiceImpl implements SubjectService{
     @Transactional
     public SubjectResponseApiDto createNewSubject(SubjectRequestApiDto dto) {
         Subject subject = SubjectMapper.toEntity(dto);
-        privService.checkTeacherExist(dto.getTeacher(), subject);
+        privService.checkTeacherExist(dto.getIdTeacher(), subject);
         Subject savedSubject = dao.saveOrUpdate(subject);
         return SubjectMapper.toDto(savedSubject);
     }

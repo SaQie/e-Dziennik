@@ -52,12 +52,12 @@ public class SchoolIntegrationTest extends BaseTest {
         School actual = find(School.class, id);
 
         assertEquals(expected.getName(), actual.getName());
-        assertEquals(expected.getAdress(), actual.getAdress());
+        assertEquals(expected.getAddress(), actual.getAdress());
         assertEquals(expected.getNip(), actual.getNip());
         assertEquals(expected.getCity(), actual.getCity());
         assertEquals(expected.getPostalCode(), actual.getPostalCode());
         assertEquals(expected.getRegon(), actual.getRegon());
-        assertEquals(expected.getSchoolLevel(), actual.getSchoolLevel().getId());
+        assertEquals(expected.getIdSchoolLevel(), actual.getSchoolLevel().getId());
     }
 
     @Test
@@ -76,12 +76,12 @@ public class SchoolIntegrationTest extends BaseTest {
         School actual = find(School.class, updated);
         assertNotNull(actual);
         assertEquals(expected.getName(), actual.getName());
-        assertEquals(expected.getAdress(), actual.getAdress());
+        assertEquals(expected.getAddress(), actual.getAdress());
         assertEquals(expected.getNip(), actual.getNip());
         assertEquals(expected.getCity(), actual.getCity());
         assertEquals(expected.getPostalCode(), actual.getPostalCode());
         assertEquals(expected.getRegon(), actual.getRegon());
-        assertEquals(expected.getSchoolLevel(), actual.getSchoolLevel().getId());
+        assertEquals(expected.getIdSchoolLevel(), actual.getSchoolLevel().getId());
 
     }
 
@@ -109,12 +109,12 @@ public class SchoolIntegrationTest extends BaseTest {
 
         // then
         assertEquals(expected.getName(), actual.getName());
-        assertEquals(expected.getAdress(), actual.getAdress());
+        assertEquals(expected.getAddress(), actual.getAdress());
         assertEquals(expected.getNip(), actual.getNip());
         assertEquals(expected.getCity(), actual.getCity());
         assertEquals(expected.getPostalCode(), actual.getPostalCode());
         assertEquals(expected.getRegon(), actual.getRegon());
-        assertEquals(expected.getSchoolLevel(), actual.getIdSchoolLevel());
+        assertEquals(expected.getIdSchoolLevel(), actual.getIdSchoolLevel());
     }
 
     @Test

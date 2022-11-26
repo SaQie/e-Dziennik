@@ -13,7 +13,7 @@ import pl.edziennik.eDziennik.server.basics.BaseDao;
 import pl.edziennik.eDziennik.server.grade.domain.dto.GradeRequestApiDto;
 import pl.edziennik.eDziennik.server.grade.services.managment.GradeManagmentService;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.request.StudentSubjectRequestDto;
-import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentGradesInSubject;
+import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentGradesInSubjectDto;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentSubjectsResponseDto;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.SubjectGradesResponseDto;
 import pl.edziennik.eDziennik.server.studensubject.services.StudentSubjectService;
@@ -135,7 +135,7 @@ public class StudentSubjectIntegrationTest extends BaseTest {
         Long studentId = studentService.register(studentDto).getId();
 
         StudentSubjectRequestDto requestDto = util.prepareStudentSubjectRequestDto(999L);
-        Long subjectId = requestDto.getSubject();
+        Long subjectId = requestDto.getIdSubject();
 
         // when
         Exception exception = assertThrows(EntityNotFoundException.class, () -> service.assignStudentToSubject(requestDto, studentId));
@@ -166,7 +166,7 @@ public class StudentSubjectIntegrationTest extends BaseTest {
         gradeManagmentService.assignGradeToStudentSubject(studentId,subjectId,expectedGrade);
 
         // then
-        StudentGradesInSubject studentSubjectGrades = service.getStudentSubjectGrades(studentId, subjectId);
+        StudentGradesInSubjectDto studentSubjectGrades = service.getStudentSubjectGrades(studentId, subjectId);
 
         SubjectGradesResponseDto actualSubject = studentSubjectGrades.getSubject();
         assertEquals(expectedSubject.getName(), actualSubject.getName());

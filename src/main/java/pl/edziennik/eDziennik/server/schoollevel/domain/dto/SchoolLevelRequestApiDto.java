@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 @Getter
 public class SchoolLevelRequestApiDto {
 
+    public static final String ID = "id";
+    public static final String NAME = "name";
+
     private Long id;
     private String name;
 

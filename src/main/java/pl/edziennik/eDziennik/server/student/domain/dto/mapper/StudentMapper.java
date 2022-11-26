@@ -17,7 +17,7 @@ public class StudentMapper {
                 entity.getId(),
                 entity.getFirstName(),
                 entity.getLastName(),
-                entity.getAdress(),
+                entity.getAddress(),
                 entity.getPostalCode(),
                 entity.getCity(),
                 entity.getPESEL(),

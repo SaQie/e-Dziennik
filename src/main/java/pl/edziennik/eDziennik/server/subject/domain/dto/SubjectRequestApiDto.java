@@ -9,8 +9,12 @@ import lombok.NoArgsConstructor;
 @Getter
 public class SubjectRequestApiDto{
 
+    public static final String NAME = "name";
+    public static final String DESCRIPTION = "description";
+    public static final String ID_TEACHER = "idTeacher";
+
     private String name;
     private String description;
-    private Long teacher;
+    private Long idTeacher;
 
 }

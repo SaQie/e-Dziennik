@@ -35,7 +35,7 @@ class TeacherServiceImpl implements TeacherService{
     public TeacherResponseApiDto register(TeacherRequestApiDto dto) {
         Teacher teacher = TeacherMapper.toEntity(dto);
         teacher.setPassword(passwordEncoder.encode(dto.getPassword()));
-        privService.checkSchoolExist(dto.getSchool(), teacher);
+        privService.checkSchoolExist(dto.getIdSchool(), teacher);
         privService.checkRoleExist(dto.getRole(), teacher);
         Teacher savedTeacher = dao.saveOrUpdate(teacher);
         return TeacherMapper.toDto(savedTeacher);
@@ -80,7 +80,7 @@ class TeacherServiceImpl implements TeacherService{
         Optional<Teacher> optionalTeacher = dao.find(id);
         if (optionalTeacher.isPresent()){
             Teacher teacher = optionalTeacher.get();
-            teacher.setAdress(requestApiDto.getAdress());
+            teacher.setAddress(requestApiDto.getAddress());
             teacher.setFirstName(requestApiDto.getFirstName());
             teacher.setLastName(requestApiDto.getLastName());
             teacher.setCity(requestApiDto.getCity());

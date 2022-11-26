@@ -10,7 +10,7 @@ import pl.edziennik.eDziennik.server.grade.services.GradeService;
 import pl.edziennik.eDziennik.server.studensubject.dao.StudentSubjectDao;
 import pl.edziennik.eDziennik.server.studensubject.domain.StudentSubject;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.mapper.StudentSubjectMapper;
-import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentGradesInSubject;
+import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentGradesInSubjectDto;
 import pl.edziennik.eDziennik.server.studensubject.services.StudentSubjectPrivService;
 import pl.edziennik.eDziennik.server.teacher.dao.TeacherDao;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
@@ -29,7 +29,7 @@ public class GradeManagmentServiceImpl implements GradeManagmentService{
 
     @Override
     @Transactional
-    public StudentGradesInSubject assignGradeToStudentSubject(Long idStudent, Long idSubject, GradeRequestApiDto dto) {
+    public StudentGradesInSubjectDto assignGradeToStudentSubject(Long idStudent, Long idSubject, GradeRequestApiDto dto) {
         StudentSubject studentSubject = privService.checkStudentSubjectExist(idSubject, idStudent);
         Teacher teacher = teacherDao.getByUsername(dto.getTeacherName());
         Long gradeId = gradeService.addNewGrade(dto).getId();
@@ -49,7 +49,7 @@ public class GradeManagmentServiceImpl implements GradeManagmentService{
     }
 
     @Override
-    public StudentGradesInSubject updateStudentSubjectGrade(Long idStudent, Long idSubject, Long idGrade, GradeRequestApiDto requestApiDto) {
+    public StudentGradesInSubjectDto updateStudentSubjectGrade(Long idStudent, Long idSubject, Long idGrade, GradeRequestApiDto requestApiDto) {
         StudentSubject studentSubject = privService.checkStudentSubjectExist(idSubject, idStudent);
         Optional<Grade> optionalGrade = dao.find(Grade.class, idGrade);
         if (optionalGrade.isPresent()){
@@ -59,7 +59,7 @@ public class GradeManagmentServiceImpl implements GradeManagmentService{
             grade.setWeight(requestApiDto.getWeight());
             return StudentSubjectMapper.toStudentSubjectRatingsDto(studentSubject);
         }
-        throw new BusinessException("You cannot add new Grade with this method", "idGrade");
+        throw new BusinessException("You cannot add new Grade with this method");
     }
 
 

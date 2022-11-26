@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 public class BasicUser{
 
-    private String adress;
+    private String address;
     private String username;
     private String password;
     private String firstName;

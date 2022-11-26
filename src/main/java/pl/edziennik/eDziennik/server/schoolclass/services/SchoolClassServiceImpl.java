@@ -29,8 +29,8 @@ class SchoolClassServiceImpl implements SchoolClassService{
     @Transactional
     public SchoolClassResponseApiDto createSchoolClass(SchoolClassRequestApiDto dto) {
         SchoolClass schoolClass = SchoolClassMapper.toEntity(dto);
-        privService.checkSupervisingTeacherExist(dto.getSupervisingTeacherId(), schoolClass);
-        privService.checkSchoolExist(dto.getSchool(), schoolClass);
+        privService.checkSupervisingTeacherExist(dto.getIdSupervisingTeacher(), schoolClass);
+        privService.checkSchoolExist(dto.getIdSchool(), schoolClass);
         SchoolClass savedSchoolClass = dao.saveOrUpdate(schoolClass);
         return SchoolClassMapper.toDto(savedSchoolClass);
     }
@@ -63,9 +63,9 @@ class SchoolClassServiceImpl implements SchoolClassService{
 
         if (schoolClassOptional.isPresent()){
             SchoolClass schoolClass = schoolClassOptional.get();
-            schoolClass.setSchool(dao.get(School.class,dto.getSchool()));
+            schoolClass.setSchool(dao.get(School.class,dto.getIdSchool()));
             schoolClass.setClassName(dto.getClassName());
-            schoolClass.setTeacher(dao.get(Teacher.class, dto.getSupervisingTeacherId()));
+            schoolClass.setTeacher(dao.get(Teacher.class, dto.getIdSupervisingTeacher()));
             return SchoolClassMapper.toDto(schoolClass);
         }
 

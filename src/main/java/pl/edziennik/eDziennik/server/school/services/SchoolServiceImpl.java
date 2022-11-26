@@ -26,7 +26,7 @@ class SchoolServiceImpl implements SchoolService{
     @Transactional
     public SchoolResponseApiDto createNewSchool(SchoolRequestApiDto dto) {
         School school = SchoolMapper.toEntity(dto);
-        privService.findSchoolLevelAndAssignToSchool(school, dto.getSchoolLevel());
+        privService.findSchoolLevelAndAssignToSchool(school, dto.getIdSchoolLevel());
         School schoolAfterSave = dao.saveOrUpdate(school);
         return SchoolMapper.toDto(schoolAfterSave);
     }
@@ -61,7 +61,7 @@ class SchoolServiceImpl implements SchoolService{
             school.setCity(dto.getCity());
             school.setName(dto.getName());
             school.setNip(dto.getNip());
-            school.setAdress(dto.getAdress());
+            school.setAdress(dto.getAddress());
             school.setRegon(dto.getRegon());
             school.setPhoneNumber(dto.getPhoneNumber());
             school.setPostalCode(dto.getPostalCode());

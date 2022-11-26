@@ -10,7 +10,7 @@ import pl.edziennik.eDziennik.server.studensubject.domain.StudentSubject;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.mapper.StudentSubjectMapper;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.request.StudentSubjectRequestDto;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.AllStudentsGradesInSubjectsDto;
-import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentGradesInSubject;
+import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentGradesInSubjectDto;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentSubjectResponseDto;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentSubjectsResponseDto;
 import pl.edziennik.eDziennik.server.teacher.dao.TeacherDao;
@@ -30,9 +30,9 @@ class StudentSubjectServiceImpl implements StudentSubjectService {
     @Override
     @Transactional
     public StudentSubjectResponseDto assignStudentToSubject(StudentSubjectRequestDto dto, Long idStudent) {
-        privService.isStudentSubjectAlreadyExist(dto.getSubject(), idStudent);
+        privService.isStudentSubjectAlreadyExist(dto.getIdSubject(), idStudent);
         StudentSubject studentSubject = new StudentSubject();
-        studentSubject.setSubject(privService.checkSubjectExist(dto.getSubject()));
+        studentSubject.setSubject(privService.checkSubjectExist(dto.getIdSubject()));
         studentSubject.setStudent(privService.checkStudentExist(idStudent));
         StudentSubject savedSubjectStudent = dao.saveOrUpdate(studentSubject);
         return StudentSubjectMapper.toStudentSubjectResponseDto(savedSubjectStudent);
@@ -41,7 +41,7 @@ class StudentSubjectServiceImpl implements StudentSubjectService {
 
 
     @Override
-    public StudentGradesInSubject getStudentSubjectGrades(Long idStudent, Long idSubject) {
+    public StudentGradesInSubjectDto getStudentSubjectGrades(Long idStudent, Long idSubject) {
         StudentSubject studentSubject = privService.checkStudentSubjectExist(idSubject, idStudent);
         return StudentSubjectMapper.toStudentSubjectRatingsDto(studentSubject);
     }

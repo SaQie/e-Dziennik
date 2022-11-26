@@ -3,7 +3,7 @@ package pl.edziennik.eDziennik.server.studensubject.domain.dto.response;
 import lombok.Getter;
 
 @Getter
-public class StudentGradesInSubject {
+public class StudentGradesInSubjectDto {
 
     private final Long id;
 
@@ -12,7 +12,7 @@ public class StudentGradesInSubject {
 
     private final SubjectGradesResponseDto subject;
 
-    public StudentGradesInSubject(Long id, String firstName, String lastName, SubjectGradesResponseDto subjects) {
+    public StudentGradesInSubjectDto(Long id, String firstName, String lastName, SubjectGradesResponseDto subjects) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

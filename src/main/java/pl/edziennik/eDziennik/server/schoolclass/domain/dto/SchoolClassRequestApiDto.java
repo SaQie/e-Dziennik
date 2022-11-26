@@ -9,7 +9,11 @@ import lombok.NoArgsConstructor;
 @Getter
 public class SchoolClassRequestApiDto{
 
+    public static final String CLASS_NAME = "className";
+    public static final String ID_SUPERVISING_TEACHER = "idSupervisingTeacher";
+    public static final String ID_SCHOOL = "idSchool";
+
     private String className;
-    private Long supervisingTeacherId;
-    private Long school;
+    private Long idSupervisingTeacher;
+    private Long idSchool;
 }

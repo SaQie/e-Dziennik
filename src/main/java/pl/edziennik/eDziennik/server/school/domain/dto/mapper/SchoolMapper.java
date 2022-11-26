@@ -27,7 +27,7 @@ public class SchoolMapper{
     public static School toEntity(SchoolRequestApiDto dto){
         return new School(
                 dto.getName(),
-                dto.getAdress(),
+                dto.getAddress(),
                 dto.getPostalCode(),
                 dto.getCity(),
                 dto.getNip(),

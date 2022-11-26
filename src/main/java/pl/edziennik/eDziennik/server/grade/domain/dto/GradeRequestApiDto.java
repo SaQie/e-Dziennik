@@ -10,6 +10,11 @@ import lombok.NoArgsConstructor;
 @Getter
 public class GradeRequestApiDto {
 
+    public static final String GRADE = "grade";
+    public static final String WEIGHT = "weight";
+    public static final String DESCRIPTION = "description";
+    public static final String TEACHER_NAME = "teacherName";
+
     private int grade;
     private int weight;
     private String description;

@@ -10,10 +10,21 @@ import lombok.NoArgsConstructor;
 @Getter
 public class TeacherRequestApiDto{
 
+    public static final String USERNAME = "username";
+    public static final String FIRST_NAME = "firstName";
+    public static final String LAST_NAME = "lastName";
+    public static final String ADDRESS = "username";
+    public static final String POSTAL_CODE = "postalCode";
+    public static final String CITY = "city";
+    public static final String PESEL = "pesel";
+    public static final String ROLE = "role";
+    public static final String PHONE_NUMBER = "phoneNumber";
+    public static final String ID_SCHOOL = "idSchool";
+
     private String username;
     private String firstName;
     private String lastName;
-    private String adress;
+    private String address;
     private String postalCode;
     private String city;
     private String pesel;
@@ -22,6 +33,6 @@ public class TeacherRequestApiDto{
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    private Long school;
+    private Long idSchool;
 
 }

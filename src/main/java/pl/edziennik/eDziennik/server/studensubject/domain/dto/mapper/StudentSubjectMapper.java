@@ -30,7 +30,7 @@ public class StudentSubjectMapper {
         return new AllStudentsGradesInSubjectsDto(student.getId(), student.getFirstName(), student.getLastName(), subjectRatingsList);
     }
 
-    public static StudentGradesInSubject toStudentSubjectRatingsDto(StudentSubject entity) {
+    public static StudentGradesInSubjectDto toStudentSubjectRatingsDto(StudentSubject entity) {
         List<SubjectGradesResponseDto.GradesDto> ratings = new ArrayList<>();
 
         for (Grade grade : entity.getGrades()) {
@@ -39,7 +39,7 @@ public class StudentSubjectMapper {
         Subject subject = entity.getSubject();
         SubjectGradesResponseDto subjectGradesResponseDto = new SubjectGradesResponseDto(subject.getId(), subject.getName(), ratings);
         Student student = entity.getStudent();
-        return new StudentGradesInSubject(student.getId(), student.getFirstName(), student.getLastName(), subjectGradesResponseDto);
+        return new StudentGradesInSubjectDto(student.getId(), student.getFirstName(), student.getLastName(), subjectGradesResponseDto);
     }
 
     public static StudentSubjectResponseDto toStudentSubjectResponseDto(StudentSubject entity){

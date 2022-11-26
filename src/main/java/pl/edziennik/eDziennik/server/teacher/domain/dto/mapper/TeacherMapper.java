@@ -18,7 +18,7 @@ public class TeacherMapper {
                     entity.getId(),
                     entity.getFirstName(),
                     entity.getLastName(),
-                    entity.getAdress(),
+                    entity.getAddress(),
                     entity.getPostalCode(),
                     entity.getCity(),
                     entity.getPESEL(),
@@ -31,7 +31,7 @@ public class TeacherMapper {
                 entity.getId(),
                 entity.getFirstName(),
                 entity.getLastName(),
-                entity.getAdress(),
+                entity.getAddress(),
                 entity.getPostalCode(),
                 entity.getCity(),
                 entity.getPESEL(),
@@ -42,7 +42,7 @@ public class TeacherMapper {
 
     public static Teacher toEntity(TeacherRequestApiDto dto) {
         return new Teacher(
-                dto.getAdress(),
+                dto.getAddress(),
                 dto.getUsername(),
                 dto.getPassword(),
                 dto.getFirstName(),

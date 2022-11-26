@@ -33,8 +33,8 @@ class StudentServiceImpl implements StudentService{
     public StudentResponseApiDto register(StudentRequestApiDto dto) {
         Student student = StudentMapper.toEntity(dto);
         student.setPassword(passwordEncoder.encode(dto.getPassword()));
-        privService.checkSchoolExist(dto.getSchool(), student);
-        privService.checkSchoolClassExist(dto.getSchoolClass(), student);
+        privService.checkSchoolExist(dto.getIdSchool(), student);
+        privService.checkSchoolClassExist(dto.getIdSchoolClass(), student);
         Student savedStudent = dao.saveOrUpdate(student);
         return StudentMapper.toDto(savedStudent);
     }
@@ -79,7 +79,7 @@ class StudentServiceImpl implements StudentService{
             Student student = optionalStudent.get();
             student.setFirstName(requestApiDto.getFirstName());
             student.setLastName(requestApiDto.getLastName());
-            student.setAdress(requestApiDto.getAdress());
+            student.setAddress(requestApiDto.getAdress());
             student.setCity(requestApiDto.getCity());
             student.setPESEL(requestApiDto.getPesel());
             student.setPostalCode(requestApiDto.getPostalCode());

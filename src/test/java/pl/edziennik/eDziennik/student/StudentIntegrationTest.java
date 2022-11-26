@@ -54,7 +54,7 @@ public class StudentIntegrationTest extends BaseTest {
         Student actual = find(Student.class, id);
         assertEquals(expected.getFirstName(), actual.getFirstName());
         assertEquals(expected.getLastName(), actual.getLastName());
-        assertEquals(expected.getAdress(), actual.getAdress());
+        assertEquals(expected.getAdress(), actual.getAddress());
         assertEquals(expected.getPesel(), actual.getPESEL());
         assertEquals(expected.getCity(), actual.getCity());
         assertEquals(expected.getUsername(), actual.getUsername());
@@ -79,7 +79,7 @@ public class StudentIntegrationTest extends BaseTest {
         Student actual = find(Student.class, updated);
         assertEquals(expected.getFirstName(), actual.getFirstName());
         assertEquals(expected.getLastName(), actual.getLastName());
-        assertEquals(expected.getAdress(), actual.getAdress());
+        assertEquals(expected.getAdress(), actual.getAddress());
         assertEquals(expected.getPesel(), actual.getPESEL());
         assertEquals(expected.getCity(), actual.getCity());
         assertEquals(expected.getUsername(), actual.getUsername());

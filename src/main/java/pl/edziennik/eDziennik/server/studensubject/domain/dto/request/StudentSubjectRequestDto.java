@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class StudentSubjectRequestDto {
 
-    private Long subject;
+    public static final String ID_SUBJECT = "idSubject";
+
+    private Long idSubject;
 
 }
