@@ -34,7 +34,7 @@ public class Grade implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Teacher teacher;
 
-    private LocalDate createdDate;
+    private LocalDateTime createdDate;
 
 
     public Grade(GradeConst grade, int weight, String description) {
@@ -45,16 +45,13 @@ public class Grade implements Serializable {
 
     @PrePersist
     protected void onCreate(){
-        this.createdDate = LocalDate.now();
+        this.createdDate = LocalDateTime.now();
     }
 
     @PreUpdate
     protected void onUpdate(){
-        this.createdDate = LocalDate.now();
+        this.createdDate = LocalDateTime.now();
     }
-
-
-
 
 
     public enum GradeConst {
