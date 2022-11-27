@@ -7,4 +7,3 @@ ALTER SEQUENCE subject_id_seq RESTART WITH 1;
 ALTER SEQUENCE student_subject_id_seq RESTART WITH 1;
 ALTER SEQUENCE school_level_id_seq RESTART WITH 1;
 ALTER SEQUENCE school_id_seq RESTART WITH 1;
-

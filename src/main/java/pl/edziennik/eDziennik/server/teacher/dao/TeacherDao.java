@@ -9,4 +9,6 @@ public interface TeacherDao extends IBaseDao<Teacher> {
 
     Teacher getByUsername(String username);
 
+    boolean isTeacherExist(String username);
+
 }

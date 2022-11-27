@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class TeacherRequestApiDto{
 
+    public static final String CLASS_NAME = TeacherRequestApiDto.class.getSimpleName();
+
     public static final String USERNAME = "username";
     public static final String FIRST_NAME = "firstName";
     public static final String LAST_NAME = "lastName";

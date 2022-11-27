@@ -77,13 +77,13 @@ public class TeacherIntegrationTestUtil {
 
     public TeacherRequestApiDto prepareTeacherRequestDto(final String username, final String firstName, final String pesel){
         return new TeacherRequestApiDto(
-                "Kamil",
-                "Nowak",
+                username,
+                firstName,
                 "Nowak",
                 "Lubavia",
                 "20-200",
                 "Warszawa",
-                "123123",
+                pesel,
                 null,
                 "123123123",
                 "asdasd",

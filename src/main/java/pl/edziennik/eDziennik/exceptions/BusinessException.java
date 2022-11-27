@@ -1,33 +1,29 @@
 package pl.edziennik.eDziennik.exceptions;
 
+import pl.edziennik.eDziennik.server.basics.ApiErrorsDto;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class BusinessException extends RuntimeException{
 
-    private BusinessExceptionPojo exceptionInfo;
+    private List<ApiErrorsDto> errors = new ArrayList<>();
 
-    // To mozna bardziej rozbudowac (jakims obiektem POJO) ktory bedzie mial w sobie pole i message do kazdego pola moze byc wiadomosc bledu
-    // czyli bedzie np.
-    // Arrays.asList("idSchool", "Nie udalo sie odnalezc szkoly", "idSchoolLevel" , "Poziom z x nie istnieje")
-    // i wtedy to zapakowac tutaj do konstruktora
-    // zrobic gettery
-    // i masz wskazania na pola ladnie i ich komunikat bledu :)
+    public BusinessException(List<ApiErrorsDto> errors) {
+        super();
+        this.errors = errors;
+    }
 
-    public BusinessException(BusinessExceptionPojo exceptionInfo) {
-        this.exceptionInfo = exceptionInfo;
+    public BusinessException(ApiErrorsDto error) {
+        super(error.getCause());
+        this.errors.add(error);
     }
 
     public BusinessException(String message) {
         super(message);
     }
 
-    public String getErrorFieldName(){
-        return exceptionInfo.getFieldName();
+    public List<ApiErrorsDto> getErrors() {
+        return errors;
     }
-
-    public List<String> getErrorMessages(){
-        return exceptionInfo.getErrorMessages();
-    }
-
-
 }

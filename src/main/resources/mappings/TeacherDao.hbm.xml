@@ -7,13 +7,13 @@
     <named-query name="Teacher.getByUsername">
         <query>
             SELECT
-            t
+                t
             FROM
-            Teacher t
+                Teacher t
             JOIN FETCH
-            t.role
+                t.role
             where
-            t.username = :username
+                t.username = :username
         </query>
     </named-query>
 

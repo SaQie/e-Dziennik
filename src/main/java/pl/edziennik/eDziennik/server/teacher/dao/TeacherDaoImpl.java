@@ -18,6 +18,13 @@ class TeacherDaoImpl extends BaseDao<Teacher> implements TeacherDao {
         return (Teacher) PersistanceHelper.getSingleResultOrNull(query);
     }
 
+    @Override
+    public boolean isTeacherExist(String username) {
+        TypedQuery<Teacher> query = em.createNamedQuery(Queries.GET_TEACHER_BY_USERNAME, Teacher.class);
+        query.setParameter(Parameters.USERNAME, username);
+        return PersistanceHelper.isObjectExist(query);
+    }
+
     private static final class Parameters{
 
         private static final String USERNAME = "username";

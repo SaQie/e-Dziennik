@@ -1,15 +1,20 @@
 package pl.edziennik.eDziennik.server.basics;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
 
-@Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@AllArgsConstructor
+@Getter
 public class ApiErrorsDto {
 
-    private String field;
-    private String cause;
+    private final String field;
+    private final String cause;
 
+    @JsonIgnore
+    private final boolean thrownImmediately;
+
+    public ApiErrorsDto(String field, String cause, boolean thrownImmediately) {
+        this.field = field;
+        this.cause = cause;
+        this.thrownImmediately = thrownImmediately;
+    }
 }

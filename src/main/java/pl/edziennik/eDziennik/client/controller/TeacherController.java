@@ -12,6 +12,7 @@ import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherResponseApiDto;
 import pl.edziennik.eDziennik.server.teacher.services.TeacherService;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 

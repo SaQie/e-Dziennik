@@ -1,15 +1,12 @@
 package pl.edziennik.eDziennik.server.basics;
 
-import pl.edziennik.eDziennik.exceptions.BusinessExceptionPojo;
+import java.util.Optional;
 
-import java.util.List;
+public interface AbstractValidator<T>{
 
-public interface AbstractValidator<T> {
-
-
-    ValidatorPriority getPriority();
-
-    void validate(T t, List<BusinessExceptionPojo> errors, boolean throwException);
+    Integer getValidationNumber();
+    ValidatorPriority getValidationPriority();
+    Optional<ApiErrorsDto> validate(T t);
 
 
 }

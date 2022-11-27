@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
@@ -82,7 +83,6 @@ public class TeacherIntegrationTest extends BaseTest {
         assertEquals(expected.getAddress(), actual.getAddress());
         assertEquals(expected.getPesel(), actual.getPESEL());
         assertEquals(expected.getCity(), actual.getCity());
-        assertEquals(expected.getUsername(), actual.getUsername());
         assertEquals(util.defaultRole, actual.getRole().getName());
 
     }
