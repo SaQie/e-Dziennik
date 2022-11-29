@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.server.basics.Validator;
+import pl.edziennik.eDziennik.server.basics.ValidatorPriority;
 import pl.edziennik.eDziennik.server.teacher.dao.TeacherDao;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
@@ -20,9 +21,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 class TeacherServiceImpl implements TeacherService{
 
-    // TODO -> Zrob cos takiego ze kazdy serwis musi dziedziczyc bo base serwis, tam dodaj metody add,update,get,validate
-    // TODO -> Ta klasa bedzie klasa abstrakcyjna
-
     private final TeacherDao dao;
     private final PasswordEncoder passwordEncoder;
     private final TeacherPrivService privService;
@@ -31,7 +29,7 @@ class TeacherServiceImpl implements TeacherService{
     @Override
     @Transactional
     public TeacherResponseApiDto register(TeacherRequestApiDto dto) {
-        validator.validate(dto);
+        validator.validateBySelectedPriority(dto, ValidatorPriority.MEDIUM);
         Teacher teacher = TeacherMapper.toEntity(dto);
         teacher.setPassword(passwordEncoder.encode(dto.getPassword()));
         privService.checkSchoolExist(dto.getIdSchool(), teacher);
