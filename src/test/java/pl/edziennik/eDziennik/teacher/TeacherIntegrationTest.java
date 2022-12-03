@@ -4,10 +4,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.MessageSource;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
+import pl.edziennik.eDziennik.exceptions.BusinessException;
 import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
 import pl.edziennik.eDziennik.server.basics.BaseDao;
 import pl.edziennik.eDziennik.server.school.domain.School;
@@ -15,6 +17,7 @@ import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherResponseApiDto;
 import pl.edziennik.eDziennik.server.teacher.services.TeacherService;
+import pl.edziennik.eDziennik.server.teacher.services.validator.TeacherAlreadyExistValidator;
 import pl.edziennik.eDziennik.server.utils.ExecutionTimer;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,6 +37,7 @@ public class TeacherIntegrationTest extends BaseTest {
 
     @Autowired
     private TeacherService service;
+
 
     @BeforeEach
     public void prepareDb(){
@@ -178,6 +182,23 @@ public class TeacherIntegrationTest extends BaseTest {
 
         // then
         assertEquals(exception.getMessage(), BaseDao.BaseDaoExceptionMessage.createNotFoundExceptionMessage(School.class.getSimpleName(), idSchool));
+    }
+
+    @Test
+    public void shouldThrowsBusinessExceptionWhenTryingToRegisterAndTeacherAlreadyExist(){
+        // given
+        TeacherRequestApiDto dto = util.prepareTeacherRequestDto();
+        service.register(dto);
+
+        // when
+        BusinessException exception = assertThrows(BusinessException.class, () -> service.register(dto));
+
+        // then
+        assertEquals(1, exception.getErrors().size());
+        assertEquals(TeacherAlreadyExistValidator.class.getName(), exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(TeacherRequestApiDto.USERNAME, exception.getErrors().get(0).getField());
+        String expectedExceptionMessage = getResource(TeacherAlreadyExistValidator.ERROR_MESSAGE_TEACHER_ALREADY_EXIST, Teacher.class.getSimpleName(), dto.getUsername());
+        assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 
 

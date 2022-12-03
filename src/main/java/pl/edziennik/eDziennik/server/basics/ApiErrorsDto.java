@@ -1,6 +1,7 @@
 package pl.edziennik.eDziennik.server.basics;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter

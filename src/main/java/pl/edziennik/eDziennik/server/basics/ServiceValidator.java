@@ -8,7 +8,7 @@ import java.util.List;
 
 @Service
 @SuppressWarnings("all")
-public class ServiceValidator<T, E> {
+public abstract class ServiceValidator<T, E> {
 
     @Autowired(required = false)
     private List<T> validators;

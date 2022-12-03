@@ -10,6 +10,7 @@ import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherResponseApiDto;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.mapper.TeacherMapper;
+import pl.edziennik.eDziennik.server.teacher.services.validator.TeacherValidator;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-class TeacherServiceImpl extends ServiceValidator<TeacherValidator<TeacherRequestApiDto>, TeacherRequestApiDto> implements TeacherService{
+class TeacherServiceImpl implements TeacherService{
 
     private final TeacherDao dao;
     private final PasswordEncoder passwordEncoder;
@@ -27,13 +28,9 @@ class TeacherServiceImpl extends ServiceValidator<TeacherValidator<TeacherReques
     @Override
     @Transactional
     public TeacherResponseApiDto register(TeacherRequestApiDto dto) {
-        validate(dto);
-        Teacher teacher = TeacherMapper.toEntity(dto);
+        Teacher teacher = privService.validateDtoAndMapToEntity(dto);
         teacher.setPassword(passwordEncoder.encode(dto.getPassword()));
-        privService.checkSchoolExist(dto.getIdSchool(), teacher);
-        privService.checkRoleExist(dto.getRole(), teacher);
-        Teacher savedTeacher = dao.saveOrUpdate(teacher);
-        return TeacherMapper.toDto(savedTeacher);
+        return TeacherMapper.toDto(dao.saveOrUpdate(teacher));
     }
 
 
@@ -74,6 +71,7 @@ class TeacherServiceImpl extends ServiceValidator<TeacherValidator<TeacherReques
     public TeacherResponseApiDto updateTeacher(Long id, TeacherRequestApiDto requestApiDto) {
         Optional<Teacher> optionalTeacher = dao.find(id);
         if (optionalTeacher.isPresent()){
+            privService.validateDto(requestApiDto);
             Teacher teacher = optionalTeacher.get();
             teacher.setAddress(requestApiDto.getAddress());
             teacher.setFirstName(requestApiDto.getFirstName());
@@ -84,7 +82,6 @@ class TeacherServiceImpl extends ServiceValidator<TeacherValidator<TeacherReques
             teacher.setPESEL(requestApiDto.getPesel());
             return TeacherMapper.toDto(teacher);
         }
-        Teacher teacher = dao.saveOrUpdate(TeacherMapper.toEntity(requestApiDto));
-        return TeacherMapper.toDto(teacher);
+        return register(requestApiDto);
     }
 }

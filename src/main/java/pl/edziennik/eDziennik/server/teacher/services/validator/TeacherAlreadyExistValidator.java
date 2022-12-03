@@ -3,13 +3,11 @@ package pl.edziennik.eDziennik.server.teacher.services.validator;
 import lombok.AllArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
-import pl.edziennik.eDziennik.server.basics.AbstractValidator;
 import pl.edziennik.eDziennik.server.basics.ApiErrorsDto;
 import pl.edziennik.eDziennik.server.basics.ValidatorPriority;
 import pl.edziennik.eDziennik.server.teacher.dao.TeacherDao;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
-import pl.edziennik.eDziennik.server.teacher.services.TeacherValidator;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Locale;
@@ -23,6 +21,7 @@ public class TeacherAlreadyExistValidator implements TeacherValidator<TeacherReq
     private final MessageSource messageSource;
 
     public static final Integer VALIDATOR_ID = 1;
+    public static final String ERROR_MESSAGE_TEACHER_ALREADY_EXIST = "api.already.exist";
 
     @Override
     public String getValidatorName(){
@@ -43,7 +42,7 @@ public class TeacherAlreadyExistValidator implements TeacherValidator<TeacherReq
     public Optional<ApiErrorsDto> validate(TeacherRequestApiDto requestApiDto) {
         if(dao.isTeacherExist(requestApiDto.getUsername())){
             Object[] parameters = ResourceCreator.of(Teacher.class.getSimpleName(), requestApiDto.getUsername());
-            String message = messageSource.getMessage("api.already.exist", parameters, Locale.ENGLISH);
+            String message = messageSource.getMessage(ERROR_MESSAGE_TEACHER_ALREADY_EXIST, parameters, Locale.ENGLISH);
             ApiErrorsDto apiErrorsDto = new ApiErrorsDto(TeacherRequestApiDto.USERNAME, message, false, getValidatorName());
             return Optional.of(apiErrorsDto);
         }

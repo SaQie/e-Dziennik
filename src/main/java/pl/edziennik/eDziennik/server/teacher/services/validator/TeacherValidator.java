@@ -1,4 +1,4 @@
-package pl.edziennik.eDziennik.server.teacher.services;
+package pl.edziennik.eDziennik.server.teacher.services.validator;
 
 import pl.edziennik.eDziennik.server.basics.AbstractValidator;
 
