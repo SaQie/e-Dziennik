@@ -18,7 +18,7 @@ import java.util.Optional;
 public class TeacherAlreadyExistValidator implements TeacherValidator<TeacherRequestApiDto> {
 
     private final TeacherDao dao;
-    private final MessageSource messageSource;
+    private final ResourceCreator resourceCreator;
 
     public static final Integer VALIDATOR_ID = 1;
     public static final String ERROR_MESSAGE_TEACHER_ALREADY_EXIST = "api.already.exist";
@@ -41,8 +41,7 @@ public class TeacherAlreadyExistValidator implements TeacherValidator<TeacherReq
     @Override
     public Optional<ApiErrorsDto> validate(TeacherRequestApiDto requestApiDto) {
         if(dao.isTeacherExist(requestApiDto.getUsername())){
-            Object[] parameters = ResourceCreator.of(Teacher.class.getSimpleName(), requestApiDto.getUsername());
-            String message = messageSource.getMessage(ERROR_MESSAGE_TEACHER_ALREADY_EXIST, parameters, Locale.ENGLISH);
+            String message = resourceCreator.of(ERROR_MESSAGE_TEACHER_ALREADY_EXIST, Teacher.class.getSimpleName(), requestApiDto.getUsername());
             ApiErrorsDto apiErrorsDto = new ApiErrorsDto(TeacherRequestApiDto.USERNAME, message, false, getValidatorName());
             return Optional.of(apiErrorsDto);
         }

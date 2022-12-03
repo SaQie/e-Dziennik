@@ -19,6 +19,7 @@ import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherResponseApiDto;
 import pl.edziennik.eDziennik.server.teacher.services.TeacherService;
 import pl.edziennik.eDziennik.server.teacher.services.validator.TeacherAlreadyExistValidator;
 import pl.edziennik.eDziennik.server.utils.ExecutionTimer;
+import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
@@ -197,7 +198,7 @@ public class TeacherIntegrationTest extends BaseTest {
         assertEquals(1, exception.getErrors().size());
         assertEquals(TeacherAlreadyExistValidator.class.getName(), exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(TeacherRequestApiDto.USERNAME, exception.getErrors().get(0).getField());
-        String expectedExceptionMessage = getResource(TeacherAlreadyExistValidator.ERROR_MESSAGE_TEACHER_ALREADY_EXIST, Teacher.class.getSimpleName(), dto.getUsername());
+        String expectedExceptionMessage = resourceCreator.of(TeacherAlreadyExistValidator.ERROR_MESSAGE_TEACHER_ALREADY_EXIST, Teacher.class.getSimpleName(), dto.getUsername());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 

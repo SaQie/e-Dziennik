@@ -1,9 +1,19 @@
 package pl.edziennik.eDziennik.server.utils;
 
-public abstract class ResourceCreator {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Component;
 
-    public static Object[] of(Object... objects){
-        return objects;
+import java.util.Locale;
+
+@Component
+public class ResourceCreator {
+
+    @Autowired
+    private MessageSource messageSource;
+
+    public String of(String errorCode, Object... objects){
+        return messageSource.getMessage(errorCode, objects, Locale.ENGLISH);
     }
 
 

@@ -3,6 +3,7 @@ package pl.edziennik.eDziennik.server.basics;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.List;
 
@@ -14,6 +15,8 @@ public abstract class ServiceValidator<T, E> {
     private List<T> validators;
     @Autowired
     private Validator<E> validator;
+    @Autowired
+    protected ResourceCreator resourceCreator;
 
     /**
      * This method run chain-of-responsibility pattern of defined validators

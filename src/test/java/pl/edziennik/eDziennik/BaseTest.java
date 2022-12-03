@@ -30,7 +30,7 @@ public class BaseTest {
     private DataSource dataSource;
 
     @Autowired
-    private MessageSource messageSource;
+    protected ResourceCreator resourceCreator;
 
 
     @PersistenceContext
@@ -57,12 +57,6 @@ public class BaseTest {
     protected void clearDb(){
         ResourceDatabasePopulator populator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource("/db/clearData.sql"));
         populator.execute(dataSource);
-    }
-
-    protected String getResource(String messageCode, Object... objects){
-        Object[] parameters = ResourceCreator.of(objects);
-        String message = messageSource.getMessage(messageCode, parameters, Locale.ENGLISH);
-        return message;
     }
 
     protected final Long ROLE_ADMIN = 1L;
