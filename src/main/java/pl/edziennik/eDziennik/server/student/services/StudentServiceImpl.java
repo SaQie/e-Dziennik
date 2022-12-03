@@ -31,12 +31,9 @@ class StudentServiceImpl implements StudentService{
     @Override
     @Transactional
     public StudentResponseApiDto register(StudentRequestApiDto dto) {
-        Student student = StudentMapper.toEntity(dto);
+        Student student = privService.validateDtoAndMapToEntity(dto);
         student.setPassword(passwordEncoder.encode(dto.getPassword()));
-        privService.checkSchoolExist(dto.getIdSchool(), student);
-        privService.checkSchoolClassExist(dto.getIdSchoolClass(), student);
-        Student savedStudent = dao.saveOrUpdate(student);
-        return StudentMapper.toDto(savedStudent);
+        return StudentMapper.toDto(dao.saveOrUpdate(student));
     }
 
     @Override
@@ -76,6 +73,7 @@ class StudentServiceImpl implements StudentService{
     public StudentResponseApiDto updateStudent(Long id, StudentRequestApiDto requestApiDto) {
         Optional<Student> optionalStudent = dao.find(id);
         if (optionalStudent.isPresent()){
+            privService.validateDto(requestApiDto);
             Student student = optionalStudent.get();
             student.setFirstName(requestApiDto.getFirstName());
             student.setLastName(requestApiDto.getLastName());
@@ -88,7 +86,6 @@ class StudentServiceImpl implements StudentService{
             student.setParentPhoneNumber(requestApiDto.getParentPhoneNumber());
             return StudentMapper.toDto(student);
         }
-        Student student = dao.saveOrUpdate(StudentMapper.toEntity(requestApiDto));
-        return StudentMapper.toDto(student);
+        return register(requestApiDto);
     }
 }

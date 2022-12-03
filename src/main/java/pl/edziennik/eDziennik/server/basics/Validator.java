@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.server.basics;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.exceptions.BusinessException;
 

@@ -7,4 +7,6 @@ public interface StudentDao extends IBaseDao<Student> {
 
     Student getByUsername(String username);
 
+    boolean isStudentExist(String username);
+
 }

@@ -10,6 +10,7 @@ import pl.edziennik.eDziennik.server.basics.ApiResponse;
 import pl.edziennik.eDziennik.server.student.domain.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.server.student.domain.dto.StudentResponseApiDto;
 import pl.edziennik.eDziennik.server.student.services.StudentService;
+import pl.edziennik.eDziennik.server.utils.ExecutionTimer;
 
 import java.net.URI;
 import java.util.List;

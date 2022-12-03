@@ -17,6 +17,13 @@ class StudentDaoImpl extends BaseDao<Student> implements StudentDao {
         return (Student) PersistanceHelper.getSingleResultOrNull(query);
     }
 
+    @Override
+    public boolean isStudentExist(String username) {
+        TypedQuery<Student> query = em.createNamedQuery(Queries.GET_STUDENT_BY_USERNAME, Student.class);
+        query.setParameter(Parameters.USERNAME, username);
+        return PersistanceHelper.isObjectExist(query);
+    }
+
     private static final class Parameters {
 
         private static final String USERNAME = "username";

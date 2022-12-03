@@ -5,6 +5,7 @@ import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
 
 public interface TeacherValidators extends AbstractValidator<TeacherRequestApiDto> {
 
+    String EXCEPTION_MESSAGE_TEACHER_ALREADY_EXIST = "api.already.exist";
 
 
 }

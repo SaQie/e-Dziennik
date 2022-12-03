@@ -28,6 +28,7 @@ public abstract class ServiceValidator<T, E> {
     /**
      * This method run chain-of-responsibility pattern of defined validators
      * Throws IllegalArgumentException if validators are empty or null
+     *
      * @param e -> Object to validate
      */
     protected void validate(E e) {
@@ -35,33 +36,30 @@ public abstract class ServiceValidator<T, E> {
         validator.validate(e);
     }
 
-    protected void validateByPriority(E e){
+    protected void validateByPriority(E e) {
         checkValidators();
         validator.validateByPriority(e);
     }
 
-    protected void validateByIds(E e){
+    protected void validateByIds(E e) {
         checkValidators();
         validator.validateByIds(e);
     }
 
-    protected void runSelectedValidator(E e, Integer validatorId){
+    protected void runSelectedValidator(E e, Integer validatorId) {
         checkValidators();
-        validator.runSelectedValidator(e,validatorId);
+        validator.runSelectedValidator(e, validatorId);
     }
 
-    protected void validateBySelectedPriority(E e, ValidatorPriority priority){
+    protected void validateBySelectedPriority(E e, ValidatorPriority priority) {
         checkValidators();
-        validator.validateBySelectedPriority(e,priority);
+        validator.validateBySelectedPriority(e, priority);
     }
 
 
-    private void checkValidators(){
+    private void checkValidators() {
         if (validators != null && !validators.isEmpty()) {
-            if (!validator.isValidatorsDefined()) {
-                validator.setValidators((List<AbstractValidator<E>>) validators);
-                return;
-            }
+            validator.setValidators((List<AbstractValidator<E>>) validators);
             return;
         }
         throw new IllegalArgumentException("Define your validators !");

@@ -16,6 +16,7 @@ import pl.edziennik.eDziennik.exceptions.BusinessException;
 import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
 import pl.edziennik.eDziennik.server.basics.ApiErrorsDto;
 import pl.edziennik.eDziennik.server.basics.ApiResponse;
+import pl.edziennik.eDziennik.server.basics.BaseDao;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.NoResultException;
@@ -38,7 +39,7 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<ApiResponse> handleException(RuntimeException exception, WebRequest request) throws URISyntaxException {
         HttpServletRequest httpRequest = ((ServletWebRequest) request).getRequest();
         URI uri = new URI(httpRequest.getRequestURL().toString());
-        List<ApiErrorsDto> errors = new ArrayList<>();
+        List<ApiErrorsDto> errors = List.of(new ApiErrorsDto(null, exception.getMessage(), false, BaseDao.class.getName()));
         log.error("ERROR ON PATH " + request.getDescription(false) + " ERROR MESSAGE: " + exception.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponse.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.NOT_FOUND,uri, errors));
     }
