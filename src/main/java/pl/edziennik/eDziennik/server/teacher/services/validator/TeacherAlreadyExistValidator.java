@@ -1,7 +1,6 @@
 package pl.edziennik.eDziennik.server.teacher.services.validator;
 
 import lombok.AllArgsConstructor;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.server.basics.ApiErrorsDto;
 import pl.edziennik.eDziennik.server.basics.ValidatorPriority;
@@ -10,12 +9,11 @@ import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
-import java.util.Locale;
 import java.util.Optional;
 
 @Component
 @AllArgsConstructor
-public class TeacherAlreadyExistValidator implements TeacherValidator<TeacherRequestApiDto> {
+public class TeacherAlreadyExistValidator implements TeacherValidators {
 
     private final TeacherDao dao;
     private final ResourceCreator resourceCreator;

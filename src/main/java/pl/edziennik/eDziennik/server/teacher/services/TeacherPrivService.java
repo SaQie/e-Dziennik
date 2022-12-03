@@ -6,18 +6,15 @@ import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
 import pl.edziennik.eDziennik.server.basics.ServiceValidator;
 import pl.edziennik.eDziennik.server.role.dao.RoleDao;
 import pl.edziennik.eDziennik.server.role.domain.Role;
-import pl.edziennik.eDziennik.server.school.dao.SchoolDao;
 import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.mapper.TeacherMapper;
-import pl.edziennik.eDziennik.server.teacher.services.validator.TeacherValidator;
-
-import java.util.Optional;
+import pl.edziennik.eDziennik.server.teacher.services.validator.TeacherValidators;
 
 @Service
 @AllArgsConstructor
-class TeacherPrivService extends ServiceValidator<TeacherValidator<TeacherRequestApiDto>, TeacherRequestApiDto> {
+class TeacherPrivService extends ServiceValidator<TeacherValidators, TeacherRequestApiDto> {
 
     private final RoleDao dao;
 

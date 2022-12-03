@@ -7,6 +7,13 @@ import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.List;
 
+/**
+ * Base class for validation
+ * Throws exception if Validators are empty or null when use validate or similiar method
+ *
+ * @param <T> Interface which specific validators implement
+ * @param <E> Object to validate
+ */
 @Service
 @SuppressWarnings("all")
 public abstract class ServiceValidator<T, E> {
@@ -21,7 +28,7 @@ public abstract class ServiceValidator<T, E> {
     /**
      * This method run chain-of-responsibility pattern of defined validators
      * Throws IllegalArgumentException if validators are empty or null
-     * @param e
+     * @param e -> Object to validate
      */
     protected void validate(E e) {
         checkValidators();

@@ -4,13 +4,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.edziennik.eDziennik.server.basics.ServiceValidator;
 import pl.edziennik.eDziennik.server.teacher.dao.TeacherDao;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherResponseApiDto;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.mapper.TeacherMapper;
-import pl.edziennik.eDziennik.server.teacher.services.validator.TeacherValidator;
 
 import java.time.LocalDateTime;
 import java.util.List;
