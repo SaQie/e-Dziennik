@@ -84,6 +84,7 @@ class StudentServiceImpl implements StudentService{
             student.setParentFirstName(requestApiDto.getParentFirstName());
             student.setParentLastName(requestApiDto.getParentLastName());
             student.setParentPhoneNumber(requestApiDto.getParentPhoneNumber());
+            student.setUsername(requestApiDto.getUsername());
             return StudentMapper.toDto(student);
         }
         return register(requestApiDto);
