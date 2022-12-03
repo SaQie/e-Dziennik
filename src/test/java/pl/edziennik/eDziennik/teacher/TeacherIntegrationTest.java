@@ -98,7 +98,7 @@ public class TeacherIntegrationTest extends BaseTest {
         service.deleteTeacherById(id);
 
         // then
-        Exception exception = assertThrows(pl.edziennik.eDziennik.exceptions.EntityNotFoundException.class, () -> service.findTeacherById(id));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> service.findTeacherById(id));
         assertEquals(exception.getMessage(), BaseDao.BaseDaoExceptionMessage.createNotFoundExceptionMessage(Teacher.class.getSimpleName(), id));
     }
 

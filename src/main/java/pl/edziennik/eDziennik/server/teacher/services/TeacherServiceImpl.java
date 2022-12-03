@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.edziennik.eDziennik.server.basics.Validator;
-import pl.edziennik.eDziennik.server.basics.ValidatorPriority;
+import pl.edziennik.eDziennik.server.basics.ServiceValidator;
 import pl.edziennik.eDziennik.server.teacher.dao.TeacherDao;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
@@ -19,17 +18,16 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-class TeacherServiceImpl implements TeacherService{
+class TeacherServiceImpl extends ServiceValidator<TeacherValidator<TeacherRequestApiDto>, TeacherRequestApiDto> implements TeacherService{
 
     private final TeacherDao dao;
     private final PasswordEncoder passwordEncoder;
     private final TeacherPrivService privService;
-    private final Validator<TeacherRequestApiDto> validator;
 
     @Override
     @Transactional
     public TeacherResponseApiDto register(TeacherRequestApiDto dto) {
-        validator.validateBySelectedPriority(dto, ValidatorPriority.MEDIUM);
+        validate(dto);
         Teacher teacher = TeacherMapper.toEntity(dto);
         teacher.setPassword(passwordEncoder.encode(dto.getPassword()));
         privService.checkSchoolExist(dto.getIdSchool(), teacher);
