@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.pl.PESEL;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,17 +26,38 @@ public class TeacherRequestApiDto{
     public static final String PHONE_NUMBER = "phoneNumber";
     public static final String ID_SCHOOL = "idSchool";
 
-
+    @NotEmpty(message = "{username.empty}")
+    @Size(min = 4, message = "{username.size}")
     private String username;
+
+    @NotEmpty(message = "{firstName.empty}")
     private String firstName;
+
+    @NotEmpty(message = "{lastName.empty}")
     private String lastName;
+
+    @NotEmpty(message = "{address.empty}")
     private String address;
+
+    @NotEmpty(message = "{postalCode.empty}")
+    @Size(min = 6, max = 6, message = "{postalCode.size}")
     private String postalCode;
+
+    @NotEmpty(message = "{city.empty}")
     private String city;
+
+    @org.hibernate.validator.constraints.pl.PESEL(message = "{pesel.invalid}")
     private String pesel;
+
     private String role;
+
+    @NotEmpty(message = "{phone.empty}")
+    @Pattern(regexp="[\\d]{9}", message = "{phone.invalid}")
     private String phoneNumber;
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @NotEmpty(message = "{password.empty}")
+    @Size(min = 5, message = "{password.size}")
     private String password;
 
     private Long idSchool;

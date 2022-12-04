@@ -3,6 +3,7 @@ package pl.edziennik.eDziennik.server.basics;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import pl.edziennik.eDziennik.server.school.domain.dto.SchoolResponseApiDto;
@@ -57,6 +58,19 @@ public class ApiResponse<T> {
                 .status(status.name())
                 .code(status.value())
                 .url(url)
+                .errors(errors)
+                .executionTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .build();
+    }
+
+    @SneakyThrows
+    public static<T> ApiResponse<T> buildApiResponse(HttpMethod method, HttpStatus status, String url, List<ApiErrorsDto> errors){
+        return ApiResponse.
+                <T>builder()
+                .method(method.name())
+                .status(status.name())
+                .code(status.value())
+                .url(new URI(url))
                 .errors(errors)
                 .executionTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .build();

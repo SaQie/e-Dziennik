@@ -1,9 +1,12 @@
 package pl.edziennik.eDziennik.client.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,6 +20,7 @@ import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
 import pl.edziennik.eDziennik.server.basics.ApiErrorsDto;
 import pl.edziennik.eDziennik.server.basics.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.BaseDao;
+import pl.edziennik.eDziennik.server.basics.ExceptionType;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.NoResultException;
@@ -33,13 +37,14 @@ import java.util.Map;
 @ControllerAdvice
 @RestController
 @Slf4j
+@SuppressWarnings("rawtypes")
 public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {EntityNotFoundException.class, NoResultException.class})
     protected ResponseEntity<ApiResponse> handleException(RuntimeException exception, WebRequest request) throws URISyntaxException {
         HttpServletRequest httpRequest = ((ServletWebRequest) request).getRequest();
         URI uri = new URI(httpRequest.getRequestURL().toString());
-        List<ApiErrorsDto> errors = List.of(new ApiErrorsDto(null, exception.getMessage(), false, BaseDao.class.getName()));
+        List<ApiErrorsDto> errors = List.of(new ApiErrorsDto(null, exception.getMessage(), false, BaseDao.class.getName(), ExceptionType.VALIDATION));
         log.error("ERROR ON PATH " + request.getDescription(false) + " ERROR MESSAGE: " + exception.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponse.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.NOT_FOUND,uri, errors));
     }
@@ -50,6 +55,19 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
         URI uri = new URI(httpRequest.getRequestURL().toString());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.BAD_REQUEST,uri, exception.getErrors()));
     }
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        HttpServletRequest httpRequest = ((ServletWebRequest) request).getRequest();
+        BindingResult bindingResult = exception.getBindingResult();
+        List<ApiErrorsDto> errors = bindingResult.getFieldErrors()
+                .stream()
+                .map(x -> new ApiErrorsDto(x.getField(), x.getDefaultMessage(), false, MethodArgumentNotValidException.class.getSimpleName(), ExceptionType.VALIDATION))
+                .toList();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.BAD_REQUEST,httpRequest.getRequestURL().toString(), errors));
+    }
+
+
 
     @InitBinder
     protected void loggerWithParam(WebDataBinder binder, WebRequest webRequest){

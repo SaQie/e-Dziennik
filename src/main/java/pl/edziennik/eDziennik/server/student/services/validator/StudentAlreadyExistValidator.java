@@ -3,6 +3,7 @@ package pl.edziennik.eDziennik.server.student.services.validator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.server.basics.ApiErrorsDto;
+import pl.edziennik.eDziennik.server.basics.ExceptionType;
 import pl.edziennik.eDziennik.server.basics.ValidatorPriority;
 import pl.edziennik.eDziennik.server.student.dao.StudentDao;
 import pl.edziennik.eDziennik.server.student.domain.Student;
@@ -41,7 +42,7 @@ public class StudentAlreadyExistValidator implements StudentValidators{
     public Optional<ApiErrorsDto> validate(StudentRequestApiDto requestApiDto) {
         if(dao.isStudentExist(requestApiDto.getUsername())){
             String message = resourceCreator.of(EXCEPTION_MESSAGE_STUDENT_ALREADY_EXIST, Student.class.getSimpleName(), requestApiDto.getUsername());
-            ApiErrorsDto apiErrorsDto = new ApiErrorsDto(StudentRequestApiDto.USERNAME, message, false, getValidatorName());
+            ApiErrorsDto apiErrorsDto = new ApiErrorsDto(StudentRequestApiDto.USERNAME, message, false, getValidatorName(), ExceptionType.BUSINESS);
             return Optional.of(apiErrorsDto);
         }
         return Optional.empty();

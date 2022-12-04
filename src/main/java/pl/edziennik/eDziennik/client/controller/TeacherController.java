@@ -30,7 +30,7 @@ class TeacherController {
 
     }
     @PostMapping()
-    public ResponseEntity<ApiResponse> register(@RequestBody TeacherRequestApiDto requestApiDto){
+    public ResponseEntity<ApiResponse> register(@RequestBody @Valid TeacherRequestApiDto requestApiDto){
         TeacherResponseApiDto responseApiDto = service.register(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")

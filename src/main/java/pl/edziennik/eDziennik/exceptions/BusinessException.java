@@ -10,7 +10,7 @@ public class BusinessException extends RuntimeException{
     private List<ApiErrorsDto> errors = new ArrayList<>();
 
     public BusinessException(List<ApiErrorsDto> errors) {
-        super();
+        super(errors.get(0).getCause());
         this.errors = errors;
     }
 

@@ -11,17 +11,18 @@ public class ApiErrorsDto {
 
     private final String field;
     private final String cause;
-
+    private final ExceptionType exceptionType;
     @JsonIgnore
     private final String errorThrownedBy;
 
     @JsonIgnore
     private final boolean thrownImmediately;
 
-    public ApiErrorsDto(String field, String cause, boolean thrownImmediately, String errorThrownedBy) {
+    public ApiErrorsDto(String field, String cause, boolean thrownImmediately, String errorThrownedBy, ExceptionType type) {
         this.field = field;
         this.cause = cause;
         this.thrownImmediately = thrownImmediately;
         this.errorThrownedBy = errorThrownedBy;
+        this.exceptionType = type;
     }
 }

@@ -17,6 +17,7 @@ import pl.edziennik.eDziennik.server.student.domain.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.server.student.domain.dto.StudentResponseApiDto;
 import pl.edziennik.eDziennik.server.student.services.StudentService;
 import pl.edziennik.eDziennik.server.student.services.validator.StudentAlreadyExistValidator;
+import pl.edziennik.eDziennik.server.student.services.validator.StudentSchoolClassBelongsToSchoolValidator;
 import pl.edziennik.eDziennik.server.student.services.validator.StudentValidators;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
@@ -215,6 +216,22 @@ public class StudentIntegrationTest extends BaseTest {
         assertEquals(StudentAlreadyExistValidator.class.getName(), exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(StudentRequestApiDto.USERNAME, exception.getErrors().get(0).getField());
         String expectedExceptionMessage = resourceCreator.of(StudentValidators.EXCEPTION_MESSAGE_STUDENT_ALREADY_EXIST, Student.class.getSimpleName(), dto.getUsername());
+        assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
+    }
+
+    @Test
+    public void shouldThrowsBusinessExceptionWhenTryingToRegisterNewStudentAndSchoolClassNotBelongsToSchool(){
+        // given
+        StudentRequestApiDto dto = util.prepareStudentRequestDto(1L,3L);
+
+        // when
+        BusinessException exception = assertThrows(BusinessException.class, () -> service.register(dto));
+
+        // then
+        assertEquals(1, exception.getErrors().size());
+        assertEquals(StudentSchoolClassBelongsToSchoolValidator.class.getName(), exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(StudentRequestApiDto.ID_SCHOOL_CLASS, exception.getErrors().get(0).getField());
+        String expectedExceptionMessage = resourceCreator.of(StudentValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_NOT_BELONG_TO_SCHOOL, find(SchoolClass.class, dto.getIdSchoolClass()).getClassName(),find(School.class, dto.getIdSchool()).getName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 

@@ -27,8 +27,8 @@ public class StudentIntegrationTestUtil {
 
     protected StudentRequestApiDto prepareStudentRequestDto(String username, String firstName, String lastName, String pesel) {
         return new StudentRequestApiDto(
+                "Testt",
                 username,
-                "Test123",
                 firstName,
                 lastName,
                 "Lubawka",
