@@ -61,9 +61,9 @@ public class StudentIntegrationTest extends BaseTest {
         Student actual = find(Student.class, id);
         assertEquals(expected.getFirstName(), actual.getFirstName());
         assertEquals(expected.getLastName(), actual.getLastName());
-        assertEquals(expected.getAdress(), actual.getAddress());
+        assertEquals(expected.getAddress(), actual.getAddress().getAddress());
         assertEquals(expected.getPesel(), actual.getPESEL());
-        assertEquals(expected.getCity(), actual.getCity());
+        assertEquals(expected.getCity(), actual.getAddress().getCity());
         assertEquals(expected.getUsername(), actual.getUsername());
         assertEquals(expected.getParentFirstName(), actual.getParentFirstName());
         assertEquals(expected.getParentPhoneNumber(), actual.getParentPhoneNumber());
@@ -86,9 +86,9 @@ public class StudentIntegrationTest extends BaseTest {
         Student actual = find(Student.class, updated);
         assertEquals(expected.getFirstName(), actual.getFirstName());
         assertEquals(expected.getLastName(), actual.getLastName());
-        assertEquals(expected.getAdress(), actual.getAddress());
+        assertEquals(expected.getAddress(), actual.getAddress().getAddress());
         assertEquals(expected.getPesel(), actual.getPESEL());
-        assertEquals(expected.getCity(), actual.getCity());
+        assertEquals(expected.getCity(), actual.getAddress().getCity());
         assertEquals(expected.getUsername(), actual.getUsername());
         assertEquals(expected.getParentFirstName(), actual.getParentFirstName());
         assertEquals(expected.getParentPhoneNumber(), actual.getParentPhoneNumber());
@@ -141,7 +141,7 @@ public class StudentIntegrationTest extends BaseTest {
         assertNotNull(actual);
         assertEquals(expected.getFirstName(), actual.getFirstName());
         assertEquals(expected.getLastName(), actual.getLastName());
-        assertEquals(expected.getAdress(), actual.getAdress());
+        assertEquals(expected.getAddress(), actual.getAdress());
         assertEquals(expected.getPesel(), actual.getPesel());
         assertEquals(expected.getCity(), actual.getCity());
         assertEquals(expected.getParentFirstName(), actual.getParentFirstName());

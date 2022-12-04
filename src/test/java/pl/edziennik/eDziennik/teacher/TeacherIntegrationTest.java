@@ -62,9 +62,9 @@ public class TeacherIntegrationTest extends BaseTest {
 
         assertEquals(expected.getFirstName(), actual.getFirstName());
         assertEquals(expected.getLastName(), actual.getLastName());
-        assertEquals(expected.getAddress(), actual.getAddress());
+        assertEquals(expected.getAddress(), actual.getAddress().getAddress());
         assertEquals(expected.getPesel(), actual.getPESEL());
-        assertEquals(expected.getCity(), actual.getCity());
+        assertEquals(expected.getCity(), actual.getAddress().getCity());
         assertEquals(expected.getUsername(), actual.getUsername());
         assertEquals(util.defaultRole, actual.getRole().getName());
     }
@@ -86,9 +86,9 @@ public class TeacherIntegrationTest extends BaseTest {
 
         assertEquals(expected.getFirstName(), actual.getFirstName());
         assertEquals(expected.getLastName(), actual.getLastName());
-        assertEquals(expected.getAddress(), actual.getAddress());
+        assertEquals(expected.getAddress(), actual.getAddress().getAddress());
         assertEquals(expected.getPesel(), actual.getPESEL());
-        assertEquals(expected.getCity(), actual.getCity());
+        assertEquals(expected.getCity(), actual.getAddress().getCity());
         assertEquals(util.defaultRole, actual.getRole().getName());
 
     }

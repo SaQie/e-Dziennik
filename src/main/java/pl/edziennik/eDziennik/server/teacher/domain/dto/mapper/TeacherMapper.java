@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.server.teacher.domain.dto.mapper;
 
+import pl.edziennik.eDziennik.server.address.AddressMapper;
 import pl.edziennik.eDziennik.server.role.domain.dto.mapper.RoleMapper;
 import pl.edziennik.eDziennik.server.school.domain.dto.mapper.SchoolMapper;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
@@ -18,9 +19,9 @@ public class TeacherMapper {
                     entity.getId(),
                     entity.getFirstName(),
                     entity.getLastName(),
-                    entity.getAddress(),
-                    entity.getPostalCode(),
-                    entity.getCity(),
+                    entity.getAddress().getAddress(),
+                    entity.getAddress().getPostalCode(),
+                    entity.getAddress().getCity(),
                     entity.getPESEL(),
                     entity.getPhoneNumber(),
                     entity.getRole().getId(),
@@ -31,9 +32,9 @@ public class TeacherMapper {
                 entity.getId(),
                 entity.getFirstName(),
                 entity.getLastName(),
-                entity.getAddress(),
-                entity.getPostalCode(),
-                entity.getCity(),
+                entity.getAddress().getAddress(),
+                entity.getAddress().getPostalCode(),
+                entity.getAddress().getCity(),
                 entity.getPESEL(),
                 entity.getPhoneNumber(),
                 entity.getRole().getId()
@@ -42,15 +43,13 @@ public class TeacherMapper {
 
     public static Teacher toEntity(TeacherRequestApiDto dto) {
         return new Teacher(
-                dto.getAddress(),
                 dto.getUsername(),
                 dto.getPassword(),
                 dto.getFirstName(),
                 dto.getLastName(),
-                dto.getPostalCode(),
                 dto.getPesel(),
-                dto.getCity(),
-                dto.getPhoneNumber()
+                dto.getPhoneNumber(),
+                AddressMapper.mapToAddress(dto.getAddress(), dto.getCity(), dto.getPostalCode())
         );
     }
 }

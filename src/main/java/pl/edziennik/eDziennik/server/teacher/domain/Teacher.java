@@ -3,6 +3,7 @@ package pl.edziennik.eDziennik.server.teacher.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.edziennik.eDziennik.server.address.Address;
 import pl.edziennik.eDziennik.server.basics.BasicUser;
 import pl.edziennik.eDziennik.server.role.domain.Role;
 import pl.edziennik.eDziennik.server.school.domain.School;
@@ -34,16 +35,20 @@ public class Teacher extends BasicUser implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private School school;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    private Address address;
 
 
-    public Teacher(String adress, String username, String password, String firstName, String lastName, String postalCode, String PESEL, String city, String phoneNumber, LocalDate createDate, LocalDateTime lastLoginTime, LocalDateTime updateDate) {
-        super(adress, username, password, firstName, lastName, postalCode, PESEL, city, createDate,updateDate, lastLoginTime);
+    public Teacher(String username, String password, String firstName, String lastName,String PESEL, String phoneNumber, Address address, LocalDate createDate, LocalDateTime lastLoginTime, LocalDateTime updateDate) {
+        super(username, password, firstName, lastName, PESEL,createDate,updateDate, lastLoginTime);
         this.phoneNumber = phoneNumber;
+        this.address = address;
     }
 
-    public Teacher(String adress, String username, String password, String firstName, String lastName, String postalCode, String PESEL, String city, String phoneNumber) {
-        super(adress, username, password, firstName, lastName, postalCode, PESEL, city, null, null, null);
+    public Teacher(String username, String password, String firstName, String lastName, String PESEL, String phoneNumber, Address address) {
+        super(username, password, firstName, lastName, PESEL, null, null, null);
         this.phoneNumber = phoneNumber;
+        this.address = address;
     }
 
     public void setRole(Role role){

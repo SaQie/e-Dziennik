@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.edziennik.eDziennik.server.address.Address;
 import pl.edziennik.eDziennik.server.basics.BasicUser;
 import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
@@ -35,20 +36,25 @@ public class Student extends BasicUser implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private School school;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    private Address address;
 
 
-    public Student(String adress, String username, String password, String firstName, String lastName, String postalCode, String PESEL, String city, String parentFirstName, String parentLastName, String parentPhoneNumber, LocalDate createDate, LocalDateTime lastLoginTime, LocalDateTime updatedDate) {
-        super(adress, username, password, firstName, lastName, postalCode, PESEL, city, createDate, updatedDate, lastLoginTime);
+
+    public Student(String username, String password, String firstName, String lastName, String PESEL, String parentFirstName, String parentLastName, String parentPhoneNumber, Address address, LocalDate createDate, LocalDateTime lastLoginTime, LocalDateTime updatedDate) {
+        super(username, password, firstName, lastName, PESEL, createDate, updatedDate, lastLoginTime);
         this.parentFirstName = parentFirstName;
         this.parentLastName = parentLastName;
         this.parentPhoneNumber = parentPhoneNumber;
+        this.address = address;
     }
 
-    public Student(String adress, String username, String password, String firstName, String lastName, String postalCode, String PESEL, String city, String parentFirstName, String parentLastName, String parentPhoneNumber) {
-        super(adress, username, password, firstName, lastName, postalCode, PESEL, city, null, null, null);
+    public Student(String username, String password, String firstName, String lastName, String PESEL, String parentFirstName, String parentLastName, String parentPhoneNumber, Address address) {
+        super(username, password, firstName, lastName, PESEL, null, null, null);
         this.parentFirstName = parentFirstName;
         this.parentLastName = parentLastName;
         this.parentPhoneNumber = parentPhoneNumber;
+        this.address =address;
     }
 
     public void setSchoolClass(SchoolClass schoolClass) {

@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.server.student.domain.dto.mapper;
 
+import pl.edziennik.eDziennik.server.address.AddressMapper;
 import pl.edziennik.eDziennik.server.school.domain.dto.mapper.SchoolMapper;
 import pl.edziennik.eDziennik.server.schoolclass.domain.dto.mapper.SchoolClassMapper;
 import pl.edziennik.eDziennik.server.student.domain.Student;
@@ -17,9 +18,9 @@ public class StudentMapper {
                 entity.getId(),
                 entity.getFirstName(),
                 entity.getLastName(),
-                entity.getAddress(),
-                entity.getPostalCode(),
-                entity.getCity(),
+                entity.getAddress().getAddress(),
+                entity.getAddress().getPostalCode(),
+                entity.getAddress().getCity(),
                 entity.getPESEL(),
                 entity.getParentFirstName(),
                 entity.getParentLastName(),
@@ -31,17 +32,15 @@ public class StudentMapper {
 
     public static Student toEntity(StudentRequestApiDto dto) {
         return new Student(
-                dto.getAdress(),
                 dto.getUsername(),
                 dto.getPassword(),
                 dto.getFirstName(),
                 dto.getLastName(),
-                dto.getPostalCode(),
                 dto.getPesel(),
-                dto.getCity(),
                 dto.getParentFirstName(),
                 dto.getParentLastName(),
-                dto.getParentPhoneNumber()
+                dto.getParentPhoneNumber(),
+                AddressMapper.mapToAddress(dto.getAddress(),dto.getCity(),dto.getPostalCode())
         );
     }
 }

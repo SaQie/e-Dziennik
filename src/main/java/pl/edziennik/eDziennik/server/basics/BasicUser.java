@@ -21,14 +21,11 @@ import java.time.LocalDateTime;
 @SuperBuilder
 public class BasicUser{
 
-    private String address;
     private String username;
     private String password;
     private String firstName;
     private String lastName;
-    private String postalCode;
     private String PESEL;
-    private String city;
     private LocalDate createdDate;
     private LocalDateTime updatedDate;
     private LocalDateTime lastLoginDate;

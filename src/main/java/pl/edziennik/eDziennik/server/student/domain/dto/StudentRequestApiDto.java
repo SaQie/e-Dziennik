@@ -29,7 +29,7 @@ public class StudentRequestApiDto{
 
     private String firstName;
     private String lastName;
-    private String adress;
+    private String address;
     private String postalCode;
     private String city;
     private String pesel;

@@ -32,6 +32,9 @@ class StudentPrivService extends ServiceValidator<StudentValidators, StudentRequ
     }
 
     private void checkSchoolExistAndAssignIfExist(Long idSchool, Student student) {
+        // TODO -> Zrezygnowac z rzucania wyjatkow w dao
+        // TODO -> Dodac exception handler na to aby zlapalo errory z adnotacji typu @Size, @NotNull itd.
+        // sprawdz jak zadziala adnotacja notnull z responsem z api, moze nie bedzie trzeba usuwac wyjatkow z dao
         dao.findWithExecute(idSchool, student::setSchool);
     }
 
