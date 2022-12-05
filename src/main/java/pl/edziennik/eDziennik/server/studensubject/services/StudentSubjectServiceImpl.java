@@ -22,10 +22,8 @@ import java.util.List;
 class StudentSubjectServiceImpl implements StudentSubjectService {
 
     private final StudentSubjectDao dao;
-    private final TeacherDao teacherDao;
-    private final GradeDao gradeDao;
     private final StudentSubjectPrivService privService;
-    private final GradeService gradeService;
+
 
     @Override
     @Transactional

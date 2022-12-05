@@ -3,6 +3,7 @@ package pl.edziennik.eDziennik.server.subject.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 
 import javax.persistence.*;
@@ -25,6 +26,9 @@ public class Subject implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Teacher teacher;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private SchoolClass schoolClass;
 
 
     public Subject(String name, String description) {

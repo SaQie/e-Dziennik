@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.student.domain.Student;
+import pl.edziennik.eDziennik.server.subject.domain.Subject;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 
 import javax.persistence.*;
@@ -26,6 +27,9 @@ public class SchoolClass implements Serializable {
 
     @OneToMany(mappedBy = "schoolClass")
     private Collection<Student> students = new ArrayList<>();
+
+    @OneToMany(mappedBy = "schoolClass")
+    private Collection<Subject> subjects = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY)
     private Teacher teacher;

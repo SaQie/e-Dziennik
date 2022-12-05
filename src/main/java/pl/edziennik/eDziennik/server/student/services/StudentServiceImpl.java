@@ -34,6 +34,16 @@ class StudentServiceImpl implements StudentService{
     public StudentResponseApiDto register(StudentRequestApiDto dto) {
         Student student = privService.validateDtoAndMapToEntity(dto);
         student.setPassword(passwordEncoder.encode(dto.getPassword()));
+        /*
+
+        Dodac cos w stylu takiego kodu:
+
+        student.getSchoolClass.getSubjects
+        for(Subject subject : subjects)
+        studentSubjectService.assign..(new Dto(subject))
+        Doda grupowo wszystkie przedmioty dla ucznia
+
+         */
         return StudentMapper.toDto(dao.saveOrUpdate(student));
     }
 
