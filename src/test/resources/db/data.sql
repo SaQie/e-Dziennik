@@ -2,9 +2,13 @@ INSERT INTO school_level(id, name) values (1,'Primary');
 INSERT INTO school_level(id, name) values (2,'Secondary');
 INSERT INTO school_level(id, name) values (3,'High school');
 
-INSERT INTO school(id, name, adress, postal_code, city, nip, regon, phone_number, school_level_id) VALUES (1,'School1','Washington','22-50','Somewhere','120','120','120',1);
-INSERT INTO school(id, name, adress, postal_code, city, nip, regon, phone_number, school_level_id) VALUES (2,'School2','Washington2','22-502','Somewhere2','1202','1202','1202',2);
-INSERT INTO school(id, name, adress, postal_code, city, nip, regon, phone_number, school_level_id) VALUES (3,'School3','Washington3','22-503','Somewhere3','1203','1203','1203',3);
+INSERT INTO address(id, address, postal_code, city) VALUES (100,'Washington','22-50','Somewhere');
+INSERT INTO address(id, address, postal_code, city) VALUES (101,'Washington2','22-502','Somewhere2');
+INSERT INTO address(id, address, postal_code, city) VALUES (102,'Washington3','22-503','Somewhere3');
+
+INSERT INTO school(id, name, nip, regon, phone_number, school_level_id, address_id) VALUES (1,'School1','120','120','120',1,100);
+INSERT INTO school(id, name, nip, regon, phone_number, school_level_id, address_id) VALUES (2,'School2','1202','1202','1202',2,101);
+INSERT INTO school(id, name, nip, regon, phone_number, school_level_id, address_id) VALUES (3,'School3','1203','1203','1203',3,102);
 
 INSERT INTO school_class(id, class_name, created_date, teacher_id, school_id) VALUES (1,'1B','2022-02-01',null,1);
 INSERT INTO school_class(id, class_name, created_date, teacher_id, school_id) VALUES (2,'2B','2022-02-02',null,2);

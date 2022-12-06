@@ -3,6 +3,11 @@ package pl.edziennik.eDziennik.server.school.domain.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.pl.NIP;
+import org.hibernate.validator.constraints.pl.REGON;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,13 +23,29 @@ public class SchoolRequestApiDto{
     public static final String PHONE_NUMBER = "phoneNumber";
     public static final String ID_SCHOOL_LEVEL = "idSchoolLevel";
 
+    @NotEmpty(message = "{name.empty}")
     private String name;
+
+    @NotEmpty(message = "{address.empty}")
     private String address;
+
+    @NotEmpty(message = "{postalCode.empty}")
+    @Size(min = 6, max = 6, message = "{postalCode.size}")
     private String postalCode;
+
+    @NotEmpty(message = "{city.empty}")
     private String city;
+
+    @org.hibernate.validator.constraints.pl.NIP(message = "{nip.invalid}")
     private String nip;
+
+    @org.hibernate.validator.constraints.pl.REGON(message = "{regon.invalid}")
     private String regon;
+
+    @NotEmpty(message = "{phoneNumber.empty}")
     private String phoneNumber;
+
+    @NotEmpty(message = "{schoolLevel.empty}")
     private Long idSchoolLevel;
 
 }

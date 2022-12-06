@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.exceptions.BusinessException;
+import pl.edziennik.eDziennik.server.address.Address;
+import pl.edziennik.eDziennik.server.address.AddressMapper;
 import pl.edziennik.eDziennik.server.school.dao.SchoolDao;
 import pl.edziennik.eDziennik.server.school.domain.dto.SchoolRequestApiDto;
 import pl.edziennik.eDziennik.server.school.domain.dto.SchoolResponseApiDto;
@@ -58,13 +60,12 @@ class SchoolServiceImpl implements SchoolService{
         Optional<School> optionalSchool = dao.find(id);
         if (optionalSchool.isPresent()){
             School school = optionalSchool.get();
-            school.setCity(dto.getCity());
             school.setName(dto.getName());
             school.setNip(dto.getNip());
-            school.setAdress(dto.getAddress());
             school.setRegon(dto.getRegon());
             school.setPhoneNumber(dto.getPhoneNumber());
-            school.setPostalCode(dto.getPostalCode());
+            Address address = AddressMapper.mapToAddress(dto.getAddress(), dto.getCity(), dto.getPostalCode());
+            school.setAddress(address);
             return SchoolMapper.toDto(school);
         }
         School school = dao.saveOrUpdate(SchoolMapper.toEntity(dto));

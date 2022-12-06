@@ -52,10 +52,10 @@ public class SchoolIntegrationTest extends BaseTest {
         School actual = find(School.class, id);
 
         assertEquals(expected.getName(), actual.getName());
-        assertEquals(expected.getAddress(), actual.getAdress());
+        assertEquals(expected.getAddress(), actual.getAddress().getAddress());
         assertEquals(expected.getNip(), actual.getNip());
-        assertEquals(expected.getCity(), actual.getCity());
-        assertEquals(expected.getPostalCode(), actual.getPostalCode());
+        assertEquals(expected.getCity(), actual.getAddress().getCity());
+        assertEquals(expected.getPostalCode(), actual.getAddress().getPostalCode());
         assertEquals(expected.getRegon(), actual.getRegon());
         assertEquals(expected.getIdSchoolLevel(), actual.getSchoolLevel().getId());
     }
@@ -76,10 +76,10 @@ public class SchoolIntegrationTest extends BaseTest {
         School actual = find(School.class, updated);
         assertNotNull(actual);
         assertEquals(expected.getName(), actual.getName());
-        assertEquals(expected.getAddress(), actual.getAdress());
+        assertEquals(expected.getAddress(), actual.getAddress().getAddress());
         assertEquals(expected.getNip(), actual.getNip());
-        assertEquals(expected.getCity(), actual.getCity());
-        assertEquals(expected.getPostalCode(), actual.getPostalCode());
+        assertEquals(expected.getCity(), actual.getAddress().getCity());
+        assertEquals(expected.getPostalCode(), actual.getAddress().getPostalCode());
         assertEquals(expected.getRegon(), actual.getRegon());
         assertEquals(expected.getIdSchoolLevel(), actual.getSchoolLevel().getId());
 

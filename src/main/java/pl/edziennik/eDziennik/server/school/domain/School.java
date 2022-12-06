@@ -3,6 +3,7 @@ package pl.edziennik.eDziennik.server.school.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.edziennik.eDziennik.server.address.Address;
 import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.server.schoollevel.domain.SchoolLevel;
 import pl.edziennik.eDziennik.server.student.domain.Student;
@@ -25,12 +26,12 @@ public class School implements Serializable {
     private Long id;
 
     private String name;
-    private String adress;
-    private String postalCode;
-    private String city;
     private String nip;
     private String regon;
     private String phoneNumber;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    private Address address;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private SchoolLevel schoolLevel;
@@ -44,14 +45,12 @@ public class School implements Serializable {
     @OneToMany(mappedBy = "school", orphanRemoval = true)
     private Collection<Teacher> teachers = new ArrayList<>();
 
-    public School(String name, String adress, String postalCode, String city, String nip, String regon, String phoneNumber) {
+    public School(String name, String nip, String regon, String phoneNumber, Address address) {
         this.name = name;
-        this.adress = adress;
-        this.postalCode = postalCode;
-        this.city = city;
         this.nip = nip;
         this.regon = regon;
         this.phoneNumber = phoneNumber;
+        this.address = address;
     }
 
     public void addTeacher(Teacher teacher){

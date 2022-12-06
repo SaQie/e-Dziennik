@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -15,8 +17,12 @@ public class GradeRequestApiDto {
     public static final String DESCRIPTION = "description";
     public static final String TEACHER_NAME = "teacherName";
 
+    @NotNull(message = "{grade.empty}")
     private int grade;
+
+    @NotNull(message = "{weight.empty}")
     private int weight;
+
     private String description;
 
     public GradeRequestApiDto(int grade, int weight, String description) {
