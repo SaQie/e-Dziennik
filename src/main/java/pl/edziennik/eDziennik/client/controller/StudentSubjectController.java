@@ -27,7 +27,8 @@ public class StudentSubjectController {
 
     @PostMapping("/{idStudent}/subjects")
     public ResponseEntity<ApiResponse> assignStudentToSubject(@RequestBody StudentSubjectRequestDto requestApiDto, @PathVariable Long idStudent){
-        StudentSubjectResponseDto responseApiDto = service.assignStudentToSubject(requestApiDto, idStudent);
+        requestApiDto.setIdStudent(idStudent);
+        StudentSubjectResponseDto responseApiDto = service.assignStudentToSubject(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ResponseEntity.ok(ApiResponse.buildApiResponse(HttpMethod.POST, HttpStatus.OK, responseApiDto, uri));
     }

@@ -4,8 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.MessageSource;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
@@ -17,13 +15,8 @@ import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherResponseApiDto;
 import pl.edziennik.eDziennik.server.teacher.services.TeacherService;
-import pl.edziennik.eDziennik.server.teacher.services.validator.TeacherAlreadyExistValidator;
 import pl.edziennik.eDziennik.server.teacher.services.validator.TeacherValidators;
-import pl.edziennik.eDziennik.server.utils.ExecutionTimer;
-import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
@@ -148,19 +141,6 @@ public class TeacherIntegrationTest extends BaseTest {
     }
 
     @Test
-    public void shouldThrowsExceptionWhenRoleNotExist(){
-        // given
-        String role = "TEST";
-        String expectedRoleExceptionMessage = "Role with name " + role + " not exist";
-        TeacherRequestApiDto dto = util.prepareTeacherRequestDto(role);
-
-        // when
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> service.register(dto));
-
-        // then
-        assertEquals(exception.getMessage(), expectedRoleExceptionMessage);
-    }
-    @Test
     public void shouldAssignDefaultRoleIfRoleIsEmpty(){
         // given
         TeacherRequestApiDto dto = util.prepareTeacherRequestDto();
@@ -189,6 +169,7 @@ public class TeacherIntegrationTest extends BaseTest {
     @Test
     public void shouldThrowsBusinessExceptionWhenTryingToRegisterAndTeacherAlreadyExist(){
         // given
+        String expectedValidatorName = "TeacherAlreadyExistValidator";
         TeacherRequestApiDto dto = util.prepareTeacherRequestDto();
         service.register(dto);
 
@@ -197,7 +178,7 @@ public class TeacherIntegrationTest extends BaseTest {
 
         // then
         assertEquals(1, exception.getErrors().size());
-        assertEquals(TeacherAlreadyExistValidator.class.getName(), exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(TeacherRequestApiDto.USERNAME, exception.getErrors().get(0).getField());
         String expectedExceptionMessage = resourceCreator.of(TeacherValidators.EXCEPTION_MESSAGE_TEACHER_ALREADY_EXIST, Teacher.class.getSimpleName(), dto.getUsername());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());

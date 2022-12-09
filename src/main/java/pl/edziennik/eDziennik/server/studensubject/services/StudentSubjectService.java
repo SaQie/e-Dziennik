@@ -8,12 +8,14 @@ import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentSu
 
 public interface StudentSubjectService {
 
-    StudentSubjectResponseDto assignStudentToSubject(final StudentSubjectRequestDto dto, final Long idStudent);
+    StudentSubjectResponseDto assignStudentToSubject(final StudentSubjectRequestDto dto);
 
     StudentGradesInSubjectDto getStudentSubjectGrades(final Long idStudent, final Long idSubject);
 
     AllStudentsGradesInSubjectsDto getStudentAllSubjectsGrades(final Long idStudent);
 
     StudentSubjectsResponseDto getStudentSubjects(final Long idStudent);
+
+
 
 }

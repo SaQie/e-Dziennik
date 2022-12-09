@@ -5,7 +5,14 @@
         http://java.sun.com/xml/ns/persistence/orm_2_0.xsd ">
 
     <named-query name="Role.getRoleByName">
-        <query>SELECT r from Role r where r.name = :name</query>
+        <query>
+            SELECT
+                r
+            FROM
+                Role r
+            WHERE
+                r.name = :name
+        </query>
     </named-query>
 
 

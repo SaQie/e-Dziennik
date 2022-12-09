@@ -21,7 +21,7 @@ public class StudentIntegrationTestUtil {
                 "Nowak",
                 "100200300",
                 1L,
-                1L
+                100L
         );
     }
 
@@ -39,7 +39,7 @@ public class StudentIntegrationTestUtil {
                 "Nowak",
                 "100200300",
                 1L,
-                1L
+                100L
         );
     }
 
@@ -76,7 +76,7 @@ public class StudentIntegrationTestUtil {
                 "Nowak",
                 "100200300",
                 idSchool,
-                1L
+                100L
         );
     }
 }

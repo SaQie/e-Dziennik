@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Component
 @AllArgsConstructor
-public class StudentSchoolClassBelongsToSchoolValidator  implements StudentValidators{
+class StudentSchoolClassNotBelongsToSchoolValidator implements StudentValidators{
 
     private final SchoolDao dao;
     private final ResourceCreator resourceCreator;
@@ -24,7 +24,7 @@ public class StudentSchoolClassBelongsToSchoolValidator  implements StudentValid
 
     @Override
     public String getValidatorName() {
-        return StudentSchoolClassBelongsToSchoolValidator.class.getName();
+        return this.getClass().getSimpleName();
     }
 
     @Override

@@ -19,8 +19,8 @@ public class StudentSubjectIntegrationTestUtil {
         return subjectUtil.prepareSubjectRequestDto(idTeacher);
     }
 
-    public StudentSubjectRequestDto prepareStudentSubjectRequestDto(Long idSubject){
-        return new StudentSubjectRequestDto(idSubject);
+    public StudentSubjectRequestDto prepareStudentSubjectRequestDto(Long idSubject, Long idStudent){
+        return new StudentSubjectRequestDto(idSubject, idStudent);
     }
 
 

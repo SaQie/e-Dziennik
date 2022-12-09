@@ -10,9 +10,9 @@ INSERT INTO school(id, name, nip, regon, phone_number, school_level_id, address_
 INSERT INTO school(id, name, nip, regon, phone_number, school_level_id, address_id) VALUES (2,'School2','1202','1202','1202',2,101);
 INSERT INTO school(id, name, nip, regon, phone_number, school_level_id, address_id) VALUES (3,'School3','1203','1203','1203',3,102);
 
-INSERT INTO school_class(id, class_name, created_date, teacher_id, school_id) VALUES (1,'1B','2022-02-01',null,1);
-INSERT INTO school_class(id, class_name, created_date, teacher_id, school_id) VALUES (2,'2B','2022-02-02',null,2);
-INSERT INTO school_class(id, class_name, created_date, teacher_id, school_id) VALUES (3,'3B','2022-02-03',null,3);
+INSERT INTO school_class(id, class_name, created_date, teacher_id, school_id) VALUES (100,'1B','2022-02-01',null,1);
+INSERT INTO school_class(id, class_name, created_date, teacher_id, school_id) VALUES (101,'2B','2022-02-02',null,2);
+INSERT INTO school_class(id, class_name, created_date, teacher_id, school_id) VALUES (102,'3B','2022-02-03',null,3);
 
 INSERT INTO role(id, name) VALUES (1, 'ROLE_ADMIN');
 INSERT INTO role(id, name) VALUES (2, 'ROLE_MODERATOR');

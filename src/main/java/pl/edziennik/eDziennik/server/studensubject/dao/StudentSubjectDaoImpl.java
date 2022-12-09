@@ -29,7 +29,7 @@ class StudentSubjectDaoImpl extends BaseDao<StudentSubject> implements StudentSu
     }
 
     @Override
-    public Optional<StudentSubject> findStudentSubjectByStudentAndSubjectIds(Long studentId, Long subjectId) {
+    public Optional<StudentSubject> findSubjectStudent(Long studentId, Long subjectId) {
         TypedQuery<StudentSubject> query = em.createNamedQuery(Queries.FIND_SUBJECT_STUDENT, StudentSubject.class);
         query.setParameter(Parameters.ID_STUDENT, studentId);
         query.setParameter(Parameters.ID_SUBJECT, subjectId);

@@ -10,7 +10,7 @@ public class SchoolClassIntergrationTestUtil {
 
     public SchoolClassRequestApiDto prepareSchoolClassRequest() {
         return new SchoolClassRequestApiDto(
-                "3B",
+                "6B",
                 null,
                 1L
         );

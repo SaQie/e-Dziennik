@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,6 +21,6 @@ public class SchoolClassRequestApiDto{
 
     private Long idSupervisingTeacher;
 
-    @NotEmpty(message = "{school.empty}")
+    @NotNull(message = "{school.empty}")
     private Long idSchool;
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.exceptions.BusinessException;
+import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
 import pl.edziennik.eDziennik.server.grade.domain.Grade;
 import pl.edziennik.eDziennik.server.grade.domain.dto.GradeRequestApiDto;
 import pl.edziennik.eDziennik.server.grade.services.GradeService;
@@ -11,7 +12,7 @@ import pl.edziennik.eDziennik.server.studensubject.dao.StudentSubjectDao;
 import pl.edziennik.eDziennik.server.studensubject.domain.StudentSubject;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.mapper.StudentSubjectMapper;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentGradesInSubjectDto;
-import pl.edziennik.eDziennik.server.studensubject.services.StudentSubjectPrivService;
+import pl.edziennik.eDziennik.server.studensubject.services.StudentSubjectValidatorService;
 import pl.edziennik.eDziennik.server.teacher.dao.TeacherDao;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 
@@ -19,18 +20,17 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class GradeManagmentServiceImpl implements GradeManagmentService{
+class GradeManagmentServiceImpl implements GradeManagmentService{
 
     private final TeacherDao teacherDao;
     private final GradeService gradeService;
     private final StudentSubjectDao dao;
-    private final StudentSubjectPrivService privService;
-
+    private final StudentSubjectValidatorService studentSubjectValidatorService;
 
     @Override
     @Transactional
     public StudentGradesInSubjectDto assignGradeToStudentSubject(Long idStudent, Long idSubject, GradeRequestApiDto dto) {
-        StudentSubject studentSubject = privService.checkStudentSubjectExist(idSubject, idStudent);
+        StudentSubject studentSubject = studentSubjectValidatorService.checkStudentSubjectExist(idStudent, idSubject);
         Teacher teacher = teacherDao.getByUsername(dto.getTeacherName());
         Long gradeId = gradeService.addNewGrade(dto).getId();
         Grade grade = dao.get(Grade.class, gradeId);
@@ -44,13 +44,13 @@ public class GradeManagmentServiceImpl implements GradeManagmentService{
     @Override
     public void deleteGradeFromStudentSubject(Long idStudent, Long idSubject, Long idGrade) {
         // TODO -> Sprawdzac czy ocena zgadza sie z tym studentem i przedmiotem
-        privService.checkStudentSubjectExist(idSubject, idStudent);
+        StudentSubject studentSubject = dao.findSubjectStudent(idStudent, idSubject).orElseThrow(() -> new EntityNotFoundException("Student " + idStudent + " not assigned to subject " + idSubject));
         gradeService.deleteRatingById(idGrade);
     }
 
     @Override
     public StudentGradesInSubjectDto updateStudentSubjectGrade(Long idStudent, Long idSubject, Long idGrade, GradeRequestApiDto requestApiDto) {
-        StudentSubject studentSubject = privService.checkStudentSubjectExist(idSubject, idStudent);
+        StudentSubject studentSubject = dao.findSubjectStudent(idStudent, idSubject).orElseThrow(() -> new EntityNotFoundException("Student " + idStudent + " not assigned to subject " + idSubject));
         Optional<Grade> optionalGrade = dao.find(Grade.class, idGrade);
         if (optionalGrade.isPresent()){
             Grade grade = optionalGrade.get();

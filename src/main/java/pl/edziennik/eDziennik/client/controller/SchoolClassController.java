@@ -12,6 +12,7 @@ import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassRequestAp
 import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassResponseApiDto;
 import pl.edziennik.eDziennik.server.schoolclass.services.SchoolClassService;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class SchoolClassController {
 
 
     @PostMapping()
-    public ResponseEntity<ApiResponse> createSchoolClass(@RequestBody SchoolClassRequestApiDto requestApiDto) {
+    public ResponseEntity<ApiResponse> createSchoolClass(@RequestBody @Valid SchoolClassRequestApiDto requestApiDto) {
         SchoolClassResponseApiDto responseApiDto = service.createSchoolClass(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")

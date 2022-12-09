@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
+import pl.edziennik.eDziennik.exceptions.BusinessException;
 import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
 import pl.edziennik.eDziennik.server.basics.BaseDao;
 import pl.edziennik.eDziennik.server.school.domain.School;
@@ -14,9 +15,13 @@ import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassRequestApiDto;
 import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassResponseApiDto;
 import pl.edziennik.eDziennik.server.schoolclass.services.SchoolClassService;
+import pl.edziennik.eDziennik.server.schoolclass.services.validator.SchoolClassValidators;
 import pl.edziennik.eDziennik.server.schoollevel.domain.SchoolLevel;
+import pl.edziennik.eDziennik.server.student.domain.dto.StudentRequestApiDto;
+import pl.edziennik.eDziennik.server.student.services.validator.StudentValidators;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
+import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherResponseApiDto;
 import pl.edziennik.eDziennik.server.teacher.services.TeacherService;
 import pl.edziennik.eDziennik.teacher.TeacherIntegrationTestUtil;
 
@@ -152,6 +157,76 @@ public class SchoolClassIntegrationTest extends BaseTest {
 
         // then
         assertEquals(exception.getMessage(), BaseDao.BaseDaoExceptionMessage.createNotFoundExceptionMessage(School.class.getSimpleName(), idSchool));
+    }
+
+    @Test
+    public void shouldThrowsBusinessExceptionWhenTryingToSaveNewSchoolClassAndSchoolClassAlreadyExist(){
+        // given
+        String expectedValidatorName = "SchoolClassAlreadyExistValidator";
+        SchoolClassRequestApiDto requestApiDto = util.prepareSchoolClassRequest();
+        Long id = service.createSchoolClass(requestApiDto).getId();
+        assertNotNull(id);
+
+        // when
+        SchoolClassRequestApiDto requestApiDto2 = util.prepareSchoolClassRequest();
+        BusinessException exception = assertThrows(BusinessException.class, () -> service.createSchoolClass(requestApiDto2));
+
+        // then
+        assertEquals(1, exception.getErrors().size());
+        assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(SchoolClassRequestApiDto.CLASS_NAME, exception.getErrors().get(0).getField());
+        String expectedExceptionMessage = resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_ALREADY_EXIST, requestApiDto.getClassName(), find(School.class, requestApiDto.getIdSchool()).getName());
+        assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
+    }
+
+    @Test
+    public void shouldThrowsBusinessExceptionWhenTryingToSaveNewSchoolClassAndTeacherIsAlreadySupervisingTeacher(){
+        // given
+        String expectedValidatorName = "TeacherIsAlreadySupervisingTeacherValidator";
+
+        // create teacher
+        TeacherRequestApiDto teacherDto = teacherUtil.prepareTeacherRequestDto();
+        TeacherResponseApiDto teacherResponseDto = teacherService.register(teacherDto);
+
+        // create school class with teacher
+        SchoolClassRequestApiDto requestApiDto = util.prepareSchoolClassRequest(teacherResponseDto.getId());
+        Long id = service.createSchoolClass(requestApiDto).getId();
+        assertNotNull(id);
+
+        // create second school class with the same teacher
+        SchoolClassRequestApiDto schoolClassRequestApiDto = util.prepareSchoolClassRequest("9B", teacherResponseDto.getId());
+
+        // when
+        BusinessException exception = assertThrows(BusinessException.class, () -> service.createSchoolClass(schoolClassRequestApiDto));
+
+        // then
+        assertEquals(1, exception.getErrors().size());
+        assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(SchoolClassRequestApiDto.ID_SUPERVISING_TEACHER, exception.getErrors().get(0).getField());
+        String expectedExceptionMessage = resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER, teacherResponseDto.getFirstName() + " " + teacherResponseDto.getLastName());
+        assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
+    }
+
+    @Test
+    public void shouldThrowsBusinessExceptionWhenTryingToSaveNewSchoolClassAndTeacherNotBelongToSchool(){
+        // given
+        String expectedValidatorName = "TeacherNotBelongToSchoolValidator";
+
+        // create teacher
+        TeacherRequestApiDto teacherDto = teacherUtil.prepareTeacherRequestDto();
+        TeacherResponseApiDto teacherResponseDto = teacherService.register(teacherDto);
+
+        SchoolClassRequestApiDto requestApiDto = util.prepareSchoolClassRequest(teacherResponseDto.getId(), 2L);
+
+        // when
+        BusinessException exception = assertThrows(BusinessException.class, () -> service.createSchoolClass(requestApiDto));
+
+        // then
+        assertEquals(1, exception.getErrors().size());
+        assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(SchoolClassRequestApiDto.ID_SUPERVISING_TEACHER + " + " + SchoolClassRequestApiDto.ID_SCHOOL, exception.getErrors().get(0).getField());
+        String expectedExceptionMessage = resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL, teacherResponseDto.getFirstName() + " " + teacherResponseDto.getLastName(), find(School.class, 2L).getName());
+        assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 
 

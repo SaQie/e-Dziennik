@@ -58,10 +58,10 @@ CREATE TABLE teacher
 CREATE TABLE school_class
 (
     id           SERIAL PRIMARY KEY,
-    class_name   varchar(255) NOT NULL UNIQUE,
+    class_name   varchar(255) NOT NULL,
     created_date date         NOT NULL,
     teacher_id   INT UNIQUE REFERENCES teacher (id),
-    school_id    INT REFERENCES school (id)
+    school_id    INT NOT NULL REFERENCES school (id)
 );
 
 ALTER TABLE student

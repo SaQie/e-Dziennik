@@ -1,7 +1,6 @@
 package pl.edziennik.eDziennik.server.student.services;
 
 import lombok.AllArgsConstructor;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,8 +11,6 @@ import pl.edziennik.eDziennik.server.student.domain.dto.StudentResponseApiDto;
 import pl.edziennik.eDziennik.server.student.domain.dto.mapper.StudentMapper;
 import pl.edziennik.eDziennik.server.student.domain.Student;
 
-import javax.persistence.EntityNotFoundException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +22,7 @@ class StudentServiceImpl implements StudentService{
 
     private final StudentDao dao;
     private final PasswordEncoder passwordEncoder;
-    private final StudentPrivService privService;
+    private final StudentValidatorService privService;
 
 
 

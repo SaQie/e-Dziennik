@@ -6,11 +6,32 @@
 
 
     <named-query name="StudentSubject.findAllStudentRatingsForStudent">
-        <query>SELECT ss FROM StudentSubject ss JOIN FETCH ss.student JOIN FETCH ss.subject where ss.student.id = :idStudent</query>
+        <query>
+            SELECT
+                ss
+            FROM
+                StudentSubject ss
+            JOIN FETCH
+                ss.student
+            JOIN FETCH
+                ss.subject
+            WHERE
+                ss.student.id = :idStudent
+        </query>
     </named-query>
 
     <named-query name="StudentSubject.findSubjectStudent">
-        <query>SELECT ss FROM StudentSubject ss where ss.student.id = :idStudent AND ss.subject.id = :idSubject</query>
+        <query>
+            SELECT
+                ss
+            FROM
+                StudentSubject ss
+            WHERE
+                ss.student.id = :idStudent
+            AND
+                ss.subject.id = :idSubject
+        </query>
     </named-query>
+
 
 </entity-mappings>

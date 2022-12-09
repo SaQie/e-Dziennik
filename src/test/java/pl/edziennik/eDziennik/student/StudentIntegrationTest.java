@@ -16,16 +16,8 @@ import pl.edziennik.eDziennik.server.student.domain.Student;
 import pl.edziennik.eDziennik.server.student.domain.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.server.student.domain.dto.StudentResponseApiDto;
 import pl.edziennik.eDziennik.server.student.services.StudentService;
-import pl.edziennik.eDziennik.server.student.services.validator.StudentAlreadyExistValidator;
-import pl.edziennik.eDziennik.server.student.services.validator.StudentSchoolClassBelongsToSchoolValidator;
 import pl.edziennik.eDziennik.server.student.services.validator.StudentValidators;
-import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
-import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
-import pl.edziennik.eDziennik.server.teacher.services.validator.TeacherAlreadyExistValidator;
-import pl.edziennik.eDziennik.server.teacher.services.validator.TeacherValidators;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
@@ -205,6 +197,7 @@ public class StudentIntegrationTest extends BaseTest {
     @Test
     public void shouldThrowsBusinessExceptionWhenTryingToRegisterAndStudentAlreadyExist(){
         // given
+        String expectedValidatorName = "StudentAlreadyExistValidator";
         StudentRequestApiDto dto = util.prepareStudentRequestDto();
         service.register(dto);
 
@@ -213,7 +206,7 @@ public class StudentIntegrationTest extends BaseTest {
 
         // then
         assertEquals(1, exception.getErrors().size());
-        assertEquals(StudentAlreadyExistValidator.class.getName(), exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(StudentRequestApiDto.USERNAME, exception.getErrors().get(0).getField());
         String expectedExceptionMessage = resourceCreator.of(StudentValidators.EXCEPTION_MESSAGE_STUDENT_ALREADY_EXIST, Student.class.getSimpleName(), dto.getUsername());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
@@ -222,14 +215,15 @@ public class StudentIntegrationTest extends BaseTest {
     @Test
     public void shouldThrowsBusinessExceptionWhenTryingToRegisterNewStudentAndSchoolClassNotBelongsToSchool(){
         // given
-        StudentRequestApiDto dto = util.prepareStudentRequestDto(1L,3L);
+        String expectedValidatorName = "StudentSchoolClassNotBelongsToSchoolValidator";
+        StudentRequestApiDto dto = util.prepareStudentRequestDto(1L,101L);
 
         // when
         BusinessException exception = assertThrows(BusinessException.class, () -> service.register(dto));
 
         // then
         assertEquals(1, exception.getErrors().size());
-        assertEquals(StudentSchoolClassBelongsToSchoolValidator.class.getName(), exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(StudentRequestApiDto.ID_SCHOOL_CLASS, exception.getErrors().get(0).getField());
         String expectedExceptionMessage = resourceCreator.of(StudentValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_NOT_BELONG_TO_SCHOOL, find(SchoolClass.class, dto.getIdSchoolClass()).getClassName(),find(School.class, dto.getIdSchool()).getName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());

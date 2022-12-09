@@ -5,7 +5,14 @@
         http://java.sun.com/xml/ns/persistence/orm_2_0.xsd ">
 
     <named-query name="Student.getStudentByUsername">
-        <query>SELECT s from Student s where s.username = :username</query>
+        <query>
+            SELECT
+                s
+            FROM
+                Student s
+            WHERE
+                s.username = :username
+        </query>
     </named-query>
 
 

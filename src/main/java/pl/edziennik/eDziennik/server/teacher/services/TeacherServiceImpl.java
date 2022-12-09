@@ -22,7 +22,7 @@ class TeacherServiceImpl implements TeacherService{
 
     private final TeacherDao dao;
     private final PasswordEncoder passwordEncoder;
-    private final TeacherPrivService privService;
+    private final TeacherValidatorService privService;
 
     @Override
     @Transactional

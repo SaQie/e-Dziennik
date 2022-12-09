@@ -1,7 +1,6 @@
 package pl.edziennik.eDziennik.server.schoolclass.services;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.server.school.domain.School;
@@ -12,8 +11,6 @@ import pl.edziennik.eDziennik.server.schoolclass.domain.dto.mapper.SchoolClassMa
 import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 
-import javax.persistence.EntityNotFoundException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,15 +19,13 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 class SchoolClassServiceImpl implements SchoolClassService{
 
-    private final SchoolClassPrivService privService;
+    private final SchoolClassValidatorService validatorService;
     private final SchoolClassDao dao;
 
     @Override
     @Transactional
     public SchoolClassResponseApiDto createSchoolClass(SchoolClassRequestApiDto dto) {
-        SchoolClass schoolClass = SchoolClassMapper.toEntity(dto);
-        privService.checkSupervisingTeacherExist(dto.getIdSupervisingTeacher(), schoolClass);
-        privService.checkSchoolExist(dto.getIdSchool(), schoolClass);
+        SchoolClass schoolClass = validatorService.validateDtoAndMapToEntity(dto);
         SchoolClass savedSchoolClass = dao.saveOrUpdate(schoolClass);
         return SchoolClassMapper.toDto(savedSchoolClass);
     }

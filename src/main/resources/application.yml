@@ -11,7 +11,8 @@ spring:
       /mappings/TeacherDao.hbm.xml,
       /mappings/RoleDao.hbm.xml,
       /mappings/StudentDao.hbm.xml,
-      /mappings/StudentSubjectDao.hbm.xml
+      /mappings/StudentSubjectDao.hbm.xml,
+      /mappings/SchoolClassDao.hbm.xml
   datasource:
     url: jdbc:postgresql://localhost:5432/diary_db
     username: postgres

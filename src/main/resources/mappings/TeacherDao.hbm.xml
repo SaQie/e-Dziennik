@@ -12,7 +12,7 @@
                 Teacher t
             JOIN FETCH
                 t.role
-            where
+            WHERE
                 t.username = :username
         </query>
     </named-query>

@@ -12,7 +12,7 @@ public interface StudentSubjectDao extends IBaseDao<StudentSubject> {
 
     boolean isStudentSubjectAlreadyExist(Long studentId, Long subjectId);
 
-    Optional<StudentSubject> findStudentSubjectByStudentAndSubjectIds(Long studentId, Long subjectId);
+    Optional<StudentSubject> findSubjectStudent(Long studentId, Long subjectId);
 
 
 

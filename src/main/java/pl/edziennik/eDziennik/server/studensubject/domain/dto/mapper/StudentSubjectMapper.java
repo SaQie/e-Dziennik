@@ -45,7 +45,8 @@ public class StudentSubjectMapper {
     public static StudentSubjectResponseDto toStudentSubjectResponseDto(StudentSubject entity){
         Student student = entity.getStudent();
         Subject subject = entity.getSubject();
-        List<SubjectResponseApiDto> subjects = List.of(new SubjectResponseApiDto(subject.getId(), subject.getName(), subject.getDescription(), subject.getTeacher().getId()));
+        Long idTeacher = subject.getTeacher() == null ? null : subject.getTeacher().getId();
+        List<SubjectResponseApiDto> subjects = List.of(new SubjectResponseApiDto(subject.getId(), subject.getName(), subject.getDescription(), idTeacher));
         return new StudentSubjectResponseDto(student.getId(), student.getFirstName(),student.getLastName(), subjects);
     }
 

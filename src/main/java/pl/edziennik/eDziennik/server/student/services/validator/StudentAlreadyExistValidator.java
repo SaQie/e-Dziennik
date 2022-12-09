@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Component
 @AllArgsConstructor
-public class StudentAlreadyExistValidator implements StudentValidators{
+class StudentAlreadyExistValidator implements StudentValidators{
 
     private final ResourceCreator resourceCreator;
     private final StudentDao dao;
@@ -25,7 +25,7 @@ public class StudentAlreadyExistValidator implements StudentValidators{
 
     @Override
     public String getValidatorName() {
-        return this.getClass().getName();
+        return this.getClass().getSimpleName();
     }
 
     @Override

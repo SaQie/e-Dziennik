@@ -2,7 +2,6 @@ package pl.edziennik.eDziennik.server.teacher.services;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
 import pl.edziennik.eDziennik.server.basics.ServiceValidator;
 import pl.edziennik.eDziennik.server.role.dao.RoleDao;
 import pl.edziennik.eDziennik.server.role.domain.Role;
@@ -14,15 +13,20 @@ import pl.edziennik.eDziennik.server.teacher.services.validator.TeacherValidator
 
 @Service
 @AllArgsConstructor
-class TeacherPrivService extends ServiceValidator<TeacherValidators, TeacherRequestApiDto> {
+public class TeacherValidatorService extends ServiceValidator<TeacherValidators, TeacherRequestApiDto> {
 
     private final RoleDao dao;
 
     protected Teacher validateDtoAndMapToEntity(TeacherRequestApiDto dto){
         super.validate(dto);
         Teacher teacher = TeacherMapper.toEntity(dto);
-        checkSchoolExistAndAssignIfExist(dto.getIdSchool(), teacher);
-        checkRoleExistAndAssignIfExist(dto.getRole(), teacher);
+        School school = null;
+        if (dto.getIdSchool() != null){
+            school = dao.get(School.class, dto.getIdSchool());
+        }
+        Role role = checkRoleExist(dto.getRole());
+        teacher.setRole(role);
+        teacher.setSchool(school);
         return teacher;
     }
 
@@ -31,18 +35,8 @@ class TeacherPrivService extends ServiceValidator<TeacherValidators, TeacherRequ
     }
 
 
-    private void checkRoleExistAndAssignIfExist(String role, Teacher teacher) {
-        if (role != null){
-            dao.findByName(role).ifPresentOrElse(teacher::setRole, () -> {
-                throw new EntityNotFoundException("Role with name " + role + " not exist");
-            });
-        }
-        teacher.setRole(dao.get(Role.class,Role.RoleConst.ROLE_TEACHER.getId()));
-    }
-
-    private void checkSchoolExistAndAssignIfExist(Long idSchool, Teacher teacher) {
-        if (idSchool != null) {
-            dao.findWithExecute(School.class,idSchool, school -> school.addTeacher(teacher));
-        }
+    private Role checkRoleExist(String role) {
+        return dao.findByName(role)
+                .orElse(dao.get(Role.class,Role.RoleConst.ROLE_TEACHER.getId()));
     }
 }

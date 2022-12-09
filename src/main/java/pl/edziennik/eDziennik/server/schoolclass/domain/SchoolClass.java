@@ -68,4 +68,9 @@ public class SchoolClass implements Serializable {
         students.add(student);
         student.setSchoolClass(this);
     }
+
+    public void addSubject(Subject subject){
+        subjects.add(subject);
+        subject.setSchoolClass(this);
+    }
 }
