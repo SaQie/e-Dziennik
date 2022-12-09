@@ -18,6 +18,8 @@ import pl.edziennik.eDziennik.server.student.domain.dto.StudentResponseApiDto;
 import pl.edziennik.eDziennik.server.student.services.StudentService;
 import pl.edziennik.eDziennik.server.student.services.validator.StudentValidators;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
@@ -207,7 +209,7 @@ public class StudentIntegrationTest extends BaseTest {
         // then
         assertEquals(1, exception.getErrors().size());
         assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
-        assertEquals(StudentRequestApiDto.USERNAME, exception.getErrors().get(0).getField());
+        assertEquals(List.of(StudentRequestApiDto.USERNAME), exception.getErrors().get(0).getFields());
         String expectedExceptionMessage = resourceCreator.of(StudentValidators.EXCEPTION_MESSAGE_STUDENT_ALREADY_EXIST, Student.class.getSimpleName(), dto.getUsername());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
@@ -224,7 +226,7 @@ public class StudentIntegrationTest extends BaseTest {
         // then
         assertEquals(1, exception.getErrors().size());
         assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
-        assertEquals(StudentRequestApiDto.ID_SCHOOL_CLASS, exception.getErrors().get(0).getField());
+        assertEquals(List.of(StudentRequestApiDto.ID_SCHOOL_CLASS), exception.getErrors().get(0).getFields());
         String expectedExceptionMessage = resourceCreator.of(StudentValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_NOT_BELONG_TO_SCHOOL, find(SchoolClass.class, dto.getIdSchoolClass()).getClassName(),find(School.class, dto.getIdSchool()).getName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }

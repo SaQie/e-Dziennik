@@ -17,6 +17,8 @@ import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherResponseApiDto;
 import pl.edziennik.eDziennik.server.teacher.services.TeacherService;
 import pl.edziennik.eDziennik.server.teacher.services.validator.TeacherValidators;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
@@ -179,7 +181,7 @@ public class TeacherIntegrationTest extends BaseTest {
         // then
         assertEquals(1, exception.getErrors().size());
         assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
-        assertEquals(TeacherRequestApiDto.USERNAME, exception.getErrors().get(0).getField());
+        assertEquals(List.of(TeacherRequestApiDto.USERNAME), exception.getErrors().get(0).getFields());
         String expectedExceptionMessage = resourceCreator.of(TeacherValidators.EXCEPTION_MESSAGE_TEACHER_ALREADY_EXIST, Teacher.class.getSimpleName(), dto.getUsername());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }

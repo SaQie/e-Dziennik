@@ -5,11 +5,13 @@ import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.server.basics.ApiErrorsDto;
 import pl.edziennik.eDziennik.server.basics.ExceptionType;
 import pl.edziennik.eDziennik.server.basics.ValidatorPriority;
+import pl.edziennik.eDziennik.server.student.domain.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.server.teacher.dao.TeacherDao;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -40,7 +42,15 @@ class TeacherAlreadyExistValidator implements TeacherValidators {
     public Optional<ApiErrorsDto> validate(TeacherRequestApiDto requestApiDto) {
         if(dao.isTeacherExist(requestApiDto.getUsername())){
             String message = resourceCreator.of(EXCEPTION_MESSAGE_TEACHER_ALREADY_EXIST, Teacher.class.getSimpleName(), requestApiDto.getUsername());
-            ApiErrorsDto apiErrorsDto = new ApiErrorsDto(TeacherRequestApiDto.USERNAME, message, false, getValidatorName(), ExceptionType.BUSINESS);
+
+            ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
+                    .fields(List.of(TeacherRequestApiDto.USERNAME))
+                    .cause(message)
+                    .thrownImmediately(false)
+                    .errorThrownedBy(getValidatorName())
+                    .exceptionType(ExceptionType.BUSINESS)
+                    .build();
+
             return Optional.of(apiErrorsDto);
         }
         return Optional.empty();

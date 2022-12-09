@@ -11,6 +11,7 @@ import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.server.student.domain.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -43,8 +44,16 @@ class StudentSchoolClassNotBelongsToSchoolValidator implements StudentValidators
         SchoolClass schoolClass = dao.get(SchoolClass.class, dto.getIdSchoolClass());
         if (!school.getSchoolClasses().contains(schoolClass)){
             String message = resourceCreator.of(EXCEPTION_MESSAGE_SCHOOL_CLASS_NOT_BELONG_TO_SCHOOL, schoolClass.getClassName(), school.getName());
-            ApiErrorsDto error = new ApiErrorsDto(StudentRequestApiDto.ID_SCHOOL_CLASS, message, false, getValidatorName(), ExceptionType.BUSINESS);
-            return Optional.of(error);
+
+            ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
+                    .fields(List.of(StudentRequestApiDto.ID_SCHOOL_CLASS))
+                    .cause(message)
+                    .thrownImmediately(false)
+                    .errorThrownedBy(getValidatorName())
+                    .exceptionType(ExceptionType.BUSINESS)
+                    .build();
+
+            return Optional.of(apiErrorsDto);
         }
         return Optional.empty();
     }

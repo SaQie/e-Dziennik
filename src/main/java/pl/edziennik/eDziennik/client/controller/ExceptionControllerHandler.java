@@ -62,7 +62,7 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
         BindingResult bindingResult = exception.getBindingResult();
         List<ApiErrorsDto> errors = bindingResult.getFieldErrors()
                 .stream()
-                .map(x -> new ApiErrorsDto(x.getField(), x.getDefaultMessage(), false, MethodArgumentNotValidException.class.getSimpleName(), ExceptionType.VALIDATION))
+                .map(x -> new ApiErrorsDto(List.of(x.getField()), x.getDefaultMessage(), false, MethodArgumentNotValidException.class.getSimpleName(), ExceptionType.VALIDATION))
                 .toList();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.BAD_REQUEST,httpRequest.getRequestURL().toString(), errors));
     }

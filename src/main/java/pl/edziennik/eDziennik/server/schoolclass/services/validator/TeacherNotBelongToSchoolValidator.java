@@ -14,6 +14,7 @@ import pl.edziennik.eDziennik.server.subject.domain.Subject;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -45,10 +46,19 @@ class TeacherNotBelongToSchoolValidator implements SchoolClassValidators {
         if (dto.getIdSupervisingTeacher() != null) {
             if (!dao.isTeacherBelongsToSchool(dto.getIdSupervisingTeacher(), dto.getIdSchool())) {
                 Teacher teacher = dao.get(Teacher.class, dto.getIdSupervisingTeacher());
+
                 String teacherName = teacher.getFirstName() + " " + teacher.getLastName();
                 String schoolName = dao.get(School.class, dto.getIdSchool()).getName();
                 String message = resourceCreator.of(EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL, teacherName, schoolName);
-                ApiErrorsDto apiErrorsDto = new ApiErrorsDto(SchoolClassRequestApiDto.ID_SUPERVISING_TEACHER + " + " + SchoolClassRequestApiDto.ID_SCHOOL, message, false, getValidatorName(), ExceptionType.BUSINESS);
+
+                ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
+                        .fields(List.of(SchoolClassRequestApiDto.ID_SUPERVISING_TEACHER ,SchoolClassRequestApiDto.ID_SCHOOL))
+                        .cause(message)
+                        .thrownImmediately(false)
+                        .errorThrownedBy(getValidatorName())
+                        .exceptionType(ExceptionType.BUSINESS)
+                        .build();
+
                 return Optional.of(apiErrorsDto);
             }
         }

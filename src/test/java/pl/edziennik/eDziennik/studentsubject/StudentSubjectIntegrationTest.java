@@ -208,7 +208,7 @@ public class StudentSubjectIntegrationTest extends BaseTest {
         // then
         assertEquals(1, exception.getErrors().size());
         assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
-        assertEquals(StudentSubjectRequestDto.ID_SUBJECT + " + " + StudentSubjectRequestDto.ID_STUDENT, exception.getErrors().get(0).getField());
+        assertEquals(List.of(StudentSubjectRequestDto.ID_SUBJECT ,StudentSubjectRequestDto.ID_STUDENT), exception.getErrors().get(0).getFields());
         String expectedExceptionMessage = resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST, find(Student.class, requestDto.getIdStudent()).getFirstName() + " " + find(Student.class, requestDto.getIdStudent()).getLastName() ,find(Subject.class, requestDto.getIdSubject()).getName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }

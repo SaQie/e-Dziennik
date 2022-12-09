@@ -26,6 +26,8 @@ import pl.edziennik.eDziennik.server.teacher.services.TeacherService;
 import pl.edziennik.eDziennik.teacher.TeacherIntegrationTestUtil;
 
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.junit.jupiter.api.Assertions.*;
@@ -174,7 +176,7 @@ public class SchoolClassIntegrationTest extends BaseTest {
         // then
         assertEquals(1, exception.getErrors().size());
         assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
-        assertEquals(SchoolClassRequestApiDto.CLASS_NAME, exception.getErrors().get(0).getField());
+        assertEquals(List.of(SchoolClassRequestApiDto.CLASS_NAME), exception.getErrors().get(0).getFields());
         String expectedExceptionMessage = resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_ALREADY_EXIST, requestApiDto.getClassName(), find(School.class, requestApiDto.getIdSchool()).getName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
@@ -202,7 +204,7 @@ public class SchoolClassIntegrationTest extends BaseTest {
         // then
         assertEquals(1, exception.getErrors().size());
         assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
-        assertEquals(SchoolClassRequestApiDto.ID_SUPERVISING_TEACHER, exception.getErrors().get(0).getField());
+        assertEquals(List.of(SchoolClassRequestApiDto.ID_SUPERVISING_TEACHER), exception.getErrors().get(0).getFields());
         String expectedExceptionMessage = resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER, teacherResponseDto.getFirstName() + " " + teacherResponseDto.getLastName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
@@ -224,7 +226,7 @@ public class SchoolClassIntegrationTest extends BaseTest {
         // then
         assertEquals(1, exception.getErrors().size());
         assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
-        assertEquals(SchoolClassRequestApiDto.ID_SUPERVISING_TEACHER + " + " + SchoolClassRequestApiDto.ID_SCHOOL, exception.getErrors().get(0).getField());
+        assertEquals(List.of(SchoolClassRequestApiDto.ID_SUPERVISING_TEACHER , SchoolClassRequestApiDto.ID_SCHOOL), exception.getErrors().get(0).getFields());
         String expectedExceptionMessage = resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL, teacherResponseDto.getFirstName() + " " + teacherResponseDto.getLastName(), find(School.class, 2L).getName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }

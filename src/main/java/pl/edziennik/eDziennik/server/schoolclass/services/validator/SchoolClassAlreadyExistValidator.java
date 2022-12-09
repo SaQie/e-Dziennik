@@ -11,6 +11,7 @@ import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassRequestAp
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -42,7 +43,15 @@ class SchoolClassAlreadyExistValidator implements SchoolClassValidators {
         if (dao.isSchoolClassAlreadyExist(dto.getClassName(), dto.getIdSchool())){
             String schoolName = dao.get(School.class, dto.getIdSchool()).getName();
             String message = resourceCreator.of(EXCEPTION_MESSAGE_SCHOOL_CLASS_ALREADY_EXIST, dto.getClassName(), schoolName);
-            ApiErrorsDto apiErrorsDto = new ApiErrorsDto(SchoolClassRequestApiDto.CLASS_NAME , message, false, getValidatorName(), ExceptionType.BUSINESS);
+
+            ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
+                    .fields(List.of(SchoolClassRequestApiDto.CLASS_NAME))
+                    .cause(message)
+                    .thrownImmediately(false)
+                    .errorThrownedBy(getValidatorName())
+                    .exceptionType(ExceptionType.BUSINESS)
+                    .build();
+
             return Optional.of(apiErrorsDto);
         }
         return Optional.empty();

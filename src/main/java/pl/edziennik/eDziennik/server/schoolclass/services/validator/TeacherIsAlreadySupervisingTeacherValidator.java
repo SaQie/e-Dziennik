@@ -11,11 +11,12 @@ import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassRequestAp
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
 @AllArgsConstructor
-class TeacherIsAlreadySupervisingTeacherValidator implements SchoolClassValidators{
+class TeacherIsAlreadySupervisingTeacherValidator implements SchoolClassValidators {
 
     private final SchoolClassDao dao;
     private final ResourceCreator resourceCreator;
@@ -39,12 +40,21 @@ class TeacherIsAlreadySupervisingTeacherValidator implements SchoolClassValidato
 
     @Override
     public Optional<ApiErrorsDto> validate(SchoolClassRequestApiDto dto) {
-        if (dto.getIdSupervisingTeacher() != null){
-            if (dao.isTeacherAlreadySupervisingTeacher(dto.getIdSupervisingTeacher())){
+        if (dto.getIdSupervisingTeacher() != null) {
+            if (dao.isTeacherAlreadySupervisingTeacher(dto.getIdSupervisingTeacher())) {
                 Teacher teacher = dao.get(Teacher.class, dto.getIdSupervisingTeacher());
+
                 String teacherName = teacher.getFirstName() + " " + teacher.getLastName();
                 String message = resourceCreator.of(EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER, teacherName);
-                ApiErrorsDto apiErrorsDto = new ApiErrorsDto(SchoolClassRequestApiDto.ID_SUPERVISING_TEACHER , message, false, getValidatorName(), ExceptionType.BUSINESS);
+
+                ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
+                        .fields(List.of(SchoolClassRequestApiDto.ID_SUPERVISING_TEACHER))
+                        .cause(message)
+                        .thrownImmediately(false)
+                        .errorThrownedBy(getValidatorName())
+                        .exceptionType(ExceptionType.BUSINESS)
+                        .build();
+
                 return Optional.of(apiErrorsDto);
             }
         }

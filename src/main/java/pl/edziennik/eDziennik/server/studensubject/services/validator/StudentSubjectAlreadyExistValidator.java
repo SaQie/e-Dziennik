@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.server.basics.ApiErrorsDto;
 import pl.edziennik.eDziennik.server.basics.ExceptionType;
 import pl.edziennik.eDziennik.server.basics.ValidatorPriority;
+import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassRequestApiDto;
 import pl.edziennik.eDziennik.server.studensubject.dao.StudentSubjectDao;
 import pl.edziennik.eDziennik.server.studensubject.domain.StudentSubject;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.request.StudentSubjectRequestDto;
@@ -13,6 +14,7 @@ import pl.edziennik.eDziennik.server.student.domain.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.server.subject.domain.Subject;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -42,12 +44,22 @@ class StudentSubjectAlreadyExistValidator implements StudentSubjectValidators{
     @Override
     public Optional<ApiErrorsDto> validate(StudentSubjectRequestDto dto) {
         if (dao.isStudentSubjectAlreadyExist(dto.getIdStudent(), dto.getIdSubject())){
+
             Student student = dao.get(Student.class, dto.getIdStudent());
-            String studentName = student.getFirstName() + " " + student.getLastName();
             Subject subject = dao.get(Subject.class, dto.getIdSubject());
+
+            String studentName = student.getFirstName() + " " + student.getLastName();
             String subjectName = subject.getName();
             String message = resourceCreator.of(EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST, studentName, subjectName);
-            ApiErrorsDto apiErrorsDto = new ApiErrorsDto(StudentSubjectRequestDto.ID_SUBJECT + " + " + StudentSubjectRequestDto.ID_STUDENT, message, false, getValidatorName(), ExceptionType.BUSINESS);
+
+            ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
+                    .fields(List.of(StudentSubjectRequestDto.ID_SUBJECT, StudentSubjectRequestDto.ID_STUDENT))
+                    .cause(message)
+                    .thrownImmediately(false)
+                    .errorThrownedBy(getValidatorName())
+                    .exceptionType(ExceptionType.BUSINESS)
+                    .build();
+
             return Optional.of(apiErrorsDto);
         }
         return Optional.empty();
