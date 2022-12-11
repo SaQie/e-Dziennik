@@ -8,9 +8,6 @@ import pl.edziennik.eDziennik.server.basics.ValidatorPriority;
 import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.schoolclass.dao.SchoolClassDao;
 import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassRequestApiDto;
-import pl.edziennik.eDziennik.server.studensubject.domain.dto.request.StudentSubjectRequestDto;
-import pl.edziennik.eDziennik.server.student.domain.Student;
-import pl.edziennik.eDziennik.server.subject.domain.Subject;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
@@ -19,7 +16,7 @@ import java.util.Optional;
 
 @Component
 @AllArgsConstructor
-class TeacherNotBelongToSchoolValidator implements SchoolClassValidators {
+class TeacherNotBelongsToSchoolValidator implements SchoolClassValidators {
 
     private final SchoolClassDao dao;
     private final ResourceCreator resourceCreator;
@@ -47,7 +44,7 @@ class TeacherNotBelongToSchoolValidator implements SchoolClassValidators {
             if (!dao.isTeacherBelongsToSchool(dto.getIdSupervisingTeacher(), dto.getIdSchool())) {
                 Teacher teacher = dao.get(Teacher.class, dto.getIdSupervisingTeacher());
 
-                String teacherName = teacher.getFirstName() + " " + teacher.getLastName();
+                String teacherName = teacher.getPersonInformation().getFirstName() + " " + teacher.getPersonInformation().getLastName();
                 String schoolName = dao.get(School.class, dto.getIdSchool()).getName();
                 String message = resourceCreator.of(EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL, teacherName, schoolName);
 

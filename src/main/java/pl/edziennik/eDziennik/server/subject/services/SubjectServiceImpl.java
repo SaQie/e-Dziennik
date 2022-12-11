@@ -3,6 +3,7 @@ package pl.edziennik.eDziennik.server.subject.services;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.server.subject.dao.SubjectDao;
 import pl.edziennik.eDziennik.server.subject.domain.Subject;
 import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectRequestApiDto;
@@ -19,12 +20,14 @@ import java.util.stream.Collectors;
 class SubjectServiceImpl implements SubjectService{
 
     private final SubjectDao dao;
-    private final SubjectPrivService privService;
+    private final SubjectValidatorService privService;
 
     @Override
     @Transactional
     public SubjectResponseApiDto createNewSubject(SubjectRequestApiDto dto) {
         Subject subject = SubjectMapper.toEntity(dto);
+        SchoolClass schoolClass = dao.get(SchoolClass.class, dto.getIdSchoolClass());
+        subject.setSchoolClass(schoolClass);
         privService.checkTeacherExist(dto.getIdTeacher(), subject);
         Subject savedSubject = dao.saveOrUpdate(subject);
         return SubjectMapper.toDto(savedSubject);

@@ -28,7 +28,7 @@ public class StudentSubjectValidatorService extends ServiceValidator<StudentSubj
             return subjectStudent.get();
         }
         Student student = dao.get(Student.class, idStudent);
-        String studentName = student.getFirstName() + " " + student.getLastName();
+        String studentName = student.getPersonInformation().getFirstName() + " " + student.getPersonInformation().getLastName();
         String subjectName = dao.get(Subject.class, idSubject).getName();
         String exceptionMessage = resourceCreator.of("student.subject.not.exist", studentName, subjectName);
         throw new EntityNotFoundException(exceptionMessage);

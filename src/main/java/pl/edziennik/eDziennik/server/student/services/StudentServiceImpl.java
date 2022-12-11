@@ -5,6 +5,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.server.address.AddressMapper;
+import pl.edziennik.eDziennik.server.personinformation.PersonInformation;
+import pl.edziennik.eDziennik.server.personinformation.PersonInformationMapper;
 import pl.edziennik.eDziennik.server.student.dao.StudentDao;
 import pl.edziennik.eDziennik.server.student.domain.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.server.student.domain.dto.StudentResponseApiDto;
@@ -83,14 +85,13 @@ class StudentServiceImpl implements StudentService{
         if (optionalStudent.isPresent()){
             privService.validateDto(requestApiDto);
             Student student = optionalStudent.get();
-            student.setFirstName(requestApiDto.getFirstName());
-            student.setLastName(requestApiDto.getLastName());
+            PersonInformation personInformation = PersonInformationMapper.mapToPersonInformation(requestApiDto.getFirstName(), requestApiDto.getLastName(), requestApiDto.getPesel());
             student.setAddress(AddressMapper.mapToAddress(requestApiDto.getAddress(),requestApiDto.getCity(),requestApiDto.getPostalCode()));
-            student.setPESEL(requestApiDto.getPesel());
             student.setParentFirstName(requestApiDto.getParentFirstName());
             student.setParentLastName(requestApiDto.getParentLastName());
             student.setParentPhoneNumber(requestApiDto.getParentPhoneNumber());
             student.setUsername(requestApiDto.getUsername());
+            student.setPersonInformation(personInformation);
             return StudentMapper.toDto(student);
         }
         return register(requestApiDto);

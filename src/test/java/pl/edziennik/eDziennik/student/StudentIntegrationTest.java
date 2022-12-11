@@ -54,10 +54,10 @@ public class StudentIntegrationTest extends BaseTest {
         // then
         assertNotNull(id);
         Student actual = find(Student.class, id);
-        assertEquals(expected.getFirstName(), actual.getFirstName());
-        assertEquals(expected.getLastName(), actual.getLastName());
+        assertEquals(expected.getFirstName(), actual.getPersonInformation().getFirstName());
+        assertEquals(expected.getLastName(), actual.getPersonInformation().getLastName());
         assertEquals(expected.getAddress(), actual.getAddress().getAddress());
-        assertEquals(expected.getPesel(), actual.getPESEL());
+        assertEquals(expected.getPesel(), actual.getPersonInformation().getPesel());
         assertEquals(expected.getCity(), actual.getAddress().getCity());
         assertEquals(expected.getUsername(), actual.getUsername());
         assertEquals(expected.getParentFirstName(), actual.getParentFirstName());
@@ -79,10 +79,10 @@ public class StudentIntegrationTest extends BaseTest {
         assertNotNull(updated);
         assertEquals(updated,id);
         Student actual = find(Student.class, updated);
-        assertEquals(expected.getFirstName(), actual.getFirstName());
-        assertEquals(expected.getLastName(), actual.getLastName());
+        assertEquals(expected.getFirstName(), actual.getPersonInformation().getFirstName());
+        assertEquals(expected.getLastName(), actual.getPersonInformation().getLastName());
         assertEquals(expected.getAddress(), actual.getAddress().getAddress());
-        assertEquals(expected.getPesel(), actual.getPESEL());
+        assertEquals(expected.getPesel(), actual.getPersonInformation().getPesel());
         assertEquals(expected.getCity(), actual.getAddress().getCity());
         assertEquals(expected.getUsername(), actual.getUsername());
         assertEquals(expected.getParentFirstName(), actual.getParentFirstName());
@@ -202,9 +202,10 @@ public class StudentIntegrationTest extends BaseTest {
         String expectedValidatorName = "StudentAlreadyExistValidator";
         StudentRequestApiDto dto = util.prepareStudentRequestDto();
         service.register(dto);
+        StudentRequestApiDto dto2 = util.prepareStudentRequestDto("Test123", "asdasd", "asdasd", "1231232322");
 
         // when
-        BusinessException exception = assertThrows(BusinessException.class, () -> service.register(dto));
+        BusinessException exception = assertThrows(BusinessException.class, () -> service.register(dto2));
 
         // then
         assertEquals(1, exception.getErrors().size());
@@ -228,6 +229,25 @@ public class StudentIntegrationTest extends BaseTest {
         assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(List.of(StudentRequestApiDto.ID_SCHOOL_CLASS), exception.getErrors().get(0).getFields());
         String expectedExceptionMessage = resourceCreator.of(StudentValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_NOT_BELONG_TO_SCHOOL, find(SchoolClass.class, dto.getIdSchoolClass()).getClassName(),find(School.class, dto.getIdSchool()).getName());
+        assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
+    }
+
+    @Test
+    public void shouldThrowsBusinessExceptionWhenTryingToRegisterNewStudentAndPeselAlreadyExist(){
+        // given
+        String expectedValidatorName = "StudentPeselNotUniqueValidator";
+        StudentRequestApiDto dto = util.prepareStudentRequestDto("00000000000");
+        service.register(dto);
+        StudentRequestApiDto dto2 = util.prepareStudentRequestDto("xxx", "xxx", "xxxx", "00000000000");
+
+        // when
+        BusinessException exception = assertThrows(BusinessException.class, () -> service.register(dto2));
+
+        // then
+        assertEquals(1, exception.getErrors().size());
+        assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(List.of(StudentRequestApiDto.PESEL), exception.getErrors().get(0).getFields());
+        String expectedExceptionMessage = resourceCreator.of(StudentValidators.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, Student.class.getSimpleName(), dto.getPesel());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 

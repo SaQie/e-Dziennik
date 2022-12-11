@@ -23,9 +23,6 @@ public class BasicUser{
 
     private String username;
     private String password;
-    private String firstName;
-    private String lastName;
-    private String PESEL;
     private LocalDate createdDate;
     private LocalDateTime updatedDate;
     private LocalDateTime lastLoginDate;

@@ -26,6 +26,23 @@ public class TeacherIntegrationTestUtil {
         );
     }
 
+    public TeacherRequestApiDto prepareTeacherRequestDto(String username, String pesel){
+        return new TeacherRequestApiDto(
+                username,
+                "Nowak",
+                "Nowak",
+                "Lubavia",
+                "20-200",
+                "Warszawa",
+                pesel,
+                null,
+                "123123123",
+                "asdasd",
+                1L
+        );
+    }
+
+
 
     public TeacherRequestApiDto prepareTeacherRequestDto(final Long idSchool){
         return new TeacherRequestApiDto(

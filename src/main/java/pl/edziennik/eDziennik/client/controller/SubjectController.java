@@ -11,6 +11,7 @@ import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectResponseApiDto;
 import pl.edziennik.eDziennik.server.subject.services.SubjectService;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class SubjectController {
     private final SubjectService service;
 
     @PostMapping()
-    public ResponseEntity<ApiResponse> createSubject(@RequestBody SubjectRequestApiDto requestApiDto){
+    public ResponseEntity<ApiResponse> createSubject(@RequestBody @Valid SubjectRequestApiDto requestApiDto){
         SubjectResponseApiDto responseApiDto = service.createNewSubject(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")

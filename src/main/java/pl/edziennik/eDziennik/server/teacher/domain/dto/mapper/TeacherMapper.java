@@ -1,6 +1,7 @@
 package pl.edziennik.eDziennik.server.teacher.domain.dto.mapper;
 
 import pl.edziennik.eDziennik.server.address.AddressMapper;
+import pl.edziennik.eDziennik.server.personinformation.PersonInformationMapper;
 import pl.edziennik.eDziennik.server.role.domain.dto.mapper.RoleMapper;
 import pl.edziennik.eDziennik.server.school.domain.dto.mapper.SchoolMapper;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
@@ -17,12 +18,12 @@ public class TeacherMapper {
         if (entity.getSchool() != null) {
             return new TeacherResponseApiDto(
                     entity.getId(),
-                    entity.getFirstName(),
-                    entity.getLastName(),
+                    entity.getPersonInformation().getFirstName(),
+                    entity.getPersonInformation().getLastName(),
                     entity.getAddress().getAddress(),
                     entity.getAddress().getPostalCode(),
                     entity.getAddress().getCity(),
-                    entity.getPESEL(),
+                    entity.getPersonInformation().getPesel(),
                     entity.getPhoneNumber(),
                     entity.getRole().getId(),
                     entity.getSchool().getId()
@@ -30,12 +31,12 @@ public class TeacherMapper {
         }
         return new TeacherResponseApiDto(
                 entity.getId(),
-                entity.getFirstName(),
-                entity.getLastName(),
+                entity.getPersonInformation().getFirstName(),
+                entity.getPersonInformation().getLastName(),
                 entity.getAddress().getAddress(),
                 entity.getAddress().getPostalCode(),
                 entity.getAddress().getCity(),
-                entity.getPESEL(),
+                entity.getPersonInformation().getPesel(),
                 entity.getPhoneNumber(),
                 entity.getRole().getId()
         );
@@ -45,10 +46,8 @@ public class TeacherMapper {
         return new Teacher(
                 dto.getUsername(),
                 dto.getPassword(),
-                dto.getFirstName(),
-                dto.getLastName(),
-                dto.getPesel(),
                 dto.getPhoneNumber(),
+                PersonInformationMapper.mapToPersonInformation(dto.getFirstName(), dto.getLastName(), dto.getPesel()),
                 AddressMapper.mapToAddress(dto.getAddress(), dto.getCity(), dto.getPostalCode())
         );
     }

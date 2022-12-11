@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.edziennik.eDziennik.server.address.Address;
 import pl.edziennik.eDziennik.server.basics.BasicUser;
+import pl.edziennik.eDziennik.server.personinformation.PersonInformation;
 import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
 
@@ -39,22 +40,27 @@ public class Student extends BasicUser implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Address address;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    private PersonInformation personInformation;
 
 
-    public Student(String username, String password, String firstName, String lastName, String PESEL, String parentFirstName, String parentLastName, String parentPhoneNumber, Address address, LocalDate createDate, LocalDateTime lastLoginTime, LocalDateTime updatedDate) {
-        super(username, password, firstName, lastName, PESEL, createDate, updatedDate, lastLoginTime);
+
+    public Student(String username, String password, String parentFirstName, String parentLastName, String parentPhoneNumber,PersonInformation personInformation, Address address, LocalDate createDate, LocalDateTime lastLoginTime, LocalDateTime updatedDate) {
+        super(username, password, createDate, updatedDate, lastLoginTime);
         this.parentFirstName = parentFirstName;
         this.parentLastName = parentLastName;
         this.parentPhoneNumber = parentPhoneNumber;
         this.address = address;
+        this.personInformation = personInformation;
     }
 
-    public Student(String username, String password, String firstName, String lastName, String PESEL, String parentFirstName, String parentLastName, String parentPhoneNumber, Address address) {
-        super(username, password, firstName, lastName, PESEL, null, null, null);
+    public Student(String username, String password, String parentFirstName, String parentLastName, String parentPhoneNumber,PersonInformation personInformation, Address address) {
+        super(username, password, null, null, null);
         this.parentFirstName = parentFirstName;
         this.parentLastName = parentLastName;
         this.parentPhoneNumber = parentPhoneNumber;
         this.address =address;
+        this.personInformation = personInformation;
     }
 
     public void setSchoolClass(SchoolClass schoolClass) {

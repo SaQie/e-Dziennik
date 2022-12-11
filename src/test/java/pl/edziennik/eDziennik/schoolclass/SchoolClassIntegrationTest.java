@@ -212,7 +212,7 @@ public class SchoolClassIntegrationTest extends BaseTest {
     @Test
     public void shouldThrowsBusinessExceptionWhenTryingToSaveNewSchoolClassAndTeacherNotBelongToSchool(){
         // given
-        String expectedValidatorName = "TeacherNotBelongToSchoolValidator";
+        String expectedValidatorName = "TeacherNotBelongsToSchoolValidator";
 
         // create teacher
         TeacherRequestApiDto teacherDto = teacherUtil.prepareTeacherRequestDto();

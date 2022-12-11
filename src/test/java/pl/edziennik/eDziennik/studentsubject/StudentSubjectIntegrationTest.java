@@ -35,8 +35,7 @@ import pl.edziennik.eDziennik.teacher.TeacherIntegrationTestUtil;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -103,8 +102,8 @@ public class StudentSubjectIntegrationTest extends BaseTest {
         Student expectedStudent = find(Student.class, studentId);
 
         assertEquals(1, studentSubject.getSubjects().size());
-        assertEquals(expectedStudent.getFirstName(), studentSubject.getFirstName());
-        assertEquals(expectedStudent.getLastName(), studentSubject.getLastName());
+        assertEquals(expectedStudent.getPersonInformation().getFirstName(), studentSubject.getFirstName());
+        assertEquals(expectedStudent.getPersonInformation().getLastName(), studentSubject.getLastName());
         assertEquals(expectedStudent.getId(), studentSubject.getId());
 
         SubjectResponseApiDto actualSubject = studentSubject.getSubjects().get(0);
@@ -209,7 +208,32 @@ public class StudentSubjectIntegrationTest extends BaseTest {
         assertEquals(1, exception.getErrors().size());
         assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(List.of(StudentSubjectRequestDto.ID_SUBJECT ,StudentSubjectRequestDto.ID_STUDENT), exception.getErrors().get(0).getFields());
-        String expectedExceptionMessage = resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST, find(Student.class, requestDto.getIdStudent()).getFirstName() + " " + find(Student.class, requestDto.getIdStudent()).getLastName() ,find(Subject.class, requestDto.getIdSubject()).getName());
+        String expectedExceptionMessage = resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST, find(Student.class, requestDto.getIdStudent()).getPersonInformation().getFirstName() + " " + find(Student.class, requestDto.getIdStudent()).getPersonInformation().getLastName() ,find(Subject.class, requestDto.getIdSubject()).getName());
+        assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
+    }
+
+    @Test
+    public void shouldThrowsExceptionWhenTryingAssignStudentToSubjectWhenSubjectComesFromDifferentSchoolClass(){
+        // given
+        String expectedValidatorName = "StudentCannotBeAssignedToSubjectFromDifferentClassValidator";
+        StudentRequestApiDto studentRequestApiDto = studentUtil.prepareStudentRequestDto();
+        // school class - 100L
+        Long idStudent = studentService.register(studentRequestApiDto).getId();
+        assertNotNull(idStudent);
+        // school class - 101L
+        SubjectRequestApiDto subjectRequestApiDto = subjectTestUtil.prepareSubjectRequestDto("Chemia", null, 101L);
+        Long idSubject = subjectService.createNewSubject(subjectRequestApiDto).getId();
+
+        StudentSubjectRequestDto studentSubjectRequestDto = util.prepareStudentSubjectRequestDto(idStudent, idSubject);
+
+        // when
+        BusinessException exception = assertThrows(BusinessException.class, () -> service.assignStudentToSubject(studentSubjectRequestDto));
+
+        // then
+        assertEquals(1, exception.getErrors().size());
+        assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(List.of(StudentSubjectRequestDto.ID_SUBJECT), exception.getErrors().get(0).getFields());
+        String expectedExceptionMessage = resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS, find(Student.class, studentSubjectRequestDto.getIdStudent()).getPersonInformation().getFirstName() + " " + find(Student.class, studentSubjectRequestDto.getIdStudent()).getPersonInformation().getLastName() ,find(Subject.class, studentSubjectRequestDto.getIdSubject()).getName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 

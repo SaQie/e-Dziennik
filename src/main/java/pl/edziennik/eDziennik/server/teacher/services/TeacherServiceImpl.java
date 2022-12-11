@@ -5,6 +5,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.server.address.AddressMapper;
+import pl.edziennik.eDziennik.server.personinformation.PersonInformation;
+import pl.edziennik.eDziennik.server.personinformation.PersonInformationMapper;
 import pl.edziennik.eDziennik.server.teacher.dao.TeacherDao;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
@@ -73,10 +75,9 @@ class TeacherServiceImpl implements TeacherService{
             privService.validateDto(requestApiDto);
             Teacher teacher = optionalTeacher.get();
             teacher.setAddress(AddressMapper.mapToAddress(requestApiDto.getAddress(),requestApiDto.getCity(),requestApiDto.getPostalCode()));
-            teacher.setFirstName(requestApiDto.getFirstName());
-            teacher.setLastName(requestApiDto.getLastName());
             teacher.setPhoneNumber(requestApiDto.getPhoneNumber());
-            teacher.setPESEL(requestApiDto.getPesel());
+            PersonInformation personInformation = PersonInformationMapper.mapToPersonInformation(requestApiDto.getFirstName(), requestApiDto.getLastName(), requestApiDto.getPesel());
+            teacher.setPersonInformation(personInformation);
             return TeacherMapper.toDto(teacher);
         }
         return register(requestApiDto);

@@ -62,6 +62,25 @@ public class StudentIntegrationTestUtil {
 
     }
 
+    protected StudentRequestApiDto prepareStudentRequestDto(final String pesel) {
+        return new StudentRequestApiDto(
+                "Test",
+                "Test123",
+                "Kamil",
+                "Nowak",
+                "Lubawka",
+                "58-100",
+                "Lubawka2",
+                pesel,
+                "Tomasz",
+                "Nowak",
+                "100200300",
+                1L,
+                100L
+        );
+
+    }
+
     protected StudentRequestApiDto prepareStudentRequestDto(final Long idSchool) {
         return new StudentRequestApiDto(
                 "Test",

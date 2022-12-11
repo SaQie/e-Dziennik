@@ -17,13 +17,15 @@ public class SubjectMapper {
                     entity.getId(),
                     entity.getName(),
                     entity.getDescription(),
-                    entity.getTeacher().getId()
+                    entity.getTeacher().getId(),
+                    entity.getSchoolClass().getId()
             );
         }else{
             return new SubjectResponseApiDto(
                     entity.getId(),
                     entity.getName(),
-                    entity.getDescription()
+                    entity.getDescription(),
+                    entity.getSchoolClass().getId()
             );
         }
     }

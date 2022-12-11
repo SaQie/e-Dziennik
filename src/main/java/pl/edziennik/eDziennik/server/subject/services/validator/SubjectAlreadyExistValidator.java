@@ -1,17 +1,15 @@
-package pl.edziennik.eDziennik.server.studensubject.services.validator;
+package pl.edziennik.eDziennik.server.subject.services.validator;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.server.basics.ApiErrorsDto;
 import pl.edziennik.eDziennik.server.basics.ExceptionType;
 import pl.edziennik.eDziennik.server.basics.ValidatorPriority;
-import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassRequestApiDto;
-import pl.edziennik.eDziennik.server.studensubject.dao.StudentSubjectDao;
-import pl.edziennik.eDziennik.server.studensubject.domain.StudentSubject;
-import pl.edziennik.eDziennik.server.studensubject.domain.dto.request.StudentSubjectRequestDto;
+import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.server.student.domain.Student;
 import pl.edziennik.eDziennik.server.student.domain.dto.StudentRequestApiDto;
-import pl.edziennik.eDziennik.server.subject.domain.Subject;
+import pl.edziennik.eDziennik.server.subject.dao.SubjectDao;
+import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.List;
@@ -19,12 +17,13 @@ import java.util.Optional;
 
 @Component
 @AllArgsConstructor
-class StudentSubjectAlreadyExistValidator implements StudentSubjectValidators{
+public class SubjectAlreadyExistValidator implements SubjectValidators{
 
-    private final StudentSubjectDao dao;
+    private final SubjectDao dao;
     private final ResourceCreator resourceCreator;
 
     public static final Integer VALIDATOR_ID = 1;
+
 
     @Override
     public String getValidatorName() {
@@ -42,18 +41,14 @@ class StudentSubjectAlreadyExistValidator implements StudentSubjectValidators{
     }
 
     @Override
-    public Optional<ApiErrorsDto> validate(StudentSubjectRequestDto dto) {
-        if (dao.isStudentSubjectAlreadyExist(dto.getIdStudent(), dto.getIdSubject())){
+    public Optional<ApiErrorsDto> validate(SubjectRequestApiDto dto) {
+        if (dao.isSubjectAlreadyExist(dto.getName(), dto.getIdSchoolClass())){
+            SchoolClass schoolClass = dao.get(SchoolClass.class, dto.getIdSchoolClass());
 
-            Student student = dao.get(Student.class, dto.getIdStudent());
-            Subject subject = dao.get(Subject.class, dto.getIdSubject());
-
-            String studentName = student.getPersonInformation().getFirstName() + " " + student.getPersonInformation().getLastName();
-            String subjectName = subject.getName();
-            String message = resourceCreator.of(EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST, studentName, subjectName);
+            String message = resourceCreator.of(EXCEPTION_MESSAGE_SUBJECT_ALREADY_EXIST, dto.getName(), schoolClass.getClassName());
 
             ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
-                    .fields(List.of(StudentSubjectRequestDto.ID_SUBJECT, StudentSubjectRequestDto.ID_STUDENT))
+                    .fields(List.of(SubjectRequestApiDto.NAME, SubjectRequestApiDto.ID_SCHOOL_CLASS))
                     .cause(message)
                     .thrownImmediately(false)
                     .errorThrownedBy(getValidatorName())

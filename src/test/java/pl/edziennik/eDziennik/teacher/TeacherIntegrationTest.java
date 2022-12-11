@@ -55,10 +55,10 @@ public class TeacherIntegrationTest extends BaseTest {
         assertNotNull(id);
         Teacher actual = find(Teacher.class, id);
 
-        assertEquals(expected.getFirstName(), actual.getFirstName());
-        assertEquals(expected.getLastName(), actual.getLastName());
+        assertEquals(expected.getFirstName(), actual.getPersonInformation().getFirstName());
+        assertEquals(expected.getLastName(), actual.getPersonInformation().getLastName());
         assertEquals(expected.getAddress(), actual.getAddress().getAddress());
-        assertEquals(expected.getPesel(), actual.getPESEL());
+        assertEquals(expected.getPesel(), actual.getPersonInformation().getPesel());
         assertEquals(expected.getCity(), actual.getAddress().getCity());
         assertEquals(expected.getUsername(), actual.getUsername());
         assertEquals(util.defaultRole, actual.getRole().getName());
@@ -79,10 +79,10 @@ public class TeacherIntegrationTest extends BaseTest {
         assertEquals(updated,id);
         Teacher actual = find(Teacher.class, updated);
 
-        assertEquals(expected.getFirstName(), actual.getFirstName());
-        assertEquals(expected.getLastName(), actual.getLastName());
+        assertEquals(expected.getFirstName(), actual.getPersonInformation().getFirstName());
+        assertEquals(expected.getLastName(), actual.getPersonInformation().getLastName());
         assertEquals(expected.getAddress(), actual.getAddress().getAddress());
-        assertEquals(expected.getPesel(), actual.getPESEL());
+        assertEquals(expected.getPesel(), actual.getPersonInformation().getPesel());
         assertEquals(expected.getCity(), actual.getAddress().getCity());
         assertEquals(util.defaultRole, actual.getRole().getName());
 
@@ -174,15 +174,35 @@ public class TeacherIntegrationTest extends BaseTest {
         String expectedValidatorName = "TeacherAlreadyExistValidator";
         TeacherRequestApiDto dto = util.prepareTeacherRequestDto();
         service.register(dto);
+        TeacherRequestApiDto dto2 = util.prepareTeacherRequestDto("Kamil", "1231231233");
 
         // when
-        BusinessException exception = assertThrows(BusinessException.class, () -> service.register(dto));
+        BusinessException exception = assertThrows(BusinessException.class, () -> service.register(dto2));
 
         // then
         assertEquals(1, exception.getErrors().size());
         assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(List.of(TeacherRequestApiDto.USERNAME), exception.getErrors().get(0).getFields());
         String expectedExceptionMessage = resourceCreator.of(TeacherValidators.EXCEPTION_MESSAGE_TEACHER_ALREADY_EXIST, Teacher.class.getSimpleName(), dto.getUsername());
+        assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
+    }
+
+    @Test
+    public void shouldThrowsBusinessExceptionWhenTryingToRegisterAndPeselAlreadyExist(){
+        // given
+        String expectedValidatorName = "TeacherPeselNotUniqueValidator";
+        TeacherRequestApiDto dto = util.prepareTeacherRequestDto("asdasd", "00000000000");
+        service.register(dto);
+        TeacherRequestApiDto dto2 = util.prepareTeacherRequestDto("asdasd2", "00000000000");
+
+        // when
+        BusinessException exception = assertThrows(BusinessException.class, () -> service.register(dto2));
+
+        // then
+        assertEquals(1, exception.getErrors().size());
+        assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(List.of(TeacherRequestApiDto.PESEL), exception.getErrors().get(0).getFields());
+        String expectedExceptionMessage = resourceCreator.of(TeacherValidators.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, Teacher.class.getSimpleName(), dto.getPesel());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 

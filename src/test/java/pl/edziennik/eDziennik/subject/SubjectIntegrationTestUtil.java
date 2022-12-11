@@ -11,7 +11,8 @@ public class SubjectIntegrationTestUtil {
         return new SubjectRequestApiDto(
                 "Przyroda",
                 "Nauka o przyrodzie",
-                idTeacher
+                idTeacher,
+                100L
         );
     }
 
@@ -19,10 +20,19 @@ public class SubjectIntegrationTestUtil {
         return new SubjectRequestApiDto(
                 "Przyroda",
                 "Nauka o przyrodzie",
-                idTeacher
+                idTeacher,
+                100L
         );
     }
 
+    public SubjectRequestApiDto prepareSubjectRequestDto(final String name,final Long idTeacher, final Long idSchoolClass){
+        return new SubjectRequestApiDto(
+                "Przyroda",
+                "Nauka o przyrodzie",
+                idTeacher,
+                idSchoolClass
+        );
+    }
 
 
 }

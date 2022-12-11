@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.edziennik.eDziennik.server.address.Address;
 import pl.edziennik.eDziennik.server.basics.BasicUser;
+import pl.edziennik.eDziennik.server.personinformation.PersonInformation;
 import pl.edziennik.eDziennik.server.role.domain.Role;
 import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.subject.domain.Subject;
@@ -38,17 +39,22 @@ public class Teacher extends BasicUser implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Address address;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    private PersonInformation personInformation;
 
-    public Teacher(String username, String password, String firstName, String lastName,String PESEL, String phoneNumber, Address address, LocalDate createDate, LocalDateTime lastLoginTime, LocalDateTime updateDate) {
-        super(username, password, firstName, lastName, PESEL,createDate,updateDate, lastLoginTime);
+
+    public Teacher(String username, String password, String phoneNumber,PersonInformation personInformation, Address address, LocalDate createDate, LocalDateTime lastLoginTime, LocalDateTime updateDate) {
+        super(username, password,createDate,updateDate, lastLoginTime);
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.personInformation = personInformation;
     }
 
-    public Teacher(String username, String password, String firstName, String lastName, String PESEL, String phoneNumber, Address address) {
-        super(username, password, firstName, lastName, PESEL, null, null, null);
+    public Teacher(String username, String password, String phoneNumber,PersonInformation personInformation, Address address) {
+        super(username, password, null, null, null);
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.personInformation = personInformation;
     }
 
     public void setRole(Role role){
