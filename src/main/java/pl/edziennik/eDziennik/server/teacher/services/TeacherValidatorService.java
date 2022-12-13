@@ -20,13 +20,11 @@ public class TeacherValidatorService extends ServiceValidator<TeacherValidators,
     protected Teacher validateDtoAndMapToEntity(TeacherRequestApiDto dto){
         super.validate(dto);
         Teacher teacher = TeacherMapper.toEntity(dto);
-        School school = null;
         if (dto.getIdSchool() != null){
-            school = dao.get(School.class, dto.getIdSchool());
+            dao.findWithExecute(School.class, dto.getIdSchool(), teacher::setSchool);
         }
         Role role = checkRoleExist(dto.getRole());
         teacher.setRole(role);
-        teacher.setSchool(school);
         return teacher;
     }
 

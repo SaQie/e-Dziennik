@@ -12,7 +12,7 @@ public class SchoolClassIntergrationTestUtil {
         return new SchoolClassRequestApiDto(
                 "6B",
                 null,
-                1L
+                100L
         );
     }
 
@@ -20,7 +20,7 @@ public class SchoolClassIntergrationTestUtil {
         return new SchoolClassRequestApiDto(
                 className,
                 idTeacher,
-                1L
+                100L
         );
     }
 
@@ -28,7 +28,7 @@ public class SchoolClassIntergrationTestUtil {
         return new SchoolClassRequestApiDto(
                 "3B",
                 idTeacher,
-                1L
+                100L
         );
     }
 

@@ -185,7 +185,7 @@ public class StudentIntegrationTest extends BaseTest {
     @Test
     public void shouldThrowsExceptionWhenTryingSaveNewStudentIfSchoolClassNotExist(){
         // given
-        Long idSchool = 1L;
+        Long idSchool = 100L;
         Long idSchoolClass = 999L;
         StudentRequestApiDto dto = util.prepareStudentRequestDto(idSchool, idSchoolClass);
 
@@ -219,7 +219,7 @@ public class StudentIntegrationTest extends BaseTest {
     public void shouldThrowsBusinessExceptionWhenTryingToRegisterNewStudentAndSchoolClassNotBelongsToSchool(){
         // given
         String expectedValidatorName = "StudentSchoolClassNotBelongsToSchoolValidator";
-        StudentRequestApiDto dto = util.prepareStudentRequestDto(1L,101L);
+        StudentRequestApiDto dto = util.prepareStudentRequestDto(100L,101L);
 
         // when
         BusinessException exception = assertThrows(BusinessException.class, () -> service.register(dto));

@@ -18,7 +18,7 @@ public class SubjectIntegrationTestUtil {
 
     public SubjectRequestApiDto prepareSubjectRequestDto(final String name,final Long idTeacher){
         return new SubjectRequestApiDto(
-                "Przyroda",
+                name,
                 "Nauka o przyrodzie",
                 idTeacher,
                 100L
@@ -27,7 +27,7 @@ public class SubjectIntegrationTestUtil {
 
     public SubjectRequestApiDto prepareSubjectRequestDto(final String name,final Long idTeacher, final Long idSchoolClass){
         return new SubjectRequestApiDto(
-                "Przyroda",
+                name,
                 "Nauka o przyrodzie",
                 idTeacher,
                 idSchoolClass

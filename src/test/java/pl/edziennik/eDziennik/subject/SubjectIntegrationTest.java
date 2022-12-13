@@ -7,13 +7,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
+import pl.edziennik.eDziennik.exceptions.BusinessException;
 import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
 import pl.edziennik.eDziennik.server.basics.BaseDao;
+import pl.edziennik.eDziennik.server.school.domain.dto.SchoolRequestApiDto;
+import pl.edziennik.eDziennik.server.school.services.validator.SchoolValidators;
+import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.server.student.domain.Student;
 import pl.edziennik.eDziennik.server.subject.domain.Subject;
 import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectResponseApiDto;
 import pl.edziennik.eDziennik.server.subject.services.SubjectService;
+import pl.edziennik.eDziennik.server.subject.services.validator.SubjectValidators;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.teacher.services.TeacherService;
@@ -37,7 +42,7 @@ public class SubjectIntegrationTest extends BaseTest {
     private TeacherService teacherService;
 
     @BeforeEach
-    public void prepareDb(){
+    public void prepareDb() {
         clearDb();
         fillDbWithData();
     }
@@ -51,7 +56,7 @@ public class SubjectIntegrationTest extends BaseTest {
     }
 
     @Test
-    public void shouldSaveNewSubjectWithTeacher(){
+    public void shouldSaveNewSubjectWithTeacher() {
         // given
         TeacherRequestApiDto dto = teacherUtil.prepareTeacherRequestDto();
         Long teacherId = teacherService.register(dto).getId();
@@ -73,7 +78,7 @@ public class SubjectIntegrationTest extends BaseTest {
     }
 
     @Test
-    public void shouldUpdateSubject(){
+    public void shouldUpdateSubject() {
         // given
         TeacherRequestApiDto teacherDto = teacherUtil.prepareTeacherRequestDto();
         Long teacherId = teacherService.register(teacherDto).getId();
@@ -88,7 +93,7 @@ public class SubjectIntegrationTest extends BaseTest {
 
         // then
         assertNotNull(updated);
-        assertEquals(updated,subjectId);
+        assertEquals(updated, subjectId);
         Subject actual = find(Subject.class, updated);
         assertNotNull(actual);
 
@@ -98,7 +103,7 @@ public class SubjectIntegrationTest extends BaseTest {
     }
 
     @Test
-    public void shouldSaveNewSubjectWithoutTeacher(){
+    public void shouldSaveNewSubjectWithoutTeacher() {
         // given
         SubjectRequestApiDto expected = util.prepareSubjectRequestDto(null);
 
@@ -116,7 +121,7 @@ public class SubjectIntegrationTest extends BaseTest {
     }
 
     @Test
-    public void shouldThrowsExceptionWhenSaveNewSubjectAndTeacherNotExist(){
+    public void shouldThrowsExceptionWhenSaveNewSubjectAndTeacherNotExist() {
         // given
         Long idTeacher = 222L;
         SubjectRequestApiDto expected = util.prepareSubjectRequestDto(idTeacher);
@@ -129,7 +134,7 @@ public class SubjectIntegrationTest extends BaseTest {
     }
 
     @Test
-    public void shouldFindSubjectWithGivenId(){
+    public void shouldFindSubjectWithGivenId() {
         // given
         SubjectRequestApiDto expected = util.prepareSubjectRequestDto(null);
         Long idSubject = service.createNewSubject(expected).getId();
@@ -146,7 +151,7 @@ public class SubjectIntegrationTest extends BaseTest {
     }
 
     @Test
-    public void shouldFindListOfSubjects(){
+    public void shouldFindListOfSubjects() {
         // given
         SubjectRequestApiDto firstSubject = util.prepareSubjectRequestDto(null);
         SubjectRequestApiDto secondSubject = util.prepareSubjectRequestDto("Chemia", null);
@@ -160,7 +165,30 @@ public class SubjectIntegrationTest extends BaseTest {
         List<SubjectResponseApiDto> actual = service.findAllSubjects();
 
         // then
-        assertEquals(2,actual.size());
+        assertEquals(2, actual.size());
+
+    }
+
+    @Test
+    public void shouldThrowsExceptionWhenTryingToSaveSubjectAndSubjectAlreadyExist() {
+        // given
+        String expectedValidatorName = "SubjectAlreadyExistValidator";
+        SubjectRequestApiDto dto = util.prepareSubjectRequestDto(null);
+        // first subject
+        service.createNewSubject(dto);
+
+        // second subject with the same name
+        SubjectRequestApiDto dto2 = util.prepareSubjectRequestDto(null);
+        // when
+        BusinessException exception = assertThrows(BusinessException.class, () -> service.createNewSubject(dto2));
+
+        // then
+        assertEquals(1, exception.getErrors().size());
+        assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(List.of(SubjectRequestApiDto.NAME, SubjectRequestApiDto.ID_SCHOOL_CLASS), exception.getErrors().get(0).getFields());
+        String expectedExceptionMessage = resourceCreator.of(SubjectValidators.EXCEPTION_MESSAGE_SUBJECT_ALREADY_EXIST, dto.getName(), find(SchoolClass.class, dto.getIdSchoolClass()).getClassName());
+        assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
+
 
     }
 }

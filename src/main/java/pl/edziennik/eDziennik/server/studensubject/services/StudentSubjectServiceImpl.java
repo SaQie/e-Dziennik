@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.server.studensubject.services;
 
+import liquibase.pro.packaged.id;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.AllStuden
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentGradesInSubjectDto;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentSubjectResponseDto;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentSubjectsResponseDto;
+import pl.edziennik.eDziennik.server.student.domain.Student;
 
 import java.util.List;
 
@@ -39,12 +41,14 @@ class StudentSubjectServiceImpl implements StudentSubjectService {
     @Override
     public AllStudentsGradesInSubjectsDto getStudentAllSubjectsGrades(Long idStudent) {
         List<StudentSubject> entities = dao.findAllStudentSubjectsForStudent(idStudent);
-        return StudentSubjectMapper.toAllStudentSubjectRatingDto(entities);
+        Student student = dao.get(Student.class, idStudent);
+        return StudentSubjectMapper.toAllStudentSubjectRatingDto(entities, student);
     }
 
     @Override
     public StudentSubjectsResponseDto getStudentSubjects(Long idStudent) {
         List<StudentSubject> entities = dao.findAllStudentSubjectsForStudent(idStudent);
-        return StudentSubjectMapper.toStudentSubjectsResponseDto(entities);
+        Student student = dao.get(Student.class, idStudent);
+        return StudentSubjectMapper.toStudentSubjectsResponseDto(entities, student);
     }
 }

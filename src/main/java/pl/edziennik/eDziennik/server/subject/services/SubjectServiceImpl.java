@@ -20,15 +20,12 @@ import java.util.stream.Collectors;
 class SubjectServiceImpl implements SubjectService{
 
     private final SubjectDao dao;
-    private final SubjectValidatorService privService;
+    private final SubjectValidatorService validatorService;
 
     @Override
     @Transactional
     public SubjectResponseApiDto createNewSubject(SubjectRequestApiDto dto) {
-        Subject subject = SubjectMapper.toEntity(dto);
-        SchoolClass schoolClass = dao.get(SchoolClass.class, dto.getIdSchoolClass());
-        subject.setSchoolClass(schoolClass);
-        privService.checkTeacherExist(dto.getIdTeacher(), subject);
+        Subject subject = validatorService.validateDtoAndMapToEntity(dto);
         Subject savedSubject = dao.saveOrUpdate(subject);
         return SubjectMapper.toDto(savedSubject);
     }

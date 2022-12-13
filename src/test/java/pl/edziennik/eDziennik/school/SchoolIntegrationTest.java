@@ -7,13 +7,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
+import pl.edziennik.eDziennik.exceptions.BusinessException;
 import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
 import pl.edziennik.eDziennik.server.basics.BaseDao;
 import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.school.domain.dto.SchoolRequestApiDto;
 import pl.edziennik.eDziennik.server.school.domain.dto.SchoolResponseApiDto;
 import pl.edziennik.eDziennik.server.school.services.SchoolService;
+import pl.edziennik.eDziennik.server.school.services.validator.SchoolValidators;
 import pl.edziennik.eDziennik.server.schoollevel.domain.SchoolLevel;
+import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
+import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
+import pl.edziennik.eDziennik.server.teacher.services.validator.TeacherValidators;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
@@ -126,6 +133,29 @@ public class SchoolIntegrationTest extends BaseTest {
 
         // then
         assertEquals(exception.getMessage(), BaseDao.BaseDaoExceptionMessage.createNotFoundExceptionMessage(School.class.getSimpleName(), idSchool));
+
+    }
+
+    @Test
+    public void shouldThrowsExceptionWhenSchoolAlreadyExist(){
+        // given
+        String expectedValidatorName = "SchoolAlreadyExistValidator";
+        SchoolRequestApiDto dto = util.prepareSchoolRequestApi();
+        // first school
+        service.createNewSchool(dto);
+
+        // second school with the same name
+        SchoolRequestApiDto dto2 = util.prepareSchoolRequestApi();
+        // when
+        BusinessException exception = assertThrows(BusinessException.class, () -> service.createNewSchool(dto2));
+
+        // then
+        assertEquals(1, exception.getErrors().size());
+        assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(List.of(SchoolRequestApiDto.NAME), exception.getErrors().get(0).getFields());
+        String expectedExceptionMessage = resourceCreator.of(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_ALREADY_EXIST, dto2.getName());
+        assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
+
 
     }
 

@@ -22,7 +22,7 @@ public class TeacherIntegrationTestUtil {
                 null,
                 "123123123",
                 "asdasd",
-                1L
+                100L
         );
     }
 
@@ -38,7 +38,7 @@ public class TeacherIntegrationTestUtil {
                 null,
                 "123123123",
                 "asdasd",
-                1L
+                100L
         );
     }
 
@@ -72,7 +72,7 @@ public class TeacherIntegrationTestUtil {
                 role.name(),
                 "123123123",
                 "asdasd",
-                1L
+                100L
         );
     }
 
@@ -88,7 +88,7 @@ public class TeacherIntegrationTestUtil {
                 role,
                 "123123123",
                 "asdasd",
-                1L
+                100L
         );
     }
 
@@ -104,7 +104,7 @@ public class TeacherIntegrationTestUtil {
                 null,
                 "123123123",
                 "asdasd",
-                1L
+                100L
         );
     }
 

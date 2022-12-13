@@ -218,7 +218,7 @@ public class SchoolClassIntegrationTest extends BaseTest {
         TeacherRequestApiDto teacherDto = teacherUtil.prepareTeacherRequestDto();
         TeacherResponseApiDto teacherResponseDto = teacherService.register(teacherDto);
 
-        SchoolClassRequestApiDto requestApiDto = util.prepareSchoolClassRequest(teacherResponseDto.getId(), 2L);
+        SchoolClassRequestApiDto requestApiDto = util.prepareSchoolClassRequest(teacherResponseDto.getId(), 101L);
 
         // when
         BusinessException exception = assertThrows(BusinessException.class, () -> service.createSchoolClass(requestApiDto));
@@ -227,7 +227,7 @@ public class SchoolClassIntegrationTest extends BaseTest {
         assertEquals(1, exception.getErrors().size());
         assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(List.of(SchoolClassRequestApiDto.ID_SUPERVISING_TEACHER , SchoolClassRequestApiDto.ID_SCHOOL), exception.getErrors().get(0).getFields());
-        String expectedExceptionMessage = resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL, teacherResponseDto.getFirstName() + " " + teacherResponseDto.getLastName(), find(School.class, 2L).getName());
+        String expectedExceptionMessage = resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL, teacherResponseDto.getFirstName() + " " + teacherResponseDto.getLastName(), find(School.class, 101L).getName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 

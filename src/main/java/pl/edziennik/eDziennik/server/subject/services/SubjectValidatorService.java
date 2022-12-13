@@ -20,23 +20,13 @@ public class SubjectValidatorService extends ServiceValidator<SubjectValidators,
     protected Subject validateDtoAndMapToEntity(SubjectRequestApiDto dto){
         super.validate(dto);
         Subject subject = SubjectMapper.toEntity(dto);
-        Teacher teacher = null;
         if (dto.getIdTeacher() != null){
-            teacher = dao.get(Teacher.class, dto.getIdTeacher());
+            dao.findWithExecute(Teacher.class, dto.getIdTeacher(), subject::setTeacher);
         }
-        subject.setTeacher(teacher);
         SchoolClass schoolClass = dao.get(SchoolClass.class, dto.getIdSchoolClass());
         schoolClass.addSubject(subject);
-
         return subject;
     }
-
-    protected void checkTeacherExist(Long teacherId, Subject subject) {
-        if (teacherId != null) {
-            dao.findWithExecute(teacherId, subject::setTeacher);
-        }
-    }
-
 
 
 }

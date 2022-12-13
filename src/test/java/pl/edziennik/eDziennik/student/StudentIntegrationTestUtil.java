@@ -20,7 +20,7 @@ public class StudentIntegrationTestUtil {
                 "Tomasz",
                 "Nowak",
                 "100200300",
-                1L,
+                100L,
                 100L
         );
     }
@@ -38,7 +38,7 @@ public class StudentIntegrationTestUtil {
                 "Tomasz",
                 "Nowak",
                 "100200300",
-                1L,
+                100L,
                 100L
         );
     }
@@ -75,7 +75,7 @@ public class StudentIntegrationTestUtil {
                 "Tomasz",
                 "Nowak",
                 "100200300",
-                1L,
+                100L,
                 100L
         );
 

@@ -3,7 +3,6 @@ package pl.edziennik.eDziennik.server.school.services;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.edziennik.eDziennik.exceptions.BusinessException;
 import pl.edziennik.eDziennik.server.address.Address;
 import pl.edziennik.eDziennik.server.address.AddressMapper;
 import pl.edziennik.eDziennik.server.school.dao.SchoolDao;
@@ -12,7 +11,6 @@ import pl.edziennik.eDziennik.server.school.domain.dto.SchoolResponseApiDto;
 import pl.edziennik.eDziennik.server.school.domain.dto.mapper.SchoolMapper;
 import pl.edziennik.eDziennik.server.school.domain.School;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,13 +20,12 @@ import java.util.stream.Collectors;
 class SchoolServiceImpl implements SchoolService{
 
     private final SchoolDao dao;
-    private final SchoolPrivService privService;
+    private final SchoolValidatorService validatorService;
 
     @Override
     @Transactional
     public SchoolResponseApiDto createNewSchool(SchoolRequestApiDto dto) {
-        School school = SchoolMapper.toEntity(dto);
-        privService.findSchoolLevelAndAssignToSchool(school, dto.getIdSchoolLevel());
+        School school = validatorService.validateDtoAndMapToEntity(dto);
         School schoolAfterSave = dao.saveOrUpdate(school);
         return SchoolMapper.toDto(schoolAfterSave);
     }
