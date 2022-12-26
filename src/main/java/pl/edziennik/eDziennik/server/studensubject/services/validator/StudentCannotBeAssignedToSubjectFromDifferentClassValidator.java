@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @Component
 @AllArgsConstructor
-public class StudentCannotBeAssignedToSubjectFromDifferentClassValidator implements StudentSubjectValidators{
+class StudentCannotBeAssignedToSubjectFromDifferentClassValidator implements StudentSubjectValidators{
 
     private final StudentSubjectDao dao;
     private final ResourceCreator resourceCreator;

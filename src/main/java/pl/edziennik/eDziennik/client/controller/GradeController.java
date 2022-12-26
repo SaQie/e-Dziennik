@@ -49,7 +49,7 @@ public class GradeController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteGradeById(@PathVariable Long id){
-        service.deleteRatingById(id);
+        service.deleteGradeById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ResponseEntity.ok(ApiResponse.buildApiResponse(HttpMethod.DELETE,HttpStatus.OK,"Grade deleted successfully",uri));
     }

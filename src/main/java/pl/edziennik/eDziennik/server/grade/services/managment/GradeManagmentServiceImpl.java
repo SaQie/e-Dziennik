@@ -25,17 +25,13 @@ class GradeManagmentServiceImpl implements GradeManagmentService{
     private final TeacherDao teacherDao;
     private final GradeService gradeService;
     private final StudentSubjectDao dao;
-    private final StudentSubjectValidatorService studentSubjectValidatorService;
+    private final GradeManagmentValidationService validatorService;
 
     @Override
     @Transactional
     public StudentGradesInSubjectDto assignGradeToStudentSubject(Long idStudent, Long idSubject, GradeRequestApiDto dto) {
-        StudentSubject studentSubject = studentSubjectValidatorService.checkStudentSubjectExist(idStudent, idSubject);
-        Teacher teacher = teacherDao.getByUsername(dto.getTeacherName());
-        Long gradeId = gradeService.addNewGrade(dto).getId();
-        Grade grade = dao.get(Grade.class, gradeId);
-        grade.setStudentSubject(studentSubject);
-        grade.setTeacher(teacher);
+        StudentSubject studentSubject = validatorService.checkStudentSubjectExist(idStudent, idSubject);
+        Grade grade = insertNewGrade(dto, studentSubject);
         studentSubject.addGrade(grade);
         StudentSubject studentSubjectAfterSave = dao.saveOrUpdate(studentSubject);
         return StudentSubjectMapper.toStudentSubjectRatingsDto(studentSubjectAfterSave);
@@ -44,8 +40,9 @@ class GradeManagmentServiceImpl implements GradeManagmentService{
     @Override
     public void deleteGradeFromStudentSubject(Long idStudent, Long idSubject, Long idGrade) {
         // TODO -> Sprawdzac czy ocena zgadza sie z tym studentem i przedmiotem
-        StudentSubject studentSubject = dao.findSubjectStudent(idStudent, idSubject).orElseThrow(() -> new EntityNotFoundException("Student " + idStudent + " not assigned to subject " + idSubject));
-        gradeService.deleteRatingById(idGrade);
+        StudentSubject studentSubject = validatorService.checkStudentSubjectExist(idStudent, idSubject);
+        validatorService.checkGradeExistInStudentSubject(idGrade, studentSubject.getId());
+        gradeService.deleteGradeById(idGrade);
     }
 
     @Override
@@ -60,6 +57,16 @@ class GradeManagmentServiceImpl implements GradeManagmentService{
             return StudentSubjectMapper.toStudentSubjectRatingsDto(studentSubject);
         }
         throw new BusinessException("You cannot add new Grade with this method");
+    }
+
+
+    private Grade insertNewGrade(GradeRequestApiDto dto, StudentSubject studentSubject) {
+        Teacher teacher = teacherDao.getByUsername(dto.getTeacherName());
+        Long gradeId = gradeService.addNewGrade(dto).getId();
+        Grade grade = dao.get(Grade.class, gradeId);
+        grade.setStudentSubject(studentSubject);
+        grade.setTeacher(teacher);
+        return grade;
     }
 
 

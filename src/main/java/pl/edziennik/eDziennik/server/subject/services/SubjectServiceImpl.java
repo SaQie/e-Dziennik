@@ -32,13 +32,13 @@ class SubjectServiceImpl implements SubjectService{
 
     @Override
     public SubjectResponseApiDto findSubjectById(Long id) {
-        Subject subject = dao.find(id).orElseThrow(() -> new EntityNotFoundException("Subject with given id " + id + " not exist"));
+        Subject subject = dao.get(id);
         return SubjectMapper.toDto(subject);
     }
 
     @Override
     public void deleteSubjectById(Long id) {
-        Subject subject = dao.find(id).orElseThrow(() -> new EntityNotFoundException("Subject with given id " + id + " not exist"));
+        Subject subject = dao.get(id);
         dao.remove(subject);
     }
 

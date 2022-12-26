@@ -11,6 +11,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.reactive.config.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import pl.edziennik.eDziennik.server.config.security.jwt.*;
 import pl.edziennik.eDziennik.server.utils.JwtUtils;
 import pl.edziennik.eDziennik.authentication.AuthUserDetailsService;
@@ -94,6 +97,7 @@ public class SecurityConfiguration {
             return http.build();
         }
     }
+
 
     @Bean
     public JsonObjectAuthenticationFilter authenticationFilter(){

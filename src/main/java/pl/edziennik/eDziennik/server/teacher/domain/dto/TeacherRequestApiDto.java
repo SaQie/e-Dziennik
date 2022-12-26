@@ -57,7 +57,7 @@ public class TeacherRequestApiDto{
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotEmpty(message = "{password.empty}")
-    @Size(min = 5, message = "{password.size}")
+    @Size(min = 4, message = "{password.size}")
     private String password;
 
     private Long idSchool;

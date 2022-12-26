@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Component
 @AllArgsConstructor
-public class TeacherPeselNotUniqueValidator implements TeacherValidators{
+class TeacherPeselNotUniqueValidator implements TeacherValidators{
 
     private final PersonInformationDao dao;
     private final ResourceCreator resourceCreator;

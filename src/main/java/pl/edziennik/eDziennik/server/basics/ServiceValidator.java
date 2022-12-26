@@ -1,6 +1,5 @@
 package pl.edziennik.eDziennik.server.basics;
 
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
@@ -55,7 +54,6 @@ public abstract class ServiceValidator<T, E> {
         checkValidators();
         validator.validateBySelectedPriority(e, priority);
     }
-
 
     private void checkValidators() {
         if (validators != null && !validators.isEmpty()) {

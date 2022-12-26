@@ -106,4 +106,15 @@ public class GradeIntegrationTest extends BaseTest {
         assertEquals(expected.getDescription(), actual.getDescription());
     }
 
+    @Test
+    public void shouldThrowsExceptionWhenTryingToDeleteGradeFromDifferentStudentSubject(){
+        // given
+
+
+        // when
+
+
+        // then
+    }
+
 }

@@ -5,6 +5,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import pl.edziennik.eDziennik.server.admin.dao.AdminDao;
+import pl.edziennik.eDziennik.server.admin.domain.Admin;
 import pl.edziennik.eDziennik.server.student.dao.StudentDao;
 import pl.edziennik.eDziennik.server.student.domain.Student;
 import pl.edziennik.eDziennik.server.teacher.dao.TeacherDao;
@@ -18,6 +20,7 @@ public class AuthUserDetailsService implements UserDetailsService {
 
     private final TeacherDao teacherDao;
     private final StudentDao studentDao;
+    private final AdminDao adminDao;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -28,6 +31,10 @@ public class AuthUserDetailsService implements UserDetailsService {
         Student student = studentDao.getByUsername(username);
         if (student != null){
             return new StudentUserDetails(student);
+        }
+        Admin admin = adminDao.getByUsername(username);
+        if (admin != null){
+            return new AdminUserDetails(admin);
         }
         throw new EntityNotFoundException("User with name " + username + " could not be found.");
     }

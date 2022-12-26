@@ -34,7 +34,7 @@ class GradeServiceImpl implements GradeService {
     }
 
     @Override
-    public void deleteRatingById(Long id) {
+    public void deleteGradeById(Long id) {
         Grade grade = dao.get(id);
         dao.remove(grade);
     }

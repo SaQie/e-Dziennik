@@ -22,6 +22,7 @@ public class GradeManagmentController {
 
     private final GradeManagmentService service;
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/students/{idStudent}/subjects/{idSubject}/grades")
     public ResponseEntity<ApiResponse> assignGradeToStudentSubject(@PathVariable Long idStudent, @PathVariable Long idSubject, @RequestBody GradeRequestApiDto requestApiDto, Principal teacher){
         requestApiDto.setTeacherName(teacher.getName());

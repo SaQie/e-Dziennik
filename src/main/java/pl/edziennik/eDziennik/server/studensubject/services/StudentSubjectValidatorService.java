@@ -44,7 +44,4 @@ public class StudentSubjectValidatorService extends ServiceValidator<StudentSubj
         return studentSubject;
     }
 
-
-
-
 }

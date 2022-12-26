@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @Component
 @AllArgsConstructor
-public class SubjectAlreadyExistValidator implements SubjectValidators{
+class SubjectAlreadyExistValidator implements SubjectValidators{
 
     private final SubjectDao dao;
     private final ResourceCreator resourceCreator;

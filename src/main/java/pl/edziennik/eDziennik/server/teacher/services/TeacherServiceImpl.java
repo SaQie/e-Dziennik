@@ -34,7 +34,6 @@ class TeacherServiceImpl implements TeacherService{
         return TeacherMapper.toDto(dao.saveOrUpdate(teacher));
     }
 
-
     @Override
     public TeacherResponseApiDto findTeacherById(Long id) {
         Teacher teacher = dao.get(id);
