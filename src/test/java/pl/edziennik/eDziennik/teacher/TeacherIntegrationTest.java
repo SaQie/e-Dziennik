@@ -100,7 +100,7 @@ public class TeacherIntegrationTest extends BaseTest {
 
         // then
         Exception exception = assertThrows(EntityNotFoundException.class, () -> service.findTeacherById(id));
-        assertEquals(exception.getMessage(), BaseDao.BaseDaoExceptionMessage.createNotFoundExceptionMessage(Teacher.class.getSimpleName(), id));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", id));
     }
 
     @Test
@@ -165,7 +165,7 @@ public class TeacherIntegrationTest extends BaseTest {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> service.register(dto));
 
         // then
-        assertEquals(exception.getMessage(), BaseDao.BaseDaoExceptionMessage.createNotFoundExceptionMessage(School.class.getSimpleName(), idSchool));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchool));
     }
 
     @Test
@@ -183,7 +183,7 @@ public class TeacherIntegrationTest extends BaseTest {
         assertEquals(1, exception.getErrors().size());
         assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(List.of(TeacherRequestApiDto.USERNAME), exception.getErrors().get(0).getFields());
-        String expectedExceptionMessage = resourceCreator.of(TeacherValidators.EXCEPTION_MESSAGE_TEACHER_ALREADY_EXIST, Teacher.class.getSimpleName(), dto.getUsername());
+        String expectedExceptionMessage = resourceCreator.of(TeacherValidators.EXCEPTION_MESSAGE_TEACHER_ALREADY_EXIST, dto.getUsername());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 

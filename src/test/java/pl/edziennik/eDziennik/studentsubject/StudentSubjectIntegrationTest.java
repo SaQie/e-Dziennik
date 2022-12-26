@@ -129,7 +129,7 @@ public class StudentSubjectIntegrationTest extends BaseTest {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> service.assignStudentToSubject(requestDto));
 
         // then
-        assertEquals(exception.getMessage(), BaseDao.BaseDaoExceptionMessage.createNotFoundExceptionMessage(Student.class.getSimpleName(), studentId));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", studentId));
     }
 
     @Test
@@ -145,7 +145,7 @@ public class StudentSubjectIntegrationTest extends BaseTest {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> service.assignStudentToSubject(requestDto));
 
         // then
-        assertEquals(exception.getMessage(), BaseDao.BaseDaoExceptionMessage.createNotFoundExceptionMessage(Subject.class.getSimpleName(), subjectId));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", subjectId));
     }
 
     @Test

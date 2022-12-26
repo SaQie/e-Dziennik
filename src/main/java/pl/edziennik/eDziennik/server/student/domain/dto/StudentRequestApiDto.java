@@ -17,7 +17,7 @@ public class StudentRequestApiDto{
     public static final String USERNAME = "username";
     public static final String FIRST_NAME = "firstName";
     public static final String LAST_NAME = "lastName";
-    public static final String ADDRESS = "username";
+    public static final String ADDRESS = "address";
     public static final String POSTAL_CODE = "postalCode";
     public static final String CITY = "city";
     public static final String PESEL = "pesel";

@@ -1,12 +1,12 @@
 package pl.edziennik.eDziennik.server.basics;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import pl.edziennik.eDziennik.server.school.domain.dto.SchoolResponseApiDto;
 
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -25,6 +25,7 @@ public class ApiResponse<T> {
     private String executionTime;
     private String operationDescription;
     private List<ApiErrorsDto> errors;
+    private String stackTrace;
     private T result;
 
     public static<T> ApiResponse<T> buildApiResponse(HttpMethod method, HttpStatus status, T result, URI url){
@@ -51,7 +52,7 @@ public class ApiResponse<T> {
                 .build();
     }
 
-    public static<T> ApiResponse<T> buildApiResponse(HttpMethod method, HttpStatus status, URI url, List<ApiErrorsDto> errors){
+    public static<T> ApiResponse<T> buildApiResponse(HttpMethod method, HttpStatus status, URI url, List<ApiErrorsDto> errors, String stackTrace){
         return ApiResponse.
                 <T>builder()
                 .method(method.name())
@@ -59,12 +60,13 @@ public class ApiResponse<T> {
                 .code(status.value())
                 .url(url)
                 .errors(errors)
+                .stackTrace(stackTrace)
                 .executionTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .build();
     }
 
     @SneakyThrows
-    public static<T> ApiResponse<T> buildApiResponse(HttpMethod method, HttpStatus status, String url, List<ApiErrorsDto> errors){
+    public static<T> ApiResponse<T> buildApiResponse(HttpMethod method, HttpStatus status, String url, List<ApiErrorsDto> errors, String stackTrace){
         return ApiResponse.
                 <T>builder()
                 .method(method.name())
@@ -72,6 +74,7 @@ public class ApiResponse<T> {
                 .code(status.value())
                 .url(new URI(url))
                 .errors(errors)
+                .stackTrace(stackTrace)
                 .executionTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .build();
     }

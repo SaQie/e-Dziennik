@@ -41,7 +41,7 @@ class TeacherAlreadyExistValidator implements TeacherValidators {
     @Override
     public Optional<ApiErrorsDto> validate(TeacherRequestApiDto requestApiDto) {
         if(dao.isTeacherExist(requestApiDto.getUsername())){
-            String message = resourceCreator.of(EXCEPTION_MESSAGE_TEACHER_ALREADY_EXIST, Teacher.class.getSimpleName(), requestApiDto.getUsername());
+            String message = resourceCreator.of(EXCEPTION_MESSAGE_TEACHER_ALREADY_EXIST, requestApiDto.getUsername());
 
             ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
                     .fields(List.of(TeacherRequestApiDto.USERNAME))

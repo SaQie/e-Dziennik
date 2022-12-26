@@ -139,7 +139,7 @@ public class SchoolClassIntegrationTest extends BaseTest {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> service.createSchoolClass(expected));
 
         // then
-        assertEquals(exception.getMessage(), BaseDao.BaseDaoExceptionMessage.createNotFoundExceptionMessage(Teacher.class.getSimpleName(), idTeacher));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idTeacher));
 
     }
 
@@ -158,7 +158,7 @@ public class SchoolClassIntegrationTest extends BaseTest {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> service.createSchoolClass(expected));
 
         // then
-        assertEquals(exception.getMessage(), BaseDao.BaseDaoExceptionMessage.createNotFoundExceptionMessage(School.class.getSimpleName(), idSchool));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchool));
     }
 
     @Test

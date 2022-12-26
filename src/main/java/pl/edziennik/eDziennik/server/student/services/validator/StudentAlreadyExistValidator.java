@@ -43,7 +43,7 @@ class StudentAlreadyExistValidator implements StudentValidators{
     @Override
     public Optional<ApiErrorsDto> validate(StudentRequestApiDto requestApiDto) {
         if(dao.isStudentExist(requestApiDto.getUsername())){
-            String message = resourceCreator.of(EXCEPTION_MESSAGE_STUDENT_ALREADY_EXIST, Student.class.getSimpleName(), requestApiDto.getUsername());
+            String message = resourceCreator.of(EXCEPTION_MESSAGE_STUDENT_ALREADY_EXIST, requestApiDto.getUsername());
 
             ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
                     .fields(List.of(StudentRequestApiDto.USERNAME))

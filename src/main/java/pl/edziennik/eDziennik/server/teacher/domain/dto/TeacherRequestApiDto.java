@@ -4,9 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.pl.PESEL;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,6 +15,7 @@ import javax.validation.constraints.*;
 public class TeacherRequestApiDto{
 
     public static final String CLASS_NAME = TeacherRequestApiDto.class.getSimpleName();
+
 
     public static final String USERNAME = "username";
     public static final String FIRST_NAME = "firstName";
@@ -25,6 +27,7 @@ public class TeacherRequestApiDto{
     public static final String ROLE = "role";
     public static final String PHONE_NUMBER = "phoneNumber";
     public static final String ID_SCHOOL = "idSchool";
+
 
     @NotEmpty(message = "{username.empty}")
     @Size(min = 4, message = "{username.size}")

@@ -202,7 +202,7 @@ public class DaoTest extends BaseTest {
                 () -> dao.findWithExecute(Student.class, idStudent,
                         savedStudent -> savedStudent.setPersonInformation(personInformation)));
         // then
-        assertEquals(exception.getMessage(), BaseDao.BaseDaoExceptionMessage.createNotFoundExceptionMessage(Student.class.getSimpleName(),idStudent));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent));
     }
 
 }

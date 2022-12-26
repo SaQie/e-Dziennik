@@ -103,7 +103,7 @@ public class StudentIntegrationTest extends BaseTest {
 
         // then
         Exception exception = assertThrows(EntityNotFoundException.class, () -> service.findStudentById(idStudent));
-        assertEquals(exception.getMessage(), BaseDao.BaseDaoExceptionMessage.createNotFoundExceptionMessage(Student.class.getSimpleName(), idStudent));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent));
     }
 
     @Test
@@ -153,7 +153,7 @@ public class StudentIntegrationTest extends BaseTest {
         Exception exception = assertThrows(pl.edziennik.eDziennik.exceptions.EntityNotFoundException.class, () -> service.findStudentById(idStudent));
 
         // then
-        assertEquals(exception.getMessage(), BaseDao.BaseDaoExceptionMessage.createNotFoundExceptionMessage(Student.class.getSimpleName(), idStudent));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent));
     }
 
     @Test
@@ -165,7 +165,7 @@ public class StudentIntegrationTest extends BaseTest {
         Exception exception = assertThrows(pl.edziennik.eDziennik.exceptions.EntityNotFoundException.class, () -> service.deleteStudentById(idStudent));
 
         // then
-        assertEquals(exception.getMessage(), BaseDao.BaseDaoExceptionMessage.createNotFoundExceptionMessage(Student.class.getSimpleName(), idStudent));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent));
     }
 
     @Test
@@ -178,7 +178,7 @@ public class StudentIntegrationTest extends BaseTest {
         Exception exception = assertThrows(pl.edziennik.eDziennik.exceptions.EntityNotFoundException.class, () -> service.register(dto));
 
         // then
-        assertEquals(exception.getMessage(), BaseDao.BaseDaoExceptionMessage.createNotFoundExceptionMessage(School.class.getSimpleName(), idSchool));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchool));
 
     }
 
@@ -193,7 +193,7 @@ public class StudentIntegrationTest extends BaseTest {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> service.register(dto));
 
         // then
-        assertEquals(exception.getMessage(), BaseDao.BaseDaoExceptionMessage.createNotFoundExceptionMessage(SchoolClass.class.getSimpleName(), idSchoolClass));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchoolClass));
     }
 
     @Test
@@ -211,7 +211,7 @@ public class StudentIntegrationTest extends BaseTest {
         assertEquals(1, exception.getErrors().size());
         assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(List.of(StudentRequestApiDto.USERNAME), exception.getErrors().get(0).getFields());
-        String expectedExceptionMessage = resourceCreator.of(StudentValidators.EXCEPTION_MESSAGE_STUDENT_ALREADY_EXIST, Student.class.getSimpleName(), dto.getUsername());
+        String expectedExceptionMessage = resourceCreator.of(StudentValidators.EXCEPTION_MESSAGE_STUDENT_ALREADY_EXIST, dto.getUsername());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 
