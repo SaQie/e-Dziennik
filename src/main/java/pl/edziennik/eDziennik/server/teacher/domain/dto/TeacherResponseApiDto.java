@@ -11,7 +11,7 @@ public class TeacherResponseApiDto {
 
     private final String firstName;
     private final String lastName;
-    private final String adress;
+    private final String address;
     private final String postalCode;
     private final String city;
     private final String pesel;
@@ -19,11 +19,11 @@ public class TeacherResponseApiDto {
     private final Long idRole;
     private final Long idSchool;
 
-    public TeacherResponseApiDto(Long id, String firstName, String lastName, String adress, String postalCode, String city, String pesel, String phoneNumber, Long idRole, Long idSchool) {
+    public TeacherResponseApiDto(Long id, String firstName, String lastName, String address, String postalCode, String city, String pesel, String phoneNumber, Long idRole, Long idSchool) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.adress = adress;
+        this.address = address;
         this.postalCode = postalCode;
         this.city = city;
         this.pesel = pesel;
@@ -32,11 +32,11 @@ public class TeacherResponseApiDto {
         this.idSchool = idSchool;
     }
 
-    public TeacherResponseApiDto(Long id, String firstName, String lastName, String adress, String postalCode, String city, String pesel, String phoneNumber, Long idRole) {
+    public TeacherResponseApiDto(Long id, String firstName, String lastName, String address, String postalCode, String city, String pesel, String phoneNumber, Long idRole) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.adress = adress;
+        this.address = address;
         this.postalCode = postalCode;
         this.city = city;
         this.pesel = pesel;

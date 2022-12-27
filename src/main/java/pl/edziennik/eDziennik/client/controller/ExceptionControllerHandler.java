@@ -36,11 +36,12 @@ import java.util.List;
 @SuppressWarnings("rawtypes")
 public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
 
-    private final StringWriter stringWriter = new StringWriter();
-    private final PrintWriter printWriter = new PrintWriter(stringWriter);
+
 
     @ExceptionHandler(value = {EntityNotFoundException.class, NoResultException.class})
     protected ResponseEntity<ApiResponse> handleException(RuntimeException exception, WebRequest request) throws URISyntaxException {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
         HttpServletRequest httpRequest = ((ServletWebRequest) request).getRequest();
         URI uri = new URI(httpRequest.getRequestURL().toString());
         exception.printStackTrace(printWriter);
@@ -51,6 +52,8 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = BusinessException.class)
     protected ResponseEntity<ApiResponse> handleBusinessException(BusinessException exception, WebRequest request) throws URISyntaxException {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
         HttpServletRequest httpRequest = ((ServletWebRequest) request).getRequest();
         exception.printStackTrace(printWriter);
         URI uri = new URI(httpRequest.getRequestURL().toString());
@@ -59,6 +62,8 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
         HttpServletRequest httpRequest = ((ServletWebRequest) request).getRequest();
         BindingResult bindingResult = exception.getBindingResult();
         exception.printStackTrace(printWriter);
