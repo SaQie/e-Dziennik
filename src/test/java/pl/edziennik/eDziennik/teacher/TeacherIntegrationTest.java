@@ -136,7 +136,7 @@ public class TeacherIntegrationTest extends BaseTest {
         assertNotNull(actual);
         assertEquals(expected.getFirstName(), actual.getFirstName());
         assertEquals(expected.getLastName(), actual.getLastName());
-        assertEquals(expected.getAddress(), actual.getAdress());
+        assertEquals(expected.getAddress(), actual.getAddress());
         assertEquals(expected.getPesel(), actual.getPesel());
         assertEquals(expected.getCity(), actual.getCity());
         assertEquals(ROLE_TEACHER, actual.getIdRole());
