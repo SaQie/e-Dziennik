@@ -12,9 +12,7 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -32,35 +30,38 @@ public class JwtUtils {
     @Value("${jwt.token.prefix}")
     private String tokenPrefix;
 
-    public String generateJwtToken(UserDetails userDetails) {
-        return generateTokenFromUsername(userDetails);
+    public String generateJwtToken(UserDetails userDetails, Long id) {
+        return generateTokenFromUsername(userDetails, id);
     }
 
-    public String generateRefreshToken(UserDetails userDetails) {
-        return generateRefreshTokenFromUsername(userDetails.getUsername());
+    public String generateRefreshToken(UserDetails userDetails, Long id) {
+        return generateRefreshTokenFromUsername(userDetails.getUsername(), id);
     }
 
-    private String generateRefreshTokenFromUsername(String username) {
+    private String generateRefreshTokenFromUsername(String username, Long id) {
         return JWT.create()
                 .withSubject(username)
                 .withExpiresAt(Instant.ofEpochMilli(ZonedDateTime.now(ZoneId.systemDefault())
                         .toInstant().toEpochMilli() + refreshTokenExpirationTime))
+                .withClaim("id", id)
                 .sign(Algorithm.HMAC256(secretKey));
     }
 
-    private String generateTokenFromUsername(UserDetails userDetails) {
+    private String generateTokenFromUsername(UserDetails userDetails, Long id) {
         if (userDetails.getAuthorities() != null){
             return JWT.create()
                     .withSubject(userDetails.getUsername())
                     .withExpiresAt(Instant.ofEpochMilli(ZonedDateTime.now(ZoneId.systemDefault())
                             .toInstant().toEpochMilli() + expirationTime))
                     .withClaim("roles", userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+                    .withClaim("id", id)
                     .sign(Algorithm.HMAC256(secretKey));
         }
         return JWT.create()
                 .withSubject(userDetails.getUsername())
                 .withExpiresAt(Instant.ofEpochMilli(ZonedDateTime.now(ZoneId.systemDefault())
                         .toInstant().toEpochMilli() + expirationTime))
+                .withClaim("id", id)
                 .sign(Algorithm.HMAC256(secretKey));
     }
 
@@ -69,12 +70,20 @@ public class JwtUtils {
         return (UserDetails) authentication.getPrincipal();
     }
 
-    public String getUsernameFromToken(String token) {
+    public Map<String, String> getDataFromToken(String token) {
+        Map<String, String> jwtData = new HashMap<>();
         String login = JWT.require(Algorithm.HMAC256(secretKey))
                 .build()
                 .verify(token.replace(tokenPrefix + " ", ""))
                 .getSubject();
-        return login;
+        jwtData.put("username", login);
+        String id = JWT.require(Algorithm.HMAC256(secretKey))
+                .build()
+                .verify(token.replace(tokenPrefix + " ", ""))
+                .getClaim("id").asString();
+        jwtData.put("id", id);
+
+        return jwtData;
     }
 
     public boolean isTokenNotExist(String token) {
@@ -96,5 +105,13 @@ public class JwtUtils {
             return authorities;
         }
         return null;
+    }
+
+    public String getUsernameFromToken(String token) {
+        String login = JWT.require(Algorithm.HMAC256(secretKey))
+                .build()
+                .verify(token.replace(tokenPrefix + " ", ""))
+                .getSubject();
+        return login;
     }
 }

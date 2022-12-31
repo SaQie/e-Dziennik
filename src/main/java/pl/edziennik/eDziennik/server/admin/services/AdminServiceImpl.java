@@ -23,4 +23,10 @@ class AdminServiceImpl implements AdminService{
         admin.setPassword(passwordEncoder.encode(dto.getPassword()));
         return AdminMapper.mapToDto(dao.saveOrUpdate(admin));
     }
+
+    @Override
+    public AdminResponseApiDto getAdminByUsername(String username) {
+        Admin admin = dao.getByUsername(username);
+        return admin == null ? null : AdminMapper.mapToDto(admin);
+    }
 }

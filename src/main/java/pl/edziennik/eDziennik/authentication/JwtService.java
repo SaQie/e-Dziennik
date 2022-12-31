@@ -5,6 +5,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import pl.edziennik.eDziennik.server.utils.JwtUtils;
 
+import java.util.Map;
+
 @Service
 @AllArgsConstructor
 public class JwtService {
@@ -16,12 +18,14 @@ public class JwtService {
         if (jwtUtils.isTokenNotExist(refreshToken)){
             throw new RuntimeException("refresh token is missing");
         }
-        String login = jwtUtils.getUsernameFromToken(refreshToken);
-        if (login == null) {
+        Map<String, String> jwtData = jwtUtils.getDataFromToken(refreshToken);
+        String username = jwtData.get("username");
+        if (username == null) {
             throw new RuntimeException("login is missing");
         }
-        UserDetails userDetails = authUserDetailsService.loadUserByUsername(login);
-        return jwtUtils.generateJwtToken(userDetails);
+        UserDetails userDetails = authUserDetailsService.loadUserByUsername(username);
+        Long id = Long.valueOf(jwtData.get("id"));
+        return jwtUtils.generateJwtToken(userDetails, id);
     }
 
 }

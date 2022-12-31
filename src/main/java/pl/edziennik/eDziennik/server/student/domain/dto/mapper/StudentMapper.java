@@ -17,6 +17,7 @@ public class StudentMapper {
     public static StudentResponseApiDto toDto(Student entity) {
         return new StudentResponseApiDto(
                 entity.getId(),
+                entity.getUsername(),
                 entity.getPersonInformation().getFirstName(),
                 entity.getPersonInformation().getLastName(),
                 entity.getAddress().getAddress(),

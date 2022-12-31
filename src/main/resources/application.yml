@@ -31,9 +31,3 @@ jwt:
     expiration: 4800000
   token:
     prefix: Bearer
-  unauthorized:
-    message: You are not logged in !
-  accessDenied:
-    message: You do not have access to this site !
-  authFailure:
-    message: Wrong username or password !

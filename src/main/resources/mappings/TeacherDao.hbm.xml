@@ -12,6 +12,10 @@
                 Teacher t
             JOIN FETCH
                 t.role
+            JOIN FETCH
+                t.personInformation
+            JOIN FETCH
+                t.address
             WHERE
                 t.username = :username
         </query>

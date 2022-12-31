@@ -56,13 +56,11 @@ class TeacherServiceImpl implements TeacherService{
 
     @Override
     @Transactional
-    public boolean updateTeacherLastLoginDate(String username) {
+    public void updateTeacherLastLoginDate(String username) {
         Teacher teacher = dao.getByUsername(username);
         if (teacher != null){
             teacher.setLastLoginDate(LocalDateTime.now());
-            return true;
         }
-        return false;
     }
 
 
@@ -80,5 +78,11 @@ class TeacherServiceImpl implements TeacherService{
             return TeacherMapper.toDto(teacher);
         }
         return register(requestApiDto);
+    }
+
+    @Override
+    public TeacherResponseApiDto getTeacherByUsername(String username) {
+        Teacher teacher = dao.getByUsername(username);
+        return teacher == null ? null : TeacherMapper.toDto(teacher);
     }
 }

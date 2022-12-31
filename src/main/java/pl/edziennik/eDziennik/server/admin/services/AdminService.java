@@ -5,6 +5,8 @@ import pl.edziennik.eDziennik.server.admin.domain.dto.AdminResponseApiDto;
 
 public interface AdminService {
 
-    AdminResponseApiDto createNewAdminAccount(AdminRequestApiDto dto);
+    AdminResponseApiDto createNewAdminAccount(final AdminRequestApiDto dto);
+
+    AdminResponseApiDto getAdminByUsername(final String username);
 
 }

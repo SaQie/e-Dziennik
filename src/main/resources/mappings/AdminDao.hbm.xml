@@ -7,11 +7,11 @@
     <named-query name="Admin.getAdminByUsername">
         <query>
             SELECT
-            a
+                a
             FROM
-            Admin a
+                Admin a
             WHERE
-            a.username = :username
+                a.username = :username
         </query>
     </named-query>
 

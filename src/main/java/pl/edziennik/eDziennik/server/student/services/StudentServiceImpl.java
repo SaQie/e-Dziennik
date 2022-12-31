@@ -68,13 +68,17 @@ class StudentServiceImpl implements StudentService{
 
     @Override
     @Transactional
-    public boolean updateStudentLastLoginDate(String username) {
+    public void updateStudentLastLoginDate(String username) {
         Student student = dao.getByUsername(username);
         if (student != null){
             student.setLastLoginDate(LocalDateTime.now());
-            return true;
         }
-        return false;
+    }
+
+    @Override
+    public StudentResponseApiDto getStudentByUsername(String username){
+        Student student = dao.getByUsername(username);
+        return student == null ? null : StudentMapper.toDto(student);
     }
 
 

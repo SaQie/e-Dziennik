@@ -9,6 +9,7 @@ public class TeacherResponseApiDto {
 
     private Long id;
 
+    private final String username;
     private final String firstName;
     private final String lastName;
     private final String address;
@@ -19,7 +20,7 @@ public class TeacherResponseApiDto {
     private final Long idRole;
     private final Long idSchool;
 
-    public TeacherResponseApiDto(Long id, String firstName, String lastName, String address, String postalCode, String city, String pesel, String phoneNumber, Long idRole, Long idSchool) {
+    public TeacherResponseApiDto(Long id,String username, String firstName, String lastName, String address, String postalCode, String city, String pesel, String phoneNumber, Long idRole, Long idSchool) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -30,9 +31,10 @@ public class TeacherResponseApiDto {
         this.phoneNumber = phoneNumber;
         this.idRole = idRole;
         this.idSchool = idSchool;
+        this.username = username;
     }
 
-    public TeacherResponseApiDto(Long id, String firstName, String lastName, String address, String postalCode, String city, String pesel, String phoneNumber, Long idRole) {
+    public TeacherResponseApiDto(Long id,String username, String firstName, String lastName, String address, String postalCode, String city, String pesel, String phoneNumber, Long idRole) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -43,5 +45,6 @@ public class TeacherResponseApiDto {
         this.phoneNumber = phoneNumber;
         this.idRole = idRole;
         this.idSchool = null;
+        this.username = username;
     }
 }

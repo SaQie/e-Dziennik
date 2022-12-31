@@ -10,6 +10,10 @@
                 s
             FROM
                 Student s
+            JOIN FETCH
+                s.personInformation
+            JOIN FETCH
+                s.address
             WHERE
                 s.username = :username
         </query>

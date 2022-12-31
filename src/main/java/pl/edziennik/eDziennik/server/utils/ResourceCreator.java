@@ -9,16 +9,20 @@ import java.util.Locale;
 @Component
 public class ResourceCreator {
 
+    private Locale locale = Locale.ROOT;
+
     @Autowired
     private MessageSource messageSource;
 
     public String of(String errorCode, Object... objects){
-        return messageSource.getMessage(errorCode, objects, Locale.ROOT);
+        return messageSource.getMessage(errorCode, objects, locale);
     }
 
     public String of(String errorCode){
-        return messageSource.getMessage(errorCode,null,Locale.ROOT);
+        return messageSource.getMessage(errorCode,null,locale);
     }
 
-
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
 }
