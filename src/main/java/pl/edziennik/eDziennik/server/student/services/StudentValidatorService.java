@@ -15,21 +15,10 @@ import pl.edziennik.eDziennik.server.student.services.validator.StudentValidator
 @AllArgsConstructor
 public class StudentValidatorService extends ServiceValidator<StudentValidators, StudentRequestApiDto> {
 
-    private final SchoolDao dao;
-
-    protected Student validateDtoAndMapToEntity(StudentRequestApiDto dto){
-        super.validate(dto);
-        Student student = StudentMapper.toEntity(dto);
-        School school = dao.get(dto.getIdSchool());
-        SchoolClass schoolClass = dao.get(SchoolClass.class, dto.getIdSchoolClass());
-        student.setSchool(school);
-        student.setSchoolClass(schoolClass);
-        return student;
+    @Override
+    protected void valid(StudentRequestApiDto dto) {
+        runValidatorChain(dto);
+        basicValidator.checkSchoolClassExist(dto.getIdSchoolClass());
+        basicValidator.checkSchoolExist(dto.getIdSchool());
     }
-
-    protected void validateDto(StudentRequestApiDto requestApiDto) {
-        super.validate(requestApiDto);
-    }
-
-
 }

@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
@@ -44,7 +45,7 @@ public class BaseTest {
      * @param <T>
      * @return
      */
-    protected  <T> T find(Class<T> clazz, Long id) {
+    public  <T> T find(Class<T> clazz, Long id) {
         return em.find(clazz,id);
     }
 

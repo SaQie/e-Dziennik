@@ -2,13 +2,17 @@ package pl.edziennik.eDziennik.server.basics;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+
 import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
+import pl.edziennik.eDziennik.server.utils.PersistanceHelper;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -37,12 +41,12 @@ public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
     }
 
     @Override
-    public Optional<E> find(final Long id){
+    public Optional<E> find(final Long id) {
         return Optional.ofNullable(em.find(clazz, id));
     }
 
     @Override
-    public List<E> findAll(){
+    public List<E> findAll() {
         return em.createQuery("from " + clazz.getName()).getResultList();
     }
 
@@ -51,9 +55,9 @@ public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
     public List<E> saveAll(List<E> entities) {
         List<E> savedEntities = new ArrayList<>();
         for (E entity : entities) {
-            if (em.contains(entity)){
+            if (em.contains(entity)) {
                 savedEntities.add(em.merge(entity));
-            }else{
+            } else {
                 em.persist(entity);
                 savedEntities.add(entity);
             }
@@ -63,8 +67,8 @@ public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
 
     @Override
     @Transactional
-    public E saveOrUpdate(final E entity){
-        if (em.contains(entity)){
+    public E saveOrUpdate(final E entity) {
+        if (em.contains(entity)) {
             return em.merge(entity);
         }
         em.persist(entity);
@@ -79,7 +83,7 @@ public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
 
     @Override
     public String getClazzName() {
-        if (clazz != null){
+        if (clazz != null) {
             return this.clazz.getCanonicalName();
         }
         return "";
@@ -87,11 +91,11 @@ public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
 
     @Override
     public <T> Optional<T> find(Class<T> clazz, Long id) {
-        return Optional.ofNullable(em.find(clazz,id));
+        return Optional.ofNullable(em.find(clazz, id));
     }
 
     @Override
-    public EntityManager getEm(){
+    public EntityManager getEm() {
         return em;
     }
 
@@ -119,7 +123,7 @@ public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
     @Override
     public E get(Long id) {
         E e = em.find(clazz, id);
-        if (e == null){
+        if (e == null) {
             throw new EntityNotFoundException(createNotFoundExceptionMessage(id));
         }
         return e;
@@ -128,7 +132,7 @@ public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
     @Override
     public <T> T get(Class<T> clazz, Long id) {
         T t = em.find(clazz, id);
-        if (t == null){
+        if (t == null) {
             throw new EntityNotFoundException(createNotFoundExceptionMessage(id));
         }
         return t;
@@ -137,7 +141,7 @@ public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
     @Override
     public <T> void findWithExecute(Class<T> clazz, Long id, Consumer<T> consumer) {
         T t = em.find(clazz, id);
-        if (t == null){
+        if (t == null) {
             throw new EntityNotFoundException(createNotFoundExceptionMessage(id));
         }
         consumer.accept(t);
@@ -146,14 +150,14 @@ public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
     @Override
     public <T> void findWithExecute(Long id, Consumer<T> consumer) {
         E e = em.find(clazz, id);
-        if (e == null){
+        if (e == null) {
             throw new EntityNotFoundException(createNotFoundExceptionMessage(id));
         }
         consumer.accept((T) e);
     }
 
-        private String createNotFoundExceptionMessage(Long id){
-            return resourceCreator.of("not.found.message", id);
-        }
+    private String createNotFoundExceptionMessage(Long id) {
+        return resourceCreator.of("not.found.message", id);
+    }
 
 }

@@ -18,30 +18,11 @@ import java.util.Optional;
 @AllArgsConstructor
 public class StudentSubjectValidatorService extends ServiceValidator<StudentSubjectValidators, StudentSubjectRequestDto> {
 
-    private final ResourceCreator resourceCreator;
-
-    private final StudentSubjectDao dao;
-
-    public StudentSubject checkStudentSubjectExist(Long idStudent, Long idSubject){
-        Optional<StudentSubject> subjectStudent = dao.findSubjectStudent(idStudent, idSubject);
-        if (subjectStudent.isPresent()){
-            return subjectStudent.get();
-        }
-        Student student = dao.get(Student.class, idStudent);
-        String studentName = student.getPersonInformation().getFirstName() + " " + student.getPersonInformation().getLastName();
-        String subjectName = dao.get(Subject.class, idSubject).getName();
-        String exceptionMessage = resourceCreator.of("student.subject.not.exist", studentName, subjectName);
-        throw new EntityNotFoundException(exceptionMessage);
-    }
-
-    protected StudentSubject validateDtoAndMapToEntity(StudentSubjectRequestDto dto){
-        super.validate(dto);
-        StudentSubject studentSubject = new StudentSubject();
-        Subject subject = dao.get(Subject.class,dto.getIdSubject());
-        Student student = dao.get(Student.class,dto.getIdStudent());
-        studentSubject.setSubject(subject);
-        studentSubject.setStudent(student);
-        return studentSubject;
+    @Override
+    protected void valid(StudentSubjectRequestDto dto) {
+        runValidatorChain(dto);
+        basicValidator.checkStudentExist(dto.getIdStudent());
+        basicValidator.checkSubjectExist(dto.getIdSubject());
     }
 
 }

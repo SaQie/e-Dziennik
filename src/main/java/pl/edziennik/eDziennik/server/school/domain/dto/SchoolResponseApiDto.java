@@ -12,7 +12,7 @@ public class SchoolResponseApiDto{
     private final String city;
     private final String nip;
     private final String regon;
-    private final String adress;
+    private final String address;
     private final String phoneNumber;
     private final Long idSchoolLevel;
 
@@ -23,7 +23,7 @@ public class SchoolResponseApiDto{
         this.city = city;
         this.nip = nip;
         this.regon = regon;
-        this.adress = adress;
+        this.address = adress;
         this.phoneNumber = phoneNumber;
         this.idSchoolLevel = idSchoolLevel;
     }

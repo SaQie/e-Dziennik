@@ -15,16 +15,9 @@ import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 @AllArgsConstructor
 public class SchoolClassValidatorService extends ServiceValidator<SchoolClassValidators, SchoolClassRequestApiDto> {
 
-    private final SchoolDao dao;
+    @Override
+    protected void valid(SchoolClassRequestApiDto dto) {
+        runValidatorChain(dto);
 
-    protected SchoolClass validateDtoAndMapToEntity(SchoolClassRequestApiDto dto){
-        super.validate(dto);
-        SchoolClass schoolClass = SchoolClassMapper.toEntity(dto);
-        dao.findWithExecute(School.class, dto.getIdSchool(), schoolClass::setSchool);
-        if (dto.getIdSupervisingTeacher() != null) {
-            dao.findWithExecute(Teacher.class, dto.getIdSupervisingTeacher(), schoolClass::setTeacher);
-        }
-        return schoolClass;
     }
-
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.exceptions.BusinessException;
 import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
+import pl.edziennik.eDziennik.server.basics.BaseService;
 import pl.edziennik.eDziennik.server.grade.domain.Grade;
 import pl.edziennik.eDziennik.server.grade.domain.dto.GradeRequestApiDto;
 import pl.edziennik.eDziennik.server.grade.services.GradeService;
@@ -20,7 +21,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-class GradeManagmentServiceImpl implements GradeManagmentService{
+class GradeManagmentServiceImpl extends BaseService implements GradeManagmentService{
 
     private final TeacherDao teacherDao;
     private final GradeService gradeService;
@@ -30,7 +31,7 @@ class GradeManagmentServiceImpl implements GradeManagmentService{
     @Override
     @Transactional
     public StudentGradesInSubjectDto assignGradeToStudentSubject(Long idStudent, Long idSubject, GradeRequestApiDto dto) {
-        StudentSubject studentSubject = validatorService.checkStudentSubjectExist(idStudent, idSubject);
+        StudentSubject studentSubject = basicValidator.checkStudentSubjectExist(idStudent, idSubject);
         Grade grade = insertNewGrade(dto, studentSubject);
         studentSubject.addGrade(grade);
         StudentSubject studentSubjectAfterSave = dao.saveOrUpdate(studentSubject);
@@ -40,7 +41,7 @@ class GradeManagmentServiceImpl implements GradeManagmentService{
     @Override
     public void deleteGradeFromStudentSubject(Long idStudent, Long idSubject, Long idGrade) {
         // TODO -> Sprawdzac czy ocena zgadza sie z tym studentem i przedmiotem
-        StudentSubject studentSubject = validatorService.checkStudentSubjectExist(idStudent, idSubject);
+        StudentSubject studentSubject = basicValidator.checkStudentSubjectExist(idStudent, idSubject);
         validatorService.checkGradeExistInStudentSubject(idGrade, studentSubject.getId());
         gradeService.deleteGradeById(idGrade);
     }

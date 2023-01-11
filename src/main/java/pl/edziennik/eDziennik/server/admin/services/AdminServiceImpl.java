@@ -19,7 +19,8 @@ class AdminServiceImpl implements AdminService{
 
     @Override
     public AdminResponseApiDto createNewAdminAccount(AdminRequestApiDto dto) {
-        Admin admin = validator.validateDtoAndMapToEntity(dto);
+        validator.valid(dto);
+        Admin admin = AdminMapper.mapToEntity(dto);
         admin.setPassword(passwordEncoder.encode(dto.getPassword()));
         return AdminMapper.mapToDto(dao.saveOrUpdate(admin));
     }

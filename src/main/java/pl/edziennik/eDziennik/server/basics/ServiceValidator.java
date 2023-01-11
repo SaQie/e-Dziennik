@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Service
 @SuppressWarnings("all")
-public abstract class ServiceValidator<T, E> {
+public abstract class ServiceValidator<T, E> extends BaseService{
 
     @Autowired(required = false)
     private List<T> validators;
@@ -23,6 +23,8 @@ public abstract class ServiceValidator<T, E> {
     private Validator<E> validator;
     @Autowired
     protected ResourceCreator resourceCreator;
+    @Autowired
+    public BasicValidator basicValidator;
 
     /**
      * This method run chain-of-responsibility pattern of defined validators
@@ -30,10 +32,12 @@ public abstract class ServiceValidator<T, E> {
      *
      * @param e -> Object to validate
      */
-    protected void validate(E e) {
+    protected void runValidatorChain(E e) {
         checkValidators();
         validator.validate(e);
     }
+
+    protected abstract void valid(E dto);
 
     protected void validateByPriority(E e) {
         checkValidators();

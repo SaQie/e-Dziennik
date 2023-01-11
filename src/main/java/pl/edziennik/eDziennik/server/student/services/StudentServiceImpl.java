@@ -4,9 +4,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import pl.edziennik.eDziennik.server.address.AddressMapper;
 import pl.edziennik.eDziennik.server.personinformation.PersonInformation;
 import pl.edziennik.eDziennik.server.personinformation.PersonInformationMapper;
+import pl.edziennik.eDziennik.server.school.domain.School;
+import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.server.student.dao.StudentDao;
 import pl.edziennik.eDziennik.server.student.domain.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.server.student.domain.dto.StudentResponseApiDto;
@@ -24,14 +27,15 @@ class StudentServiceImpl implements StudentService{
 
     private final StudentDao dao;
     private final PasswordEncoder passwordEncoder;
-    private final StudentValidatorService privService;
+    private final StudentValidatorService validatorService;
 
 
 
     @Override
     @Transactional
     public StudentResponseApiDto register(StudentRequestApiDto dto) {
-        Student student = privService.validateDtoAndMapToEntity(dto);
+        validatorService.valid(dto);
+        Student student = mapToEntity(dto);
         student.setPassword(passwordEncoder.encode(dto.getPassword()));
         /*
 
@@ -45,6 +49,7 @@ class StudentServiceImpl implements StudentService{
          */
         return StudentMapper.toDto(dao.saveOrUpdate(student));
     }
+
 
     @Override
     public StudentResponseApiDto findStudentById(Long id) {
@@ -60,6 +65,7 @@ class StudentServiceImpl implements StudentService{
 
     @Override
     public List<StudentResponseApiDto> findAllStudents() {
+        TransactionSynchronizationManager.isCurrentTransactionReadOnly();
         return dao.findAll()
                 .stream()
                 .map(StudentMapper::toDto)
@@ -87,7 +93,7 @@ class StudentServiceImpl implements StudentService{
     public StudentResponseApiDto updateStudent(Long id, StudentRequestApiDto requestApiDto) {
         Optional<Student> optionalStudent = dao.find(id);
         if (optionalStudent.isPresent()){
-            privService.validateDto(requestApiDto);
+            validatorService.valid(requestApiDto);
             Student student = optionalStudent.get();
             PersonInformation personInformation = PersonInformationMapper.mapToPersonInformation(requestApiDto.getFirstName(), requestApiDto.getLastName(), requestApiDto.getPesel());
             student.setAddress(AddressMapper.mapToAddress(requestApiDto.getAddress(),requestApiDto.getCity(),requestApiDto.getPostalCode()));
@@ -99,5 +105,15 @@ class StudentServiceImpl implements StudentService{
             return StudentMapper.toDto(student);
         }
         return register(requestApiDto);
+    }
+
+
+    private Student mapToEntity(StudentRequestApiDto dto) {
+        Student student = StudentMapper.toEntity(dto);
+        School school = dao.get(School.class,dto.getIdSchool());
+        SchoolClass schoolClass = dao.get(SchoolClass.class, dto.getIdSchoolClass());
+        student.setSchool(school);
+        student.setSchoolClass(schoolClass);
+        return student;
     }
 }

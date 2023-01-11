@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.pl.NIP;
 import org.hibernate.validator.constraints.pl.REGON;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @AllArgsConstructor
@@ -45,7 +46,7 @@ public class SchoolRequestApiDto{
     @NotEmpty(message = "{phoneNumber.empty}")
     private String phoneNumber;
 
-    @NotEmpty(message = "{schoolLevel.empty}")
+    @NotNull(message = "{schoolLevel.empty}")
     private Long idSchoolLevel;
 
 }

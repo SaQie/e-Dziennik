@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import pl.edziennik.eDziennik.BaseTest;
 import pl.edziennik.eDziennik.exceptions.BusinessException;
 import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
@@ -18,6 +19,9 @@ import pl.edziennik.eDziennik.server.student.domain.dto.StudentResponseApiDto;
 import pl.edziennik.eDziennik.server.student.services.StudentService;
 import pl.edziennik.eDziennik.server.student.services.validator.StudentValidators;
 
+import javax.persistence.EntityTransaction;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;

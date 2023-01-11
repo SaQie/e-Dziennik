@@ -15,26 +15,8 @@ import pl.edziennik.eDziennik.server.teacher.services.validator.TeacherValidator
 @AllArgsConstructor
 public class TeacherValidatorService extends ServiceValidator<TeacherValidators, TeacherRequestApiDto> {
 
-    private final RoleDao dao;
-
-    protected Teacher validateDtoAndMapToEntity(TeacherRequestApiDto dto){
-        super.validate(dto);
-        Teacher teacher = TeacherMapper.toEntity(dto);
-        if (dto.getIdSchool() != null){
-            dao.findWithExecute(School.class, dto.getIdSchool(), teacher::setSchool);
-        }
-        Role role = checkRoleExist(dto.getRole());
-        teacher.setRole(role);
-        return teacher;
-    }
-
-    protected void validateDto(TeacherRequestApiDto dto){
-        super.validate(dto);
-    }
-
-
-    private Role checkRoleExist(String role) {
-        return dao.findByName(role)
-                .orElse(dao.get(Role.class,Role.RoleConst.ROLE_TEACHER.getId()));
+    @Override
+    protected void valid(TeacherRequestApiDto dto) {
+        runValidatorChain(dto);
     }
 }

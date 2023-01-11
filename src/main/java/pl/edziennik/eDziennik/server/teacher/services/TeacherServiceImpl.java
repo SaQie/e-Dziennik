@@ -5,8 +5,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.server.address.AddressMapper;
+import pl.edziennik.eDziennik.server.basics.BaseService;
 import pl.edziennik.eDziennik.server.personinformation.PersonInformation;
 import pl.edziennik.eDziennik.server.personinformation.PersonInformationMapper;
+import pl.edziennik.eDziennik.server.role.domain.Role;
+import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.teacher.dao.TeacherDao;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
@@ -20,19 +23,22 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-class TeacherServiceImpl implements TeacherService{
+class TeacherServiceImpl extends BaseService implements TeacherService{
 
     private final TeacherDao dao;
     private final PasswordEncoder passwordEncoder;
-    private final TeacherValidatorService privService;
+    private final TeacherValidatorService validatorService;
 
     @Override
     @Transactional
     public TeacherResponseApiDto register(TeacherRequestApiDto dto) {
-        Teacher teacher = privService.validateDtoAndMapToEntity(dto);
+        validatorService.valid(dto);
+        Teacher teacher = mapToEntity(dto);
         teacher.setPassword(passwordEncoder.encode(dto.getPassword()));
         return TeacherMapper.toDto(dao.saveOrUpdate(teacher));
     }
+
+
 
     @Override
     public TeacherResponseApiDto findTeacherById(Long id) {
@@ -69,7 +75,7 @@ class TeacherServiceImpl implements TeacherService{
     public TeacherResponseApiDto updateTeacher(Long id, TeacherRequestApiDto requestApiDto) {
         Optional<Teacher> optionalTeacher = dao.find(id);
         if (optionalTeacher.isPresent()){
-            privService.validateDto(requestApiDto);
+            validatorService.valid(requestApiDto);
             Teacher teacher = optionalTeacher.get();
             teacher.setAddress(AddressMapper.mapToAddress(requestApiDto.getAddress(),requestApiDto.getCity(),requestApiDto.getPostalCode()));
             teacher.setPhoneNumber(requestApiDto.getPhoneNumber());
@@ -84,5 +90,15 @@ class TeacherServiceImpl implements TeacherService{
     public TeacherResponseApiDto getTeacherByUsername(String username) {
         Teacher teacher = dao.getByUsername(username);
         return teacher == null ? null : TeacherMapper.toDto(teacher);
+    }
+
+    private Teacher mapToEntity(TeacherRequestApiDto dto) {
+        Teacher teacher = TeacherMapper.toEntity(dto);
+        if (dto.getIdSchool() != null){
+            dao.findWithExecute(School.class, dto.getIdSchool(), teacher::setSchool);
+        }
+        Role role = basicValidator.checkRoleExistOrReturnDefault(dto.getRole());
+        teacher.setRole(role);
+        return teacher;
     }
 }

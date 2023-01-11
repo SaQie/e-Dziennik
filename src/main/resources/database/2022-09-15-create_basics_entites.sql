@@ -12,7 +12,7 @@ CREATE TABLE school
     postal_code     varchar(9)   NOT NULL,
     city            varchar(255) NOT NULL,
     nip             varchar(10)  NOT NULL UNIQUE,
-    regon           varchar(8)   NOT NULL UNIQUE,
+    regon           varchar(9)   NOT NULL UNIQUE,
     phone_number    varchar(9)   NOT NULL UNIQUE,
     school_level_id int          NOT NULL REFERENCES school_level (id)
 );
@@ -123,4 +123,4 @@ ALTER TABLE teacher
     ADD role_id INT REFERENCES ROLE (id);
 
 INSERT INTO school_level(id, name)
-values (1, 'PODSTAWOWA');
+values (1, 'PRIMARY SCHOOL'), (2, 'HIGH SCHOOL'), (3, 'UNIVERSITY');

@@ -13,13 +13,8 @@ import pl.edziennik.eDziennik.server.schoollevel.dao.SchoolLevelDao;
 @AllArgsConstructor
 public class SchoolValidatorService extends ServiceValidator<SchoolValidators, SchoolRequestApiDto> {
 
-    private final SchoolLevelDao dao;
-
-    protected School validateDtoAndMapToEntity(SchoolRequestApiDto dto){
-        super.validate(dto);
-        School school = SchoolMapper.toEntity(dto);
-        dao.findWithExecute(dto.getIdSchoolLevel(), school::setSchoolLevel);
-        return school;
+    @Override
+    protected void valid(SchoolRequestApiDto dto) {
+        runValidatorChain(dto);
     }
-
 }

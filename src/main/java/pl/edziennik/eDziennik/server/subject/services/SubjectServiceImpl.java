@@ -9,6 +9,7 @@ import pl.edziennik.eDziennik.server.subject.domain.Subject;
 import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectResponseApiDto;
 import pl.edziennik.eDziennik.server.subject.domain.dto.mapper.SubjectMapper;
+import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -25,10 +26,13 @@ class SubjectServiceImpl implements SubjectService{
     @Override
     @Transactional
     public SubjectResponseApiDto createNewSubject(SubjectRequestApiDto dto) {
-        Subject subject = validatorService.validateDtoAndMapToEntity(dto);
+        validatorService.valid(dto);
+        Subject subject = mapToEntity(dto);
         Subject savedSubject = dao.saveOrUpdate(subject);
         return SubjectMapper.toDto(savedSubject);
     }
+
+
 
     @Override
     public SubjectResponseApiDto findSubjectById(Long id) {
@@ -62,5 +66,15 @@ class SubjectServiceImpl implements SubjectService{
         }
         Subject subject = dao.saveOrUpdate(SubjectMapper.toEntity(requestApiDto));
         return SubjectMapper.toDto(subject);
+    }
+
+    private Subject mapToEntity(SubjectRequestApiDto dto) {
+        Subject subject = SubjectMapper.toEntity(dto);
+        if (dto.getIdTeacher() != null){
+            dao.findWithExecute(Teacher.class, dto.getIdTeacher(), subject::setTeacher);
+        }
+        SchoolClass schoolClass = dao.get(SchoolClass.class, dto.getIdSchoolClass());
+        schoolClass.addSubject(subject);
+        return subject;
     }
 }

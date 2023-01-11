@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @SuperBuilder
-public class BasicUser{
+public class BasicUser implements Serializable {
 
     private String username;
     private String password;

@@ -30,4 +30,6 @@ public class ApiErrorsDto {
         this.errorThrownedBy = errorThrownedBy;
         this.exceptionType = type;
     }
+
+
 }

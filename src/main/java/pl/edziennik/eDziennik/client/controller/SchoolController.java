@@ -11,8 +11,10 @@ import pl.edziennik.eDziennik.server.school.domain.dto.SchoolRequestApiDto;
 import pl.edziennik.eDziennik.server.school.domain.dto.SchoolResponseApiDto;
 import pl.edziennik.eDziennik.server.school.services.SchoolService;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/api/schools")
@@ -23,7 +25,7 @@ class SchoolController {
     private final SchoolService service;
 
     @PostMapping()
-    public ResponseEntity<ApiResponse> createNewSchool(@RequestBody SchoolRequestApiDto requestApiDto) {
+    public ResponseEntity<ApiResponse> createNewSchool(@Valid @RequestBody SchoolRequestApiDto requestApiDto) {
         SchoolResponseApiDto responseApiDto = service.createNewSchool(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")

@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-@Transactional(readOnly = true)
 public interface IBaseDao<E extends Serializable>{
 
     List<E> findAll();

@@ -10,6 +10,7 @@ import pl.edziennik.eDziennik.server.school.domain.dto.SchoolRequestApiDto;
 import pl.edziennik.eDziennik.server.school.domain.dto.SchoolResponseApiDto;
 import pl.edziennik.eDziennik.server.school.domain.dto.mapper.SchoolMapper;
 import pl.edziennik.eDziennik.server.school.domain.School;
+import pl.edziennik.eDziennik.server.schoollevel.domain.SchoolLevel;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +26,8 @@ class SchoolServiceImpl implements SchoolService{
     @Override
     @Transactional
     public SchoolResponseApiDto createNewSchool(SchoolRequestApiDto dto) {
-        School school = validatorService.validateDtoAndMapToEntity(dto);
+        validatorService.valid(dto);
+        School school = mapToEntity(dto);
         School schoolAfterSave = dao.saveOrUpdate(school);
         return SchoolMapper.toDto(schoolAfterSave);
     }
@@ -67,5 +69,11 @@ class SchoolServiceImpl implements SchoolService{
         }
         School school = dao.saveOrUpdate(SchoolMapper.toEntity(dto));
         return SchoolMapper.toDto(school);
+    }
+
+    private School mapToEntity(SchoolRequestApiDto dto){
+        School school = SchoolMapper.toEntity(dto);
+        dao.findWithExecute(SchoolLevel.class,dto.getIdSchoolLevel(), school::setSchoolLevel);
+        return school;
     }
 }

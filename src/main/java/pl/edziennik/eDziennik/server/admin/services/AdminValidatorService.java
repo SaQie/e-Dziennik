@@ -12,9 +12,8 @@ import pl.edziennik.eDziennik.server.basics.ServiceValidator;
 @AllArgsConstructor
 public class AdminValidatorService extends ServiceValidator<AdminValidators, AdminRequestApiDto> {
 
-    protected Admin validateDtoAndMapToEntity(AdminRequestApiDto dto){
-        super.validate(dto);
-        return AdminMapper.mapToEntity(dto);
+    @Override
+    protected void valid(AdminRequestApiDto dto) {
+        runValidatorChain(dto);
     }
-
 }

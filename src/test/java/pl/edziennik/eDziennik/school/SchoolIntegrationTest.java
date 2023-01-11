@@ -116,7 +116,7 @@ public class SchoolIntegrationTest extends BaseTest {
 
         // then
         assertEquals(expected.getName(), actual.getName());
-        assertEquals(expected.getAddress(), actual.getAdress());
+        assertEquals(expected.getAddress(), actual.getAddress());
         assertEquals(expected.getNip(), actual.getNip());
         assertEquals(expected.getCity(), actual.getCity());
         assertEquals(expected.getPostalCode(), actual.getPostalCode());

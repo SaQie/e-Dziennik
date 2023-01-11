@@ -1,42 +1,24 @@
 package pl.edziennik.eDziennik.server.basics;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import javax.persistence.EntityNotFoundException;
-import java.io.Serializable;
-import java.util.List;
+import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 @Service
-public abstract class BaseService<E extends Serializable> implements IBaseService<E> {
+public abstract class BaseService {
 
     @Autowired
-    protected IBaseDao<E> dao;
+    private ResourceCreator resourceCreator;
 
-    public BaseService() {
+    @Autowired
+    public BasicValidator basicValidator;
+
+    protected String getMessage(String messageKey){
+        return resourceCreator.of(messageKey);
     }
 
-    public BaseService(IBaseDao<E> dao) {
-        this.dao = dao;
+    protected String getMessage(String messageKey, Object... objects){
+        return resourceCreator.of(messageKey, objects);
     }
-
-    @Override
-    public List<E> findAll() {
-        return dao.findAll();
-    }
-
-    @Override
-    public E saveOrUpdate(E entity) {
-        return dao.saveOrUpdate(entity);
-    }
-
-    @Override
-    public E find(Long id) {
-        return dao.find(id).orElseThrow(() -> new EntityNotFoundException(dao.getClazzName() + " not found !"));
-    }
-
-    @Override
-    public void remove(E entity) {
-        dao.remove(entity);
-    }
-
 }

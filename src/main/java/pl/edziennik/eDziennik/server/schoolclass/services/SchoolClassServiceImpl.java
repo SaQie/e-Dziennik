@@ -25,10 +25,13 @@ class SchoolClassServiceImpl implements SchoolClassService{
     @Override
     @Transactional
     public SchoolClassResponseApiDto createSchoolClass(SchoolClassRequestApiDto dto) {
-        SchoolClass schoolClass = validatorService.validateDtoAndMapToEntity(dto);
+        validatorService.valid(dto);
+        SchoolClass schoolClass = mapToEntity(dto);
         SchoolClass savedSchoolClass = dao.saveOrUpdate(schoolClass);
         return SchoolClassMapper.toDto(savedSchoolClass);
     }
+
+
 
     @Override
     public SchoolClassResponseApiDto findSchoolClassById(Long id) {
@@ -67,5 +70,14 @@ class SchoolClassServiceImpl implements SchoolClassService{
         SchoolClass schoolClass = dao.saveOrUpdate(SchoolClassMapper.toEntity(dto));
         return SchoolClassMapper.toDto(schoolClass);
 
+    }
+
+    private SchoolClass mapToEntity(SchoolClassRequestApiDto dto) {
+        SchoolClass schoolClass = SchoolClassMapper.toEntity(dto);
+        dao.findWithExecute(School.class, dto.getIdSchool(), schoolClass::setSchool);
+        if (dto.getIdSupervisingTeacher() != null) {
+            dao.findWithExecute(Teacher.class, dto.getIdSupervisingTeacher(), schoolClass::setTeacher);
+        }
+        return schoolClass;
     }
 }
