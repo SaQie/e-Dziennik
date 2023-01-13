@@ -59,7 +59,6 @@ public class BaseTest {
     protected void clearDb(){
         ResourceDatabasePopulator populator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource("/db/clearData.sql"));
         populator.execute(dataSource);
-        LocaleContextHolder.setDefaultLocale(new Locale("en_EN"));
     }
 
     protected final Long ROLE_ADMIN = 1L;

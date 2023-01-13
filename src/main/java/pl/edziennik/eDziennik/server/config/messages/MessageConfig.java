@@ -16,13 +16,14 @@ public class MessageConfig {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasenames("classpath:/messages/error_messages");
         messageSource.setDefaultEncoding("UTF-8");
+        messageSource.setDefaultLocale(new Locale("en", "EN"));
         return messageSource;
     }
 
     @Bean
     public AcceptHeaderLocaleResolver localeResolver(){
         final AcceptHeaderLocaleResolver localeResolver = new AcceptHeaderLocaleResolver();
-        localeResolver.setDefaultLocale(new Locale("en_EN"));
+        localeResolver.setDefaultLocale(new Locale("en", "EN"));
         return localeResolver;
     }
 
