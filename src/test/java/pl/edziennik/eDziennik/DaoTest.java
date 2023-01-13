@@ -11,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
 import pl.edziennik.eDziennik.server.basics.BaseDao;
 import pl.edziennik.eDziennik.server.personinformation.PersonInformation;
+import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.student.domain.Student;
 
 import java.util.List;
@@ -202,7 +203,7 @@ public class DaoTest extends BaseTest {
                 () -> dao.findWithExecute(Student.class, idStudent,
                         savedStudent -> savedStudent.setPersonInformation(personInformation)));
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent, Student.class.getSimpleName()));
     }
 
 }

@@ -107,7 +107,7 @@ public class StudentIntegrationTest extends BaseTest {
 
         // then
         Exception exception = assertThrows(EntityNotFoundException.class, () -> service.findStudentById(idStudent));
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent,Student.class.getSimpleName()));
     }
 
     @Test
@@ -157,7 +157,7 @@ public class StudentIntegrationTest extends BaseTest {
         Exception exception = assertThrows(pl.edziennik.eDziennik.exceptions.EntityNotFoundException.class, () -> service.findStudentById(idStudent));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent,Student.class.getSimpleName()));
     }
 
     @Test
@@ -169,7 +169,7 @@ public class StudentIntegrationTest extends BaseTest {
         Exception exception = assertThrows(pl.edziennik.eDziennik.exceptions.EntityNotFoundException.class, () -> service.deleteStudentById(idStudent));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent,Student.class.getSimpleName()));
     }
 
     @Test
@@ -182,7 +182,7 @@ public class StudentIntegrationTest extends BaseTest {
         Exception exception = assertThrows(pl.edziennik.eDziennik.exceptions.EntityNotFoundException.class, () -> service.register(dto));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchool));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchool,School.class.getSimpleName()));
 
     }
 
@@ -197,7 +197,7 @@ public class StudentIntegrationTest extends BaseTest {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> service.register(dto));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchoolClass));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchoolClass,SchoolClass.class.getSimpleName()));
     }
 
     @Test

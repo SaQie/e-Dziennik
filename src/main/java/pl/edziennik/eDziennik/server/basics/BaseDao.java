@@ -124,7 +124,7 @@ public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
     public E get(Long id) {
         E e = em.find(clazz, id);
         if (e == null) {
-            throw new EntityNotFoundException(createNotFoundExceptionMessage(id));
+            throw new EntityNotFoundException(createNotFoundExceptionMessage(id,clazz.getSimpleName()));
         }
         return e;
     }
@@ -133,7 +133,7 @@ public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
     public <T> T get(Class<T> clazz, Long id) {
         T t = em.find(clazz, id);
         if (t == null) {
-            throw new EntityNotFoundException(createNotFoundExceptionMessage(id));
+            throw new EntityNotFoundException(createNotFoundExceptionMessage(id, clazz.getSimpleName()));
         }
         return t;
     }
@@ -142,7 +142,7 @@ public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
     public <T> void findWithExecute(Class<T> clazz, Long id, Consumer<T> consumer) {
         T t = em.find(clazz, id);
         if (t == null) {
-            throw new EntityNotFoundException(createNotFoundExceptionMessage(id));
+            throw new EntityNotFoundException(createNotFoundExceptionMessage(id,clazz.getSimpleName()));
         }
         consumer.accept(t);
     }
@@ -151,13 +151,13 @@ public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
     public <T> void findWithExecute(Long id, Consumer<T> consumer) {
         E e = em.find(clazz, id);
         if (e == null) {
-            throw new EntityNotFoundException(createNotFoundExceptionMessage(id));
+            throw new EntityNotFoundException(createNotFoundExceptionMessage(id,clazz.getSimpleName()));
         }
         consumer.accept((T) e);
     }
 
-    private String createNotFoundExceptionMessage(Long id) {
-        return resourceCreator.of("not.found.message", id);
+    private String createNotFoundExceptionMessage(Long id, String className) {
+        return resourceCreator.of("not.found.message", id, className);
     }
 
 }

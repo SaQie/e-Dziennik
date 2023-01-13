@@ -10,6 +10,7 @@ import pl.edziennik.eDziennik.BaseTest;
 import pl.edziennik.eDziennik.exceptions.BusinessException;
 import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
 import pl.edziennik.eDziennik.server.basics.BaseDao;
+import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.school.domain.dto.SchoolRequestApiDto;
 import pl.edziennik.eDziennik.server.school.services.validator.SchoolValidators;
 import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
@@ -130,7 +131,7 @@ public class SubjectIntegrationTest extends BaseTest {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> service.createNewSubject(expected));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idTeacher));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idTeacher, Teacher.class.getSimpleName()));
     }
 
     @Test

@@ -13,6 +13,7 @@ import pl.edziennik.eDziennik.grade.GradeIntegrationTestUtil;
 import pl.edziennik.eDziennik.server.basics.BaseDao;
 import pl.edziennik.eDziennik.server.grade.domain.dto.GradeRequestApiDto;
 import pl.edziennik.eDziennik.server.grade.services.managment.GradeManagmentService;
+import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.request.StudentSubjectRequestDto;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentGradesInSubjectDto;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentSubjectsResponseDto;
@@ -129,7 +130,7 @@ public class StudentSubjectIntegrationTest extends BaseTest {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> service.assignStudentToSubject(requestDto));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", studentId));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", studentId, Student.class.getSimpleName()));
     }
 
     @Test
@@ -145,7 +146,7 @@ public class StudentSubjectIntegrationTest extends BaseTest {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> service.assignStudentToSubject(requestDto));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", subjectId));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", subjectId, Subject.class.getSimpleName()));
     }
 
     @Test
