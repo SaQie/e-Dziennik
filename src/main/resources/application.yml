@@ -6,7 +6,7 @@ spring:
         format_sql: true
     hibernate:
       ddl-auto: none
-    show-sql: false
+    show-sql: true
     mapping-resources:
       /mappings/TeacherDao.hbm.xml,
       /mappings/RoleDao.hbm.xml,
@@ -23,13 +23,6 @@ spring:
     password: admin
   liquibase:
     change-log: classpath:liquibase-changeLog.xml
-
-logging:
-  level:
-    org:
-      springframework:
-        transaction:
-          interceptor: info
 
 jwt:
   secret: testtt

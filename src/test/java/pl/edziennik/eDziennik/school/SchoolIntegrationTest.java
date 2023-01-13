@@ -16,7 +16,6 @@ import pl.edziennik.eDziennik.server.school.domain.dto.SchoolResponseApiDto;
 import pl.edziennik.eDziennik.server.school.services.SchoolService;
 import pl.edziennik.eDziennik.server.school.services.validator.SchoolValidators;
 import pl.edziennik.eDziennik.server.schoollevel.domain.SchoolLevel;
-import pl.edziennik.eDziennik.server.subject.domain.Subject;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.teacher.services.validator.TeacherValidators;
@@ -103,7 +102,7 @@ public class SchoolIntegrationTest extends BaseTest {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> service.createNewSchool(dto));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchoolLevel, SchoolLevel.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchoolLevel));
     }
 
     @Test
@@ -133,7 +132,7 @@ public class SchoolIntegrationTest extends BaseTest {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> service.deleteSchoolById(idSchool));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchool, School.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchool));
 
     }
 

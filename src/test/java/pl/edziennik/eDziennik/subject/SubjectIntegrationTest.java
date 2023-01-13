@@ -130,7 +130,7 @@ public class SubjectIntegrationTest extends BaseTest {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> service.createNewSubject(expected));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idTeacher, Teacher.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idTeacher));
     }
 
     @Test

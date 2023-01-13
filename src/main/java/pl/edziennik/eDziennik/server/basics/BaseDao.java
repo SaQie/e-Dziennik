@@ -2,14 +2,17 @@ package pl.edziennik.eDziennik.server.basics;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
 import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
+import pl.edziennik.eDziennik.server.utils.PersistanceHelper;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -121,7 +124,7 @@ public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
     public E get(Long id) {
         E e = em.find(clazz, id);
         if (e == null) {
-            throw new EntityNotFoundException(createNotFoundExceptionMessage(id, clazz.getSimpleName()));
+            throw new EntityNotFoundException(createNotFoundExceptionMessage(id));
         }
         return e;
     }
@@ -130,7 +133,7 @@ public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
     public <T> T get(Class<T> clazz, Long id) {
         T t = em.find(clazz, id);
         if (t == null) {
-            throw new EntityNotFoundException(createNotFoundExceptionMessage(id, clazz.getSimpleName()));
+            throw new EntityNotFoundException(createNotFoundExceptionMessage(id));
         }
         return t;
     }
@@ -139,7 +142,7 @@ public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
     public <T> void findWithExecute(Class<T> clazz, Long id, Consumer<T> consumer) {
         T t = em.find(clazz, id);
         if (t == null) {
-            throw new EntityNotFoundException(createNotFoundExceptionMessage(id, clazz.getSimpleName()));
+            throw new EntityNotFoundException(createNotFoundExceptionMessage(id));
         }
         consumer.accept(t);
     }
@@ -148,13 +151,13 @@ public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
     public <T> void findWithExecute(Long id, Consumer<T> consumer) {
         E e = em.find(clazz, id);
         if (e == null) {
-            throw new EntityNotFoundException(createNotFoundExceptionMessage(id, clazz.getSimpleName()));
+            throw new EntityNotFoundException(createNotFoundExceptionMessage(id));
         }
         consumer.accept((T) e);
     }
 
-    private String createNotFoundExceptionMessage(Long id, String simpleName) {
-        return resourceCreator.of("not.found.message", id,simpleName);
+    private String createNotFoundExceptionMessage(Long id) {
+        return resourceCreator.of("not.found.message", id);
     }
 
 }

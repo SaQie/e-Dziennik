@@ -18,7 +18,6 @@ import pl.edziennik.eDziennik.server.student.domain.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.server.student.domain.dto.StudentResponseApiDto;
 import pl.edziennik.eDziennik.server.student.services.StudentService;
 import pl.edziennik.eDziennik.server.student.services.validator.StudentValidators;
-import pl.edziennik.eDziennik.server.subject.domain.Subject;
 
 import javax.persistence.EntityTransaction;
 import java.sql.Connection;
@@ -108,7 +107,7 @@ public class StudentIntegrationTest extends BaseTest {
 
         // then
         Exception exception = assertThrows(EntityNotFoundException.class, () -> service.findStudentById(idStudent));
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent, Student.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent));
     }
 
     @Test
@@ -158,7 +157,7 @@ public class StudentIntegrationTest extends BaseTest {
         Exception exception = assertThrows(pl.edziennik.eDziennik.exceptions.EntityNotFoundException.class, () -> service.findStudentById(idStudent));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent, Student.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent));
     }
 
     @Test
@@ -170,7 +169,7 @@ public class StudentIntegrationTest extends BaseTest {
         Exception exception = assertThrows(pl.edziennik.eDziennik.exceptions.EntityNotFoundException.class, () -> service.deleteStudentById(idStudent));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent, Student.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent));
     }
 
     @Test
@@ -183,7 +182,7 @@ public class StudentIntegrationTest extends BaseTest {
         Exception exception = assertThrows(pl.edziennik.eDziennik.exceptions.EntityNotFoundException.class, () -> service.register(dto));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchool, School.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchool));
 
     }
 
@@ -198,7 +197,7 @@ public class StudentIntegrationTest extends BaseTest {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> service.register(dto));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchoolClass, SchoolClass.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchoolClass));
     }
 
     @Test
