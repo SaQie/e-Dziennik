@@ -3,11 +3,14 @@ package pl.edziennik.eDziennik.server.admin.services;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.server.admin.dao.AdminDao;
 import pl.edziennik.eDziennik.server.admin.domain.Admin;
 import pl.edziennik.eDziennik.server.admin.domain.dto.AdminRequestApiDto;
 import pl.edziennik.eDziennik.server.admin.domain.dto.AdminResponseApiDto;
 import pl.edziennik.eDziennik.server.admin.domain.dto.mapper.AdminMapper;
+
+import java.time.LocalDateTime;
 
 @Service
 @AllArgsConstructor
@@ -29,5 +32,12 @@ class AdminServiceImpl implements AdminService{
     public AdminResponseApiDto getAdminByUsername(String username) {
         Admin admin = dao.getByUsername(username);
         return admin == null ? null : AdminMapper.mapToDto(admin);
+    }
+
+    @Override
+    @Transactional
+    public void updateAdminLastLoginDate(String username) {
+        Admin admin = dao.getByUsername(username);
+        admin.setLastLoginDate(LocalDateTime.now());
     }
 }

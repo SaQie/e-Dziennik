@@ -27,14 +27,15 @@ public class BasicUser implements Serializable {
     private LocalDate createdDate;
     private LocalDateTime updatedDate;
     private LocalDateTime lastLoginDate;
+    private String email;
 
     @PrePersist
-    protected void onCreate(){
+    protected void onCreate() {
         this.createdDate = LocalDate.now();
     }
 
     @PreUpdate
-    protected void onUpdate(){
+    protected void onUpdate() {
         this.updatedDate = LocalDateTime.now();
     }
 

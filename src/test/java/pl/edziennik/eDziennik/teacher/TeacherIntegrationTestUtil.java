@@ -19,6 +19,7 @@ public class TeacherIntegrationTestUtil {
                 "20-200",
                 "Warszawa",
                 "123123",
+                "test@example.com",
                 null,
                 "123123123",
                 "asdasd",
@@ -26,7 +27,7 @@ public class TeacherIntegrationTestUtil {
         );
     }
 
-    public TeacherRequestApiDto prepareTeacherRequestDto(String username, String pesel){
+    public TeacherRequestApiDto prepareTeacherRequestDto(String username, String pesel, String email){
         return new TeacherRequestApiDto(
                 username,
                 "Nowak",
@@ -35,6 +36,7 @@ public class TeacherIntegrationTestUtil {
                 "20-200",
                 "Warszawa",
                 pesel,
+                email,
                 null,
                 "123123123",
                 "asdasd",
@@ -53,6 +55,7 @@ public class TeacherIntegrationTestUtil {
                 "20-200",
                 "Warszawa",
                 "123123",
+                "test@example.com",
                 null,
                 "123123123",
                 "asdasd",
@@ -69,6 +72,7 @@ public class TeacherIntegrationTestUtil {
                 "20-200",
                 "Warszawa",
                 "123123",
+                "test@example.com",
                 role.name(),
                 "123123123",
                 "asdasd",
@@ -85,6 +89,7 @@ public class TeacherIntegrationTestUtil {
                 "20-200",
                 "Warszawa",
                 "123123",
+                "test@example.com",
                 role,
                 "123123123",
                 "asdasd",
@@ -92,7 +97,7 @@ public class TeacherIntegrationTestUtil {
         );
     }
 
-    public TeacherRequestApiDto prepareTeacherRequestDto(final String username, final String firstName, final String pesel){
+    public TeacherRequestApiDto prepareTeacherRequestDto(final String username, final String firstName, final String pesel, final String email){
         return new TeacherRequestApiDto(
                 username,
                 firstName,
@@ -101,6 +106,7 @@ public class TeacherIntegrationTestUtil {
                 "20-200",
                 "Warszawa",
                 pesel,
+                email,
                 null,
                 "123123123",
                 "asdasd",

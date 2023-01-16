@@ -69,7 +69,7 @@ public class SchoolClassIntegrationTest extends BaseTest {
         assertNotNull(id);
         SchoolClass actual = find(SchoolClass.class, id);
         assertEquals(expected.getIdSchool(), actual.getSchool().getId());
-        assertEquals(expected.getIdSupervisingTeacher(), actual.getTeacher());
+        assertEquals(expected.getIdClassTeacher(), actual.getTeacher());
         assertEquals(expected.getClassName(), actual.getClassName());
     }
 
@@ -91,7 +91,7 @@ public class SchoolClassIntegrationTest extends BaseTest {
 
         SchoolClass actual = find(SchoolClass.class, updated);
         assertEquals(expected.getIdSchool(), actual.getSchool().getId());
-        assertEquals(expected.getIdSupervisingTeacher(), actual.getTeacher().getId());
+        assertEquals(expected.getIdClassTeacher(), actual.getTeacher().getId());
         assertEquals(expected.getClassName(), actual.getClassName());
 
     }
@@ -124,7 +124,7 @@ public class SchoolClassIntegrationTest extends BaseTest {
         // then
         assertNotNull(actual);
         assertEquals(expected.getIdSchool(), actual.getIdSchool());
-        assertEquals(expected.getIdSupervisingTeacher(), actual.getIdSupervisingTeacher());
+        assertEquals(expected.getIdClassTeacher(), actual.getIdSupervisingTeacher());
         assertEquals(expected.getClassName(), actual.getClassName());
     }
 
@@ -164,7 +164,7 @@ public class SchoolClassIntegrationTest extends BaseTest {
     @Test
     public void shouldThrowsBusinessExceptionWhenTryingToSaveNewSchoolClassAndSchoolClassAlreadyExist(){
         // given
-        String expectedValidatorName = "SchoolClassAlreadyExistValidator";
+        String expectedValidatorName = "SchoolClassAlreadyExistsValidator";
         SchoolClassRequestApiDto requestApiDto = util.prepareSchoolClassRequest();
         Long id = service.createSchoolClass(requestApiDto).getId();
         assertNotNull(id);
@@ -204,8 +204,8 @@ public class SchoolClassIntegrationTest extends BaseTest {
         // then
         assertEquals(1, exception.getErrors().size());
         assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
-        assertEquals(List.of(SchoolClassRequestApiDto.ID_SUPERVISING_TEACHER), exception.getErrors().get(0).getFields());
-        String expectedExceptionMessage = resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER, teacherResponseDto.getFirstName() + " " + teacherResponseDto.getLastName());
+        assertEquals(List.of(SchoolClassRequestApiDto.ID_CLASS_TEACHER), exception.getErrors().get(0).getFields());
+        String expectedExceptionMessage = resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER, teacherResponseDto.getFirstName() + " " + teacherResponseDto.getLastName(), requestApiDto.getClassName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 
@@ -226,7 +226,7 @@ public class SchoolClassIntegrationTest extends BaseTest {
         // then
         assertEquals(1, exception.getErrors().size());
         assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
-        assertEquals(List.of(SchoolClassRequestApiDto.ID_SUPERVISING_TEACHER , SchoolClassRequestApiDto.ID_SCHOOL), exception.getErrors().get(0).getFields());
+        assertEquals(List.of(SchoolClassRequestApiDto.ID_CLASS_TEACHER , SchoolClassRequestApiDto.ID_SCHOOL), exception.getErrors().get(0).getFields());
         String expectedExceptionMessage = resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL, teacherResponseDto.getFirstName() + " " + teacherResponseDto.getLastName(), find(School.class, 101L).getName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }

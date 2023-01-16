@@ -63,7 +63,7 @@ class SchoolClassServiceImpl implements SchoolClassService{
             SchoolClass schoolClass = schoolClassOptional.get();
             schoolClass.setSchool(dao.get(School.class,dto.getIdSchool()));
             schoolClass.setClassName(dto.getClassName());
-            schoolClass.setTeacher(dao.get(Teacher.class, dto.getIdSupervisingTeacher()));
+            schoolClass.setTeacher(dao.get(Teacher.class, dto.getIdClassTeacher()));
             return SchoolClassMapper.toDto(schoolClass);
         }
 
@@ -75,8 +75,8 @@ class SchoolClassServiceImpl implements SchoolClassService{
     private SchoolClass mapToEntity(SchoolClassRequestApiDto dto) {
         SchoolClass schoolClass = SchoolClassMapper.toEntity(dto);
         dao.findWithExecute(School.class, dto.getIdSchool(), schoolClass::setSchool);
-        if (dto.getIdSupervisingTeacher() != null) {
-            dao.findWithExecute(Teacher.class, dto.getIdSupervisingTeacher(), schoolClass::setTeacher);
+        if (dto.getIdClassTeacher() != null) {
+            dao.findWithExecute(Teacher.class, dto.getIdClassTeacher(), schoolClass::setTeacher);
         }
         return schoolClass;
     }

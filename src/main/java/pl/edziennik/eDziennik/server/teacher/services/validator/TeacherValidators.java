@@ -7,6 +7,7 @@ public interface TeacherValidators extends AbstractValidator<TeacherRequestApiDt
 
     String EXCEPTION_MESSAGE_TEACHER_ALREADY_EXIST = "api.teacher.already.exist";
     String EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE = "teacher.pesel.not.unique";
+    String EXCEPTION_MESSAGE_TEACHER_WITH_EMAIL_ALREADY_EXIST = "teacher.email.already.exist";
 
 
 }

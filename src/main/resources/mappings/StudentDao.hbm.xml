@@ -19,5 +19,16 @@
         </query>
     </named-query>
 
+    <named-query name="Student.getStudentByEmail">
+        <query>
+            SELECT
+            s
+            FROM
+            Student s
+            WHERE
+            s.email = :email
+        </query>
+    </named-query>
+
 
 </entity-mappings>

@@ -36,6 +36,7 @@ public class StudentMapper {
         return new Student(
                 dto.getUsername(),
                 dto.getPassword(),
+                dto.getEmail(),
                 dto.getParentFirstName(),
                 dto.getParentLastName(),
                 dto.getParentPhoneNumber(),

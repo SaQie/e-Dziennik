@@ -24,15 +24,24 @@ class StudentDaoImpl extends BaseDao<Student> implements StudentDao {
         return PersistanceHelper.isObjectExist(query);
     }
 
+    @Override
+    public boolean isStudentExistByEmail(String email) {
+        TypedQuery<Student> query = em.createNamedQuery(Queries.GET_STUDENT_BY_EMAIL, Student.class);
+        query.setParameter(Parameters.EMAIL, email);
+        return PersistanceHelper.isObjectExist(query);
+    }
+
     private static final class Parameters {
 
         private static final String USERNAME = "username";
+        private static final String EMAIL = "email";
 
     }
 
     private static final class Queries {
 
         private static final String GET_STUDENT_BY_USERNAME = "Student.getStudentByUsername";
+        private static final String GET_STUDENT_BY_EMAIL = "Student.getStudentByEmail";
 
     }
 

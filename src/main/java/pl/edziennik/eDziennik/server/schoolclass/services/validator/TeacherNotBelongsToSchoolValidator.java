@@ -40,16 +40,16 @@ class TeacherNotBelongsToSchoolValidator implements SchoolClassValidators {
 
     @Override
     public Optional<ApiErrorsDto> validate(SchoolClassRequestApiDto dto) {
-        if (dto.getIdSupervisingTeacher() != null) {
-            if (!dao.isTeacherBelongsToSchool(dto.getIdSupervisingTeacher(), dto.getIdSchool())) {
-                Teacher teacher = dao.get(Teacher.class, dto.getIdSupervisingTeacher());
+        if (dto.getIdClassTeacher() != null) {
+            if (!dao.isTeacherBelongsToSchool(dto.getIdClassTeacher(), dto.getIdSchool())) {
+                Teacher teacher = dao.get(Teacher.class, dto.getIdClassTeacher());
 
                 String teacherName = teacher.getPersonInformation().getFirstName() + " " + teacher.getPersonInformation().getLastName();
                 String schoolName = dao.get(School.class, dto.getIdSchool()).getName();
                 String message = resourceCreator.of(EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL, teacherName, schoolName);
 
                 ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
-                        .fields(List.of(SchoolClassRequestApiDto.ID_SUPERVISING_TEACHER ,SchoolClassRequestApiDto.ID_SCHOOL))
+                        .fields(List.of(SchoolClassRequestApiDto.ID_CLASS_TEACHER ,SchoolClassRequestApiDto.ID_SCHOOL))
                         .cause(message)
                         .thrownImmediately(false)
                         .errorThrownedBy(getValidatorName())

@@ -142,7 +142,7 @@ public class SchoolIntegrationTest extends BaseTest {
     @Test
     public void shouldThrowsExceptionWhenSchoolAlreadyExist(){
         // given
-        String expectedValidatorName = "SchoolAlreadyExistValidator";
+        String expectedValidatorName = "SchoolAlreadyExistsValidator";
         SchoolRequestApiDto dto = util.prepareSchoolRequestApi();
         // first school
         service.createNewSchool(dto);

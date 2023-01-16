@@ -24,8 +24,6 @@ import java.net.URI;
 @Slf4j
 public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
-
-
     @Autowired
     private ResourceCreator resourceCreator;
 

@@ -5,12 +5,8 @@ import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.server.basics.ApiErrorsDto;
 import pl.edziennik.eDziennik.server.basics.ExceptionType;
 import pl.edziennik.eDziennik.server.basics.ValidatorPriority;
-import pl.edziennik.eDziennik.server.studensubject.domain.dto.request.StudentSubjectRequestDto;
 import pl.edziennik.eDziennik.server.student.dao.StudentDao;
-import pl.edziennik.eDziennik.server.student.domain.Student;
 import pl.edziennik.eDziennik.server.student.domain.dto.StudentRequestApiDto;
-import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
-import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.List;
@@ -18,7 +14,7 @@ import java.util.Optional;
 
 @Component
 @AllArgsConstructor
-class StudentAlreadyExistValidator implements StudentValidators{
+class StudentAlreadyExistsValidator implements StudentValidators{
 
     private final ResourceCreator resourceCreator;
     private final StudentDao dao;

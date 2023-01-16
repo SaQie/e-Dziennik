@@ -23,12 +23,11 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-class StudentServiceImpl implements StudentService{
+class StudentServiceImpl implements StudentService {
 
     private final StudentDao dao;
     private final PasswordEncoder passwordEncoder;
     private final StudentValidatorService validatorService;
-
 
 
     @Override
@@ -76,13 +75,11 @@ class StudentServiceImpl implements StudentService{
     @Transactional
     public void updateStudentLastLoginDate(String username) {
         Student student = dao.getByUsername(username);
-        if (student != null){
-            student.setLastLoginDate(LocalDateTime.now());
-        }
+        student.setLastLoginDate(LocalDateTime.now());
     }
 
     @Override
-    public StudentResponseApiDto getStudentByUsername(String username){
+    public StudentResponseApiDto getStudentByUsername(String username) {
         Student student = dao.getByUsername(username);
         return student == null ? null : StudentMapper.toDto(student);
     }
@@ -92,11 +89,11 @@ class StudentServiceImpl implements StudentService{
     @Transactional
     public StudentResponseApiDto updateStudent(Long id, StudentRequestApiDto requestApiDto) {
         Optional<Student> optionalStudent = dao.find(id);
-        if (optionalStudent.isPresent()){
+        if (optionalStudent.isPresent()) {
             validatorService.valid(requestApiDto);
             Student student = optionalStudent.get();
             PersonInformation personInformation = PersonInformationMapper.mapToPersonInformation(requestApiDto.getFirstName(), requestApiDto.getLastName(), requestApiDto.getPesel());
-            student.setAddress(AddressMapper.mapToAddress(requestApiDto.getAddress(),requestApiDto.getCity(),requestApiDto.getPostalCode()));
+            student.setAddress(AddressMapper.mapToAddress(requestApiDto.getAddress(), requestApiDto.getCity(), requestApiDto.getPostalCode()));
             student.setParentFirstName(requestApiDto.getParentFirstName());
             student.setParentLastName(requestApiDto.getParentLastName());
             student.setParentPhoneNumber(requestApiDto.getParentPhoneNumber());
@@ -110,7 +107,7 @@ class StudentServiceImpl implements StudentService{
 
     private Student mapToEntity(StudentRequestApiDto dto) {
         Student student = StudentMapper.toEntity(dto);
-        School school = dao.get(School.class,dto.getIdSchool());
+        School school = dao.get(School.class, dto.getIdSchool());
         SchoolClass schoolClass = dao.get(SchoolClass.class, dto.getIdSchoolClass());
         student.setSchool(school);
         student.setSchoolClass(schoolClass);

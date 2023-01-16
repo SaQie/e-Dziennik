@@ -11,7 +11,7 @@ public class AdminMapper {
 
 
     public static Admin mapToEntity(AdminRequestApiDto dto){
-        return new Admin(dto.getUsername(), dto.getEmail(), dto.getPassword());
+        return new Admin(dto.getUsername(), dto.getPassword(),dto.getEmail());
     }
 
     public static AdminResponseApiDto mapToDto(Admin entity) {

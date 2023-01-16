@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,6 +19,7 @@ public class AdminRequestApiDto {
 
     @NotEmpty(message = "{username.empty}")
     private String username;
+    @Email(message = "{email.is.not.valid}")
     @NotEmpty(message = "{email.empty}")
     private String email;
     @NotEmpty(message = "{password.empty}")

@@ -4,28 +4,25 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.edziennik.eDziennik.server.basics.BasicUser;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class Admin implements Serializable {
+public class Admin extends BasicUser implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "admin_id_seq")
     @SequenceGenerator(name = "admin_id_seq", sequenceName = "admin_id_seq", allocationSize = 1)
     private Long id;
 
-    private String username;
-    private String email;
-    private String password;
-
-    public Admin(String username, String email, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
+    public Admin(String username, String password, String email) {
+        super(username, password, null,null,null, email);
     }
 }

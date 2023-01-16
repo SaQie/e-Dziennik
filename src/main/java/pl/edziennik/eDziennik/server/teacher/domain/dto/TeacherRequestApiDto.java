@@ -5,17 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 public class TeacherRequestApiDto{
-
-    public static final String CLASS_NAME = TeacherRequestApiDto.class.getSimpleName();
-
 
     public static final String USERNAME = "username";
     public static final String FIRST_NAME = "firstName";
@@ -27,6 +22,7 @@ public class TeacherRequestApiDto{
     public static final String ROLE = "role";
     public static final String PHONE_NUMBER = "phoneNumber";
     public static final String ID_SCHOOL = "idSchool";
+    public static final String EMAIL = "email";
 
 
     @NotEmpty(message = "{username.empty}")
@@ -51,6 +47,10 @@ public class TeacherRequestApiDto{
 
     @org.hibernate.validator.constraints.pl.PESEL(message = "{pesel.invalid}")
     private String pesel;
+
+    @Email(message = "{email.is.not.valid}")
+    @NotEmpty(message = "{email.empty}")
+    private String email;
 
     private String role;
 

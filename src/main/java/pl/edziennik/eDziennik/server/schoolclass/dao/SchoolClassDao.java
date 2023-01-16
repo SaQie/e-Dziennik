@@ -13,4 +13,6 @@ public interface SchoolClassDao extends IBaseDao<SchoolClass> {
 
     boolean isTeacherAlreadySupervisingTeacher(Long idTeacher);
 
+    String findSchoolClassNameBySupervisingTeacher(Long idSupervisingTeacher);
+
 }

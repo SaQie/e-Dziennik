@@ -74,7 +74,7 @@ public class StudentIntegrationTest extends BaseTest {
         // given
         StudentRequestApiDto dto = util.prepareStudentRequestDto();
         Long id = service.register(dto).getId();
-        StudentRequestApiDto expected = util.prepareStudentRequestDto("AfterEdit", "AfterEdit1", "AfterEdit2", "999999");
+        StudentRequestApiDto expected = util.prepareStudentRequestDto("AfterEdit", "AfterEdit1", "AfterEdit2", "999999", "test2@example.com");
 
         // when
         Long updated = service.updateStudent(id, expected).getId();
@@ -114,7 +114,7 @@ public class StudentIntegrationTest extends BaseTest {
     public void shouldFindListOfStudents(){
         // given
         StudentRequestApiDto firstStudent = util.prepareStudentRequestDto();
-        StudentRequestApiDto secondStudent = util.prepareStudentRequestDto("Adam", "Nowako", "ASD", "12312322");
+        StudentRequestApiDto secondStudent = util.prepareStudentRequestDto("Adam", "Nowako", "ASD", "12312322", "test2@example.com");
         Long firstStudentId = service.register(firstStudent).getId();
         Long secondStudentId = service.register(secondStudent).getId();
         assertNotNull(firstStudentId);
@@ -203,10 +203,10 @@ public class StudentIntegrationTest extends BaseTest {
     @Test
     public void shouldThrowsBusinessExceptionWhenTryingToRegisterAndStudentAlreadyExist(){
         // given
-        String expectedValidatorName = "StudentAlreadyExistValidator";
+        String expectedValidatorName = "StudentAlreadyExistsValidator";
         StudentRequestApiDto dto = util.prepareStudentRequestDto();
         service.register(dto);
-        StudentRequestApiDto dto2 = util.prepareStudentRequestDto("Test123", "asdasd", "asdasd", "1231232322");
+        StudentRequestApiDto dto2 = util.prepareStudentRequestDto("Test123", "asdasd", "asdasd", "1231232322","test2@example.com");
 
         // when
         BusinessException exception = assertThrows(BusinessException.class, () -> service.register(dto2));
@@ -242,7 +242,7 @@ public class StudentIntegrationTest extends BaseTest {
         String expectedValidatorName = "StudentPeselNotUniqueValidator";
         StudentRequestApiDto dto = util.prepareStudentRequestDto("00000000000");
         service.register(dto);
-        StudentRequestApiDto dto2 = util.prepareStudentRequestDto("xxx", "xxx", "xxxx", "00000000000");
+        StudentRequestApiDto dto2 = util.prepareStudentRequestDto("xxx", "xxx", "xxxx", "00000000000","test2@example.com");
 
         // when
         BusinessException exception = assertThrows(BusinessException.class, () -> service.register(dto2));
@@ -252,6 +252,25 @@ public class StudentIntegrationTest extends BaseTest {
         assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(List.of(StudentRequestApiDto.PESEL), exception.getErrors().get(0).getFields());
         String expectedExceptionMessage = resourceCreator.of(StudentValidators.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, Student.class.getSimpleName(), dto.getPesel());
+        assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
+    }
+
+    @Test
+    public void shouldThrowsBusinessExceptionWhenTryingToRegisterNewStudentAndEmailAlreadyExist(){
+        // given
+        String expectedValidatorName = "StudentEmailNotUniqueValidator";
+        StudentRequestApiDto dto = util.prepareStudentRequestDto("00000000000");
+        service.register(dto);
+        StudentRequestApiDto dto2 = util.prepareStudentRequestDto("xxx", "xxx", "xxxx", "00000001000", "test@example.com");
+
+        // when
+        BusinessException exception = assertThrows(BusinessException.class, () -> service.register(dto2));
+
+        // then
+        assertEquals(1, exception.getErrors().size());
+        assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(List.of(StudentRequestApiDto.EMAIL), exception.getErrors().get(0).getFields());
+        String expectedExceptionMessage = resourceCreator.of(StudentValidators.EXCEPTION_MESSAGE_EMAIL_NOT_UNIQUE, dto.getEmail());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 

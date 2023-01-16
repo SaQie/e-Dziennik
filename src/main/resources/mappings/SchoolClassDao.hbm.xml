@@ -30,6 +30,20 @@
         </query>
     </named-query>
 
+    <named-query name="SchoolClass.getSchoolClassBySupervisingTeacher">
+        <query>
+            SELECT
+            sc.className
+            FROM
+            SchoolClass sc
+            JOIN
+            sc.teacher t
+            WHERE
+            sc.teacher.id = :idTeacher
+        </query>
+    </named-query>
+
+
     <named-query name="SchoolClass.isTeacherBelongsToSchool">
         <query>
             SELECT

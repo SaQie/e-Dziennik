@@ -98,6 +98,7 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         if (adminDto != null){
             String token = jwtUtils.generateJwtToken(principal, adminDto.getId());
             String refreshToken = jwtUtils.generateRefreshToken(principal, adminDto.getId());
+            adminService.updateAdminLastLoginDate(adminDto.getUsername());
             AuthResponseDto authResponseDto = new AuthResponseDto();
             authResponseDto.setAccountType(AccountType.ADMIN);
             authResponseDto.setUsername(adminDto.getUsername());

@@ -48,6 +48,7 @@ public class TeacherMapper {
         return new Teacher(
                 dto.getUsername(),
                 dto.getPassword(),
+                dto.getEmail(),
                 dto.getPhoneNumber(),
                 PersonInformationMapper.mapToPersonInformation(dto.getFirstName(), dto.getLastName(), dto.getPesel()),
                 AddressMapper.mapToAddress(dto.getAddress(), dto.getCity(), dto.getPostalCode())

@@ -45,8 +45,8 @@ public class Student extends BasicUser implements Serializable {
 
 
 
-    public Student(String username, String password, String parentFirstName, String parentLastName, String parentPhoneNumber,PersonInformation personInformation, Address address, LocalDate createDate, LocalDateTime lastLoginTime, LocalDateTime updatedDate) {
-        super(username, password, createDate, updatedDate, lastLoginTime);
+    public Student(String username, String password,String email, String parentFirstName, String parentLastName, String parentPhoneNumber,PersonInformation personInformation, Address address, LocalDate createDate, LocalDateTime lastLoginTime, LocalDateTime updatedDate) {
+        super(username, password, createDate, updatedDate, lastLoginTime,email);
         this.parentFirstName = parentFirstName;
         this.parentLastName = parentLastName;
         this.parentPhoneNumber = parentPhoneNumber;
@@ -54,8 +54,8 @@ public class Student extends BasicUser implements Serializable {
         this.personInformation = personInformation;
     }
 
-    public Student(String username, String password, String parentFirstName, String parentLastName, String parentPhoneNumber,PersonInformation personInformation, Address address) {
-        super(username, password, null, null, null);
+    public Student(String username, String password,String email, String parentFirstName, String parentLastName, String parentPhoneNumber,PersonInformation personInformation, Address address) {
+        super(username, password, null, null, null,email);
         this.parentFirstName = parentFirstName;
         this.parentLastName = parentLastName;
         this.parentPhoneNumber = parentPhoneNumber;

@@ -9,4 +9,6 @@ public interface AdminService {
 
     AdminResponseApiDto getAdminByUsername(final String username);
 
+    void updateAdminLastLoginDate(final String username);
+
 }

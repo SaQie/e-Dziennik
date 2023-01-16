@@ -36,5 +36,16 @@
         </query>
     </named-query>
 
+    <named-query name="Teacher.getByEmail">
+        <query>
+            SELECT
+            t
+            FROM
+            Teacher t
+            WHERE
+            t.email = :email
+        </query>
+    </named-query>
+
 
 </entity-mappings>

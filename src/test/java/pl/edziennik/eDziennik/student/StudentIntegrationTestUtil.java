@@ -17,6 +17,7 @@ public class StudentIntegrationTestUtil {
                 "58-100",
                 "Lubawka2",
                 "123123123",
+                "test@example.com",
                 "Tomasz",
                 "Nowak",
                 "100200300",
@@ -25,7 +26,7 @@ public class StudentIntegrationTestUtil {
         );
     }
 
-    protected StudentRequestApiDto prepareStudentRequestDto(String username, String firstName, String lastName, String pesel) {
+    protected StudentRequestApiDto prepareStudentRequestDto(String username, String firstName, String lastName, String pesel, String email) {
         return new StudentRequestApiDto(
                 "Testt",
                 username,
@@ -35,6 +36,7 @@ public class StudentIntegrationTestUtil {
                 "58-100",
                 "Lubawka2",
                 pesel,
+                email,
                 "Tomasz",
                 "Nowak",
                 "100200300",
@@ -53,6 +55,7 @@ public class StudentIntegrationTestUtil {
                 "58-100",
                 "Lubawka2",
                 "123123123",
+                "test@example.com",
                 "Tomasz",
                 "Nowak",
                 "100200300",
@@ -72,6 +75,7 @@ public class StudentIntegrationTestUtil {
                 "58-100",
                 "Lubawka2",
                 pesel,
+                "test@example.com",
                 "Tomasz",
                 "Nowak",
                 "100200300",
@@ -91,6 +95,7 @@ public class StudentIntegrationTestUtil {
                 "58-100",
                 "Lubawka2",
                 "123123123",
+                "test@example.com",
                 "Tomasz",
                 "Nowak",
                 "100200300",

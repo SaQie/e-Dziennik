@@ -34,10 +34,18 @@ class SchoolClassDaoImpl extends BaseDao<SchoolClass> implements SchoolClassDao 
         return PersistanceHelper.isObjectExist(query);
     }
 
+    @Override
+    public String findSchoolClassNameBySupervisingTeacher(Long idSupervisingTeacher){
+        TypedQuery<String> query = em.createNamedQuery(Queries.FIND_SCHOOL_CLASS_NAME_BY_SUPERVISING_TEACHER, String.class);
+        query.setParameter(Parameters.ID_TEACHER, idSupervisingTeacher);
+        return query.getSingleResult();
+    }
+
     private static final class Queries{
 
         private static final String FIND_SCHOOL_CLASS_BY_CLASS_NAME_AND_SCHOOL = "SchoolClass.getSchoolClassByClassNameAndIdSchool";
         private static final String FIND_SUPERVISING_TEACHER_SCHOOL_CLASS_BY_ID = "SchoolClass.getSupervisingTeacherById";
+        private static final String FIND_SCHOOL_CLASS_NAME_BY_SUPERVISING_TEACHER = "SchoolClass.getSchoolClassBySupervisingTeacher";
         private static final String IS_TEACHER_BELONGS_TO_SCHOOL = "SchoolClass.isTeacherBelongsToSchool";
 
     }

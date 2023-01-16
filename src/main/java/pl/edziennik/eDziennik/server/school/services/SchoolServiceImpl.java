@@ -67,8 +67,10 @@ class SchoolServiceImpl implements SchoolService{
             school.setAddress(address);
             return SchoolMapper.toDto(school);
         }
-        School school = dao.saveOrUpdate(SchoolMapper.toEntity(dto));
-        return SchoolMapper.toDto(school);
+        SchoolLevel schoolLevel = dao.get(SchoolLevel.class, dto.getIdSchoolLevel());
+        School school = SchoolMapper.toEntity(dto);
+        school.setSchoolLevel(schoolLevel);
+        return SchoolMapper.toDto(dao.saveOrUpdate(school));
     }
 
     private School mapToEntity(SchoolRequestApiDto dto){

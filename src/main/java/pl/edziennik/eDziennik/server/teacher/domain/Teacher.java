@@ -43,15 +43,15 @@ public class Teacher extends BasicUser implements Serializable {
     private PersonInformation personInformation;
 
 
-    public Teacher(String username, String password, String phoneNumber,PersonInformation personInformation, Address address, LocalDate createDate, LocalDateTime lastLoginTime, LocalDateTime updateDate) {
-        super(username, password,createDate,updateDate, lastLoginTime);
+    public Teacher(String username, String password,String email, String phoneNumber,PersonInformation personInformation, Address address, LocalDate createDate, LocalDateTime lastLoginTime, LocalDateTime updateDate) {
+        super(username, password,createDate,updateDate, lastLoginTime, email);
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.personInformation = personInformation;
     }
 
-    public Teacher(String username, String password, String phoneNumber,PersonInformation personInformation, Address address) {
-        super(username, password, null, null, null);
+    public Teacher(String username, String password,String email, String phoneNumber,PersonInformation personInformation, Address address) {
+        super(username, password, null, null, null, email);
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.personInformation = personInformation;

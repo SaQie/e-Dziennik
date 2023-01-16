@@ -1,12 +1,12 @@
-package pl.edziennik.eDziennik.server.school.services.validator;
+package pl.edziennik.eDziennik.server.teacher.services.validator;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.server.basics.ApiErrorsDto;
 import pl.edziennik.eDziennik.server.basics.ExceptionType;
 import pl.edziennik.eDziennik.server.basics.ValidatorPriority;
-import pl.edziennik.eDziennik.server.school.dao.SchoolDao;
-import pl.edziennik.eDziennik.server.school.domain.dto.SchoolRequestApiDto;
+import pl.edziennik.eDziennik.server.teacher.dao.TeacherDao;
+import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.List;
@@ -14,15 +14,15 @@ import java.util.Optional;
 
 @Component
 @AllArgsConstructor
-class SchoolAlreadyExistValidator implements SchoolValidators{
+class TeacherAlreadyExistsValidator implements TeacherValidators {
 
+    private final TeacherDao dao;
     private final ResourceCreator resourceCreator;
-    private final SchoolDao dao;
 
-    public static final Integer VALIDATOR_ID = 1;
+    private static final Integer VALIDATOR_ID = 1;
 
     @Override
-    public String getValidatorName() {
+    public String getValidatorName(){
         return this.getClass().getSimpleName();
     }
 
@@ -37,13 +37,12 @@ class SchoolAlreadyExistValidator implements SchoolValidators{
     }
 
     @Override
-    public Optional<ApiErrorsDto> validate(SchoolRequestApiDto dto) {
-        if (dao.isSchoolExist(dto.getName())){
-
-            String message = resourceCreator.of(EXCEPTION_MESSAGE_SCHOOL_ALREADY_EXIST, dto.getName());
+    public Optional<ApiErrorsDto> validate(TeacherRequestApiDto requestApiDto) {
+        if(dao.isTeacherExist(requestApiDto.getUsername())){
+            String message = resourceCreator.of(EXCEPTION_MESSAGE_TEACHER_ALREADY_EXIST, requestApiDto.getUsername());
 
             ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
-                    .fields(List.of(SchoolRequestApiDto.NAME))
+                    .fields(List.of(TeacherRequestApiDto.USERNAME))
                     .cause(message)
                     .thrownImmediately(false)
                     .errorThrownedBy(getValidatorName())
@@ -51,9 +50,7 @@ class SchoolAlreadyExistValidator implements SchoolValidators{
                     .build();
 
             return Optional.of(apiErrorsDto);
-
         }
-
         return Optional.empty();
     }
 }

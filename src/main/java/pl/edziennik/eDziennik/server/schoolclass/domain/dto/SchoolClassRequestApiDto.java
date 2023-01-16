@@ -13,13 +13,13 @@ import javax.validation.constraints.NotNull;
 public class SchoolClassRequestApiDto{
 
     public static final String CLASS_NAME = "className";
-    public static final String ID_SUPERVISING_TEACHER = "idSupervisingTeacher";
+    public static final String ID_CLASS_TEACHER = "idClassTeacher";
     public static final String ID_SCHOOL = "idSchool";
 
     @NotEmpty(message = "{className.empty}")
     private String className;
 
-    private Long idSupervisingTeacher;
+    private Long idClassTeacher;
 
     @NotNull(message = "{school.empty}")
     private Long idSchool;

@@ -40,15 +40,16 @@ class TeacherIsAlreadySupervisingTeacherValidator implements SchoolClassValidato
 
     @Override
     public Optional<ApiErrorsDto> validate(SchoolClassRequestApiDto dto) {
-        if (dto.getIdSupervisingTeacher() != null) {
-            if (dao.isTeacherAlreadySupervisingTeacher(dto.getIdSupervisingTeacher())) {
-                Teacher teacher = dao.get(Teacher.class, dto.getIdSupervisingTeacher());
+        if (dto.getIdClassTeacher() != null) {
+            if (dao.isTeacherAlreadySupervisingTeacher(dto.getIdClassTeacher())) {
+                Teacher teacher = dao.get(Teacher.class, dto.getIdClassTeacher());
+                String actualTeacherSchoolClassName = dao.findSchoolClassNameBySupervisingTeacher(dto.getIdClassTeacher());
 
                 String teacherName = teacher.getPersonInformation().getFirstName() + " " + teacher.getPersonInformation().getLastName();
-                String message = resourceCreator.of(EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER, teacherName);
+                String message = resourceCreator.of(EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER, teacherName,actualTeacherSchoolClassName);
 
                 ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
-                        .fields(List.of(SchoolClassRequestApiDto.ID_SUPERVISING_TEACHER))
+                        .fields(List.of(SchoolClassRequestApiDto.ID_CLASS_TEACHER))
                         .cause(message)
                         .thrownImmediately(false)
                         .errorThrownedBy(getValidatorName())

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -27,6 +28,7 @@ public class StudentRequestApiDto{
     public static final String ID_SCHOOL_CLASS = "idSchoolClass";
     public static final String PARENT_FIRST_NAME = "parentFirstName";
     public static final String PARENT_LAST_NAME = "parentLastName";
+    public static final String EMAIL = "email";
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotEmpty(message = "{password.empty}")
@@ -55,6 +57,10 @@ public class StudentRequestApiDto{
 
     @org.hibernate.validator.constraints.pl.PESEL(message = "{pesel.invalid}")
     private String pesel;
+
+    @Email(message = "{email.is.not.valid}")
+    @NotEmpty(message = "{email.empty}")
+    private String email;
 
     @NotEmpty(message = "{parentFirstName.empty}")
     private String parentFirstName;
