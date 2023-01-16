@@ -7,4 +7,7 @@ public interface SchoolDao extends IBaseDao<School> {
 
     boolean isSchoolExist(String schoolName);
 
+    boolean isSchoolWithNipExist(String nip);
+
+    boolean isSchoolWithRegonExist(String regon);
 }

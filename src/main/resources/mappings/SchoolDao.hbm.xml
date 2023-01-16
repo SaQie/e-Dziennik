@@ -15,5 +15,26 @@
         </query>
     </named-query>
 
+    <named-query name="School.getSchoolByRegon">
+        <query>
+            SELECT
+            s
+            FROM
+            School s
+            WHERE
+            s.regon = :regon
+        </query>
+    </named-query>
+
+    <named-query name="School.getSchoolByNip">
+        <query>
+            SELECT
+            s
+            FROM
+            School s
+            WHERE
+            s.nip = :nip
+        </query>
+    </named-query>
 
 </entity-mappings>

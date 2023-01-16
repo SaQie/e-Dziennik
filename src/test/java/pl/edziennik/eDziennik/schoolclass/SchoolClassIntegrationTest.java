@@ -230,6 +230,4 @@ public class SchoolClassIntegrationTest extends BaseTest {
         String expectedExceptionMessage = resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL, teacherResponseDto.getFirstName() + " " + teacherResponseDto.getLastName(), find(School.class, 101L).getName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
-
-
 }

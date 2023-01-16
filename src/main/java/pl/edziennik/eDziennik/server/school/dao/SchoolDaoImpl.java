@@ -17,16 +17,33 @@ class SchoolDaoImpl extends BaseDao<School> implements SchoolDao{
         return PersistanceHelper.isObjectExist(query);
     }
 
+    @Override
+    public boolean isSchoolWithNipExist(String nip) {
+        TypedQuery<School> query = em.createNamedQuery(Queries.GET_SCHOOL_BY_NIP, School.class);
+        query.setParameter(Parameters.NIP, nip);
+        return PersistanceHelper.isObjectExist(query);
+    }
+
+    @Override
+    public boolean isSchoolWithRegonExist(String regon) {
+        TypedQuery<School> query = em.createNamedQuery(Queries.GET_SCHOOL_BY_REGON, School.class);
+        query.setParameter(Parameters.REGON, regon);
+        return PersistanceHelper.isObjectExist(query);
+    }
 
     private static final class Queries{
 
         private static final String GET_SCHOOL_BY_NAME = "School.getSchoolByName";
+        private static final String GET_SCHOOL_BY_REGON = "School.getSchoolByRegon";
+        private static final String GET_SCHOOL_BY_NIP = "School.getSchoolByNip";
 
     }
 
     private static final class Parameters{
 
         private static final String SCHOOL_NAME = "schoolName";
+        private static final String REGON = "regon";
+        private static final String NIP = "nip";
 
 
     }
