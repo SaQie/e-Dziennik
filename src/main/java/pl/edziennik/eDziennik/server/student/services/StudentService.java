@@ -16,7 +16,6 @@ public interface StudentService {
 
     List<StudentResponseApiDto> findAllStudents();
 
-    void updateStudentLastLoginDate(final String username);
 
     StudentResponseApiDto updateStudent(final Long id, final StudentRequestApiDto requestApiDto);
 

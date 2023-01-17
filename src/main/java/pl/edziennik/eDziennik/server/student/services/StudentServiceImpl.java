@@ -1,13 +1,13 @@
 package pl.edziennik.eDziennik.server.student.services;
 
 import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import pl.edziennik.eDziennik.server.address.AddressMapper;
 import pl.edziennik.eDziennik.server.personinformation.PersonInformation;
 import pl.edziennik.eDziennik.server.personinformation.PersonInformationMapper;
+import pl.edziennik.eDziennik.server.role.domain.Role;
 import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.server.student.dao.StudentDao;
@@ -15,8 +15,10 @@ import pl.edziennik.eDziennik.server.student.domain.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.server.student.domain.dto.StudentResponseApiDto;
 import pl.edziennik.eDziennik.server.student.domain.dto.mapper.StudentMapper;
 import pl.edziennik.eDziennik.server.student.domain.Student;
+import pl.edziennik.eDziennik.server.user.domain.User;
+import pl.edziennik.eDziennik.server.user.domain.UserMapper;
+import pl.edziennik.eDziennik.server.user.services.UserService;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,8 +28,8 @@ import java.util.stream.Collectors;
 class StudentServiceImpl implements StudentService {
 
     private final StudentDao dao;
-    private final PasswordEncoder passwordEncoder;
     private final StudentValidatorService validatorService;
+    private final UserService userService;
 
 
     @Override
@@ -35,7 +37,8 @@ class StudentServiceImpl implements StudentService {
     public StudentResponseApiDto register(StudentRequestApiDto dto) {
         validatorService.valid(dto);
         Student student = mapToEntity(dto);
-        student.setPassword(passwordEncoder.encode(dto.getPassword()));
+        User user = userService.createUser(UserMapper.toDto(dto));
+        student.setUser(user);
         /*
 
         Dodac cos w stylu takiego kodu:
@@ -72,13 +75,6 @@ class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    @Transactional
-    public void updateStudentLastLoginDate(String username) {
-        Student student = dao.getByUsername(username);
-        student.setLastLoginDate(LocalDateTime.now());
-    }
-
-    @Override
     public StudentResponseApiDto getStudentByUsername(String username) {
         Student student = dao.getByUsername(username);
         return student == null ? null : StudentMapper.toDto(student);
@@ -97,7 +93,7 @@ class StudentServiceImpl implements StudentService {
             student.setParentFirstName(requestApiDto.getParentFirstName());
             student.setParentLastName(requestApiDto.getParentLastName());
             student.setParentPhoneNumber(requestApiDto.getParentPhoneNumber());
-            student.setUsername(requestApiDto.getUsername());
+            student.getUser().setUsername(requestApiDto.getUsername());
             student.setPersonInformation(personInformation);
             return StudentMapper.toDto(student);
         }

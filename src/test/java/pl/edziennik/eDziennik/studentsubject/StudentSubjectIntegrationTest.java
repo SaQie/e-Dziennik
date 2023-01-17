@@ -85,7 +85,7 @@ public class StudentSubjectIntegrationTest extends BaseTest {
         TeacherRequestApiDto teacherDto = teacherUtil.prepareTeacherRequestDto();
         Long teacherId = teacherService.register(teacherDto).getId();
 
-        StudentRequestApiDto studentDto = studentUtil.prepareStudentRequestDto();
+        StudentRequestApiDto studentDto = studentUtil.prepareStudentRequestDto("Test333", "test5@example.com");
         Long studentId = studentService.register(studentDto).getId();
 
         SubjectRequestApiDto subjectDto = util.prepareSubject(teacherId);
@@ -155,14 +155,14 @@ public class StudentSubjectIntegrationTest extends BaseTest {
         TeacherRequestApiDto teacherDto = teacherUtil.prepareTeacherRequestDto();
         Long teacherId = teacherService.register(teacherDto).getId();
 
-        StudentRequestApiDto studentDto = studentUtil.prepareStudentRequestDto();
+        StudentRequestApiDto studentDto = studentUtil.prepareStudentRequestDto("Test22221", "Test5@example.com");
         Long studentId = studentService.register(studentDto).getId();
 
         SubjectRequestApiDto expectedSubject = util.prepareSubject(teacherId);
         Long subjectId = subjectService.createNewSubject(expectedSubject).getId();
 
         GradeRequestApiDto expectedGrade = gradeUtil.prepareRequestApi(5, 5);
-        expectedGrade.setTeacherName(find(Teacher.class, teacherId).getUsername());
+        expectedGrade.setTeacherName(find(Teacher.class, teacherId).getUser().getUsername());
 
         StudentSubjectRequestDto studentSubjectRequestDto = util.prepareStudentSubjectRequestDto(subjectId,studentId);
         service.assignStudentToSubject(studentSubjectRequestDto);

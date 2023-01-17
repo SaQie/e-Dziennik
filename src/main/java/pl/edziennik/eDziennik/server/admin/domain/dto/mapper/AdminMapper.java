@@ -3,6 +3,7 @@ package pl.edziennik.eDziennik.server.admin.domain.dto.mapper;
 import pl.edziennik.eDziennik.server.admin.domain.Admin;
 import pl.edziennik.eDziennik.server.admin.domain.dto.AdminRequestApiDto;
 import pl.edziennik.eDziennik.server.admin.domain.dto.AdminResponseApiDto;
+import pl.edziennik.eDziennik.server.user.domain.UserMapper;
 
 public class AdminMapper {
 
@@ -11,10 +12,10 @@ public class AdminMapper {
 
 
     public static Admin mapToEntity(AdminRequestApiDto dto){
-        return new Admin(dto.getUsername(), dto.getPassword(),dto.getEmail());
+        return new Admin(UserMapper.toEntity(dto));
     }
 
     public static AdminResponseApiDto mapToDto(Admin entity) {
-        return new AdminResponseApiDto(entity.getId(), entity.getUsername(), entity.getEmail());
+        return new AdminResponseApiDto(entity.getId(), entity.getUser().getUsername(), entity.getUser().getEmail());
     }
 }

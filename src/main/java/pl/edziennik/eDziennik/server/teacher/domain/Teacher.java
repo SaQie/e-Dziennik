@@ -4,24 +4,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.edziennik.eDziennik.server.address.Address;
-import pl.edziennik.eDziennik.server.basics.BasicUser;
 import pl.edziennik.eDziennik.server.personinformation.PersonInformation;
-import pl.edziennik.eDziennik.server.role.domain.Role;
 import pl.edziennik.eDziennik.server.school.domain.School;
-import pl.edziennik.eDziennik.server.subject.domain.Subject;
+import pl.edziennik.eDziennik.server.user.domain.User;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
 
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
-public class Teacher extends BasicUser implements Serializable {
+public class Teacher implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teacher_id_seq")
@@ -30,8 +24,9 @@ public class Teacher extends BasicUser implements Serializable {
 
     private String phoneNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Role role;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private School school;
@@ -43,22 +38,10 @@ public class Teacher extends BasicUser implements Serializable {
     private PersonInformation personInformation;
 
 
-    public Teacher(String username, String password,String email, String phoneNumber,PersonInformation personInformation, Address address, LocalDate createDate, LocalDateTime lastLoginTime, LocalDateTime updateDate) {
-        super(username, password,createDate,updateDate, lastLoginTime, email);
+    public Teacher(String phoneNumber,PersonInformation personInformation, Address address) {
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.personInformation = personInformation;
-    }
-
-    public Teacher(String username, String password,String email, String phoneNumber,PersonInformation personInformation, Address address) {
-        super(username, password, null, null, null, email);
-        this.phoneNumber = phoneNumber;
-        this.address = address;
-        this.personInformation = personInformation;
-    }
-
-    public void setRole(Role role){
-        this.role = role;
     }
 
     public void setSchool(School school){

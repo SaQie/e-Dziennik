@@ -21,12 +21,6 @@ public class AdminController {
 
     private final AdminService service;
 
-    @GetMapping()
-    public void asd(){
-        System.out.println("Dupa");
-    }
-
-
     @PostMapping()
     public ResponseEntity<ApiResponse> createAdminAccount(@RequestBody @Valid AdminRequestApiDto requestApiDto){
         AdminResponseApiDto responseApiDto = service.createNewAdminAccount(requestApiDto);

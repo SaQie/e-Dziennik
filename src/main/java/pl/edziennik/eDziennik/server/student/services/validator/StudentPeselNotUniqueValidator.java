@@ -42,7 +42,7 @@ class StudentPeselNotUniqueValidator implements StudentValidators{
     @Override
     public Optional<ApiErrorsDto> validate(StudentRequestApiDto dto) {
         if (dao.isPeselAlreadyExist(dto.getPesel())){
-            String message = resourceCreator.of(EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, Student.class.getSimpleName(), dto.getPesel());
+            String message = resourceCreator.of(EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, dto.getPesel());
 
             ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
                     .fields(List.of(StudentRequestApiDto.PESEL))

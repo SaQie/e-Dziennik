@@ -24,7 +24,7 @@ CREATE TABLE STUDENT
     PASSWORD            varchar(255) NOT NULL,
     first_name          varchar(255) NOT NULL,
     last_name           varchar(255) NOT NULL,
-    address              varchar(255) NOT NULL,
+    address             varchar(255) NOT NULL,
     postal_code         varchar(255) NOT NULL,
     city                varchar(255) NOT NULL,
     pesel               varchar(11)  NOT NULL UNIQUE,
@@ -44,7 +44,7 @@ CREATE TABLE teacher
     password        varchar(255) NOT NULL,
     first_name      varchar(255) NOT NULL,
     last_name       varchar(255) NOT NULL,
-    address          varchar(255) NOT NULL,
+    address         varchar(255) NOT NULL,
     postal_code     varchar(255) NOT NULL,
     city            varchar(255) NOT NULL,
     pesel           varchar(11)  NOT NULL UNIQUE,
@@ -61,7 +61,7 @@ CREATE TABLE school_class
     class_name   varchar(255) NOT NULL,
     created_date date         NOT NULL,
     teacher_id   INT UNIQUE REFERENCES teacher (id),
-    school_id    INT NOT NULL REFERENCES school (id)
+    school_id    INT          NOT NULL REFERENCES school (id)
 );
 
 ALTER TABLE student
@@ -117,10 +117,14 @@ VALUES (1,
        (2,
         'ROLE_TEACHER'),
        (3,
-        'ROLE_MODERATOR');
+        'ROLE_MODERATOR'),
+       (4,
+        'ROLE_STUDENT');
 
 ALTER TABLE teacher
     ADD role_id INT REFERENCES ROLE (id);
 
 INSERT INTO school_level(id, name)
-values (1, 'PRIMARY SCHOOL'), (2, 'HIGH SCHOOL'), (3, 'UNIVERSITY');
+values (1, 'PRIMARY SCHOOL'),
+       (2, 'HIGH SCHOOL'),
+       (3, 'UNIVERSITY');

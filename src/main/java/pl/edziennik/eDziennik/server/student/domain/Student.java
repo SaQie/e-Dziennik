@@ -5,22 +5,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.edziennik.eDziennik.server.address.Address;
-import pl.edziennik.eDziennik.server.basics.BasicUser;
 import pl.edziennik.eDziennik.server.personinformation.PersonInformation;
 import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
+import pl.edziennik.eDziennik.server.user.domain.User;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode
-public class Student extends BasicUser implements Serializable {
+public class Student implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_id_seq")
@@ -30,6 +28,10 @@ public class Student extends BasicUser implements Serializable {
     private String parentFirstName;
     private String parentLastName;
     private String parentPhoneNumber;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private SchoolClass schoolClass;
@@ -45,17 +47,7 @@ public class Student extends BasicUser implements Serializable {
 
 
 
-    public Student(String username, String password,String email, String parentFirstName, String parentLastName, String parentPhoneNumber,PersonInformation personInformation, Address address, LocalDate createDate, LocalDateTime lastLoginTime, LocalDateTime updatedDate) {
-        super(username, password, createDate, updatedDate, lastLoginTime,email);
-        this.parentFirstName = parentFirstName;
-        this.parentLastName = parentLastName;
-        this.parentPhoneNumber = parentPhoneNumber;
-        this.address = address;
-        this.personInformation = personInformation;
-    }
-
-    public Student(String username, String password,String email, String parentFirstName, String parentLastName, String parentPhoneNumber,PersonInformation personInformation, Address address) {
-        super(username, password, null, null, null,email);
+    public Student(String parentFirstName, String parentLastName, String parentPhoneNumber,PersonInformation personInformation, Address address) {
         this.parentFirstName = parentFirstName;
         this.parentLastName = parentLastName;
         this.parentPhoneNumber = parentPhoneNumber;

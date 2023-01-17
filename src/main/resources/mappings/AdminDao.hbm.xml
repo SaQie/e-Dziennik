@@ -10,8 +10,10 @@
                 a
             FROM
                 Admin a
+            JOIN FETCH
+                a.user u
             WHERE
-                a.username = :username
+                u.username = :username
         </query>
     </named-query>
 

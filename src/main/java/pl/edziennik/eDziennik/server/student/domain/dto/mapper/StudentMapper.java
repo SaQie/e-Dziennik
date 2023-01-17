@@ -17,7 +17,7 @@ public class StudentMapper {
     public static StudentResponseApiDto toDto(Student entity) {
         return new StudentResponseApiDto(
                 entity.getId(),
-                entity.getUsername(),
+                entity.getUser().getUsername(),
                 entity.getPersonInformation().getFirstName(),
                 entity.getPersonInformation().getLastName(),
                 entity.getAddress().getAddress(),
@@ -34,9 +34,6 @@ public class StudentMapper {
 
     public static Student toEntity(StudentRequestApiDto dto) {
         return new Student(
-                dto.getUsername(),
-                dto.getPassword(),
-                dto.getEmail(),
                 dto.getParentFirstName(),
                 dto.getParentLastName(),
                 dto.getParentPhoneNumber(),

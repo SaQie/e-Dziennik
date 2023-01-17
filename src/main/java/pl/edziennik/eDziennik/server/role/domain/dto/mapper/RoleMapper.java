@@ -15,6 +15,10 @@ public class RoleMapper {
         );
     }
 
+    public static Role toEntity(String role){
+        return new Role(role);
+    }
+
     public static Role toEntity(RoleResponseApiDto dto) {
         return new Role(
                 dto.getId(),

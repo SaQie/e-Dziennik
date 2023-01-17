@@ -1,33 +1,37 @@
 package pl.edziennik.eDziennik.authentication;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import pl.edziennik.eDziennik.server.student.domain.Student;
+import pl.edziennik.eDziennik.server.user.domain.User;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
+public class AuthUserDetails implements UserDetails{
 
-public class StudentUserDetails implements UserDetails {
+    private User user;
 
-    private Student student;
-
-    public StudentUserDetails(Student student){
-        this.student = student;
+    public AuthUserDetails(User user) {
+        this.user = user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
+        return authorities;
     }
 
     @Override
     public String getPassword() {
-        return student.getPassword();
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return student.getUsername();
+        return user.getUsername();
     }
 
     @Override

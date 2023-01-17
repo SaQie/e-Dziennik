@@ -4,33 +4,29 @@
                  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm
         http://java.sun.com/xml/ns/persistence/orm_2_0.xsd ">
 
-    <named-query name="Teacher.getByPesel">
+    <named-query name="User.getByUsername">
         <query>
             SELECT
-                t
+            u
             FROM
-                Teacher t
+            User u
             JOIN FETCH
-                t.user
-            JOIN FETCH
-                t.personInformation pi
+            u.role
             WHERE
-                pi.pesel = :pesel
+            u.username = :username
         </query>
     </named-query>
 
-    <named-query name="Teacher.getByUsername">
+    <named-query name="User.getByEmail">
         <query>
             SELECT
-            t
+            u
             FROM
-            Teacher t
+            User u
             JOIN FETCH
-            t.user u
-            JOIN FETCH
-            t.personInformation pi
+            u.role
             WHERE
-            u.username = :username
+            u.email = :email
         </query>
     </named-query>
 

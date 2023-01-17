@@ -51,8 +51,8 @@ public class AdminIntegrationTest extends BaseTest {
         assertNotNull(id);
         Admin actual = find(Admin.class, id);
 
-        assertEquals(expected.getUsername(), actual.getUsername());
-        assertEquals(expected.getEmail(), actual.getEmail());
+        assertEquals(expected.getUsername(), actual.getUser().getUsername());
+        assertEquals(expected.getEmail(), actual.getUser().getEmail());
 
     }
 

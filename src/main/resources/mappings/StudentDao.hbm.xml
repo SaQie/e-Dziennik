@@ -4,31 +4,5 @@
                  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm
         http://java.sun.com/xml/ns/persistence/orm_2_0.xsd ">
 
-    <named-query name="Student.getStudentByUsername">
-        <query>
-            SELECT
-                s
-            FROM
-                Student s
-            JOIN FETCH
-                s.personInformation
-            JOIN FETCH
-                s.address
-            WHERE
-                s.username = :username
-        </query>
-    </named-query>
-
-    <named-query name="Student.getStudentByEmail">
-        <query>
-            SELECT
-            s
-            FROM
-            Student s
-            WHERE
-            s.email = :email
-        </query>
-    </named-query>
-
 
 </entity-mappings>

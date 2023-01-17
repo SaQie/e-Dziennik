@@ -1,12 +1,13 @@
-package pl.edziennik.eDziennik.server.teacher.services.validator;
+package pl.edziennik.eDziennik.server.user.services.validator;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.server.basics.ApiErrorsDto;
 import pl.edziennik.eDziennik.server.basics.ExceptionType;
 import pl.edziennik.eDziennik.server.basics.ValidatorPriority;
-import pl.edziennik.eDziennik.server.teacher.dao.TeacherDao;
-import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
+import pl.edziennik.eDziennik.server.user.dao.UserDao;
+import pl.edziennik.eDziennik.server.user.domain.User;
+import pl.edziennik.eDziennik.server.user.domain.dto.UserRequestDto;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.List;
@@ -14,12 +15,10 @@ import java.util.Optional;
 
 @Component
 @AllArgsConstructor
-public class TeacherEmailNotUniqueValidator implements TeacherValidators{
+class UserWithUsernameAlreadyExistsValidator implements UserValidators {
 
-    private final TeacherDao dao;
+    private final UserDao dao;
     private final ResourceCreator resourceCreator;
-
-    public static final Integer VALIDATOR_ID = 3;
 
     @Override
     public String getValidatorName() {
@@ -28,7 +27,7 @@ public class TeacherEmailNotUniqueValidator implements TeacherValidators{
 
     @Override
     public Integer getValidationNumber() {
-        return VALIDATOR_ID;
+        return 1;
     }
 
     @Override
@@ -37,12 +36,13 @@ public class TeacherEmailNotUniqueValidator implements TeacherValidators{
     }
 
     @Override
-    public Optional<ApiErrorsDto> validate(TeacherRequestApiDto dto) {
-        if (dao.isTeacherExistByEmail(dto.getEmail())){
-            String message = resourceCreator.of(EXCEPTION_MESSAGE_TEACHER_WITH_EMAIL_ALREADY_EXIST, dto.getEmail());
+    public Optional<ApiErrorsDto> validate(UserRequestDto dto) {
+        if (dao.isUserExistByUsername(dto.getUsername())) {
+
+            String message = resourceCreator.of(EXCEPTION_MESSAGE_USER_ALREADY_EXISTS, dto.getUsername());
 
             ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
-                    .fields(List.of(TeacherRequestApiDto.EMAIL))
+                    .fields(List.of(UserRequestDto.USERNAME))
                     .cause(message)
                     .thrownImmediately(false)
                     .errorThrownedBy(getValidatorName())
@@ -50,7 +50,6 @@ public class TeacherEmailNotUniqueValidator implements TeacherValidators{
                     .build();
 
             return Optional.of(apiErrorsDto);
-
 
         }
         return Optional.empty();

@@ -26,10 +26,15 @@ public class Role implements Serializable {
         this.name = name;
     }
 
+    public Role(String name) {
+        this.name = name;
+    }
+
     public enum RoleConst{
         ROLE_ADMIN(1L),
         ROLE_MODERATOR(2L),
-        ROLE_TEACHER(3L);
+        ROLE_TEACHER(3L),
+        ROLE_STUDENT(4L);
 
         private Long id;
         RoleConst(Long id) {
