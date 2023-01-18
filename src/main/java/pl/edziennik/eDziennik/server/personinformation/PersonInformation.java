@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.transaction.annotation.Transactional;
+import pl.edziennik.eDziennik.server.basics.AbstractEntity;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,7 +15,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Setter
 @Getter
-public class PersonInformation implements Serializable {
+public class PersonInformation extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_information_id_seq")
@@ -24,5 +25,10 @@ public class PersonInformation implements Serializable {
     private String firstName;
     private String lastName;
     private String pesel;
+
+    @Override
+    public boolean isNew() {
+        return (id == null);
+    }
 
 }

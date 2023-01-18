@@ -12,10 +12,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.server.basics.ApiResponse;
-import pl.edziennik.eDziennik.server.config.security.AccountType;
 import pl.edziennik.eDziennik.server.config.security.jwt.dto.AuthResponseDto;
-import pl.edziennik.eDziennik.server.user.domain.User;
 import pl.edziennik.eDziennik.server.user.dao.UserDao;
+import pl.edziennik.eDziennik.server.user.domain.User;
 import pl.edziennik.eDziennik.server.user.services.UserService;
 import pl.edziennik.eDziennik.server.utils.JwtUtils;
 
@@ -50,7 +49,6 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         String token = jwtUtils.generateJwtToken(principal, user.getId());
         String refreshToken = jwtUtils.generateRefreshToken(principal, user.getId());
         AuthResponseDto authResponseDto = new AuthResponseDto();
-        authResponseDto.setAccountType(AccountType.STUDENT);
         authResponseDto.setUsername(user.getUsername());
         authResponseDto.setToken(token);
         authResponseDto.setRefreshToken(refreshToken);

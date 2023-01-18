@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
+import pl.edziennik.eDziennik.server.basics.AbstractEntity;
 import pl.edziennik.eDziennik.server.studensubject.domain.StudentSubject;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Grade implements Serializable {
+public class Grade extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "grade_id_seq")
@@ -35,6 +36,11 @@ public class Grade implements Serializable {
     private Teacher teacher;
 
     private LocalDateTime createdDate;
+
+    @Override
+    public boolean isNew() {
+        return (id == null);
+    }
 
 
     public Grade(GradeConst grade, int weight, String description) {

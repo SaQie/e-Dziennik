@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public interface IBaseDao<E extends Serializable>{
+public interface IBaseDao<E extends AbstractEntity>{
 
     List<E> findAll();
 

@@ -2,6 +2,7 @@ package pl.edziennik.eDziennik.server.role.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pl.edziennik.eDziennik.server.basics.AbstractEntity;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 
 import javax.persistence.*;
@@ -12,7 +13,7 @@ import java.util.Collection;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Role implements Serializable {
+public class Role extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_id_seq")
@@ -24,6 +25,11 @@ public class Role implements Serializable {
     public Role(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    @Override
+    public boolean isNew() {
+        return (id == null);
     }
 
     public Role(String name) {

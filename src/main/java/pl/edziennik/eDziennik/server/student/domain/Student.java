@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.edziennik.eDziennik.server.address.Address;
+import pl.edziennik.eDziennik.server.basics.AbstractEntity;
 import pl.edziennik.eDziennik.server.personinformation.PersonInformation;
 import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
@@ -18,7 +19,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @EqualsAndHashCode
-public class Student implements Serializable {
+public class Student extends AbstractEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_id_seq")
@@ -45,6 +46,10 @@ public class Student implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private PersonInformation personInformation;
 
+    @Override
+    public boolean isNew() {
+        return (id==null);
+    }
 
 
     public Student(String parentFirstName, String parentLastName, String parentPhoneNumber,PersonInformation personInformation, Address address) {
@@ -62,4 +67,5 @@ public class Student implements Serializable {
     public void setSchool(School school) {
         this.school = school;
     }
+
 }

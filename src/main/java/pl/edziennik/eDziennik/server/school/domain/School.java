@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.edziennik.eDziennik.server.address.Address;
+import pl.edziennik.eDziennik.server.basics.AbstractEntity;
 import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.server.schoollevel.domain.SchoolLevel;
 import pl.edziennik.eDziennik.server.student.domain.Student;
@@ -18,7 +19,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @Getter
 @Setter
-public class School implements Serializable {
+public class School extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "school_id_seq")
@@ -44,6 +45,11 @@ public class School implements Serializable {
 
     @OneToMany(mappedBy = "school", orphanRemoval = true)
     private Collection<Teacher> teachers = new ArrayList<>();
+
+    @Override
+    public boolean isNew() {
+        return (id == null);
+    }
 
     public School(String name, String nip, String regon, String phoneNumber, Address address) {
         this.name = name;

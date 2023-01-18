@@ -2,6 +2,7 @@ package pl.edziennik.eDziennik.server.schoolclass.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pl.edziennik.eDziennik.server.basics.AbstractEntity;
 import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.student.domain.Student;
 import pl.edziennik.eDziennik.server.subject.domain.Subject;
@@ -16,7 +17,7 @@ import java.util.Collection;
 @Entity
 @NoArgsConstructor
 @Getter
-public class SchoolClass implements Serializable {
+public class SchoolClass extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "school_class_id_seq")
@@ -38,6 +39,11 @@ public class SchoolClass implements Serializable {
     private School school;
 
     private LocalDate createdDate;
+
+    @Override
+    public boolean isNew() {
+        return (id == null);
+    }
 
     public SchoolClass(String className) {
         this.className = className;

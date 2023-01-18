@@ -66,7 +66,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests((auth) -> {
                     try {
                         auth
-                                .antMatchers("/api/teachers/*").hasRole("MODERATOR")
+                                .antMatchers("/api/teachers/*").hasRole("ADMIN")
                                 .antMatchers("/api/schools").permitAll()
                                 .antMatchers("/api/students").permitAll()
                                 .antMatchers("/api/schoolclasses").permitAll()

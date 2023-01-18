@@ -3,6 +3,7 @@ package pl.edziennik.eDziennik.server.subject.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.edziennik.eDziennik.server.basics.AbstractEntity;
 import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 
@@ -13,7 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Subject implements Serializable {
+public class Subject extends AbstractEntity {
 
 
     @Id
@@ -29,6 +30,11 @@ public class Subject implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private SchoolClass schoolClass;
+
+    @Override
+    public boolean isNew() {
+        return (id == null);
+    }
 
 
     public Subject(String name, String description) {

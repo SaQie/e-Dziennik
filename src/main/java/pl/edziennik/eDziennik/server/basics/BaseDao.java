@@ -24,7 +24,7 @@ import java.util.function.Consumer;
 @Repository
 @SuppressWarnings("unchecked")
 @Transactional(readOnly = true)
-public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
+public abstract class BaseDao<E extends AbstractEntity> implements IBaseDao<E> {
 
     private final Class<E> clazz;
 
@@ -55,7 +55,7 @@ public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
     public List<E> saveAll(List<E> entities) {
         List<E> savedEntities = new ArrayList<>();
         for (E entity : entities) {
-            if (em.contains(entity)) {
+            if (!entity.isNew()) {
                 savedEntities.add(em.merge(entity));
             } else {
                 em.persist(entity);
@@ -68,7 +68,7 @@ public abstract class BaseDao<E extends Serializable> implements IBaseDao<E> {
     @Override
     @Transactional
     public E saveOrUpdate(final E entity) {
-        if (em.contains(entity)) {
+        if (!entity.isNew()) {
             return em.merge(entity);
         }
         em.persist(entity);
