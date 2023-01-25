@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.eDziennik.server.basics.ApiResponse;
+import pl.edziennik.eDziennik.server.basics.ApiResponseCreator;
 import pl.edziennik.eDziennik.server.grade.domain.dto.GradeRequestApiDto;
 import pl.edziennik.eDziennik.server.grade.services.managment.GradeManagmentService;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentGradesInSubjectDto;
@@ -31,7 +32,7 @@ public class GradeManagmentController {
                 .path("/api/students/{idStudent}/subjects/{idSubject}/grades")
                 .buildAndExpand(idStudent,idSubject)
                 .toUri();
-        return ResponseEntity.ok(ApiResponse.buildApiResponse(HttpMethod.POST, HttpStatus.OK, responseApiDto, uri));
+        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.OK, responseApiDto, uri));
     }
 
     @DeleteMapping("/students/{idStudent}/subjects/{idSubject}/grades/{idGrade}")
@@ -41,7 +42,7 @@ public class GradeManagmentController {
                 .path("/api/students/{idStudent}/subjects/{idSubject}/grades")
                 .buildAndExpand(idStudent,idSubject)
                 .toUri();
-        return ResponseEntity.ok(ApiResponse.buildApiResponse(HttpMethod.DELETE, HttpStatus.OK, "Grade deleted successfully !", uri));
+        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.DELETE, HttpStatus.OK, "Grade deleted successfully !", uri));
     }
 
     @PutMapping("/students/{idStudent}/subjects/{idSubject}/grades/{idGrade}")
@@ -52,6 +53,6 @@ public class GradeManagmentController {
                 .path("/api/students/{idStudent}/subjects/{idSubject}/grades")
                 .buildAndExpand(idStudent,idSubject)
                 .toUri();
-        return ResponseEntity.ok(ApiResponse.buildApiResponse(HttpMethod.PUT,HttpStatus.OK, responseApiDto, uri));
+        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.PUT,HttpStatus.OK, responseApiDto, uri));
     }
 }

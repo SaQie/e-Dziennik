@@ -11,6 +11,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.server.basics.ApiResponse;
+import pl.edziennik.eDziennik.server.basics.ApiResponseCreator;
 import pl.edziennik.eDziennik.server.config.security.jwt.dto.AuthResponseDto;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
@@ -34,7 +35,7 @@ public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         AuthResponseDto authResponseDto = new AuthResponseDto();
         authResponseDto.setMessage(resourceCreator.of("bad.credentials.message"));
-        ApiResponse<AuthResponseDto> apiResponseDto = ApiResponse.buildApiResponse(HttpMethod.POST, HttpStatus.UNAUTHORIZED, authResponseDto, new URI(request.getRequestURI()));
+        ApiResponse<AuthResponseDto> apiResponseDto = ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.UNAUTHORIZED, authResponseDto, new URI(request.getRequestURI()));
         String jsonObject = new ObjectMapper().writeValueAsString(apiResponseDto);
         response.getWriter().write(jsonObject);
     }

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.eDziennik.server.basics.ApiResponse;
+import pl.edziennik.eDziennik.server.basics.ApiResponseCreator;
 import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectResponseApiDto;
 import pl.edziennik.eDziennik.server.subject.services.SubjectService;
@@ -30,14 +31,14 @@ public class SubjectController {
                 .path("/{id}")
                 .buildAndExpand(responseApiDto.getId())
                 .toUri();
-        return ResponseEntity.created(uri).body(ApiResponse.buildApiResponse(HttpMethod.POST, HttpStatus.CREATED, responseApiDto, uri));
+        return ResponseEntity.created(uri).body(ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.CREATED, responseApiDto, uri));
     }
 
     @GetMapping()
     public ResponseEntity<ApiResponse> findAllSubjects(){
         List<SubjectResponseApiDto> responseApiDtos = service.findAllSubjects();
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.ok(ApiResponse.buildApiResponse(HttpMethod.GET,HttpStatus.OK, responseApiDtos, uri));
+        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.GET,HttpStatus.OK, responseApiDtos, uri));
     }
 
     @GetMapping("/{id}")
@@ -45,14 +46,14 @@ public class SubjectController {
         SubjectResponseApiDto responseApiDto = service.findSubjectById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ResponseEntity.ok(
-                ApiResponse.buildApiResponse(HttpMethod.GET,HttpStatus.OK, responseApiDto, uri));
+                ApiResponseCreator.buildApiResponse(HttpMethod.GET,HttpStatus.OK, responseApiDto, uri));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteSubjectById(@PathVariable Long id){
         service.deleteSubjectById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.ok(ApiResponse.buildApiResponse(HttpMethod.DELETE,HttpStatus.OK,"Subject deleted successfully",uri));
+        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.DELETE,HttpStatus.OK,"Subject deleted successfully",uri));
     }
 
     @PutMapping("/{id}")
@@ -64,9 +65,9 @@ public class SubjectController {
                 .buildAndExpand(responseApiDto.getId())
                 .toUri();
         if (responseApiDto.getId().equals(id)){
-            return ResponseEntity.ok(ApiResponse.buildApiResponse(HttpMethod.PUT,HttpStatus.OK, responseApiDto, uri));
+            return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.PUT,HttpStatus.OK, responseApiDto, uri));
         }
-        return ResponseEntity.created(uri).body(ApiResponse.buildApiResponse(HttpMethod.PUT,HttpStatus.OK, responseApiDto, uri));
+        return ResponseEntity.created(uri).body(ApiResponseCreator.buildApiResponse(HttpMethod.PUT,HttpStatus.OK, responseApiDto, uri));
     }
 
 }

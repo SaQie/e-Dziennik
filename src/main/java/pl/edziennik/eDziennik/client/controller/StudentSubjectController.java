@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.eDziennik.server.basics.ApiResponse;
+import pl.edziennik.eDziennik.server.basics.ApiResponseCreator;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.request.StudentSubjectRequestDto;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.AllStudentsGradesInSubjectsDto;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentGradesInSubjectDto;
@@ -30,28 +31,28 @@ public class StudentSubjectController {
         requestApiDto.setIdStudent(idStudent);
         StudentSubjectResponseDto responseApiDto = service.assignStudentToSubject(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.ok(ApiResponse.buildApiResponse(HttpMethod.POST, HttpStatus.OK, responseApiDto, uri));
+        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.OK, responseApiDto, uri));
     }
 
     @GetMapping("/{idStudent}/subjects")
     public ResponseEntity<?> getStudentSubjects(@PathVariable Long idStudent){
         StudentSubjectsResponseDto responseApiDto = service.getStudentSubjects(idStudent);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.ok(ApiResponse.buildApiResponse(HttpMethod.POST, HttpStatus.OK, responseApiDto, uri));
+        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.OK, responseApiDto, uri));
     }
 
     @GetMapping("/{idStudent}/subjects/{idSubject}/grades")
     public ResponseEntity<ApiResponse> getStudentSubjectRatings(@PathVariable Long idStudent, @PathVariable Long idSubject){
         StudentGradesInSubjectDto responseApiDto = service.getStudentSubjectGrades(idStudent, idSubject);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.ok(ApiResponse.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri));
+        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri));
     }
 
     @GetMapping("/{idStudent}/subjects/grades")
     public ResponseEntity<ApiResponse> getStudentAllSubjectsRatings(@PathVariable Long idStudent){
         AllStudentsGradesInSubjectsDto responseApiDto = service.getStudentAllSubjectsGrades(idStudent);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.ok(ApiResponse.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri));
+        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri));
     }
 
 }

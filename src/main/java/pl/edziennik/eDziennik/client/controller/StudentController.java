@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.eDziennik.server.basics.ApiResponse;
+import pl.edziennik.eDziennik.server.basics.ApiResponseCreator;
 import pl.edziennik.eDziennik.server.student.domain.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.server.student.domain.dto.StudentResponseApiDto;
 import pl.edziennik.eDziennik.server.student.services.StudentService;
@@ -30,28 +31,28 @@ public class StudentController {
                 .path("/{id}")
                 .buildAndExpand(responseApiDto.getId())
                 .toUri();
-        return ResponseEntity.created(uri).body(ApiResponse.buildApiResponse(HttpMethod.POST,HttpStatus.CREATED, responseApiDto, uri));
+        return ResponseEntity.created(uri).body(ApiResponseCreator.buildApiResponse(HttpMethod.POST,HttpStatus.CREATED, responseApiDto, uri));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteStudent(@PathVariable Long id){
         service.deleteStudentById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.ok(ApiResponse.buildApiResponse(HttpMethod.DELETE,HttpStatus.OK,"Student deleted successfully",uri));
+        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.DELETE,HttpStatus.OK,"Student deleted successfully",uri));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> findStudentById(@PathVariable Long id){
         StudentResponseApiDto responseApiDto = service.findStudentById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.ok(ApiResponse.buildApiResponse(HttpMethod.GET,HttpStatus.OK, responseApiDto, uri));
+        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.GET,HttpStatus.OK, responseApiDto, uri));
     }
 
     @GetMapping
     public ResponseEntity<ApiResponse> findAllStudents(){
         List<StudentResponseApiDto> responseApiDtos = service.findAllStudents();
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.ok(ApiResponse.buildApiResponse(HttpMethod.GET,HttpStatus.OK, responseApiDtos, uri));
+        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.GET,HttpStatus.OK, responseApiDtos, uri));
     }
 
     @PutMapping("/{id}")
@@ -63,9 +64,9 @@ public class StudentController {
                 .buildAndExpand(responseApiDto.getId())
                 .toUri();
         if (responseApiDto.getId().equals(id)){
-            return ResponseEntity.ok(ApiResponse.buildApiResponse(HttpMethod.PUT,HttpStatus.OK, responseApiDto, uri));
+            return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.PUT,HttpStatus.OK, responseApiDto, uri));
         }
-        return ResponseEntity.created(uri).body(ApiResponse.buildApiResponse(HttpMethod.PUT, HttpStatus.OK, responseApiDto, uri));
+        return ResponseEntity.created(uri).body(ApiResponseCreator.buildApiResponse(HttpMethod.PUT, HttpStatus.OK, responseApiDto, uri));
     }
 
 

@@ -1,4 +1,8 @@
 spring:
+  sql:
+    init:
+      mode: embedded
+
   jpa:
     properties:
       hibernate:
@@ -17,7 +21,8 @@ spring:
       /mappings/PersonInformationDao.hbm.xml,
       /mappings/SchoolDao.hbm.xml,
       /mappings/AdminDao.hbm.xml,
-      /mappings/UserDao.hbm.xml
+      /mappings/UserDao.hbm.xml,
+      /mappings/SettingsDao.hbm.xml
   datasource:
     url: jdbc:postgresql://localhost:5432/diary_db
     username: postgres

@@ -8,19 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import pl.edziennik.eDziennik.exceptions.BusinessException;
 import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
-import pl.edziennik.eDziennik.server.basics.ApiErrorsDto;
-import pl.edziennik.eDziennik.server.basics.ApiResponse;
-import pl.edziennik.eDziennik.server.basics.BaseDao;
-import pl.edziennik.eDziennik.server.basics.ExceptionType;
+import pl.edziennik.eDziennik.server.basics.*;
 
 import javax.persistence.NoResultException;
 import javax.servlet.http.HttpServletRequest;
@@ -30,12 +24,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
-@ControllerAdvice
-@RestController
+@RestControllerAdvice
 @Slf4j
 @SuppressWarnings("rawtypes")
 public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
-
 
 
     @ExceptionHandler(value = {EntityNotFoundException.class, NoResultException.class})
@@ -47,7 +39,7 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
         exception.printStackTrace(printWriter);
         List<ApiErrorsDto> errors = List.of(new ApiErrorsDto(null, exception.getMessage(), false, BaseDao.class.getName(), ExceptionType.VALIDATION));
         log.error("ERROR ON PATH " + request.getDescription(false) + " ERROR MESSAGE: " + exception.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponse.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.NOT_FOUND,uri, errors, stringWriter.toString()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponseCreator.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.NOT_FOUND, uri, errors, stringWriter.toString()));
     }
 
     @ExceptionHandler(value = BusinessException.class)
@@ -57,7 +49,7 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
         HttpServletRequest httpRequest = ((ServletWebRequest) request).getRequest();
         exception.printStackTrace(printWriter);
         URI uri = new URI(httpRequest.getRequestURL().toString());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.BAD_REQUEST,uri, exception.getErrors(), stringWriter.toString()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponseCreator.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.BAD_REQUEST, uri, exception.getErrors(), stringWriter.toString()));
     }
 
     @Override
@@ -71,13 +63,12 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
                 .stream()
                 .map(x -> new ApiErrorsDto(List.of(x.getField()), x.getDefaultMessage(), false, MethodArgumentNotValidException.class.getSimpleName(), ExceptionType.VALIDATION))
                 .toList();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.BAD_REQUEST,httpRequest.getRequestURL().toString(), errors, stringWriter.toString()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponseCreator.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.BAD_REQUEST, httpRequest.getRequestURL().toString(), errors, stringWriter.toString()));
     }
 
 
-
     @InitBinder
-    protected void loggerWithParam(WebDataBinder binder, WebRequest webRequest){
+    protected void loggerWithParam(WebDataBinder binder, WebRequest webRequest) {
         HttpServletRequest request = ((ServletWebRequest) webRequest).getRequest();
         String method = request.getMethod().toLowerCase();
         String URI = request.getRequestURI();

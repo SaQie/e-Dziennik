@@ -36,7 +36,7 @@ public class BaseTest {
 
 
     @PersistenceContext
-    private EntityManager em;
+    protected EntityManager em;
 
     /**
      * This method returns object or null in managed state in test persistance context

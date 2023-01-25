@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.server.basics.ApiResponse;
+import pl.edziennik.eDziennik.server.basics.ApiResponseCreator;
 import pl.edziennik.eDziennik.server.config.security.jwt.dto.AuthResponseDto;
 import pl.edziennik.eDziennik.server.user.dao.UserDao;
 import pl.edziennik.eDziennik.server.user.domain.User;
@@ -52,7 +53,7 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         authResponseDto.setUsername(user.getUsername());
         authResponseDto.setToken(token);
         authResponseDto.setRefreshToken(refreshToken);
-        ApiResponse<AuthResponseDto> apiResponseDto = ApiResponse.buildApiResponse(HttpMethod.POST, HttpStatus.OK, authResponseDto, new URI(request.getRequestURI()));
+        ApiResponse<AuthResponseDto> apiResponseDto = ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.OK, authResponseDto, new URI(request.getRequestURI()));
         service.updateUserLastLoginDate(principal.getUsername());
         setRequiredHeadersAndPrintTokenToUser(response, apiResponseDto);
 
