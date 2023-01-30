@@ -9,6 +9,6 @@ public class SettingsDto {
 
     private Long id;
     private String name;
-    private boolean value;
+    private boolean enabled;
 
 }

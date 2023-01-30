@@ -5,10 +5,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.schoolclass.dao.SchoolClassDao;
+import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassAssignSubjectRequestApiDto;
 import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassRequestApiDto;
 import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassResponseApiDto;
 import pl.edziennik.eDziennik.server.schoolclass.domain.dto.mapper.SchoolClassMapper;
 import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
+import pl.edziennik.eDziennik.server.subject.domain.Subject;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 
 import java.util.List;
@@ -17,7 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-class SchoolClassServiceImpl implements SchoolClassService{
+class SchoolClassServiceImpl implements SchoolClassService {
 
     private final SchoolClassValidatorService validatorService;
     private final SchoolClassDao dao;
@@ -30,8 +32,6 @@ class SchoolClassServiceImpl implements SchoolClassService{
         SchoolClass savedSchoolClass = dao.saveOrUpdate(schoolClass);
         return SchoolClassMapper.toDto(savedSchoolClass);
     }
-
-
 
     @Override
     public SchoolClassResponseApiDto findSchoolClassById(Long id) {
@@ -59,9 +59,9 @@ class SchoolClassServiceImpl implements SchoolClassService{
         // TODO -> Walidacja
         Optional<SchoolClass> schoolClassOptional = dao.find(id);
 
-        if (schoolClassOptional.isPresent()){
+        if (schoolClassOptional.isPresent()) {
             SchoolClass schoolClass = schoolClassOptional.get();
-            schoolClass.setSchool(dao.get(School.class,dto.getIdSchool()));
+            schoolClass.setSchool(dao.get(School.class, dto.getIdSchool()));
             schoolClass.setClassName(dto.getClassName());
             schoolClass.setTeacher(dao.get(Teacher.class, dto.getIdClassTeacher()));
             return SchoolClassMapper.toDto(schoolClass);

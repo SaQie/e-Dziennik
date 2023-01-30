@@ -14,6 +14,8 @@ public interface SettingsService {
 
     List<SettingsDto> getAllSettings();
 
+    void updateSetting(String name, SettingsValue value);
+
     void updateSettings(Long id, SettingsValue value);
 
     void refreshCache();

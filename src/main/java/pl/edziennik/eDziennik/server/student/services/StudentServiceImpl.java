@@ -7,14 +7,17 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import pl.edziennik.eDziennik.server.address.AddressMapper;
 import pl.edziennik.eDziennik.server.personinformation.PersonInformation;
 import pl.edziennik.eDziennik.server.personinformation.PersonInformationMapper;
-import pl.edziennik.eDziennik.server.role.domain.Role;
 import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
+import pl.edziennik.eDziennik.server.settings.services.SettingsService;
+import pl.edziennik.eDziennik.server.studensubject.dao.StudentSubjectDao;
+import pl.edziennik.eDziennik.server.studensubject.domain.StudentSubject;
 import pl.edziennik.eDziennik.server.student.dao.StudentDao;
 import pl.edziennik.eDziennik.server.student.domain.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.server.student.domain.dto.StudentResponseApiDto;
 import pl.edziennik.eDziennik.server.student.domain.dto.mapper.StudentMapper;
 import pl.edziennik.eDziennik.server.student.domain.Student;
+import pl.edziennik.eDziennik.server.subject.domain.Subject;
 import pl.edziennik.eDziennik.server.user.domain.User;
 import pl.edziennik.eDziennik.server.user.domain.UserMapper;
 import pl.edziennik.eDziennik.server.user.services.UserService;
@@ -30,6 +33,8 @@ class StudentServiceImpl implements StudentService {
     private final StudentDao dao;
     private final StudentValidatorService validatorService;
     private final UserService userService;
+    private final SettingsService settingsService;
+    private final StudentSubjectDao studentSubjectDao;
 
 
     @Override
@@ -39,19 +44,9 @@ class StudentServiceImpl implements StudentService {
         Student student = mapToEntity(dto);
         User user = userService.createUser(UserMapper.toDto(dto));
         student.setUser(user);
-        /*
-
-        Dodac cos w stylu takiego kodu:
-
-        student.getSchoolClass.getSubjects
-        for(Subject subject : subjects)
-        studentSubjectService.assign..(new Dto(subject))
-        Doda grupowo wszystkie przedmioty dla ucznia
-
-         */
+        assignAllSchoolClassSubjectsToStudentIfNeeded(student, dto.getIdSchoolClass());
         return StudentMapper.toDto(dao.saveOrUpdate(student));
     }
-
 
     @Override
     public StudentResponseApiDto findStudentById(Long id) {
@@ -109,4 +104,20 @@ class StudentServiceImpl implements StudentService {
         student.setSchoolClass(schoolClass);
         return student;
     }
+
+    private void assignAllSchoolClassSubjectsToStudentIfNeeded(Student student, Long idSchoolClass) {
+        if (settingsService.getSettingsDataByName(SettingsService.AUTOMATICALLY_INSERT_STUDENT_SUBJECTS_WHEN_ADD).isEnabled()) {
+            SchoolClass schoolClass = dao.get(SchoolClass.class, idSchoolClass);
+            if (!schoolClass.getSubjects().isEmpty()) {
+                List<Subject> subjects = schoolClass.getSubjects();
+                for (Subject subject : subjects) {
+                    StudentSubject studentSubject = new StudentSubject();
+                    studentSubject.setStudent(student);
+                    studentSubject.setSubject(subject);
+                    studentSubjectDao.saveOrUpdate(studentSubject);
+                }
+            }
+        }
+    }
+
 }

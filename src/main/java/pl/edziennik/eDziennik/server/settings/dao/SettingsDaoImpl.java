@@ -22,10 +22,13 @@ public class SettingsDaoImpl extends BaseDao<Settings> implements SettingsDao {
     @Override
     public Optional<Settings> findByName(String name) {
         Query query = em.createNamedQuery(Queries.FIND_SETTINGS_DATA_BY_NAME);
+        query.setParameter(Parameters.NAME, name);
         return PersistanceHelper.getSingleResultAsOptional(query);
     }
 
     private static final class Parameters {
+
+        public static final String NAME = "name";
 
     }
 

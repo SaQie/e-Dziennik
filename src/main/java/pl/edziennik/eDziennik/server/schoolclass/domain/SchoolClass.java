@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -27,10 +28,10 @@ public class SchoolClass extends AbstractEntity {
     private String className;
 
     @OneToMany(mappedBy = "schoolClass")
-    private Collection<Student> students = new ArrayList<>();
+    private List<Student> students = new ArrayList<>();
 
     @OneToMany(mappedBy = "schoolClass")
-    private Collection<Subject> subjects = new ArrayList<>();
+    private List<Subject> subjects = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY)
     private Teacher teacher;

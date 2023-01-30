@@ -4,6 +4,8 @@ import lombok.Getter;
 import pl.edziennik.eDziennik.server.school.domain.dto.SchoolResponseApiDto;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherResponseApiDto;
 
+import java.util.List;
+
 @Getter
 public class SchoolClassResponseApiDto {
 

@@ -9,6 +9,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponents;
 import pl.edziennik.eDziennik.server.basics.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.ApiResponseCreator;
+import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassAssignSubjectRequestApiDto;
 import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassRequestApiDto;
 import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassResponseApiDto;
 import pl.edziennik.eDziennik.server.schoolclass.services.SchoolClassService;

@@ -56,7 +56,7 @@ public class SettingsIntegrationTest extends BaseTest {
 
         // then
         SettingsDto settingsDto = service.getSettingsDataByName(SettingsService.AUTOMATICALLY_INSERT_STUDENT_SUBJECTS_WHEN_ADD);
-        assertTrue(settingsDto.isValue());
+        assertTrue(settingsDto.isEnabled());
     }
 
 
@@ -71,7 +71,7 @@ public class SettingsIntegrationTest extends BaseTest {
 
         // then
         assertEquals(settingsDto.getId(), 1L);
-        assertEquals(settingsDto.isValue(), false);
+        assertEquals(settingsDto.isEnabled(), false);
     }
 
 }

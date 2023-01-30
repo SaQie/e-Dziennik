@@ -30,7 +30,7 @@ public class Student extends AbstractEntity implements Serializable {
     private String parentLastName;
     private String parentPhoneNumber;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REMOVE})
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 

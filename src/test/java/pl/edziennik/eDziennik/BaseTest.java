@@ -9,6 +9,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import pl.edziennik.eDziennik.server.settings.services.SettingsService;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
@@ -38,6 +39,9 @@ public class BaseTest {
     @PersistenceContext
     protected EntityManager em;
 
+    @Autowired
+    private SettingsService service;
+
     /**
      * This method returns object or null in managed state in test persistance context
      *
@@ -54,6 +58,7 @@ public class BaseTest {
     protected void fillDbWithData(){
         ResourceDatabasePopulator populator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource("/db/data.sql"));
         populator.execute(dataSource);
+        service.refreshCache();
     }
 
     protected void clearDb(){

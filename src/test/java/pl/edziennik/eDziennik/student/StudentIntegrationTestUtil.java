@@ -45,6 +45,25 @@ public class StudentIntegrationTestUtil {
         );
     }
 
+    public StudentRequestApiDto prepareStudentRequestDto(String name, String email, Long idSchoolClass) {
+        return new StudentRequestApiDto(
+                "Test",
+                name,
+                "Kamil",
+                "Nowak",
+                "Lubawka",
+                "58-100",
+                "Lubawka2",
+                "123123123",
+                email,
+                "Tomasz",
+                "Nowak",
+                "100200300",
+                100L,
+                idSchoolClass
+        );
+    }
+
     protected StudentRequestApiDto prepareStudentRequestDto(String username, String firstName, String lastName, String pesel, String email) {
         return new StudentRequestApiDto(
                 "Testt",
