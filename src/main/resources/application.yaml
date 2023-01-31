@@ -30,6 +30,7 @@ spring:
   liquibase:
     change-log: classpath:liquibase-changeLog.xml
 
+
 jwt:
   secret: testtt
   expiration: 3600000

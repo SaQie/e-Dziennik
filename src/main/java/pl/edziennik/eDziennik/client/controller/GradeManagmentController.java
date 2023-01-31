@@ -23,36 +23,38 @@ public class GradeManagmentController {
 
     private final GradeManagmentService service;
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/students/{idStudent}/subjects/{idSubject}/grades")
-    public ResponseEntity<ApiResponse> assignGradeToStudentSubject(@PathVariable Long idStudent, @PathVariable Long idSubject, @RequestBody GradeRequestApiDto requestApiDto, Principal teacher){
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApiResponse assignGradeToStudentSubject(@PathVariable Long idStudent, @PathVariable Long idSubject, @RequestBody GradeRequestApiDto requestApiDto, Principal teacher) {
         requestApiDto.setTeacherName(teacher.getName());
         StudentGradesInSubjectDto responseApiDto = service.assignGradeToStudentSubject(idStudent, idSubject, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/students/{idStudent}/subjects/{idSubject}/grades")
-                .buildAndExpand(idStudent,idSubject)
+                .buildAndExpand(idStudent, idSubject)
                 .toUri();
-        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.OK, responseApiDto, uri));
+        return ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.CREATED, responseApiDto, uri);
     }
 
     @DeleteMapping("/students/{idStudent}/subjects/{idSubject}/grades/{idGrade}")
-    public ResponseEntity<ApiResponse> deleteGradeFromStudentSubject(@PathVariable Long idStudent, @PathVariable Long idSubject, @PathVariable Long idGrade){
-        service.deleteGradeFromStudentSubject(idStudent,idSubject,idGrade);
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse deleteGradeFromStudentSubject(@PathVariable Long idStudent, @PathVariable Long idSubject, @PathVariable Long idGrade) {
+        service.deleteGradeFromStudentSubject(idStudent, idSubject, idGrade);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/students/{idStudent}/subjects/{idSubject}/grades")
-                .buildAndExpand(idStudent,idSubject)
+                .buildAndExpand(idStudent, idSubject)
                 .toUri();
-        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.DELETE, HttpStatus.OK, "Grade deleted successfully !", uri));
+        return ApiResponseCreator.buildApiResponse(HttpMethod.DELETE, HttpStatus.OK, "Grade deleted successfully !", uri);
     }
 
     @PutMapping("/students/{idStudent}/subjects/{idSubject}/grades/{idGrade}")
-    public ResponseEntity<ApiResponse> updateStudentSubjectGrade(@PathVariable Long idStudent, @PathVariable Long idSubject, @PathVariable Long idGrade, @RequestBody GradeRequestApiDto requestApiDto, Principal teacher){
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse updateStudentSubjectGrade(@PathVariable Long idStudent, @PathVariable Long idSubject, @PathVariable Long idGrade, @RequestBody GradeRequestApiDto requestApiDto, Principal teacher) {
         requestApiDto.setTeacherName(teacher.getName());
         StudentGradesInSubjectDto responseApiDto = service.updateStudentSubjectGrade(idStudent, idSubject, idGrade, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/students/{idStudent}/subjects/{idSubject}/grades")
-                .buildAndExpand(idStudent,idSubject)
+                .buildAndExpand(idStudent, idSubject)
                 .toUri();
-        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.PUT,HttpStatus.OK, responseApiDto, uri));
+        return ApiResponseCreator.buildApiResponse(HttpMethod.PUT, HttpStatus.OK, responseApiDto, uri);
     }
 }

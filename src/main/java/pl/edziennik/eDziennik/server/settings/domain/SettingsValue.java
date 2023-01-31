@@ -1,12 +1,17 @@
 package pl.edziennik.eDziennik.server.settings.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
+import javax.validation.constraints.NotNull;
+
+@Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class SettingsValue {
 
-    private boolean value;
+    @NotNull
+    private Boolean enabled;
 
 }

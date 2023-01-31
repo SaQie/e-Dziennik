@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.eDziennik.server.basics.ApiResponse;
@@ -25,10 +26,11 @@ public class SchoolLevelController {
     private final SchoolLevelService service;
 
     @GetMapping()
-    public ResponseEntity<ApiResponse> getSchoolLevelList(){
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse getSchoolLevelList() {
         List<SchoolLevelResponseApiDto> responseApiDtos = service.getSchoolLevelList();
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri));
+        return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
     }
 
 }

@@ -43,7 +43,7 @@ class SettingsServiceImpl implements SettingsService {
     public void updateSetting(String name, SettingsValue value) {
         Settings settings = settingsDao.findByName(name)
                 .orElseThrow(() -> new BusinessException("Setting with name " + name + " not exists"));
-        settings.setValue(value.isValue());
+        settings.setValue(value.getEnabled());
         settingsDao.saveOrUpdate(settings);
         refreshCache();
     }
@@ -52,7 +52,7 @@ class SettingsServiceImpl implements SettingsService {
     @Override
     public void updateSettings(Long id, SettingsValue value) {
         Settings settings = settingsDao.get(id);
-        settings.setValue(value.isValue());
+        settings.setValue(value.getEnabled());
         settingsDao.saveOrUpdate(settings);
         refreshCache();
     }

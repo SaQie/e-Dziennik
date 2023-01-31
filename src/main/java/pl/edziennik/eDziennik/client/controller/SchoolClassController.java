@@ -28,49 +28,50 @@ public class SchoolClassController {
 
 
     @PostMapping()
-    public ResponseEntity<ApiResponse> createSchoolClass(@RequestBody @Valid SchoolClassRequestApiDto requestApiDto) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApiResponse createSchoolClass(@RequestBody @Valid SchoolClassRequestApiDto requestApiDto) {
         SchoolClassResponseApiDto responseApiDto = service.createSchoolClass(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(responseApiDto.getId())
                 .toUri();
-        return ResponseEntity.created(uri).body(ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.CREATED, responseApiDto, uri));
+        return ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.CREATED, responseApiDto, uri);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse> findSchoolClassById(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse findSchoolClassById(@PathVariable Long id) {
         SchoolClassResponseApiDto responseApiDto = service.findSchoolClassById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.ok(
-                ApiResponseCreator.buildApiResponse(HttpMethod.GET,HttpStatus.OK, responseApiDto, uri));
+        return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
     }
 
     @GetMapping()
-    public ResponseEntity<ApiResponse> findAllSchoolClasses(){
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse findAllSchoolClasses() {
         List<SchoolClassResponseApiDto> responseApiDtos = service.findAllSchoolClasses();
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.GET,HttpStatus.OK, responseApiDtos, uri));
+        return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse> deleteSchoolClassById(@PathVariable Long id){
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse deleteSchoolClassById(@PathVariable Long id) {
         service.deleteSchoolClassById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.DELETE,HttpStatus.OK,"School class deleted successfully",uri));
+        return ApiResponseCreator.buildApiResponse(HttpMethod.DELETE, HttpStatus.OK, "School class deleted successfully", uri);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse> updateSchoolClass(@PathVariable Long id, @RequestBody SchoolClassRequestApiDto dto){
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse updateSchoolClass(@PathVariable Long id, @RequestBody SchoolClassRequestApiDto dto) {
         SchoolClassResponseApiDto responseApiDto = service.updateSchoolClass(id, dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/schoolclasses")
                 .path("{id}")
                 .buildAndExpand(responseApiDto.getId())
                 .toUri();
-        if (responseApiDto.getId().equals(id)){
-            return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.PUT,HttpStatus.OK, responseApiDto, uri));
-        }
-        return ResponseEntity.created(uri).body(ApiResponseCreator.buildApiResponse(HttpMethod.PUT,HttpStatus.OK, responseApiDto, uri));
+        return ApiResponseCreator.buildApiResponse(HttpMethod.PUT, HttpStatus.OK, responseApiDto, uri);
     }
 
 

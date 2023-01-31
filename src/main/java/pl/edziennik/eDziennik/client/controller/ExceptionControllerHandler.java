@@ -32,38 +32,29 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {EntityNotFoundException.class, NoResultException.class})
     protected ResponseEntity<ApiResponse> handleException(RuntimeException exception, WebRequest request) throws URISyntaxException {
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(stringWriter);
         HttpServletRequest httpRequest = ((ServletWebRequest) request).getRequest();
         URI uri = new URI(httpRequest.getRequestURL().toString());
-        exception.printStackTrace(printWriter);
         List<ApiErrorsDto> errors = List.of(new ApiErrorsDto(null, exception.getMessage(), false, BaseDao.class.getName(), ExceptionType.VALIDATION));
         log.error("ERROR ON PATH " + request.getDescription(false) + " ERROR MESSAGE: " + exception.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponseCreator.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.NOT_FOUND, uri, errors, stringWriter.toString()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponseCreator.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.NOT_FOUND, uri, errors));
     }
 
     @ExceptionHandler(value = BusinessException.class)
     protected ResponseEntity<ApiResponse> handleBusinessException(BusinessException exception, WebRequest request) throws URISyntaxException {
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(stringWriter);
         HttpServletRequest httpRequest = ((ServletWebRequest) request).getRequest();
-        exception.printStackTrace(printWriter);
         URI uri = new URI(httpRequest.getRequestURL().toString());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponseCreator.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.BAD_REQUEST, uri, exception.getErrors(), stringWriter.toString()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponseCreator.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.BAD_REQUEST, uri, exception.getErrors()));
     }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(stringWriter);
         HttpServletRequest httpRequest = ((ServletWebRequest) request).getRequest();
         BindingResult bindingResult = exception.getBindingResult();
-        exception.printStackTrace(printWriter);
         List<ApiErrorsDto> errors = bindingResult.getFieldErrors()
                 .stream()
                 .map(x -> new ApiErrorsDto(List.of(x.getField()), x.getDefaultMessage(), false, MethodArgumentNotValidException.class.getSimpleName(), ExceptionType.VALIDATION))
                 .toList();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponseCreator.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.BAD_REQUEST, httpRequest.getRequestURL().toString(), errors, stringWriter.toString()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponseCreator.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.BAD_REQUEST, httpRequest.getRequestURL().toString(), errors));
     }
 
 

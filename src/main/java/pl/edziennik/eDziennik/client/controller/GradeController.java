@@ -24,48 +24,50 @@ public class GradeController {
     private final GradeService service;
 
     @PostMapping()
-    public ResponseEntity<ApiResponse> createNewGrade(@RequestBody GradeRequestApiDto requestApiDto){
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApiResponse createNewGrade(@RequestBody GradeRequestApiDto requestApiDto) {
         GradeResponseApiDto responseApiDto = service.addNewGrade(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(responseApiDto.getId())
                 .toUri();
-        return ResponseEntity.created(uri).body(ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.CREATED, responseApiDto, uri));
+        return ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.CREATED, responseApiDto, uri);
     }
 
     @GetMapping()
-    public ResponseEntity<ApiResponse> findAllGrades(){
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse findAllGrades() {
         List<GradeResponseApiDto> responseApiDtos = service.findAllGrades();
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.GET,HttpStatus.OK, responseApiDtos, uri));
+        return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse> findGradeById(@PathVariable Long id){
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse findGradeById(@PathVariable Long id) {
         GradeResponseApiDto responseApiDto = service.findGradeById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.GET,HttpStatus.OK, responseApiDto, uri));
-        
+        return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
+
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse> deleteGradeById(@PathVariable Long id){
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse deleteGradeById(@PathVariable Long id) {
         service.deleteGradeById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.DELETE,HttpStatus.OK,"Grade deleted successfully",uri));
+        return ApiResponseCreator.buildApiResponse(HttpMethod.DELETE, HttpStatus.OK, "Grade deleted successfully", uri);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse> updateGrade(@PathVariable Long id, @RequestBody GradeRequestApiDto requestApiDto){
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse updateGrade(@PathVariable Long id, @RequestBody GradeRequestApiDto requestApiDto) {
         GradeResponseApiDto responseApiDto = service.updateGrade(id, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/grades")
                 .path("/{id}")
                 .buildAndExpand(responseApiDto.getId())
                 .toUri();
-        if (responseApiDto.getId().equals(id)){
-            return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.PUT,HttpStatus.OK, responseApiDto, uri));
-        }
-        return ResponseEntity.created(uri).body(ApiResponseCreator.buildApiResponse(HttpMethod.PUT,HttpStatus.OK, responseApiDto, uri));
+        return ApiResponseCreator.buildApiResponse(HttpMethod.PUT, HttpStatus.OK, responseApiDto, uri);
     }
 }

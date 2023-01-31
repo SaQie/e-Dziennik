@@ -25,7 +25,6 @@ public class ApiResponse<T> {
     private String executionTime;
     private String operationDescription;
     private List<ApiErrorsDto> errors;
-    private String stackTrace;
     private T result;
 
 

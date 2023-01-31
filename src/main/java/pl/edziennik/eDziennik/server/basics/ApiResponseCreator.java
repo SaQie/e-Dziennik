@@ -35,7 +35,7 @@ public class ApiResponseCreator {
                 .build();
     }
 
-    public static<T> ApiResponse<T> buildApiResponse(HttpMethod method, HttpStatus status, URI url, List<ApiErrorsDto> errors, String stackTrace){
+    public static<T> ApiResponse<T> buildApiResponse(HttpMethod method, HttpStatus status, URI url, List<ApiErrorsDto> errors){
         return ApiResponse.
                 <T>builder()
                 .method(method.name())
@@ -43,13 +43,12 @@ public class ApiResponseCreator {
                 .code(status.value())
                 .url(url)
                 .errors(errors)
-                .stackTrace(stackTrace)
                 .executionTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .build();
     }
 
     @SneakyThrows
-    public static<T> ApiResponse<T> buildApiResponse(HttpMethod method, HttpStatus status, String url, List<ApiErrorsDto> errors, String stackTrace){
+    public static<T> ApiResponse<T> buildApiResponse(HttpMethod method, HttpStatus status, String url, List<ApiErrorsDto> errors){
         return ApiResponse.
                 <T>builder()
                 .method(method.name())
@@ -57,7 +56,6 @@ public class ApiResponseCreator {
                 .code(status.value())
                 .url(new URI(url))
                 .errors(errors)
-                .stackTrace(stackTrace)
                 .executionTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .build();
     }

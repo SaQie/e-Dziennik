@@ -12,6 +12,7 @@ import pl.edziennik.eDziennik.server.settings.domain.SettingsDto;
 import pl.edziennik.eDziennik.server.settings.services.SettingsService;
 import pl.edziennik.eDziennik.server.settings.domain.SettingsValue;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -24,17 +25,19 @@ public class SettingsController {
     private final SettingsService service;
 
     @GetMapping
-    public ResponseEntity<ApiResponse> findAllSettings(){
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse findAllSettings() {
         List<SettingsDto> settings = service.getAllSettings();
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, settings, uri));
+        return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, settings, uri);
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<ApiResponse> updateSettings(@RequestBody SettingsValue value, @PathVariable Long id){
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse updateSettings(@PathVariable Long id, @RequestBody SettingsValue value) {
         service.updateSettings(id, value);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.PATCH, HttpStatus.OK,"Settings updated sucessfully", uri));
+        return ApiResponseCreator.buildApiResponse(HttpMethod.PATCH, HttpStatus.OK, "Settings updated sucessfully", uri);
     }
 
 }

@@ -23,13 +23,14 @@ public class AdminController {
     private final AdminService service;
 
     @PostMapping()
-    public ResponseEntity<ApiResponse> createAdminAccount(@RequestBody @Valid AdminRequestApiDto requestApiDto){
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApiResponse createAdminAccount(@RequestBody @Valid AdminRequestApiDto requestApiDto) {
         AdminResponseApiDto responseApiDto = service.createNewAdminAccount(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(responseApiDto.getId())
                 .toUri();
-        return ResponseEntity.created(uri).body(ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.CREATED, responseApiDto, uri));
+        return ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.CREATED, responseApiDto, uri);
     }
 
 

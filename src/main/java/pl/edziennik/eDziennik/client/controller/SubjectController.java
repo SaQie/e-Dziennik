@@ -25,49 +25,50 @@ public class SubjectController {
     private final SubjectService service;
 
     @PostMapping()
-    public ResponseEntity<ApiResponse> createSubject(@RequestBody @Valid SubjectRequestApiDto requestApiDto){
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApiResponse createSubject(@RequestBody @Valid SubjectRequestApiDto requestApiDto) {
         SubjectResponseApiDto responseApiDto = service.createNewSubject(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(responseApiDto.getId())
                 .toUri();
-        return ResponseEntity.created(uri).body(ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.CREATED, responseApiDto, uri));
+        return ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.CREATED, responseApiDto, uri);
     }
 
     @GetMapping()
-    public ResponseEntity<ApiResponse> findAllSubjects(){
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse findAllSubjects() {
         List<SubjectResponseApiDto> responseApiDtos = service.findAllSubjects();
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.GET,HttpStatus.OK, responseApiDtos, uri));
+        return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse> findSubjectById(@PathVariable Long id){
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse findSubjectById(@PathVariable Long id) {
         SubjectResponseApiDto responseApiDto = service.findSubjectById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.ok(
-                ApiResponseCreator.buildApiResponse(HttpMethod.GET,HttpStatus.OK, responseApiDto, uri));
+        return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse> deleteSubjectById(@PathVariable Long id){
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse deleteSubjectById(@PathVariable Long id) {
         service.deleteSubjectById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.DELETE,HttpStatus.OK,"Subject deleted successfully",uri));
+        return ApiResponseCreator.buildApiResponse(HttpMethod.DELETE, HttpStatus.OK, "Subject deleted successfully", uri);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse> updateSubject(@PathVariable Long id, SubjectRequestApiDto requestApiDto){
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ApiResponse> updateSubject(@PathVariable Long id, SubjectRequestApiDto requestApiDto) {
         SubjectResponseApiDto responseApiDto = service.updateSubject(id, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/subjects")
                 .path("/{id}")
                 .buildAndExpand(responseApiDto.getId())
                 .toUri();
-        if (responseApiDto.getId().equals(id)){
-            return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.PUT,HttpStatus.OK, responseApiDto, uri));
-        }
-        return ResponseEntity.created(uri).body(ApiResponseCreator.buildApiResponse(HttpMethod.PUT,HttpStatus.OK, responseApiDto, uri));
+        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.PUT, HttpStatus.OK, responseApiDto, uri));
     }
 
 }
