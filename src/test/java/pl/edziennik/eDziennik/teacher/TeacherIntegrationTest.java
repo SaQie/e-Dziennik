@@ -37,14 +37,14 @@ public class TeacherIntegrationTest extends BaseTest {
 
 
     @BeforeEach
-    public void prepareDb(){
+    public void prepareDb() {
         clearDb();
         fillDbWithData();
     }
 
 
     @Test
-    public void shouldSaveNewTeacher(){
+    public void shouldSaveNewTeacher() {
         // given
         TeacherRequestApiDto expected = util.prepareTeacherRequestDto();
 
@@ -65,7 +65,7 @@ public class TeacherIntegrationTest extends BaseTest {
     }
 
     @Test
-    public void shouldUpdateTeacher(){
+    public void shouldUpdateTeacher() {
         // given
         TeacherRequestApiDto dto = util.prepareTeacherRequestDto();
         Long id = service.register(dto).getId();
@@ -76,7 +76,7 @@ public class TeacherIntegrationTest extends BaseTest {
 
         // then
         assertNotNull(updated);
-        assertEquals(updated,id);
+        assertEquals(updated, id);
         Teacher actual = find(Teacher.class, updated);
 
         assertEquals(expected.getFirstName(), actual.getPersonInformation().getFirstName());
@@ -89,7 +89,7 @@ public class TeacherIntegrationTest extends BaseTest {
     }
 
     @Test
-    public void shouldDeleteTeacher(){
+    public void shouldDeleteTeacher() {
         // given
         TeacherRequestApiDto dto = util.prepareTeacherRequestDto();
         Long id = service.register(dto).getId();
@@ -104,7 +104,7 @@ public class TeacherIntegrationTest extends BaseTest {
     }
 
     @Test
-    public void shouldFindListOfTeachers(){
+    public void shouldFindListOfTeachers() {
         // given
         TeacherRequestApiDto firstTeacher = util.prepareTeacherRequestDto();
         TeacherRequestApiDto secondTeacher = util.prepareTeacherRequestDto("TEST1", "TESTOWY2", "12356", "test2@example.com");
@@ -117,13 +117,13 @@ public class TeacherIntegrationTest extends BaseTest {
         int actual = service.findAllTeachers().size();
 
         // then
-        assertEquals(2,actual);
+        assertEquals(2, actual);
 
     }
 
 
     @Test
-    public void shouldFindTeacherWithGivenId(){
+    public void shouldFindTeacherWithGivenId() {
         // given
         TeacherRequestApiDto expected = util.prepareTeacherRequestDto();
         Long id = service.register(expected).getId();
@@ -139,24 +139,25 @@ public class TeacherIntegrationTest extends BaseTest {
         assertEquals(expected.getAddress(), actual.getAddress());
         assertEquals(expected.getPesel(), actual.getPesel());
         assertEquals(expected.getCity(), actual.getCity());
-        assertEquals(ROLE_TEACHER, actual.getIdRole());
+        assertEquals(ROLE_TEACHER_TEXT, actual.getRole());
     }
 
     @Test
-    public void shouldAssignDefaultRoleIfRoleIsEmpty(){
+    public void shouldAssignDefaultRoleIfRoleIsEmpty() {
         // given
         TeacherRequestApiDto dto = util.prepareTeacherRequestDto();
         assertNull(dto.getRole());
 
         // when
-        Long idActualRole = service.register(dto).getIdRole();
+        String actualRole = service.register(dto).getRole();
 
         // then
-        assertEquals(ROLE_TEACHER, idActualRole);
+        assertEquals(ROLE_TEACHER_TEXT, actualRole);
 
     }
+
     @Test
-    public void shouldThrowsExceptionWhenSchoolNotExist(){
+    public void shouldThrowsExceptionWhenSchoolNotExist() {
         // given
         Long idSchool = 99L;
         TeacherRequestApiDto dto = util.prepareTeacherRequestDto(idSchool);
@@ -165,13 +166,12 @@ public class TeacherIntegrationTest extends BaseTest {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> service.register(dto));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchool,School.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchool, School.class.getSimpleName()));
     }
 
     @Test
-    public void shouldThrowsBusinessExceptionWhenTryingToRegisterAndPeselAlreadyExist(){
+    public void shouldThrowsBusinessExceptionWhenTryingToRegisterAndPeselAlreadyExist() {
         // given
-        String expectedValidatorName = "TeacherPeselNotUniqueValidator";
         TeacherRequestApiDto dto = util.prepareTeacherRequestDto("asdasd", "00000000000", "test2@example.com");
         service.register(dto);
         TeacherRequestApiDto dto2 = util.prepareTeacherRequestDto("asdasd2", "00000000000", "test3@example.com");
@@ -181,8 +181,8 @@ public class TeacherIntegrationTest extends BaseTest {
 
         // then
         assertEquals(1, exception.getErrors().size());
-        assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
-        assertEquals(List.of(TeacherRequestApiDto.PESEL), exception.getErrors().get(0).getFields());
+        assertEquals(TeacherValidators.TEACHER_PESEL_NOT_UNIQUE_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(TeacherRequestApiDto.PESEL, exception.getErrors().get(0).getField());
         String expectedExceptionMessage = resourceCreator.of(TeacherValidators.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, Teacher.class.getSimpleName(), dto.getPesel());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }

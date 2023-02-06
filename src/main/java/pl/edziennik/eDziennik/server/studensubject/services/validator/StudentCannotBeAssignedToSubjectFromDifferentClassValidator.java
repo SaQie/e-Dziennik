@@ -52,7 +52,7 @@ class StudentCannotBeAssignedToSubjectFromDifferentClassValidator implements Stu
             String message = resourceCreator.of(EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS, studentName, subjectName);
 
             ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
-                    .fields(List.of(StudentSubjectRequestDto.ID_SUBJECT))
+                    .field(StudentSubjectRequestDto.ID_SUBJECT)
                     .cause(message)
                     .thrownImmediately(false)
                     .errorThrownedBy(getValidatorName())

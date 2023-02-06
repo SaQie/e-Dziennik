@@ -3,6 +3,7 @@ package pl.edziennik.eDziennik.server.basics;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import pl.edziennik.eDziennik.exceptions.BusinessException;
 
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -31,6 +32,19 @@ public class ApiResponseCreator {
                 .code(status.value())
                 .url(url)
                 .operationDescription(description)
+                .executionTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .build();
+    }
+
+    public static<T> ApiResponse<T> buildApiResponse(HttpMethod method, HttpStatus status, URI url, BusinessException errors){
+        return ApiResponse.
+                <T>builder()
+                .method(method.name())
+                .status(status.name())
+                .code(status.value())
+                .url(url)
+                .errors(errors.getErrors())
+                .errorMessage(errors.getMessage())
                 .executionTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .build();
     }

@@ -49,7 +49,7 @@ class TeacherIsAlreadySupervisingTeacherValidator implements SchoolClassValidato
                 String message = resourceCreator.of(EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER, teacherName,actualTeacherSchoolClassName);
 
                 ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
-                        .fields(List.of(SchoolClassRequestApiDto.ID_CLASS_TEACHER))
+                        .field(SchoolClassRequestApiDto.ID_CLASS_TEACHER)
                         .cause(message)
                         .thrownImmediately(false)
                         .errorThrownedBy(getValidatorName())

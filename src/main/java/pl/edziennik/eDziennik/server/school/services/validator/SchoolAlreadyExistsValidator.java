@@ -43,7 +43,7 @@ class SchoolAlreadyExistsValidator implements SchoolValidators{
             String message = resourceCreator.of(EXCEPTION_MESSAGE_SCHOOL_ALREADY_EXIST, dto.getName());
 
             ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
-                    .fields(List.of(SchoolRequestApiDto.NAME))
+                    .field(SchoolRequestApiDto.NAME)
                     .cause(message)
                     .thrownImmediately(false)
                     .errorThrownedBy(getValidatorName())

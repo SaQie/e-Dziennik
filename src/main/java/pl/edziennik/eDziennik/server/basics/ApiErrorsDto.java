@@ -14,17 +14,18 @@ import java.util.List;
 @AllArgsConstructor
 public class ApiErrorsDto {
 
-    private final List<String> fields;
+    private final String field;
     private final String cause;
     private final ExceptionType exceptionType;
+
     @JsonIgnore
     private final String errorThrownedBy;
 
     @JsonIgnore
     private final boolean thrownImmediately;
 
-    public ApiErrorsDto(List<String> fields, String cause, boolean thrownImmediately, String errorThrownedBy, ExceptionType type) {
-        this.fields = fields;
+    public ApiErrorsDto(String field, String cause, boolean thrownImmediately, String errorThrownedBy, ExceptionType type) {
+        this.field = field;
         this.cause = cause;
         this.thrownImmediately = thrownImmediately;
         this.errorThrownedBy = errorThrownedBy;

@@ -14,10 +14,11 @@ import pl.edziennik.eDziennik.server.user.domain.UserMapper;
 import pl.edziennik.eDziennik.server.user.services.UserService;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
-class AdminServiceImpl implements AdminService{
+class AdminServiceImpl implements AdminService {
 
     private final AdminValidatorService validator;
     private final AdminDao dao;
@@ -44,5 +45,10 @@ class AdminServiceImpl implements AdminService{
     public void updateAdminLastLoginDate(String username) {
         Admin admin = dao.getByUsername(username);
         admin.getUser().setLastLoginDate(LocalDateTime.now());
+    }
+
+    @Override
+    public List<AdminResponseApiDto> getAdminList() {
+        return dao.findAll().stream().map(AdminMapper::mapToDto).toList();
     }
 }

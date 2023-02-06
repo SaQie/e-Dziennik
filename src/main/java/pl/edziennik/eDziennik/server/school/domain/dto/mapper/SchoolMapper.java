@@ -7,6 +7,8 @@ import pl.edziennik.eDziennik.server.school.domain.dto.SchoolRequestApiDto;
 import pl.edziennik.eDziennik.server.school.domain.dto.SchoolResponseApiDto;
 import pl.edziennik.eDziennik.server.schoollevel.domain.dto.mapper.SchoolLevelMapper;
 
+import java.util.List;
+
 public class SchoolMapper {
 
     private SchoolMapper() {
@@ -24,6 +26,10 @@ public class SchoolMapper {
                 entity.getPhoneNumber(),
                 entity.getSchoolLevel().getId()
         );
+    }
+
+    public static List<SchoolResponseApiDto> toDto(List<School> entities){
+        return entities.stream().map(SchoolMapper::toDto).toList();
     }
 
     public static School toEntity(SchoolRequestApiDto dto) {

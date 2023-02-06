@@ -13,6 +13,8 @@ public interface IBaseDao<E extends AbstractEntity>{
 
     List<E> findAll();
 
+    Page<List<E>> findAll(int page, int size);
+
     E saveOrUpdate(final E entity);
 
     List<E> saveAll(final List<E> entities);

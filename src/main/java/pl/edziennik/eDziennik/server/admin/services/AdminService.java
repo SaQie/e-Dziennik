@@ -3,6 +3,8 @@ package pl.edziennik.eDziennik.server.admin.services;
 import pl.edziennik.eDziennik.server.admin.domain.dto.AdminRequestApiDto;
 import pl.edziennik.eDziennik.server.admin.domain.dto.AdminResponseApiDto;
 
+import java.util.List;
+
 public interface AdminService {
 
     AdminResponseApiDto createNewAdminAccount(final AdminRequestApiDto dto);
@@ -11,4 +13,5 @@ public interface AdminService {
 
     void updateAdminLastLoginDate(final String username);
 
+    List<AdminResponseApiDto> getAdminList();
 }

@@ -70,4 +70,8 @@ public class BaseTest {
     protected final Long ROLE_MODERATOR = 2L;
     protected final Long ROLE_TEACHER = 3L;
 
+    protected final String ROLE_ADMIN_TEXT = "ROLE_ADMIN";
+    protected final String ROLE_MODERATOR_TEXT = "ROLE_MODERATOR";
+    protected final String ROLE_TEACHER_TEXT = "ROLE_TEACHER";
+
 }

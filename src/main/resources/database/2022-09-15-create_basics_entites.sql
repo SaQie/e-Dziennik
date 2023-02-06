@@ -117,8 +117,6 @@ VALUES (1,
        (2,
         'ROLE_TEACHER'),
        (3,
-        'ROLE_MODERATOR'),
-       (4,
         'ROLE_STUDENT');
 
 ALTER TABLE teacher

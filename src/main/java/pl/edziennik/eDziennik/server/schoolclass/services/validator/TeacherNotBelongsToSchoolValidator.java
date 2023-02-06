@@ -49,7 +49,7 @@ class TeacherNotBelongsToSchoolValidator implements SchoolClassValidators {
                 String message = resourceCreator.of(EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL, teacherName, schoolName);
 
                 ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
-                        .fields(List.of(SchoolClassRequestApiDto.ID_CLASS_TEACHER ,SchoolClassRequestApiDto.ID_SCHOOL))
+                        .field(SchoolClassRequestApiDto.ID_CLASS_TEACHER)
                         .cause(message)
                         .thrownImmediately(false)
                         .errorThrownedBy(getValidatorName())

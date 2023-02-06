@@ -46,7 +46,7 @@ class StudentSchoolClassNotBelongsToSchoolValidator implements StudentValidators
             String message = resourceCreator.of(EXCEPTION_MESSAGE_SCHOOL_CLASS_NOT_BELONG_TO_SCHOOL, schoolClass.getClassName(), school.getName());
 
             ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
-                    .fields(List.of(StudentRequestApiDto.ID_SCHOOL_CLASS))
+                    .field(StudentRequestApiDto.ID_SCHOOL_CLASS)
                     .cause(message)
                     .thrownImmediately(false)
                     .errorThrownedBy(getValidatorName())

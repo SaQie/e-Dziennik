@@ -19,35 +19,35 @@ class Validator<T> {
         this.validators = validators;
     }
 
-    protected boolean isValidatorsDefined(){
+    protected boolean isValidatorsDefined() {
         return validators != null && !validators.isEmpty();
     }
 
     protected void validate(T t) {
-        List<ApiErrorsDto> erros = new ArrayList<>();
+        List<ApiErrorsDto> errors = new ArrayList<>();
         validators.forEach(valid -> valid.validate(t).ifPresent(error -> {
             if (error.isThrownImmediately()) {
                 throw new BusinessException(error);
             }
-            erros.add(error);
+            errors.add(error);
         }));
-        if (!erros.isEmpty()) {
-            throw new BusinessException(erros);
+        if (!errors.isEmpty()) {
+            throw new BusinessException(errors);
         }
 
     }
 
     protected void validateByPriority(T t) {
-        List<ApiErrorsDto> erros = new ArrayList<>();
+        List<ApiErrorsDto> errors = new ArrayList<>();
         validators.stream().sorted(Comparator.comparing(validator -> validator.getValidationPriority().ordinal())).
                 forEach(valid -> valid.validate(t).ifPresent(error -> {
                     if (error.isThrownImmediately()) {
                         throw new BusinessException(error);
                     }
-                    erros.add(error);
+                    errors.add(error);
                 }));
-        if (!erros.isEmpty()) {
-            throw new BusinessException(erros);
+        if (!errors.isEmpty()) {
+            throw new BusinessException(errors);
         }
 
     }

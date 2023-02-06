@@ -42,7 +42,7 @@ class UserWithEmailAlreadyExistsValidator implements UserValidators{
             String message = resourceCreator.of(EXCEPTION_MESSAGE_USER_ALREADY_EXISTS_BY_EMAIL, dto.getEmail());
 
             ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
-                    .fields(List.of(UserRequestDto.EMAIL))
+                    .field(UserRequestDto.EMAIL)
                     .cause(message)
                     .thrownImmediately(false)
                     .errorThrownedBy(getValidatorName())

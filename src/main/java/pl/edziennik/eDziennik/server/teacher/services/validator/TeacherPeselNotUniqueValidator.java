@@ -44,7 +44,7 @@ class TeacherPeselNotUniqueValidator implements TeacherValidators{
             String message = resourceCreator.of(EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, Teacher.class.getSimpleName(), dto.getPesel());
 
             ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
-                    .fields(List.of(TeacherRequestApiDto.PESEL))
+                    .field(TeacherRequestApiDto.PESEL)
                     .cause(message)
                     .thrownImmediately(false)
                     .errorThrownedBy(getValidatorName())

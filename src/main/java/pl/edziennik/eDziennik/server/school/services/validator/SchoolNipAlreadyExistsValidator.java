@@ -9,12 +9,11 @@ import pl.edziennik.eDziennik.server.school.dao.SchoolDao;
 import pl.edziennik.eDziennik.server.school.domain.dto.SchoolRequestApiDto;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
-import java.util.List;
 import java.util.Optional;
 
 @Component
 @AllArgsConstructor
-public class SchoolNipAlreadyExistValidator implements SchoolValidators{
+public class SchoolNipAlreadyExistsValidator implements SchoolValidators{
 
     private final ResourceCreator resourceCreator;
     private final SchoolDao dao;
@@ -43,7 +42,7 @@ public class SchoolNipAlreadyExistValidator implements SchoolValidators{
             String message = resourceCreator.of(EXCEPTION_MESSAGE_SCHOOL_WITH_NIP_ALREADY_EXIST, dto.getNip());
 
             ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
-                    .fields(List.of(SchoolRequestApiDto.NIP))
+                    .field(SchoolRequestApiDto.NIP)
                     .cause(message)
                     .thrownImmediately(false)
                     .errorThrownedBy(getValidatorName())

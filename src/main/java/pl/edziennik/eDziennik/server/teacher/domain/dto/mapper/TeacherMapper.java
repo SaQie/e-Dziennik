@@ -24,7 +24,6 @@ public class TeacherMapper {
                     entity.getAddress().getCity(),
                     entity.getPersonInformation().getPesel(),
                     entity.getPhoneNumber(),
-                    entity.getUser().getRole().getId(),
                     entity.getSchool().getId()
             );
         }

@@ -71,7 +71,7 @@ public class SchoolIntegrationTest extends BaseTest {
     }
 
     @Test
-    public void shouldUpdateSchool(){
+    public void shouldUpdateSchool() {
         // given
         SchoolRequestApiDto dto = util.prepareSchoolRequestApi();
         Long id = service.createNewSchool(dto).getId();
@@ -82,7 +82,7 @@ public class SchoolIntegrationTest extends BaseTest {
 
         // then
         assertNotNull(updated);
-        assertEquals(updated,id);
+        assertEquals(updated, id);
         School actual = find(School.class, updated);
         assertNotNull(actual);
         assertEquals(expected.getName(), actual.getName());
@@ -105,7 +105,7 @@ public class SchoolIntegrationTest extends BaseTest {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> service.createNewSchool(dto));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchoolLevel,SchoolLevel.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchoolLevel, SchoolLevel.class.getSimpleName()));
     }
 
     @Test
@@ -135,14 +135,13 @@ public class SchoolIntegrationTest extends BaseTest {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> service.deleteSchoolById(idSchool));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchool,School.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchool, School.class.getSimpleName()));
 
     }
 
     @Test
-    public void shouldThrowsExceptionWhenSchoolAlreadyExist(){
+    public void shouldThrowsExceptionWhenSchoolAlreadyExist() {
         // given
-        String expectedValidatorName = "SchoolAlreadyExistsValidator";
         SchoolRequestApiDto dto = util.prepareSchoolRequestApi();
         // first school
         service.createNewSchool(dto);
@@ -154,8 +153,8 @@ public class SchoolIntegrationTest extends BaseTest {
 
         // then
         assertEquals(1, exception.getErrors().size());
-        assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
-        assertEquals(List.of(SchoolRequestApiDto.NAME), exception.getErrors().get(0).getFields());
+        assertEquals(SchoolValidators.SCHOOL_ALREADY_EXISTS_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(SchoolRequestApiDto.NAME, exception.getErrors().get(0).getField());
         String expectedExceptionMessage = resourceCreator.of(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_ALREADY_EXIST, dto2.getName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
 
@@ -164,45 +163,41 @@ public class SchoolIntegrationTest extends BaseTest {
 
 
     @Test
-    public void shouldThrowsBusinessExceptionWhenSchoolWithRegonAlreadyExist(){
+    public void shouldThrowsBusinessExceptionWhenSchoolWithRegonAlreadyExist() {
         // given
-        String expectedValidatorName = "SchoolRegonAlreadyExistValidator";
-
         SchoolRequestApiDto dto = util.prepareSchoolRequestApi();
         // first school
         service.createNewSchool(dto);
 
         // second school with the same regon number
-        SchoolRequestApiDto dto2 = util.prepareSchoolRequestApi("test2","12313","5352");
+        SchoolRequestApiDto dto2 = util.prepareSchoolRequestApi("test2", "12313", "5352");
         // when
         BusinessException exception = assertThrows(BusinessException.class, () -> service.createNewSchool(dto2));
 
         // then
         assertEquals(1, exception.getErrors().size());
-        assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
-        assertEquals(List.of(SchoolRequestApiDto.REGON), exception.getErrors().get(0).getFields());
+        assertEquals(SchoolValidators.SCHOOL_REGON_ALREADY_EXISTS_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(SchoolRequestApiDto.REGON, exception.getErrors().get(0).getField());
         String expectedExceptionMessage = resourceCreator.of(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_WITH_REGON_ALREADY_EXIST, dto2.getRegon());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 
     @Test
-    public void shouldThrowsBusinessExceptionWhenSchoolWithNipAlreadyExist(){
+    public void shouldThrowsBusinessExceptionWhenSchoolWithNipAlreadyExist() {
         // given
-        String expectedValidatorName = "SchoolNipAlreadyExistValidator";
-
         SchoolRequestApiDto dto = util.prepareSchoolRequestApi();
         // first school
         service.createNewSchool(dto);
 
         // second school with the same nip number
-        SchoolRequestApiDto dto2 = util.prepareSchoolRequestApi("test2","89234","511352");
+        SchoolRequestApiDto dto2 = util.prepareSchoolRequestApi("test2", "89234", "511352");
         // when
         BusinessException exception = assertThrows(BusinessException.class, () -> service.createNewSchool(dto2));
 
         // then
         assertEquals(1, exception.getErrors().size());
-        assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
-        assertEquals(List.of(SchoolRequestApiDto.NIP), exception.getErrors().get(0).getFields());
+        assertEquals(SchoolValidators.SCHOOL_NIP_ALREADY_EXISTS_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(SchoolRequestApiDto.NIP, exception.getErrors().get(0).getField());
         String expectedExceptionMessage = resourceCreator.of(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_WITH_NIP_ALREADY_EXIST, dto2.getNip());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }

@@ -165,7 +165,7 @@ public class StudentIntegrationTest extends BaseTest {
         assertNotNull(actual);
         assertEquals(expected.getFirstName(), actual.getFirstName());
         assertEquals(expected.getLastName(), actual.getLastName());
-        assertEquals(expected.getAddress(), actual.getAdress());
+        assertEquals(expected.getAddress(), actual.getAddress());
         assertEquals(expected.getPesel(), actual.getPesel());
         assertEquals(expected.getCity(), actual.getCity());
         assertEquals(expected.getParentFirstName(), actual.getParentFirstName());
@@ -228,7 +228,6 @@ public class StudentIntegrationTest extends BaseTest {
     @Test
     public void shouldThrowsBusinessExceptionWhenTryingToRegisterNewStudentAndSchoolClassNotBelongsToSchool() {
         // given
-        String expectedValidatorName = "StudentSchoolClassNotBelongsToSchoolValidator";
         StudentRequestApiDto dto = util.prepareStudentRequestDto(100L, 101L);
 
         // when
@@ -236,8 +235,8 @@ public class StudentIntegrationTest extends BaseTest {
 
         // then
         assertEquals(1, exception.getErrors().size());
-        assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
-        assertEquals(List.of(StudentRequestApiDto.ID_SCHOOL_CLASS), exception.getErrors().get(0).getFields());
+        assertEquals(StudentValidators.STUDENT_SCHOOL_CLASS_NOT_BELONGS_TO_SCHOOL_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(StudentRequestApiDto.ID_SCHOOL_CLASS, exception.getErrors().get(0).getField());
         String expectedExceptionMessage = resourceCreator.of(StudentValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_NOT_BELONG_TO_SCHOOL, find(SchoolClass.class, dto.getIdSchoolClass()).getClassName(), find(School.class, dto.getIdSchool()).getName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
@@ -245,7 +244,6 @@ public class StudentIntegrationTest extends BaseTest {
     @Test
     public void shouldThrowsBusinessExceptionWhenTryingToRegisterNewStudentAndPeselAlreadyExist() {
         // given
-        String expectedValidatorName = "StudentPeselNotUniqueValidator";
         StudentRequestApiDto dto = util.prepareStudentRequestDto("00000000000");
         service.register(dto);
         StudentRequestApiDto dto2 = util.prepareStudentRequestDto("xxx", "xxx", "xxxx", "00000000000", "test2@example.com");
@@ -255,8 +253,8 @@ public class StudentIntegrationTest extends BaseTest {
 
         // then
         assertEquals(1, exception.getErrors().size());
-        assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
-        assertEquals(List.of(StudentRequestApiDto.PESEL), exception.getErrors().get(0).getFields());
+        assertEquals(StudentValidators.STUDENT_PESEL_NOT_UNIQUE_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(StudentRequestApiDto.PESEL, exception.getErrors().get(0).getField());
         String expectedExceptionMessage = resourceCreator.of(StudentValidators.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, dto.getPesel());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }

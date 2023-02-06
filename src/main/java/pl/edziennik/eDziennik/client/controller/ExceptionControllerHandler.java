@@ -18,6 +18,8 @@ import pl.edziennik.eDziennik.server.basics.*;
 
 import javax.persistence.NoResultException;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URI;
@@ -36,24 +38,25 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
         URI uri = new URI(httpRequest.getRequestURL().toString());
         List<ApiErrorsDto> errors = List.of(new ApiErrorsDto(null, exception.getMessage(), false, BaseDao.class.getName(), ExceptionType.VALIDATION));
         log.error("ERROR ON PATH " + request.getDescription(false) + " ERROR MESSAGE: " + exception.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponseCreator.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.NOT_FOUND, uri, errors));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                ApiResponseCreator.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.NOT_FOUND, uri, errors));
     }
 
     @ExceptionHandler(value = BusinessException.class)
     protected ResponseEntity<ApiResponse> handleBusinessException(BusinessException exception, WebRequest request) throws URISyntaxException {
         HttpServletRequest httpRequest = ((ServletWebRequest) request).getRequest();
         URI uri = new URI(httpRequest.getRequestURL().toString());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponseCreator.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.BAD_REQUEST, uri, exception.getErrors()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                ApiResponseCreator.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.BAD_REQUEST, uri, exception)
+        );
     }
+
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatus status, WebRequest request) {
         HttpServletRequest httpRequest = ((ServletWebRequest) request).getRequest();
         BindingResult bindingResult = exception.getBindingResult();
-        List<ApiErrorsDto> errors = bindingResult.getFieldErrors()
-                .stream()
-                .map(x -> new ApiErrorsDto(List.of(x.getField()), x.getDefaultMessage(), false, MethodArgumentNotValidException.class.getSimpleName(), ExceptionType.VALIDATION))
-                .toList();
+        List<ApiErrorsDto> errors = getErrors(bindingResult);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponseCreator.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.BAD_REQUEST, httpRequest.getRequestURL().toString(), errors));
     }
 
@@ -64,5 +67,13 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
         String method = request.getMethod().toLowerCase();
         String URI = request.getRequestURI();
         log.info("CALLED | " + URI + " | METHOD USED: | " + method + " | WITH OBJECT | " + binder.getObjectName() + " |");
+    }
+
+
+    private static List<ApiErrorsDto> getErrors(BindingResult bindingResult) {
+        return bindingResult.getFieldErrors()
+                .stream()
+                .map(error -> new ApiErrorsDto(error.getField(), error.getDefaultMessage(), false, MethodArgumentNotValidException.class.getSimpleName(), ExceptionType.VALIDATION))
+                .toList();
     }
 }

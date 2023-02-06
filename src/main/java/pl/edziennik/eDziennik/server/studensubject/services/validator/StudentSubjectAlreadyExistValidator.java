@@ -53,7 +53,7 @@ class StudentSubjectAlreadyExistValidator implements StudentSubjectValidators{
             String message = resourceCreator.of(EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST, studentName, subjectName);
 
             ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
-                    .fields(List.of(StudentSubjectRequestDto.ID_SUBJECT, StudentSubjectRequestDto.ID_STUDENT))
+                    .field(StudentSubjectRequestDto.ID_SUBJECT)
                     .cause(message)
                     .thrownImmediately(false)
                     .errorThrownedBy(getValidatorName())

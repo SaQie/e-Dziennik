@@ -1,12 +1,15 @@
 package pl.edziennik.eDziennik.server.basics;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+import pl.edziennik.eDziennik.exceptions.BusinessException;
 import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
 import pl.edziennik.eDziennik.server.utils.PersistanceHelper;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
@@ -16,6 +19,8 @@ import javax.persistence.Query;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -48,6 +53,33 @@ public abstract class BaseDao<E extends AbstractEntity> implements IBaseDao<E> {
     @Override
     public List<E> findAll() {
         return em.createQuery("from " + clazz.getName()).getResultList();
+    }
+
+    @Override
+    public Page<List<E>> findAll(int page, int size) {
+        if (page <= 0 || size <=0){
+            throw new BusinessException("Page or size cannot be negative or zero");
+        }
+        Query query = em.createQuery("select count(c.id) from " + clazz.getName() + " c");
+        long itemsCount = (long) query.getSingleResult();
+
+        BigDecimal pagesCount = new BigDecimal(itemsCount)
+                .divide(new BigDecimal(size), RoundingMode.CEILING);
+
+        Query findAllQuery = em.createQuery("from " + clazz.getName());
+        findAllQuery.setMaxResults(size);
+        findAllQuery.setFirstResult((page - 1) * size);
+
+        List<E> resultList = findAllQuery.getResultList();
+
+        Page<List<E>> pageObj = new Page<>();
+        pageObj.setActualPage(page);
+        pageObj.setItemsTotalCount(itemsCount);
+        pageObj.setItemsOnPage(resultList.size());
+        pageObj.setPagesCount(pagesCount.intValue());
+        pageObj.setEntity(resultList);
+
+        return pageObj;
     }
 
     @Override

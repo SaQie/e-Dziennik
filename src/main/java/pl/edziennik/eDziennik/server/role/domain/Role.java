@@ -38,9 +38,8 @@ public class Role extends AbstractEntity {
 
     public enum RoleConst{
         ROLE_ADMIN(1L),
-        ROLE_MODERATOR(2L),
-        ROLE_TEACHER(3L),
-        ROLE_STUDENT(4L);
+        ROLE_TEACHER(2L),
+        ROLE_STUDENT(3L);
 
         private Long id;
         RoleConst(Long id) {

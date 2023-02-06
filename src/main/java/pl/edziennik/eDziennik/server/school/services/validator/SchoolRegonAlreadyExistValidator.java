@@ -43,7 +43,7 @@ public class SchoolRegonAlreadyExistValidator implements SchoolValidators{
             String message = resourceCreator.of(EXCEPTION_MESSAGE_SCHOOL_WITH_REGON_ALREADY_EXIST, dto.getRegon());
 
             ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
-                    .fields(List.of(SchoolRequestApiDto.REGON))
+                    .field(SchoolRequestApiDto.REGON)
                     .cause(message)
                     .thrownImmediately(false)
                     .errorThrownedBy(getValidatorName())

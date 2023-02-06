@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ActiveProfiles("test")
 @SpringBootTest
 @Rollback
-public class UserIntegrationTest extends BaseTest{
+public class UserIntegrationTest extends BaseTest {
 
     @Autowired
     private UserService userService;
@@ -37,14 +37,14 @@ public class UserIntegrationTest extends BaseTest{
     }
 
     @BeforeEach
-    public void prepareDb(){
+    public void prepareDb() {
         clearDb();
         fillDbWithData();
     }
 
 
     @Test
-    public void shouldSaveUser(){
+    public void shouldSaveUser() {
         // given
         UserRequestDto dto = util.prepareRequestDto("Kamil", "test@example.com");
 
@@ -54,14 +54,13 @@ public class UserIntegrationTest extends BaseTest{
         // then
         User actual = find(User.class, user.getId());
         assertEquals(actual.getUsername(), dto.getUsername());
-        assertEquals(actual.getRole().getName(),dto.getRole());
-        assertEquals(actual.getEmail(),dto.getEmail());
+        assertEquals(actual.getRole().getName(), dto.getRole());
+        assertEquals(actual.getEmail(), dto.getEmail());
     }
 
     @Test
-    public void shouldThrowsExceptionWhenTryingToSaveExistingUser(){
+    public void shouldThrowsExceptionWhenTryingToSaveExistingUser() {
         // given
-        String expectedValidatorName = "UserWithUsernameAlreadyExistsValidator";
         UserRequestDto dto = util.prepareRequestDto("Kamil", "test@example.com");
 
         userService.createUser(dto);
@@ -71,16 +70,15 @@ public class UserIntegrationTest extends BaseTest{
 
         // then
         assertEquals(1, exception.getErrors().size());
-        assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
-        assertEquals(List.of(UserRequestDto.USERNAME), exception.getErrors().get(0).getFields());
+        assertEquals(UserValidators.USER_WITH_USERNAME_ALREADY_EXIST_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(UserRequestDto.USERNAME, exception.getErrors().get(0).getField());
         String expectedExceptionMessage = resourceCreator.of(UserValidators.EXCEPTION_MESSAGE_USER_ALREADY_EXISTS, dto.getUsername());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 
     @Test
-    public void shouldThrowsExceptionWhenTryingToSaveUserWithTheSameEmail(){
+    public void shouldThrowsExceptionWhenTryingToSaveUserWithTheSameEmail() {
         // given
-        String expectedValidatorName = "UserWithEmailAlreadyExistsValidator";
         UserRequestDto dto = util.prepareRequestDto("Kamil", "test@example.com");
 
         userService.createUser(dto);
@@ -91,8 +89,8 @@ public class UserIntegrationTest extends BaseTest{
 
         // then
         assertEquals(1, exception.getErrors().size());
-        assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
-        assertEquals(List.of(UserRequestDto.EMAIL), exception.getErrors().get(0).getFields());
+        assertEquals(UserValidators.USER_WITH_EMAIL_ALREADY_EXIST_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(UserRequestDto.EMAIL, exception.getErrors().get(0).getField());
         String expectedExceptionMessage = resourceCreator.of(UserValidators.EXCEPTION_MESSAGE_USER_ALREADY_EXISTS_BY_EMAIL, dto.getEmail());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }

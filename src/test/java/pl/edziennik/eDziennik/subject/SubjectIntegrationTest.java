@@ -173,7 +173,6 @@ public class SubjectIntegrationTest extends BaseTest {
     @Test
     public void shouldThrowsExceptionWhenTryingToSaveSubjectAndSubjectAlreadyExist() {
         // given
-        String expectedValidatorName = "SubjectAlreadyExistValidator";
         SubjectRequestApiDto dto = util.prepareSubjectRequestDto(null);
         // first subject
         service.createNewSubject(dto);
@@ -185,8 +184,8 @@ public class SubjectIntegrationTest extends BaseTest {
 
         // then
         assertEquals(1, exception.getErrors().size());
-        assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
-        assertEquals(List.of(SubjectRequestApiDto.NAME, SubjectRequestApiDto.ID_SCHOOL_CLASS), exception.getErrors().get(0).getFields());
+        assertEquals(SubjectValidators.SUBJECT_ALREADY_EXIST_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(SubjectRequestApiDto.NAME, exception.getErrors().get(0).getField());
         String expectedExceptionMessage = resourceCreator.of(SubjectValidators.EXCEPTION_MESSAGE_SUBJECT_ALREADY_EXIST, dto.getName(), find(SchoolClass.class, dto.getIdSchoolClass()).getClassName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
 

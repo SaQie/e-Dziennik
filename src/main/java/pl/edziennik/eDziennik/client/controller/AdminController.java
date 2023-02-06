@@ -14,10 +14,12 @@ import pl.edziennik.eDziennik.server.basics.ApiResponseCreator;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RequestMapping("/api/admins")
 @RestController
 @AllArgsConstructor
+@SuppressWarnings("rawtypes")
 public class AdminController {
 
     private final AdminService service;
@@ -33,5 +35,12 @@ public class AdminController {
         return ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.CREATED, responseApiDto, uri);
     }
 
+    @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse getAdminList() {
+        List<AdminResponseApiDto> responseApiDto = service.getAdminList();
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+        return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
+    }
 
 }

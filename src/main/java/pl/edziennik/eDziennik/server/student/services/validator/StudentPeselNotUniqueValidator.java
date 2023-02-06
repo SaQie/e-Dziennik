@@ -45,7 +45,7 @@ class StudentPeselNotUniqueValidator implements StudentValidators{
             String message = resourceCreator.of(EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, dto.getPesel());
 
             ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
-                    .fields(List.of(StudentRequestApiDto.PESEL))
+                    .field(StudentRequestApiDto.PESEL)
                     .cause(message)
                     .thrownImmediately(false)
                     .errorThrownedBy(getValidatorName())

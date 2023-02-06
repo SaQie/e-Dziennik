@@ -192,7 +192,6 @@ public class StudentSubjectIntegrationTest extends BaseTest {
     @Test
     public void shouldThrowsExceptionWhenTryingAssignStudentToSubjectAndStudentIsAlreadyAssignedToSubject(){
         // given
-        String expectedValidatorName = "StudentSubjectAlreadyExistValidator";
         StudentRequestApiDto studentDto = studentUtil.prepareStudentRequestDto();
         SubjectRequestApiDto subjectDto = subjectTestUtil.prepareSubjectRequestDto("Przyroda", null);
         Long studentId = studentService.register(studentDto).getId();
@@ -207,8 +206,8 @@ public class StudentSubjectIntegrationTest extends BaseTest {
 
         // then
         assertEquals(1, exception.getErrors().size());
-        assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
-        assertEquals(List.of(StudentSubjectRequestDto.ID_SUBJECT ,StudentSubjectRequestDto.ID_STUDENT), exception.getErrors().get(0).getFields());
+        assertEquals(StudentSubjectValidators.STUDENT_SUBJECT_ALREADY_EXIST_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(StudentSubjectRequestDto.ID_SUBJECT, exception.getErrors().get(0).getField());
         String expectedExceptionMessage = resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST, find(Student.class, requestDto.getIdStudent()).getPersonInformation().getFirstName() + " " + find(Student.class, requestDto.getIdStudent()).getPersonInformation().getLastName() ,find(Subject.class, requestDto.getIdSubject()).getName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
@@ -216,7 +215,6 @@ public class StudentSubjectIntegrationTest extends BaseTest {
     @Test
     public void shouldThrowsExceptionWhenTryingAssignStudentToSubjectWhenSubjectComesFromDifferentSchoolClass(){
         // given
-        String expectedValidatorName = "StudentCannotBeAssignedToSubjectFromDifferentClassValidator";
         StudentRequestApiDto studentRequestApiDto = studentUtil.prepareStudentRequestDto();
         // school class - 100L
         Long idStudent = studentService.register(studentRequestApiDto).getId();
@@ -232,8 +230,8 @@ public class StudentSubjectIntegrationTest extends BaseTest {
 
         // then
         assertEquals(1, exception.getErrors().size());
-        assertEquals(expectedValidatorName, exception.getErrors().get(0).getErrorThrownedBy());
-        assertEquals(List.of(StudentSubjectRequestDto.ID_SUBJECT), exception.getErrors().get(0).getFields());
+        assertEquals(StudentSubjectValidators.STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FRON_DIFFERENT_CLASS_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(StudentSubjectRequestDto.ID_SUBJECT, exception.getErrors().get(0).getField());
         String expectedExceptionMessage = resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS, find(Student.class, studentSubjectRequestDto.getIdStudent()).getPersonInformation().getFirstName() + " " + find(Student.class, studentSubjectRequestDto.getIdStudent()).getPersonInformation().getLastName() ,find(Subject.class, studentSubjectRequestDto.getIdSubject()).getName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }

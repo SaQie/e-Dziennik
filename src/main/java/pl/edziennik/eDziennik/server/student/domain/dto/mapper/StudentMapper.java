@@ -27,6 +27,7 @@ public class StudentMapper {
                 entity.getParentFirstName(),
                 entity.getParentLastName(),
                 entity.getParentPhoneNumber(),
+                entity.getUser().getEmail(),
                 entity.getSchool().getId(),
                 entity.getSchoolClass().getId()
         );
@@ -38,7 +39,7 @@ public class StudentMapper {
                 dto.getParentLastName(),
                 dto.getParentPhoneNumber(),
                 PersonInformationMapper.mapToPersonInformation(dto.getFirstName(), dto.getLastName(), dto.getPesel()),
-                AddressMapper.mapToAddress(dto.getAddress(),dto.getCity(),dto.getPostalCode())
+                AddressMapper.mapToAddress(dto.getAddress(), dto.getCity(), dto.getPostalCode())
         );
     }
 }
