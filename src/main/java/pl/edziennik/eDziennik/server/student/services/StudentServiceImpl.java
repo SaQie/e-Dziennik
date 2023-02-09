@@ -84,12 +84,12 @@ class StudentServiceImpl implements StudentService {
             validatorService.valid(requestApiDto);
             Student student = optionalStudent.get();
             PersonInformation personInformation = PersonInformationMapper.mapToPersonInformation(requestApiDto.getFirstName(), requestApiDto.getLastName(), requestApiDto.getPesel());
-            student.setAddress(AddressMapper.mapToAddress(requestApiDto.getAddress(), requestApiDto.getCity(), requestApiDto.getPostalCode()));
+            student.getUser().setAddress(AddressMapper.mapToAddress(requestApiDto.getAddress(), requestApiDto.getCity(), requestApiDto.getPostalCode()));
             student.setParentFirstName(requestApiDto.getParentFirstName());
             student.setParentLastName(requestApiDto.getParentLastName());
             student.setParentPhoneNumber(requestApiDto.getParentPhoneNumber());
             student.getUser().setUsername(requestApiDto.getUsername());
-            student.setPersonInformation(personInformation);
+            student.getUser().setPersonInformation(personInformation);
             return StudentMapper.toDto(student);
         }
         return register(requestApiDto);

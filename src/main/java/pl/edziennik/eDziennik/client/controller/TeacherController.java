@@ -21,7 +21,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/teachers")
 @AllArgsConstructor
-@SuppressWarnings("rawtypes")
 class TeacherController {
 
     private final TeacherService service;
@@ -33,7 +32,7 @@ class TeacherController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse register(@RequestBody @Valid TeacherRequestApiDto requestApiDto) {
+    public ApiResponse<?> register(@RequestBody @Valid TeacherRequestApiDto requestApiDto) {
         TeacherResponseApiDto responseApiDto = service.register(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -44,7 +43,7 @@ class TeacherController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse findTeacher(@PathVariable Long id) {
+    public ApiResponse<?> findTeacher(@PathVariable Long id) {
         TeacherResponseApiDto responseApiDto = service.findTeacherById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
@@ -52,7 +51,7 @@ class TeacherController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse findAllTeachers() {
+    public ApiResponse<?> findAllTeachers() {
         List<TeacherResponseApiDto> responseApiDtos = service.findAllTeachers();
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
@@ -60,7 +59,7 @@ class TeacherController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse deleteTeacher(@PathVariable Long id) {
+    public ApiResponse<?> deleteTeacher(@PathVariable Long id) {
         service.deleteTeacherById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.DELETE, HttpStatus.OK, "Teacher deleted successfully", uri);
@@ -68,7 +67,7 @@ class TeacherController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse updateTeacher(@PathVariable Long id, TeacherRequestApiDto requestApiDto) {
+    public ApiResponse<?> updateTeacher(@PathVariable Long id, TeacherRequestApiDto requestApiDto) {
         TeacherResponseApiDto responseApiDto = service.updateTeacher(id, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/teachers")

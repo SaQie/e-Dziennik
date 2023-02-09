@@ -18,16 +18,23 @@ class StudentDaoImpl extends BaseDao<Student> implements StudentDao {
     }
 
     @Override
-    public boolean isStudentExist(String username) {
+    public boolean isStudentExists(String username) {
         TypedQuery<Student> query = em.createNamedQuery(Queries.GET_STUDENT_BY_USERNAME, Student.class);
         query.setParameter(Parameters.USERNAME, username);
         return PersistanceHelper.isObjectExist(query);
     }
 
     @Override
-    public boolean isStudentExistByEmail(String email) {
+    public boolean isStudentExistsByEmail(String email) {
         TypedQuery<Student> query = em.createNamedQuery(Queries.GET_STUDENT_BY_EMAIL, Student.class);
         query.setParameter(Parameters.EMAIL, email);
+        return PersistanceHelper.isObjectExist(query);
+    }
+
+    @Override
+    public boolean isStudentExistsByPesel(String pesel) {
+        TypedQuery<Student> query = em.createNamedQuery(Queries.GET_STUDENT_BY_PESEL, Student.class);
+        query.setParameter(Parameters.PESEL, pesel);
         return PersistanceHelper.isObjectExist(query);
     }
 
@@ -35,6 +42,7 @@ class StudentDaoImpl extends BaseDao<Student> implements StudentDao {
 
         private static final String USERNAME = "username";
         private static final String EMAIL = "email";
+        private static final String PESEL = "pesel";
 
     }
 
@@ -42,6 +50,7 @@ class StudentDaoImpl extends BaseDao<Student> implements StudentDao {
 
         private static final String GET_STUDENT_BY_USERNAME = "Student.getStudentByUsername";
         private static final String GET_STUDENT_BY_EMAIL = "Student.getStudentByEmail";
+        private static final String GET_STUDENT_BY_PESEL = "Student.getStudentByPesel";
 
     }
 

@@ -1,9 +1,11 @@
 package pl.edziennik.eDziennik.server.school.domain.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import pl.edziennik.eDziennik.server.schoollevel.domain.dto.SchoolLevelResponseApiDto;
 
 @Getter
+@Builder
 public class SchoolResponseApiDto{
 
     private final Long id;
@@ -14,17 +16,5 @@ public class SchoolResponseApiDto{
     private final String regon;
     private final String address;
     private final String phoneNumber;
-    private final Long idSchoolLevel;
-
-    public SchoolResponseApiDto(Long id, String name, String postalCode, String city, String nip, String regon,String adress, String phoneNumber, Long idSchoolLevel) {
-        this.id = id;
-        this.name = name;
-        this.postalCode = postalCode;
-        this.city = city;
-        this.nip = nip;
-        this.regon = regon;
-        this.address = adress;
-        this.phoneNumber = phoneNumber;
-        this.idSchoolLevel = idSchoolLevel;
-    }
+    private final SchoolLevelResponseApiDto schoolLevel;
 }

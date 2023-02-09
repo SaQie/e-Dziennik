@@ -20,14 +20,13 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/schoollevels")
-@SuppressWarnings("rawtypes")
 public class SchoolLevelController {
 
     private final SchoolLevelService service;
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse getSchoolLevelList() {
+    public ApiResponse<?> getSchoolLevelList() {
         List<SchoolLevelResponseApiDto> responseApiDtos = service.getSchoolLevelList();
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);

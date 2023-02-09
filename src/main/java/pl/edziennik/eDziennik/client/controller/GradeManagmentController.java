@@ -18,14 +18,13 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/api/grade-managment")
 @AllArgsConstructor
-@SuppressWarnings("rawtypes")
 public class GradeManagmentController {
 
     private final GradeManagmentService service;
 
     @PostMapping("/students/{idStudent}/subjects/{idSubject}/grades")
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse assignGradeToStudentSubject(@PathVariable Long idStudent, @PathVariable Long idSubject, @RequestBody GradeRequestApiDto requestApiDto, Principal teacher) {
+    public ApiResponse<?> assignGradeToStudentSubject(@PathVariable Long idStudent, @PathVariable Long idSubject, @RequestBody GradeRequestApiDto requestApiDto, Principal teacher) {
         requestApiDto.setTeacherName(teacher.getName());
         StudentGradesInSubjectDto responseApiDto = service.assignGradeToStudentSubject(idStudent, idSubject, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -37,7 +36,7 @@ public class GradeManagmentController {
 
     @DeleteMapping("/students/{idStudent}/subjects/{idSubject}/grades/{idGrade}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse deleteGradeFromStudentSubject(@PathVariable Long idStudent, @PathVariable Long idSubject, @PathVariable Long idGrade) {
+    public ApiResponse<?> deleteGradeFromStudentSubject(@PathVariable Long idStudent, @PathVariable Long idSubject, @PathVariable Long idGrade) {
         service.deleteGradeFromStudentSubject(idStudent, idSubject, idGrade);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/students/{idStudent}/subjects/{idSubject}/grades")
@@ -48,7 +47,7 @@ public class GradeManagmentController {
 
     @PutMapping("/students/{idStudent}/subjects/{idSubject}/grades/{idGrade}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse updateStudentSubjectGrade(@PathVariable Long idStudent, @PathVariable Long idSubject, @PathVariable Long idGrade, @RequestBody GradeRequestApiDto requestApiDto, Principal teacher) {
+    public ApiResponse<?> updateStudentSubjectGrade(@PathVariable Long idStudent, @PathVariable Long idSubject, @PathVariable Long idGrade, @RequestBody GradeRequestApiDto requestApiDto, Principal teacher) {
         requestApiDto.setTeacherName(teacher.getName());
         StudentGradesInSubjectDto responseApiDto = service.updateStudentSubjectGrade(idStudent, idSubject, idGrade, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()

@@ -5,4 +5,21 @@
         http://java.sun.com/xml/ns/persistence/orm_2_0.xsd ">
 
 
+    <named-query name="Student.getStudentByPesel">
+        <query>
+            SELECT
+            s
+            FROM
+            Student s
+            JOIN FETCH
+            s.user u
+            JOIN FETCH
+            u.personInformation pi
+            WHERE
+            pi.pesel = :pesel
+            AND
+            u.role.id = 3
+        </query>
+    </named-query>
+
 </entity-mappings>

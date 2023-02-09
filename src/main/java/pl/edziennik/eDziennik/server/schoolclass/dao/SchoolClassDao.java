@@ -3,6 +3,7 @@ package pl.edziennik.eDziennik.server.schoolclass.dao;
 import pl.edziennik.eDziennik.server.basics.IBaseDao;
 import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface SchoolClassDao extends IBaseDao<SchoolClass> {
@@ -15,4 +16,5 @@ public interface SchoolClassDao extends IBaseDao<SchoolClass> {
 
     String findSchoolClassNameBySupervisingTeacher(Long idSupervisingTeacher);
 
+    List<SchoolClass> findSchoolClassesBySchoolId(Long schoolId);
 }

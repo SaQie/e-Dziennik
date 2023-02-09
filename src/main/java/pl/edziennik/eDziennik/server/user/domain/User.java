@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.edziennik.eDziennik.server.address.Address;
 import pl.edziennik.eDziennik.server.basics.AbstractEntity;
+import pl.edziennik.eDziennik.server.personinformation.PersonInformation;
 import pl.edziennik.eDziennik.server.role.domain.Role;
 import pl.edziennik.eDziennik.server.role.domain.dto.RoleResponseApiDto;
 
@@ -35,6 +37,12 @@ public class User extends AbstractEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Role role;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private PersonInformation personInformation;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private Address address;
 
     public User(String username, String password, String email) {
         this.username = username;

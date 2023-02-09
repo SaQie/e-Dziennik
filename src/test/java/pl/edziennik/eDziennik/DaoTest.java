@@ -6,6 +6,7 @@ import liquibase.pro.packaged.P;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
@@ -13,6 +14,7 @@ import pl.edziennik.eDziennik.server.basics.BaseDao;
 import pl.edziennik.eDziennik.server.personinformation.PersonInformation;
 import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.student.domain.Student;
+import pl.edziennik.eDziennik.server.user.domain.User;
 
 import java.util.List;
 
@@ -21,7 +23,8 @@ import java.util.List;
 public class DaoTest extends BaseTest {
 
     @Autowired
-    BaseDao<Student> dao;
+    @Qualifier("userDaoImpl")
+    BaseDao<User> dao;
 
     @BeforeEach
     public void prepareDb() {
@@ -33,97 +36,97 @@ public class DaoTest extends BaseTest {
     public void shouldInsert() {
         // given
         PersonInformation personInformation = new PersonInformation();
-        Student expectedStudent = new Student();
+        User user = new User();
         personInformation.setFirstName("Test");
         personInformation.setLastName("Testowy");
-        expectedStudent.setPersonInformation(personInformation);
+        user.setPersonInformation(personInformation);
         // when
-        Student savedStudent = dao.saveOrUpdate(expectedStudent);
+        User savedUser = dao.saveOrUpdate(user);
         // then
-        Student actualStudent = dao.get(Student.class, savedStudent.getId());
-        assertNotNull(actualStudent);
-        assertEquals(expectedStudent, actualStudent);
+        User actualUser = dao.get(User.class, savedUser.getId());
+        assertNotNull(actualUser);
+        assertEquals(user, actualUser);
     }
 
     @Test
     public void shouldDelete() {
         // given
         PersonInformation personInformation = new PersonInformation();
-        Student student = new Student();
+        User user = new User();
         personInformation.setFirstName("Test");
         personInformation.setLastName("Testowy");
-        student.setPersonInformation(personInformation);
-        dao.saveOrUpdate(student);
+        user.setPersonInformation(personInformation);
+        dao.saveOrUpdate(user);
         int sizeAfterSave = dao.findAll().size();
         assertEquals(1, sizeAfterSave);
         // when
-        dao.remove(student);
+        dao.remove(user);
         // then
-        List<Student> expectedStudents = dao.findAll();
-        assertEquals(0, expectedStudents.size());
+        List<User> expectedUsers = dao.findAll();
+        assertEquals(0, expectedUsers.size());
     }
 
     @Test
     public void shouldUpdate() {
         // given
         PersonInformation personInformation = new PersonInformation();
-        Student student = new Student();
+        User user = new User();
         personInformation.setFirstName("Test");
         personInformation.setLastName("Testowy");
-        student.setPersonInformation(personInformation);
-        Student savedStudent = dao.saveOrUpdate(student);
-        Student studentAfterUpdate = find(Student.class, savedStudent.getId());
-        assertEquals(personInformation.getFirstName(), studentAfterUpdate.getPersonInformation().getFirstName());
-        assertEquals(personInformation.getLastName(), studentAfterUpdate.getPersonInformation().getLastName());
+        user.setPersonInformation(personInformation);
+        User savedUser = dao.saveOrUpdate(user);
+        User userAfterUpdate = find(User.class, savedUser.getId());
+        assertEquals(personInformation.getFirstName(), userAfterUpdate.getPersonInformation().getFirstName());
+        assertEquals(personInformation.getLastName(), userAfterUpdate.getPersonInformation().getLastName());
         // when
         PersonInformation personInformation2 = find(PersonInformation.class, personInformation.getId());
         personInformation2.setFirstName("After");
         // then
-        Student studentAfterUpdate2 = dao.get(Student.class, studentAfterUpdate.getId());
-        assertEquals("After", studentAfterUpdate2.getPersonInformation().getFirstName());
+        User userAfterUpdate2 = dao.get(User.class, userAfterUpdate.getId());
+        assertEquals("After", userAfterUpdate2.getPersonInformation().getFirstName());
     }
 
     @Test
     public void shouldFind() {
         // given
         PersonInformation personInformation = new PersonInformation();
-        Student student = new Student();
+        User user = new User();
         personInformation.setFirstName("Test");
         personInformation.setLastName("Testowy");
-        student.setPersonInformation(personInformation);
-        Student savedStudent = dao.saveOrUpdate(student);
+        user.setPersonInformation(personInformation);
+        User savedUser = dao.saveOrUpdate(user);
         // when
-        Student studentAfterFind = dao.get(Student.class, savedStudent.getId());
+        User userAfterFind = dao.get(User.class, savedUser.getId());
         // then
-        assertNotNull(studentAfterFind);
-        assertEquals(student.getId(), studentAfterFind.getId());
-        assertEquals(student.getPersonInformation().getFirstName(), studentAfterFind.getPersonInformation().getFirstName());
-        assertEquals(student.getPersonInformation().getLastName(), studentAfterFind.getPersonInformation().getLastName());
+        assertNotNull(userAfterFind);
+        assertEquals(user.getId(), userAfterFind.getId());
+        assertEquals(user.getPersonInformation().getFirstName(), userAfterFind.getPersonInformation().getFirstName());
+        assertEquals(user.getPersonInformation().getLastName(), userAfterFind.getPersonInformation().getLastName());
     }
 
     @Test
     public void shouldFindAll() {
         // given
         PersonInformation personInformation1 = new PersonInformation();
-        Student student = new Student();
+        User user = new User();
         personInformation1.setFirstName("Test");
         personInformation1.setLastName("Testowy");
-        student.setPersonInformation(personInformation1);
-        dao.saveOrUpdate(student);
+        user.setPersonInformation(personInformation1);
+        dao.saveOrUpdate(user);
 
         PersonInformation personInformation2 = new PersonInformation();
-        Student student2 = new Student();
+        User user2 = new User();
         personInformation2.setFirstName("Test2");
         personInformation2.setLastName("Testowy2");
-        student.setPersonInformation(personInformation2);
-        dao.saveOrUpdate(student2);
+        user2.setPersonInformation(personInformation2);
+        dao.saveOrUpdate(user2);
 
         PersonInformation personInformation3 = new PersonInformation();
-        Student student3 = new Student();
+        User user3 = new User();
         personInformation3.setFirstName("Test3");
         personInformation3.setLastName("Testowy3");
-        student.setPersonInformation(personInformation3);
-        dao.saveOrUpdate(student3);
+        user3.setPersonInformation(personInformation3);
+        dao.saveOrUpdate(user3);
 
         // when
         int actual = dao.findAll().size();
@@ -136,25 +139,25 @@ public class DaoTest extends BaseTest {
     public void shouldSaveAll() {
         // given
         PersonInformation personInformation = new PersonInformation();
-        Student student = new Student();
+        User user = new User();
         personInformation.setFirstName("Test");
         personInformation.setLastName("Testowy");
-        student.setPersonInformation(personInformation);
+        user.setPersonInformation(personInformation);
 
         PersonInformation personInformation2 = new PersonInformation();
-        Student student2 = new Student();
+        User user2 = new User();
         personInformation2.setFirstName("Test2");
         personInformation2.setLastName("Testowy2");
-        student2.setPersonInformation(personInformation2);
+        user2.setPersonInformation(personInformation2);
 
         PersonInformation personInformation3 = new PersonInformation();
-        Student student3 = new Student();
+        User user3 = new User();
         personInformation3.setFirstName("Test3");
         personInformation3.setLastName("Testowy3");
-        student3.setPersonInformation(personInformation3);
+        user3.setPersonInformation(personInformation3);
 
         // when
-        dao.saveAll(List.of(student, student2, student3));
+        dao.saveAll(List.of(user3, user2, user));
 
         // then
         int actual = dao.findAll().size();
@@ -169,26 +172,26 @@ public class DaoTest extends BaseTest {
         String expectedLastNameAfterExecute = "AfterExecute2";
 
         PersonInformation personInformation = new PersonInformation();
-        Student student = new Student();
+        User user = new User();
         personInformation.setFirstName("Test");
         personInformation.setLastName("Testowy");
-        student.setPersonInformation(personInformation);
-        Long savedId = dao.saveOrUpdate(student).getId();
+        user.setPersonInformation(personInformation);
+        Long savedId = dao.saveOrUpdate(user).getId();
 
         // when
         PersonInformation personInformation2 = new PersonInformation();
         personInformation2.setFirstName(expectedNameAfterExecute);
         personInformation2.setLastName(expectedLastNameAfterExecute);
-        dao.findWithExecute(Student.class, savedId, savedStudent -> {
+        dao.findWithExecute(User.class, savedId, savedStudent -> {
             savedStudent.setPersonInformation(personInformation2);
         });
 
         // then
-        Student savedStudent = dao.get(Student.class, savedId);
-        assertNotNull(savedStudent);
-        assertEquals(student.getId(), savedStudent.getId());
-        assertEquals(expectedNameAfterExecute, savedStudent.getPersonInformation().getFirstName());
-        assertEquals(   expectedLastNameAfterExecute, savedStudent.getPersonInformation().getLastName());
+        User savedUser = dao.get(User.class, savedId);
+        assertNotNull(savedUser);
+        assertEquals(user.getId(), savedUser.getId());
+        assertEquals(expectedNameAfterExecute, savedUser.getPersonInformation().getFirstName());
+        assertEquals(   expectedLastNameAfterExecute, savedUser.getPersonInformation().getLastName());
     }
 
     @Test
@@ -201,7 +204,7 @@ public class DaoTest extends BaseTest {
         personInformation.setLastName("b");
         Exception exception = assertThrows(EntityNotFoundException.class,
                 () -> dao.findWithExecute(Student.class, idStudent,
-                        savedStudent -> savedStudent.setPersonInformation(personInformation)));
+                        savedStudent -> savedStudent.getUser().setPersonInformation(personInformation)));
         // then
         assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent, Student.class.getSimpleName()));
     }

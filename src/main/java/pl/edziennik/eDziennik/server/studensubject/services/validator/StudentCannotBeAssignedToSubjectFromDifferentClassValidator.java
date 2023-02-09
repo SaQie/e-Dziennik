@@ -46,7 +46,7 @@ class StudentCannotBeAssignedToSubjectFromDifferentClassValidator implements Stu
         Subject subject = dao.get(Subject.class, dto.getIdSubject());
 
         if (!student.getSchoolClass().equals(subject.getSchoolClass())){
-            String studentName = student.getPersonInformation().getFirstName() + " " + student.getPersonInformation().getLastName();
+            String studentName = student.getUser().getPersonInformation().getFirstName() + " " + student.getUser().getPersonInformation().getLastName();
             String subjectName = subject.getName();
 
             String message = resourceCreator.of(EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS, studentName, subjectName);

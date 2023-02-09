@@ -17,4 +17,5 @@ public interface SchoolClassService {
 
     List<SchoolClassResponseApiDto> findAllSchoolClasses();
     SchoolClassResponseApiDto updateSchoolClass(final Long id, final SchoolClassRequestApiDto dto);
+    List<SchoolClassResponseApiDto> findSchoolClassesBySchoolId(Long schoolId);
 }

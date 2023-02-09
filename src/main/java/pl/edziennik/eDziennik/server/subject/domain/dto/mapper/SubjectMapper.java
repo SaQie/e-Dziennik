@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.server.subject.domain.dto.mapper;
 
+import pl.edziennik.eDziennik.server.schoolclass.domain.dto.mapper.SchoolClassMapper;
 import pl.edziennik.eDziennik.server.subject.domain.Subject;
 import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectResponseApiDto;
@@ -17,15 +18,15 @@ public class SubjectMapper {
                     entity.getId(),
                     entity.getName(),
                     entity.getDescription(),
-                    entity.getTeacher().getId(),
-                    entity.getSchoolClass().getId()
+                    TeacherMapper.toSimpleDto(entity.getTeacher()),
+                    SchoolClassMapper.toSimpleDto(entity.getSchoolClass())
             );
         }else{
             return new SubjectResponseApiDto(
                     entity.getId(),
                     entity.getName(),
                     entity.getDescription(),
-                    entity.getSchoolClass().getId()
+                    SchoolClassMapper.toSimpleDto(entity.getSchoolClass())
             );
         }
     }

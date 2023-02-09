@@ -55,11 +55,11 @@ public class TeacherIntegrationTest extends BaseTest {
         assertNotNull(id);
         Teacher actual = find(Teacher.class, id);
 
-        assertEquals(expected.getFirstName(), actual.getPersonInformation().getFirstName());
-        assertEquals(expected.getLastName(), actual.getPersonInformation().getLastName());
-        assertEquals(expected.getAddress(), actual.getAddress().getAddress());
-        assertEquals(expected.getPesel(), actual.getPersonInformation().getPesel());
-        assertEquals(expected.getCity(), actual.getAddress().getCity());
+        assertEquals(expected.getFirstName(), actual.getUser().getPersonInformation().getFirstName());
+        assertEquals(expected.getLastName(), actual.getUser().getPersonInformation().getLastName());
+        assertEquals(expected.getAddress(), actual.getUser().getAddress().getAddress());
+        assertEquals(expected.getPesel(), actual.getUser().getPersonInformation().getPesel());
+        assertEquals(expected.getCity(), actual.getUser().getAddress().getCity());
         assertEquals(expected.getUsername(), actual.getUser().getUsername());
         assertEquals(util.defaultRole, actual.getUser().getRole().getName());
     }
@@ -79,11 +79,11 @@ public class TeacherIntegrationTest extends BaseTest {
         assertEquals(updated, id);
         Teacher actual = find(Teacher.class, updated);
 
-        assertEquals(expected.getFirstName(), actual.getPersonInformation().getFirstName());
-        assertEquals(expected.getLastName(), actual.getPersonInformation().getLastName());
-        assertEquals(expected.getAddress(), actual.getAddress().getAddress());
-        assertEquals(expected.getPesel(), actual.getPersonInformation().getPesel());
-        assertEquals(expected.getCity(), actual.getAddress().getCity());
+        assertEquals(expected.getFirstName(), actual.getUser().getPersonInformation().getFirstName());
+        assertEquals(expected.getLastName(), actual.getUser().getPersonInformation().getLastName());
+        assertEquals(expected.getAddress(), actual.getUser().getAddress().getAddress());
+        assertEquals(expected.getPesel(), actual.getUser().getPersonInformation().getPesel());
+        assertEquals(expected.getCity(), actual.getUser().getAddress().getCity());
         assertEquals(util.defaultRole, actual.getUser().getRole().getName());
 
     }

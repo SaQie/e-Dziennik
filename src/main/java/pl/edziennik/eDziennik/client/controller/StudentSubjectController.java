@@ -20,7 +20,6 @@ import java.net.URI;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/students")
-@SuppressWarnings("rawtypes")
 public class StudentSubjectController {
 
     private final StudentSubjectService service;
@@ -28,7 +27,7 @@ public class StudentSubjectController {
 
     @PostMapping("/{idStudent}/subjects")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse assignStudentToSubject(@RequestBody StudentSubjectRequestDto requestApiDto, @PathVariable Long idStudent) {
+    public ApiResponse<?> assignStudentToSubject(@RequestBody StudentSubjectRequestDto requestApiDto, @PathVariable Long idStudent) {
         requestApiDto.setIdStudent(idStudent);
         StudentSubjectResponseDto responseApiDto = service.assignStudentToSubject(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -37,7 +36,7 @@ public class StudentSubjectController {
 
     @GetMapping("/{idStudent}/subjects")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse getStudentSubjects(@PathVariable Long idStudent) {
+    public ApiResponse<?> getStudentSubjects(@PathVariable Long idStudent) {
         StudentSubjectsResponseDto responseApiDto = service.getStudentSubjects(idStudent);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.OK, responseApiDto, uri);
@@ -45,7 +44,7 @@ public class StudentSubjectController {
 
     @GetMapping("/{idStudent}/subjects/{idSubject}/grades")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse getStudentSubjectRatings(@PathVariable Long idStudent, @PathVariable Long idSubject) {
+    public ApiResponse<?> getStudentSubjectRatings(@PathVariable Long idStudent, @PathVariable Long idSubject) {
         StudentGradesInSubjectDto responseApiDto = service.getStudentSubjectGrades(idStudent, idSubject);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
@@ -53,7 +52,7 @@ public class StudentSubjectController {
 
     @GetMapping("/{idStudent}/subjects/grades")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse getStudentAllSubjectsRatings(@PathVariable Long idStudent) {
+    public ApiResponse<?> getStudentAllSubjectsRatings(@PathVariable Long idStudent) {
         AllStudentsGradesInSubjectsDto responseApiDto = service.getStudentAllSubjectsGrades(idStudent);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);

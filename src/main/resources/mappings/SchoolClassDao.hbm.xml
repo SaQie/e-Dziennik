@@ -43,6 +43,17 @@
         </query>
     </named-query>
 
+    <named-query name="SchoolClass.findSchoolClassesBySchoolId">
+        <query>
+            SELECT
+            sc
+            FROM
+            SchoolClass sc
+            WHERE
+            sc.school.id = :idSchool
+        </query>
+    </named-query>
+
 
     <named-query name="SchoolClass.isTeacherBelongsToSchool">
         <query>

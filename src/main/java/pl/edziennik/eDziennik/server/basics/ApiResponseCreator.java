@@ -44,7 +44,6 @@ public class ApiResponseCreator {
                 .code(status.value())
                 .url(url)
                 .errors(errors.getErrors())
-                .errorMessage(errors.getMessage())
                 .executionTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .build();
     }

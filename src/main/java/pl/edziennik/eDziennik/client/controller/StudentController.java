@@ -19,14 +19,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/students")
 @AllArgsConstructor
-@SuppressWarnings("rawtypes")
 public class StudentController {
 
     private final StudentService service;
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse register(@RequestBody StudentRequestApiDto requestApiDto){
+    public ApiResponse<?> register(@RequestBody StudentRequestApiDto requestApiDto){
         StudentResponseApiDto responseApiDto = service.register(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -37,7 +36,7 @@ public class StudentController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse deleteStudent(@PathVariable Long id){
+    public ApiResponse<?> deleteStudent(@PathVariable Long id){
         service.deleteStudentById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.DELETE,HttpStatus.OK,"Student deleted successfully",uri);
@@ -45,7 +44,7 @@ public class StudentController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse findStudentById(@PathVariable Long id){
+    public ApiResponse<?> findStudentById(@PathVariable Long id){
         StudentResponseApiDto responseApiDto = service.findStudentById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET,HttpStatus.OK, responseApiDto, uri);
@@ -53,7 +52,7 @@ public class StudentController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse findAllStudents(){
+    public ApiResponse<?> findAllStudents(){
         List<StudentResponseApiDto> responseApiDtos = service.findAllStudents();
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET,HttpStatus.OK, responseApiDtos, uri);
@@ -61,7 +60,7 @@ public class StudentController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse updateStudent(@PathVariable Long id, @RequestBody StudentRequestApiDto requestApiDto){
+    public ApiResponse<?> updateStudent(@PathVariable Long id, @RequestBody StudentRequestApiDto requestApiDto){
         StudentResponseApiDto responseApiDto = service.updateStudent(id, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/students")

@@ -7,6 +7,7 @@ import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.utils.PersistanceHelper;
 
 import javax.persistence.TypedQuery;
+import java.util.List;
 
 @Repository
 class SchoolClassDaoImpl extends BaseDao<SchoolClass> implements SchoolClassDao {
@@ -41,11 +42,19 @@ class SchoolClassDaoImpl extends BaseDao<SchoolClass> implements SchoolClassDao 
         return query.getSingleResult();
     }
 
+    @Override
+    public List<SchoolClass> findSchoolClassesBySchoolId(Long schoolId) {
+        TypedQuery<SchoolClass> query = em.createNamedQuery(Queries.FIND_SCHOOL_CLASSES_BY_SCHOOL_ID, SchoolClass.class);
+        query.setParameter(Parameters.ID_SCHOOL, schoolId);
+        return query.getResultList();
+    }
+
     private static final class Queries{
 
         private static final String FIND_SCHOOL_CLASS_BY_CLASS_NAME_AND_SCHOOL = "SchoolClass.getSchoolClassByClassNameAndIdSchool";
         private static final String FIND_SUPERVISING_TEACHER_SCHOOL_CLASS_BY_ID = "SchoolClass.getSupervisingTeacherById";
         private static final String FIND_SCHOOL_CLASS_NAME_BY_SUPERVISING_TEACHER = "SchoolClass.getSchoolClassBySupervisingTeacher";
+        private static final String FIND_SCHOOL_CLASSES_BY_SCHOOL_ID = "SchoolClass.findSchoolClassesBySchoolId";
         private static final String IS_TEACHER_BELONGS_TO_SCHOOL = "SchoolClass.isTeacherBelongsToSchool";
 
     }

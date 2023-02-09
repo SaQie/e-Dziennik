@@ -1,11 +1,14 @@
 package pl.edziennik.eDziennik.server.studensubject.domain.dto.mapper;
 
 import pl.edziennik.eDziennik.server.grade.domain.Grade;
+import pl.edziennik.eDziennik.server.schoolclass.domain.dto.mapper.SchoolClassMapper;
 import pl.edziennik.eDziennik.server.studensubject.domain.StudentSubject;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.*;
 import pl.edziennik.eDziennik.server.student.domain.Student;
 import pl.edziennik.eDziennik.server.subject.domain.Subject;
 import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectResponseApiDto;
+import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherSimpleResponseApiDto;
+import pl.edziennik.eDziennik.server.teacher.domain.dto.mapper.TeacherMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +29,7 @@ public class StudentSubjectMapper {
             Subject subject = entity.getSubject();
             subjectRatingsList.add(new SubjectGradesResponseDto(subject.getId(), subject.getName(), grades));
         }
-        return new AllStudentsGradesInSubjectsDto(student.getId(), student.getPersonInformation().getFirstName(), student.getPersonInformation().getLastName(), subjectRatingsList);
+        return new AllStudentsGradesInSubjectsDto(student.getId(), student.getUser().getPersonInformation().getFirstName(), student.getUser().getPersonInformation().getLastName(), subjectRatingsList);
     }
 
     public static StudentGradesInSubjectDto toStudentSubjectRatingsDto(StudentSubject entity) {
@@ -38,15 +41,15 @@ public class StudentSubjectMapper {
         Subject subject = entity.getSubject();
         SubjectGradesResponseDto subjectGradesResponseDto = new SubjectGradesResponseDto(subject.getId(), subject.getName(), ratings);
         Student student = entity.getStudent();
-        return new StudentGradesInSubjectDto(student.getId(), student.getPersonInformation().getFirstName(), student.getPersonInformation().getLastName(), subjectGradesResponseDto);
+        return new StudentGradesInSubjectDto(student.getId(), student.getUser().getPersonInformation().getFirstName(), student.getUser().getPersonInformation().getLastName(), subjectGradesResponseDto);
     }
 
     public static StudentSubjectResponseDto toStudentSubjectResponseDto(StudentSubject entity){
         Student student = entity.getStudent();
         Subject subject = entity.getSubject();
-        Long idTeacher = subject.getTeacher() == null ? null : subject.getTeacher().getId();
-        List<SubjectResponseApiDto> subjects = List.of(new SubjectResponseApiDto(subject.getId(), subject.getName(), subject.getDescription(), idTeacher, subject.getSchoolClass().getId()));
-        return new StudentSubjectResponseDto(student.getId(), student.getPersonInformation().getFirstName(), student.getPersonInformation().getLastName(), subjects);
+        TeacherSimpleResponseApiDto teacherDto = subject.getTeacher() != null ? TeacherMapper.toSimpleDto(subject.getTeacher()) : null;
+        List<SubjectResponseApiDto> subjects = List.of(new SubjectResponseApiDto(subject.getId(), subject.getName(), subject.getDescription(), teacherDto, SchoolClassMapper.toSimpleDto(subject.getSchoolClass())));
+        return new StudentSubjectResponseDto(student.getId(), student.getUser().getPersonInformation().getFirstName(), student.getUser().getPersonInformation().getLastName(), subjects);
     }
 
 
@@ -54,12 +57,12 @@ public class StudentSubjectMapper {
         List<SubjectResponseApiDto> subjects = new ArrayList<>();
         for (StudentSubject entity : entites) {
             Subject subject = entity.getSubject();
-            Long idTeacher = subject.getTeacher() != null ? subject.getTeacher().getId() : null;
-            SubjectResponseApiDto subjectDto = new SubjectResponseApiDto(subject.getId(), subject.getName(), subject.getDescription(), idTeacher, subject.getSchoolClass().getId());
+            TeacherSimpleResponseApiDto teacherDto = subject.getTeacher() != null ? TeacherMapper.toSimpleDto(subject.getTeacher()) : null;
+            SubjectResponseApiDto subjectDto = new SubjectResponseApiDto(subject.getId(), subject.getName(), subject.getDescription(), teacherDto, SchoolClassMapper.toSimpleDto(subject.getSchoolClass()));
             subjects.add(subjectDto);
         }
 
-        return new StudentSubjectsResponseDto(student.getId(), student.getPersonInformation().getFirstName(), student.getPersonInformation().getLastName(), subjects);
+        return new StudentSubjectsResponseDto(student.getId(), student.getUser().getPersonInformation().getFirstName(), student.getUser().getPersonInformation().getLastName(), subjects);
     }
 
 

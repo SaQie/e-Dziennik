@@ -32,12 +32,6 @@ public class Teacher extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private School school;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    private Address address;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    private PersonInformation personInformation;
-
 
     @Override
     public boolean isNew() {
@@ -45,10 +39,8 @@ public class Teacher extends AbstractEntity {
     }
 
 
-    public Teacher(String phoneNumber,PersonInformation personInformation, Address address) {
+    public Teacher(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-        this.address = address;
-        this.personInformation = personInformation;
     }
 
     public void setSchool(School school){

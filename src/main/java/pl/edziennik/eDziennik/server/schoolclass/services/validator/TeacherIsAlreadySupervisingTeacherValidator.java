@@ -45,7 +45,7 @@ class TeacherIsAlreadySupervisingTeacherValidator implements SchoolClassValidato
                 Teacher teacher = dao.get(Teacher.class, dto.getIdClassTeacher());
                 String actualTeacherSchoolClassName = dao.findSchoolClassNameBySupervisingTeacher(dto.getIdClassTeacher());
 
-                String teacherName = teacher.getPersonInformation().getFirstName() + " " + teacher.getPersonInformation().getLastName();
+                String teacherName = teacher.getUser().getPersonInformation().getFirstName() + " " + teacher.getUser().getPersonInformation().getLastName();
                 String message = resourceCreator.of(EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER, teacherName,actualTeacherSchoolClassName);
 
                 ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()

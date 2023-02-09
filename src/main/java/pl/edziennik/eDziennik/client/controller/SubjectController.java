@@ -19,14 +19,13 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/subjects")
-@SuppressWarnings("rawtypes")
 public class SubjectController {
 
     private final SubjectService service;
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse createSubject(@RequestBody @Valid SubjectRequestApiDto requestApiDto) {
+    public ApiResponse<?> createSubject(@RequestBody @Valid SubjectRequestApiDto requestApiDto) {
         SubjectResponseApiDto responseApiDto = service.createNewSubject(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -37,7 +36,7 @@ public class SubjectController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse findAllSubjects() {
+    public ApiResponse<?> findAllSubjects() {
         List<SubjectResponseApiDto> responseApiDtos = service.findAllSubjects();
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
@@ -45,7 +44,7 @@ public class SubjectController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse findSubjectById(@PathVariable Long id) {
+    public ApiResponse<?> findSubjectById(@PathVariable Long id) {
         SubjectResponseApiDto responseApiDto = service.findSubjectById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
@@ -53,7 +52,7 @@ public class SubjectController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse deleteSubjectById(@PathVariable Long id) {
+    public ApiResponse<?> deleteSubjectById(@PathVariable Long id) {
         service.deleteSubjectById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.DELETE, HttpStatus.OK, "Subject deleted successfully", uri);
@@ -61,14 +60,14 @@ public class SubjectController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ApiResponse> updateSubject(@PathVariable Long id, SubjectRequestApiDto requestApiDto) {
+    public ApiResponse updateSubject(@PathVariable Long id, SubjectRequestApiDto requestApiDto) {
         SubjectResponseApiDto responseApiDto = service.updateSubject(id, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/subjects")
                 .path("/{id}")
                 .buildAndExpand(responseApiDto.getId())
                 .toUri();
-        return ResponseEntity.ok(ApiResponseCreator.buildApiResponse(HttpMethod.PUT, HttpStatus.OK, responseApiDto, uri));
+        return ApiResponseCreator.buildApiResponse(HttpMethod.PUT, HttpStatus.OK, responseApiDto, uri);
     }
 
 }

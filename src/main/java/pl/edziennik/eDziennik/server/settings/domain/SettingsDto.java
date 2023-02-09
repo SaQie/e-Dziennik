@@ -2,13 +2,14 @@ package pl.edziennik.eDziennik.server.settings.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 @AllArgsConstructor
 public class SettingsDto {
 
-    private Long id;
-    private String name;
-    private boolean enabled;
+    private final Long id;
+    private final String name;
+    private final boolean enabled;
 
 }

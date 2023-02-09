@@ -25,15 +25,42 @@ public class UserMapper {
     }
 
     public static UserRequestDto toDto(StudentRequestApiDto dto){
-        return new UserRequestDto(dto.getUsername(), dto.getPassword(), dto.getEmail(), Role.RoleConst.ROLE_STUDENT.name());
+        return UserRequestDto.builder()
+                .city(dto.getCity())
+                .pesel(dto.getPesel())
+                .email(dto.getEmail())
+                .firstName(dto.getFirstName())
+                .lastName(dto.getLastName())
+                .postalCode(dto.getPostalCode())
+                .address(dto.getAddress())
+                .username(dto.getUsername())
+                .password(dto.getPassword())
+                .role(Role.RoleConst.ROLE_STUDENT.name())
+                .build();
     }
 
     public static UserRequestDto toDto(TeacherRequestApiDto dto){
-        return new UserRequestDto(dto.getUsername(), dto.getPassword(), dto.getEmail(), Role.RoleConst.ROLE_TEACHER.name());
+        return UserRequestDto.builder()
+                .city(dto.getCity())
+                .pesel(dto.getPesel())
+                .email(dto.getEmail())
+                .firstName(dto.getFirstName())
+                .lastName(dto.getLastName())
+                .postalCode(dto.getPostalCode())
+                .address(dto.getAddress())
+                .username(dto.getUsername())
+                .password(dto.getPassword())
+                .role(Role.RoleConst.ROLE_TEACHER.name())
+                .build();
     }
 
     public static UserRequestDto toDto(AdminRequestApiDto dto){
-        return new UserRequestDto(dto.getUsername(), dto.getPassword(), dto.getEmail(), Role.RoleConst.ROLE_ADMIN.name());
+        return UserRequestDto.builder()
+                .email(dto.getEmail())
+                .username(dto.getUsername())
+                .password(dto.getPassword())
+                .role(Role.RoleConst.ROLE_ADMIN.name())
+                .build();
     }
 
 }

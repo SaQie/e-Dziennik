@@ -72,6 +72,13 @@ class SchoolClassServiceImpl implements SchoolClassService {
 
     }
 
+    @Override
+    public List<SchoolClassResponseApiDto> findSchoolClassesBySchoolId(Long schoolId) {
+        return dao.findSchoolClassesBySchoolId(schoolId).stream()
+                .map(SchoolClassMapper::toDto)
+                .toList();
+    }
+
     private SchoolClass mapToEntity(SchoolClassRequestApiDto dto) {
         SchoolClass schoolClass = SchoolClassMapper.toEntity(dto);
         dao.findWithExecute(School.class, dto.getIdSchool(), schoolClass::setSchool);

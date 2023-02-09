@@ -18,7 +18,7 @@ import java.util.Optional;
 @AllArgsConstructor
 class TeacherPeselNotUniqueValidator implements TeacherValidators{
 
-    private final PersonInformationDao dao;
+    private final TeacherDao dao;
     private final ResourceCreator resourceCreator;
 
     public static final Integer VALIDATOR_ID = 2;
@@ -40,7 +40,7 @@ class TeacherPeselNotUniqueValidator implements TeacherValidators{
 
     @Override
     public Optional<ApiErrorsDto> validate(TeacherRequestApiDto dto) {
-        if (dao.isPeselAlreadyExist(dto.getPesel())){
+        if (dao.isTeacherExistByPesel(dto.getPesel())){
             String message = resourceCreator.of(EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, Teacher.class.getSimpleName(), dto.getPesel());
 
             ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()

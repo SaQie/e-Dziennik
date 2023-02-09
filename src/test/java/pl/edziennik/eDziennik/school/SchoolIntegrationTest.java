@@ -124,7 +124,7 @@ public class SchoolIntegrationTest extends BaseTest {
         assertEquals(expected.getCity(), actual.getCity());
         assertEquals(expected.getPostalCode(), actual.getPostalCode());
         assertEquals(expected.getRegon(), actual.getRegon());
-        assertEquals(expected.getIdSchoolLevel(), actual.getIdSchoolLevel());
+        assertEquals(expected.getIdSchoolLevel(), actual.getSchoolLevel().getId());
     }
 
     @Test

@@ -83,11 +83,11 @@ public class StudentIntegrationTest extends BaseTest {
         // then
         assertNotNull(id);
         Student actual = find(Student.class, id);
-        assertEquals(expected.getFirstName(), actual.getPersonInformation().getFirstName());
-        assertEquals(expected.getLastName(), actual.getPersonInformation().getLastName());
-        assertEquals(expected.getAddress(), actual.getAddress().getAddress());
-        assertEquals(expected.getPesel(), actual.getPersonInformation().getPesel());
-        assertEquals(expected.getCity(), actual.getAddress().getCity());
+        assertEquals(expected.getFirstName(), actual.getUser().getPersonInformation().getFirstName());
+        assertEquals(expected.getLastName(), actual.getUser().getPersonInformation().getLastName());
+        assertEquals(expected.getAddress(), actual.getUser().getAddress().getAddress());
+        assertEquals(expected.getPesel(), actual.getUser().getPersonInformation().getPesel());
+        assertEquals(expected.getCity(), actual.getUser().getAddress().getCity());
         assertEquals(expected.getUsername(), actual.getUser().getUsername());
         assertEquals(expected.getParentFirstName(), actual.getParentFirstName());
         assertEquals(expected.getParentPhoneNumber(), actual.getParentPhoneNumber());
@@ -108,11 +108,11 @@ public class StudentIntegrationTest extends BaseTest {
         assertNotNull(updated);
         assertEquals(updated, id);
         Student actual = find(Student.class, updated);
-        assertEquals(expected.getFirstName(), actual.getPersonInformation().getFirstName());
-        assertEquals(expected.getLastName(), actual.getPersonInformation().getLastName());
-        assertEquals(expected.getAddress(), actual.getAddress().getAddress());
-        assertEquals(expected.getPesel(), actual.getPersonInformation().getPesel());
-        assertEquals(expected.getCity(), actual.getAddress().getCity());
+        assertEquals(expected.getFirstName(), actual.getUser().getPersonInformation().getFirstName());
+        assertEquals(expected.getLastName(), actual.getUser().getPersonInformation().getLastName());
+        assertEquals(expected.getAddress(), actual.getUser().getAddress().getAddress());
+        assertEquals(expected.getPesel(), actual.getUser().getPersonInformation().getPesel());
+        assertEquals(expected.getCity(), actual.getUser().getAddress().getCity());
         assertEquals(expected.getUsername(), actual.getUser().getUsername());
         assertEquals(expected.getParentFirstName(), actual.getParentFirstName());
         assertEquals(expected.getParentPhoneNumber(), actual.getParentPhoneNumber());
@@ -245,9 +245,10 @@ public class StudentIntegrationTest extends BaseTest {
     public void shouldThrowsBusinessExceptionWhenTryingToRegisterNewStudentAndPeselAlreadyExist() {
         // given
         StudentRequestApiDto dto = util.prepareStudentRequestDto("00000000000");
-        service.register(dto);
+        StudentResponseApiDto register = service.register(dto);
         StudentRequestApiDto dto2 = util.prepareStudentRequestDto("xxx", "xxx", "xxxx", "00000000000", "test2@example.com");
 
+        Student student = find(Student.class, register.getId());
         // when
         BusinessException exception = assertThrows(BusinessException.class, () -> service.register(dto2));
 

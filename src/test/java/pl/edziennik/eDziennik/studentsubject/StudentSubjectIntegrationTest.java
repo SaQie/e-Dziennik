@@ -103,14 +103,14 @@ public class StudentSubjectIntegrationTest extends BaseTest {
         Student expectedStudent = find(Student.class, studentId);
 
         assertEquals(1, studentSubject.getSubjects().size());
-        assertEquals(expectedStudent.getPersonInformation().getFirstName(), studentSubject.getFirstName());
-        assertEquals(expectedStudent.getPersonInformation().getLastName(), studentSubject.getLastName());
+        assertEquals(expectedStudent.getUser().getPersonInformation().getFirstName(), studentSubject.getFirstName());
+        assertEquals(expectedStudent.getUser().getPersonInformation().getLastName(), studentSubject.getLastName());
         assertEquals(expectedStudent.getId(), studentSubject.getId());
 
         SubjectResponseApiDto actualSubject = studentSubject.getSubjects().get(0);
         assertEquals(expectedSubject.getName(), actualSubject.getName());
         assertEquals(expectedSubject.getDescription(), actualSubject.getDescription());
-        assertEquals(expectedSubject.getTeacher().getId(), actualSubject.getIdTeacher());
+        assertEquals(expectedSubject.getTeacher().getId(), actualSubject.getTeacher().getId());
     }
 
     @Test
@@ -208,7 +208,9 @@ public class StudentSubjectIntegrationTest extends BaseTest {
         assertEquals(1, exception.getErrors().size());
         assertEquals(StudentSubjectValidators.STUDENT_SUBJECT_ALREADY_EXIST_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(StudentSubjectRequestDto.ID_SUBJECT, exception.getErrors().get(0).getField());
-        String expectedExceptionMessage = resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST, find(Student.class, requestDto.getIdStudent()).getPersonInformation().getFirstName() + " " + find(Student.class, requestDto.getIdStudent()).getPersonInformation().getLastName() ,find(Subject.class, requestDto.getIdSubject()).getName());
+        String expectedExceptionMessage = resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST, find(Student.class,
+                requestDto.getIdStudent()).getUser().getPersonInformation().getFirstName() + " " + find(Student.class,
+                requestDto.getIdStudent()).getUser().getPersonInformation().getLastName() ,find(Subject.class, requestDto.getIdSubject()).getName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 
@@ -232,7 +234,9 @@ public class StudentSubjectIntegrationTest extends BaseTest {
         assertEquals(1, exception.getErrors().size());
         assertEquals(StudentSubjectValidators.STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FRON_DIFFERENT_CLASS_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(StudentSubjectRequestDto.ID_SUBJECT, exception.getErrors().get(0).getField());
-        String expectedExceptionMessage = resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS, find(Student.class, studentSubjectRequestDto.getIdStudent()).getPersonInformation().getFirstName() + " " + find(Student.class, studentSubjectRequestDto.getIdStudent()).getPersonInformation().getLastName() ,find(Subject.class, studentSubjectRequestDto.getIdSubject()).getName());
+        String expectedExceptionMessage = resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS, find(Student.class,
+                studentSubjectRequestDto.getIdStudent()).getUser().getPersonInformation().getFirstName() + " " + find(Student.class,
+                studentSubjectRequestDto.getIdStudent()).getUser().getPersonInformation().getLastName() ,find(Subject.class, studentSubjectRequestDto.getIdSubject()).getName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 

@@ -19,14 +19,13 @@ import java.util.List;
 @RequestMapping("/api/admins")
 @RestController
 @AllArgsConstructor
-@SuppressWarnings("rawtypes")
 public class AdminController {
 
     private final AdminService service;
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse createAdminAccount(@RequestBody @Valid AdminRequestApiDto requestApiDto) {
+    public ApiResponse<?> createAdminAccount(@RequestBody @Valid AdminRequestApiDto requestApiDto) {
         AdminResponseApiDto responseApiDto = service.createNewAdminAccount(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -37,7 +36,7 @@ public class AdminController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse getAdminList() {
+    public ApiResponse<?> getAdminList() {
         List<AdminResponseApiDto> responseApiDto = service.getAdminList();
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);

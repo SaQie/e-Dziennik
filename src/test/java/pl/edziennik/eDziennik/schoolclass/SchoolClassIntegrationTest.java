@@ -123,8 +123,8 @@ public class SchoolClassIntegrationTest extends BaseTest {
 
         // then
         assertNotNull(actual);
-        assertEquals(expected.getIdSchool(), actual.getIdSchool());
-        assertEquals(expected.getIdClassTeacher(), actual.getIdSupervisingTeacher());
+        assertEquals(expected.getIdSchool(), actual.getSchool().getId());
+        assertNull(actual.getSupervisingTeacher());
         assertEquals(expected.getClassName(), actual.getClassName());
     }
 

@@ -148,7 +148,7 @@ public class SubjectIntegrationTest extends BaseTest {
         assertNotNull(actual);
         assertEquals(expected.getName(), actual.getName());
         assertEquals(expected.getDescription(), actual.getDescription());
-        assertNull(actual.getIdTeacher());
+        assertNull(actual.getTeacher());
     }
 
     @Test

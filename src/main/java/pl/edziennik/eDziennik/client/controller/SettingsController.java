@@ -20,7 +20,6 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@SuppressWarnings("rawtypes")
 @AllArgsConstructor
 @RequestMapping("/api/settings")
 public class SettingsController {
@@ -30,7 +29,7 @@ public class SettingsController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse findAllSettings() {
+    public ApiResponse<?> findAllSettings() {
         List<SettingsDto> settings = service.getAllSettings();
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, settings, uri);
@@ -38,14 +37,14 @@ public class SettingsController {
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse updateSettings(@PathVariable Long id, @RequestBody SettingsValue value) {
+    public ApiResponse<?> updateSettings(@PathVariable Long id, @RequestBody SettingsValue value) {
         service.updateSettings(id, value);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.PATCH, HttpStatus.OK, "Settings updated sucessfully", uri);
     }
 
     @GetMapping("/testpage")
-    public ApiResponse test(){
+    public ApiResponse<?> test(){
         Page<List<SchoolResponseApiDto>> page = schoolDao.findAll(1, 5).map(SchoolMapper::toDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET,HttpStatus.OK,page,uri);

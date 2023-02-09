@@ -40,24 +40,16 @@ public class Student extends AbstractEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private School school;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    private Address address;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    private PersonInformation personInformation;
-
     @Override
     public boolean isNew() {
         return (id==null);
     }
 
 
-    public Student(String parentFirstName, String parentLastName, String parentPhoneNumber,PersonInformation personInformation, Address address) {
+    public Student(String parentFirstName, String parentLastName, String parentPhoneNumber) {
         this.parentFirstName = parentFirstName;
         this.parentLastName = parentLastName;
         this.parentPhoneNumber = parentPhoneNumber;
-        this.address =address;
-        this.personInformation = personInformation;
     }
 
     public void setSchoolClass(SchoolClass schoolClass) {

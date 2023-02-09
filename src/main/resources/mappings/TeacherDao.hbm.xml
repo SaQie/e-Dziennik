@@ -11,11 +11,13 @@
             FROM
                 Teacher t
             JOIN FETCH
-                t.user
+                t.user u
             JOIN FETCH
-                t.personInformation pi
+                u.personInformation pi
             WHERE
                 pi.pesel = :pesel
+            AND
+                u.role.id = 2
         </query>
     </named-query>
 
@@ -28,7 +30,7 @@
             JOIN FETCH
             t.user u
             JOIN FETCH
-            t.personInformation pi
+            u.personInformation pi
             WHERE
             u.username = :username
         </query>

@@ -5,6 +5,7 @@ import pl.edziennik.eDziennik.server.address.AddressMapper;
 import pl.edziennik.eDziennik.server.school.domain.School;
 import pl.edziennik.eDziennik.server.school.domain.dto.SchoolRequestApiDto;
 import pl.edziennik.eDziennik.server.school.domain.dto.SchoolResponseApiDto;
+import pl.edziennik.eDziennik.server.school.domain.dto.SchoolSimpleResponseApiDto;
 import pl.edziennik.eDziennik.server.schoollevel.domain.dto.mapper.SchoolLevelMapper;
 
 import java.util.List;
@@ -15,17 +16,17 @@ public class SchoolMapper {
     }
 
     public static SchoolResponseApiDto toDto(School entity) {
-        return new SchoolResponseApiDto(
-                entity.getId(),
-                entity.getName(),
-                entity.getAddress().getPostalCode(),
-                entity.getAddress().getCity(),
-                entity.getNip(),
-                entity.getRegon(),
-                entity.getAddress().getAddress(),
-                entity.getPhoneNumber(),
-                entity.getSchoolLevel().getId()
-        );
+        return SchoolResponseApiDto.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .postalCode(entity.getAddress().getPostalCode())
+                .city(entity.getAddress().getCity())
+                .nip(entity.getNip())
+                .regon(entity.getRegon())
+                .address(entity.getAddress().getAddress())
+                .phoneNumber(entity.getPhoneNumber())
+                .schoolLevel(SchoolLevelMapper.toDto(entity.getSchoolLevel()))
+                .build();
     }
 
     public static List<SchoolResponseApiDto> toDto(List<School> entities){
@@ -42,4 +43,7 @@ public class SchoolMapper {
         );
     }
 
+    public static SchoolSimpleResponseApiDto toSimpleDto(School entity) {
+        return new SchoolSimpleResponseApiDto(entity.getId(), entity.getName());
+    }
 }

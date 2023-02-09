@@ -6,6 +6,7 @@ import pl.edziennik.eDziennik.server.basics.ApiErrorsDto;
 import pl.edziennik.eDziennik.server.basics.ExceptionType;
 import pl.edziennik.eDziennik.server.basics.ValidatorPriority;
 import pl.edziennik.eDziennik.server.personinformation.dao.PersonInformationDao;
+import pl.edziennik.eDziennik.server.student.dao.StudentDao;
 import pl.edziennik.eDziennik.server.student.domain.Student;
 import pl.edziennik.eDziennik.server.student.domain.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
@@ -19,7 +20,7 @@ import java.util.Optional;
 @AllArgsConstructor
 class StudentPeselNotUniqueValidator implements StudentValidators{
 
-    private final PersonInformationDao dao;
+    private final StudentDao dao;
     private final ResourceCreator resourceCreator;
 
     public static final Integer VALIDATOR_ID = 3;
@@ -41,7 +42,7 @@ class StudentPeselNotUniqueValidator implements StudentValidators{
 
     @Override
     public Optional<ApiErrorsDto> validate(StudentRequestApiDto dto) {
-        if (dao.isPeselAlreadyExist(dto.getPesel())){
+        if (dao.isStudentExistsByPesel(dto.getPesel())){
             String message = resourceCreator.of(EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, dto.getPesel());
 
             ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()

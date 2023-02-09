@@ -16,12 +16,12 @@ import pl.edziennik.eDziennik.server.schoolclass.services.SchoolClassService;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/schoolclasses")
-@SuppressWarnings("rawtypes")
 public class SchoolClassController {
 
     private final SchoolClassService service;
@@ -29,7 +29,7 @@ public class SchoolClassController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse createSchoolClass(@RequestBody @Valid SchoolClassRequestApiDto requestApiDto) {
+    public ApiResponse<?> createSchoolClass(@RequestBody @Valid SchoolClassRequestApiDto requestApiDto) {
         SchoolClassResponseApiDto responseApiDto = service.createSchoolClass(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -40,7 +40,7 @@ public class SchoolClassController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse findSchoolClassById(@PathVariable Long id) {
+    public ApiResponse<?> findSchoolClassById(@PathVariable Long id) {
         SchoolClassResponseApiDto responseApiDto = service.findSchoolClassById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
@@ -48,15 +48,16 @@ public class SchoolClassController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse findAllSchoolClasses() {
-        List<SchoolClassResponseApiDto> responseApiDtos = service.findAllSchoolClasses();
+    public ApiResponse<?> findAllSchoolClasses(@RequestParam(required = false) Long schoolId) {
+        List<SchoolClassResponseApiDto> responseApiDtos;
+        responseApiDtos = schoolId == null ? service.findAllSchoolClasses() : service.findSchoolClassesBySchoolId(schoolId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse deleteSchoolClassById(@PathVariable Long id) {
+    public ApiResponse<?> deleteSchoolClassById(@PathVariable Long id) {
         service.deleteSchoolClassById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.DELETE, HttpStatus.OK, "School class deleted successfully", uri);
@@ -64,7 +65,7 @@ public class SchoolClassController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse updateSchoolClass(@PathVariable Long id, @RequestBody SchoolClassRequestApiDto dto) {
+    public ApiResponse<?> updateSchoolClass(@PathVariable Long id, @RequestBody SchoolClassRequestApiDto dto) {
         SchoolClassResponseApiDto responseApiDto = service.updateSchoolClass(id, dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/schoolclasses")

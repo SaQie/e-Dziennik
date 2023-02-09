@@ -1,11 +1,9 @@
 package pl.edziennik.eDziennik.server.user.domain.dto;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@AllArgsConstructor
+@Builder
 @Getter
 public class UserRequestDto {
 
@@ -18,5 +16,13 @@ public class UserRequestDto {
     private String password;
     private String email;
     private String role;
+
+    private String firstName;
+    private String lastName;
+    private String pesel;
+
+    private String address;
+    private String postalCode;
+    private String city;
 
 }
