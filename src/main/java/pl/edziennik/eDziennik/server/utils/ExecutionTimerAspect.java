@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class ExecutionTimerAspect {
 
+    /**
+     * This method allows to show method execution time
+     */
     @Around("@annotation(pl.edziennik.eDziennik.server.utils.ExecutionTimer)")
     public Object runTimer(ProceedingJoinPoint joinPoint) throws Throwable {
         long startTime = System.currentTimeMillis();

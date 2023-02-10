@@ -11,6 +11,9 @@ import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Optional;
 
+/**
+ * Validator that check, school with nip already exists
+ */
 @Component
 @AllArgsConstructor
 public class SchoolNipAlreadyExistsValidator implements SchoolValidators{

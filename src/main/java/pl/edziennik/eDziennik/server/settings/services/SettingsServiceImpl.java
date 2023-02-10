@@ -23,6 +23,7 @@ class SettingsServiceImpl implements SettingsService {
     @Autowired
     private ResourceCreator resourceCreator;
 
+    // Cache for settings
     private List<SettingsDto> cacheSettingsList;
 
     @Override

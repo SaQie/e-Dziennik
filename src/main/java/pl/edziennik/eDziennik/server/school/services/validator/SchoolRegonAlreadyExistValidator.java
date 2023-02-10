@@ -12,6 +12,9 @@ import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Validator that check, school with regon already exists
+ */
 @Component
 @AllArgsConstructor
 public class SchoolRegonAlreadyExistValidator implements SchoolValidators{

@@ -17,6 +17,7 @@ public class GradeManagmentValidationService extends BaseService {
 
     protected void checkGradeExistInStudentSubject(Long idGrade, Long idStudentSubject) {
         Grade grade = dao.get(idGrade);
+        // I have to check, the grade exist in student subject
         if (!grade.getStudentSubject().getId().equals(idStudentSubject)) {
             ValidatorUtil.makeAndThrowBusinessException(this.getClass().getSimpleName(),
                     getMessage(EXCEPTION_MESSAGE_GRADE_NOT_BELONG_TO_STUDENT_SUBJECT));

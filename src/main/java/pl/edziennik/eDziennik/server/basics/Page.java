@@ -5,6 +5,10 @@ import lombok.Setter;
 
 import java.util.function.Function;
 
+/**
+ * Class that wrapping entity to pageable rest api response
+ * @param <T>
+ */
 @Getter
 @Setter
 public class Page<T> {
@@ -16,6 +20,9 @@ public class Page<T> {
 
     private T entity;
 
+    /**
+     * Method maps wrapped page object to another
+     */
     public <E> Page<E> map(Function<T, E> function){
         Page<E> page = new Page<>();
         page.setActualPage(this.actualPage);

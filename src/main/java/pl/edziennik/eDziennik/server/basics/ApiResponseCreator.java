@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/**
+ *  Builder class for rest api response
+ */
 public class ApiResponseCreator {
 
     public static<T> ApiResponse<T> buildApiResponse(HttpMethod method, HttpStatus status, T result, URI url){

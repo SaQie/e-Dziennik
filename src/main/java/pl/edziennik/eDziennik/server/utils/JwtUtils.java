@@ -15,6 +15,9 @@ import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Utility class for jwt token authentication
+ */
 @Component
 public class JwtUtils {
 

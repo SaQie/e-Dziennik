@@ -1,70 +1,97 @@
 package pl.edziennik.eDziennik.server.basics;
 
-import liquibase.pro.packaged.T;
-import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityManager;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public interface IBaseDao<E extends AbstractEntity>{
+/**
+ * Basics interface for DAO
+ *
+ * @param <E>
+ */
+public interface IBaseDao<E extends AbstractEntity> {
 
+    /**
+     * This method return list of all objects without pagination
+     */
     List<E> findAll();
 
+    /**
+     * This method return list of objects with pagination functionality
+     * Throws BussinesException when page or size is less or equal zero
+     */
     Page<List<E>> findAll(int page, int size);
 
+    /**
+     * This method saves new entity or update if entity already exist
+     */
     E saveOrUpdate(final E entity);
 
+    /**
+     * This method saves all entities in list
+     */
     List<E> saveAll(final List<E> entities);
 
+    /**
+     * This method return optional of finded entity
+     */
     Optional<E> find(final Long id);
 
+    /**
+     * This method return an object if exists or throws EntityNotFoundException
+     */
     E get(final Long id);
 
+    /**
+     * This method return true if object exist by id
+     */
     boolean isExist(final Long id);
 
+
+    /**
+     * This method return true if object exist by id
+     */
     <T> boolean isExist(Class<T> clazz, final Long id);
 
+    /**
+     * This method removes an entity
+     */
     void remove(final E entity);
 
+    /**
+     * This method removes an entity by id
+     */
     void remove(final Long id);
 
+    /**
+     * This method return class name passed as generic argument
+     */
     String getClazzName();
 
+    /**
+     * This method returns entity manager instance
+     */
     EntityManager getEm();
 
+    /**
+     * This method returns optional of finded object
+     */
     <T> Optional<T> find(Class<T> clazz, final Long id);
 
     /**
      * Return object or throws EntityNotFoundException when not exist
-     *
-     * @param clazz
-     * @param id
-     * @param <T>
-     * @return
      */
     <T> T get(Class<T> clazz, final Long id);
 
     /**
      * Execute consumer on found object or throws EntityNotFoundException if not exist
-     *
-     * @param id
-     * @param consumer
-     * @param <T>
      */
     <T> void findWithExecute(final Long id, final Consumer<T> consumer);
 
-
     /**
      * Execute consumer on found object or throws EntityNotFoundException if not exist
-     *
-     * @param clazz
-     * @param id
-     * @param consumer
-     * @param <T>
      */
-    <T> void findWithExecute(Class<T> clazz,final Long id, final Consumer<T> consumer);
+    <T> void findWithExecute(Class<T> clazz, final Long id, final Consumer<T> consumer);
 
 }

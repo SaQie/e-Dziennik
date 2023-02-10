@@ -21,6 +21,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 
+/**
+ * Handler for failure login (bad credentials)
+ */
 @Component
 @Slf4j
 public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {

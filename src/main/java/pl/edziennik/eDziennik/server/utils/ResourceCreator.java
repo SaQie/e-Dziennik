@@ -9,16 +9,25 @@ import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 
+/**
+ * Utility class for getting translated messages
+ */
 @Component
 public class ResourceCreator {
 
     @Autowired
     private MessageSource messageSource;
 
+    /**
+     * Return translated message with params
+     */
     public String of(String errorCode, Object... objects){
         return messageSource.getMessage(errorCode, objects, LocaleContextHolder.getLocale());
     }
 
+    /**
+     * Return translated message
+     */
     public String of(String errorCode){
         return messageSource.getMessage(errorCode,null, LocaleContextHolder.getLocale());
     }

@@ -39,21 +39,43 @@ public abstract class ServiceValidator<T, E> extends BaseService{
 
     protected abstract void valid(E dto);
 
+    /**
+     * This method run chain-of-responsibility pattern of defined validators sorted by priority (High-Low)
+     *
+     * @param e
+     */
     protected void validateByPriority(E e) {
         checkValidators();
         validator.validateByPriority(e);
     }
 
+    /**
+     * This method run chain-of-responsibility patter of defined validators sorted by ids ASC
+     *
+     * @param e
+     */
     protected void validateByIds(E e) {
         checkValidators();
         validator.validateByIds(e);
     }
 
+    /**
+     * This method run only one selected validator by Id
+     *
+     * @param e
+     * @param validatorId
+     */
     protected void runSelectedValidator(E e, Integer validatorId) {
         checkValidators();
         validator.runSelectedValidator(e, validatorId);
     }
 
+    /**
+     * This method run chain-of-responsibility patter for defined validators with only selected priority
+     *
+     * @param e
+     * @param priority
+     */
     protected void validateBySelectedPriority(E e, ValidatorPriority priority) {
         checkValidators();
         validator.validateBySelectedPriority(e, priority);

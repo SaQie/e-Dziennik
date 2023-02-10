@@ -1,6 +1,5 @@
 package pl.edziennik.eDziennik.server.basics;
 
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.exceptions.BusinessException;
 
@@ -9,7 +8,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-
+/**
+ * Validator class
+ * @param <T>
+ */
 @Component
 class Validator<T> {
 

@@ -32,7 +32,7 @@ public class SchoolClass extends AbstractEntity {
 
     @OneToMany(mappedBy = "schoolClass")
     private List<Subject> subjects = new ArrayList<>();
-
+    
     @OneToOne(fetch = FetchType.LAZY)
     private Teacher teacher;
 

@@ -17,6 +17,9 @@ import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Validator that check, student has already assigned subject
+ */
 @Component
 @AllArgsConstructor
 class StudentSubjectAlreadyExistValidator implements StudentSubjectValidators{

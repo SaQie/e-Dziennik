@@ -15,6 +15,9 @@ import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Validator that check the selected subject is from the same school class as student
+ */
 @Component
 @AllArgsConstructor
 class StudentCannotBeAssignedToSubjectFromDifferentClassValidator implements StudentSubjectValidators{

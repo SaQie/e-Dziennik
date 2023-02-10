@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Handler for logout action
+ */
 @Component
 @Slf4j
 public class AuthLogoutHandler implements LogoutHandler {

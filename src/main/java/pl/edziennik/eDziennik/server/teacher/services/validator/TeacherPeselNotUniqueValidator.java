@@ -14,6 +14,9 @@ import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Validator for already existing teachers pesel numbers
+ */
 @Component
 @AllArgsConstructor
 class TeacherPeselNotUniqueValidator implements TeacherValidators{
@@ -41,7 +44,7 @@ class TeacherPeselNotUniqueValidator implements TeacherValidators{
     @Override
     public Optional<ApiErrorsDto> validate(TeacherRequestApiDto dto) {
         if (dao.isTeacherExistByPesel(dto.getPesel())){
-            String message = resourceCreator.of(EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, Teacher.class.getSimpleName(), dto.getPesel());
+            String message = resourceCreator.of(EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, dto.getPesel());
 
             ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
                     .field(TeacherRequestApiDto.PESEL)

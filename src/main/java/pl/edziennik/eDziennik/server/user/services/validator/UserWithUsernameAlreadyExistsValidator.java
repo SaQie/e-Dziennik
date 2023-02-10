@@ -13,6 +13,9 @@ import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Validator for already existing usernames
+ */
 @Component
 @AllArgsConstructor
 class UserWithUsernameAlreadyExistsValidator implements UserValidators {

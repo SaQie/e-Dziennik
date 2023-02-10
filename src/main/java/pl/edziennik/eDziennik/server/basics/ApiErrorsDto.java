@@ -8,6 +8,9 @@ import lombok.Getter;
 
 import java.util.List;
 
+/**
+ * Dto class for errors
+ */
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Builder

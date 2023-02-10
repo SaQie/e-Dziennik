@@ -14,6 +14,9 @@ import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Validator for check that school class belongs to school when adding student
+ */
 @Component
 @AllArgsConstructor
 class StudentSchoolClassNotBelongsToSchoolValidator implements StudentValidators{

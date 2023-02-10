@@ -69,7 +69,8 @@ public class TeacherIntegrationTest extends BaseTest {
         // given
         TeacherRequestApiDto dto = util.prepareTeacherRequestDto();
         Long id = service.register(dto).getId();
-        TeacherRequestApiDto expected = util.prepareTeacherRequestDto("AfterEdit", "AfterEdit2", "5555551", "test2@example.com");
+        TeacherRequestApiDto expected = util.prepareTeacherRequestDto("AfterEdit", "AfterEdit2", "5555551",
+                "test2" + "@example.com");
 
         // when
         Long updated = service.updateTeacher(id, expected).getId();
@@ -100,14 +101,16 @@ public class TeacherIntegrationTest extends BaseTest {
 
         // then
         Exception exception = assertThrows(EntityNotFoundException.class, () -> service.findTeacherById(id));
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", id, Teacher.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", id,
+                Teacher.class.getSimpleName()));
     }
 
     @Test
     public void shouldFindListOfTeachers() {
         // given
         TeacherRequestApiDto firstTeacher = util.prepareTeacherRequestDto();
-        TeacherRequestApiDto secondTeacher = util.prepareTeacherRequestDto("TEST1", "TESTOWY2", "12356", "test2@example.com");
+        TeacherRequestApiDto secondTeacher = util.prepareTeacherRequestDto("TEST1", "TESTOWY2", "12356", "test2" +
+                "@example.com");
         Long firstTeacherId = service.register(firstTeacher).getId();
         Long secondTeacherId = service.register(secondTeacher).getId();
         assertNotNull(firstTeacherId);
@@ -166,7 +169,8 @@ public class TeacherIntegrationTest extends BaseTest {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> service.register(dto));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchool, School.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchool,
+                School.class.getSimpleName()));
     }
 
     @Test
@@ -181,9 +185,11 @@ public class TeacherIntegrationTest extends BaseTest {
 
         // then
         assertEquals(1, exception.getErrors().size());
-        assertEquals(TeacherValidators.TEACHER_PESEL_NOT_UNIQUE_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(TeacherValidators.TEACHER_PESEL_NOT_UNIQUE_VALIDATOR_NAME,
+                exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(TeacherRequestApiDto.PESEL, exception.getErrors().get(0).getField());
-        String expectedExceptionMessage = resourceCreator.of(TeacherValidators.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, Teacher.class.getSimpleName(), dto.getPesel());
+        String expectedExceptionMessage = resourceCreator.of(TeacherValidators.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE,
+                dto.getPesel());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 

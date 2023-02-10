@@ -14,6 +14,9 @@ import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Validator that check, attributed teacher is already class master
+ */
 @Component
 @AllArgsConstructor
 class TeacherIsAlreadySupervisingTeacherValidator implements SchoolClassValidators {

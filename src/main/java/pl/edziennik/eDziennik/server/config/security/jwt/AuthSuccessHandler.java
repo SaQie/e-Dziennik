@@ -25,6 +25,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 
+/**
+ * Handler for success login
+ */
 @Component
 @Slf4j
 public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {

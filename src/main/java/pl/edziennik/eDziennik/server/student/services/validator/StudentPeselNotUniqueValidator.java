@@ -16,6 +16,9 @@ import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Validator for already existing students pesel numbers
+ */
 @Component
 @AllArgsConstructor
 class StudentPeselNotUniqueValidator implements StudentValidators{

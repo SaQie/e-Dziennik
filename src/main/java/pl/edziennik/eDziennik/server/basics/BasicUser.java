@@ -14,6 +14,9 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * Basic class for User
+ */
 @MappedSuperclass
 @AllArgsConstructor
 @NoArgsConstructor

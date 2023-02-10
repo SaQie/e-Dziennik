@@ -18,6 +18,9 @@ import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 import javax.persistence.TypedQuery;
 import java.util.Optional;
 
+/**
+ * Basic validator (simple most used checks)
+ */
 @Service
 public class BasicValidator extends BaseDao<User>{
 

@@ -12,6 +12,9 @@ import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Validator that check, school with name already exists
+ */
 @Component
 @AllArgsConstructor
 class SchoolAlreadyExistsValidator implements SchoolValidators{

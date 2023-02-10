@@ -1,0 +1,17 @@
+services:
+  app:
+    container_name: app-e-dziennik
+    image: app-e-dziennik
+    build: ./
+    ports:
+      - "8080:8080"
+    depends_on:
+      - local-postgresql
+  local-postgresql:
+    image: postgres:12-alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=postgres

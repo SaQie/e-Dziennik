@@ -13,6 +13,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/**
+ * Basic class for rest api response
+ * @param <T>
+ */
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data

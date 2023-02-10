@@ -15,6 +15,9 @@ import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Validator for already existing subject in school class
+ */
 @Component
 @AllArgsConstructor
 class SubjectAlreadyExistValidator implements SubjectValidators{

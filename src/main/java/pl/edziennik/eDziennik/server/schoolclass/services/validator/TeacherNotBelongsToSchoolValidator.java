@@ -14,6 +14,9 @@ import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Validator that check, attributing teacher is from the same school
+ */
 @Component
 @AllArgsConstructor
 class TeacherNotBelongsToSchoolValidator implements SchoolClassValidators {

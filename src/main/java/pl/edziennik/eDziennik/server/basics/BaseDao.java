@@ -26,6 +26,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+/**
+ * Basics dao class
+ * @param <E>
+ */
 @Repository
 @SuppressWarnings("unchecked")
 @Transactional(readOnly = true)
@@ -44,6 +48,7 @@ public abstract class BaseDao<E extends AbstractEntity> implements IBaseDao<E> {
         ParameterizedType pt = (ParameterizedType) t;
         clazz = (Class) pt.getActualTypeArguments()[0];
     }
+
 
     @Override
     public Optional<E> find(final Long id) {
@@ -107,6 +112,7 @@ public abstract class BaseDao<E extends AbstractEntity> implements IBaseDao<E> {
         return entity;
     }
 
+
     @Override
     @Transactional
     public void remove(final E entity) {
@@ -121,10 +127,12 @@ public abstract class BaseDao<E extends AbstractEntity> implements IBaseDao<E> {
         return "";
     }
 
+
     @Override
     public <T> Optional<T> find(Class<T> clazz, Long id) {
         return Optional.ofNullable(em.find(clazz, id));
     }
+
 
     @Override
     public EntityManager getEm() {
@@ -140,6 +148,7 @@ public abstract class BaseDao<E extends AbstractEntity> implements IBaseDao<E> {
         }
     }
 
+
     @Override
     public boolean isExist(Long id) {
         E e = em.find(clazz, id);
@@ -151,7 +160,6 @@ public abstract class BaseDao<E extends AbstractEntity> implements IBaseDao<E> {
         T t = em.find(clazz, id);
         return t != null;
     }
-
     @Override
     public E get(Long id) {
         E e = em.find(clazz, id);
