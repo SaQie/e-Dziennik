@@ -1,22 +1,17 @@
 package pl.edziennik.eDziennik.server.basics;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
 import pl.edziennik.eDziennik.exceptions.BusinessException;
 import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
-import pl.edziennik.eDziennik.server.utils.PersistanceHelper;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
@@ -28,14 +23,14 @@ import java.util.function.Consumer;
 
 /**
  * Basics dao class
- * @param <E>
+ * @param <ENTITY>
  */
 @Repository
 @SuppressWarnings("unchecked")
 @Transactional(readOnly = true)
-public abstract class BaseDao<E extends AbstractEntity> implements IBaseDao<E> {
+public abstract class BaseDao<ENTITY extends AbstractEntity> implements IBaseDao<ENTITY> {
 
-    private final Class<E> clazz;
+    private final Class<ENTITY> clazz;
 
     @Autowired
     private ResourceCreator resourceCreator;
@@ -51,17 +46,17 @@ public abstract class BaseDao<E extends AbstractEntity> implements IBaseDao<E> {
 
 
     @Override
-    public Optional<E> find(final Long id) {
+    public Optional<ENTITY> find(final Long id) {
         return Optional.ofNullable(em.find(clazz, id));
     }
 
     @Override
-    public List<E> findAll() {
+    public List<ENTITY> findAll() {
         return em.createQuery("from " + clazz.getName()).getResultList();
     }
 
     @Override
-    public Page<List<E>> findAll(int page, int size) {
+    public Page<List<ENTITY>> findAll(int page, int size) {
         if (page <= 0 || size <=0){
             throw new BusinessException("Page or size cannot be negative or zero");
         }
@@ -75,9 +70,9 @@ public abstract class BaseDao<E extends AbstractEntity> implements IBaseDao<E> {
         findAllQuery.setMaxResults(size);
         findAllQuery.setFirstResult((page - 1) * size);
 
-        List<E> resultList = findAllQuery.getResultList();
+        List<ENTITY> resultList = findAllQuery.getResultList();
 
-        Page<List<E>> pageObj = new Page<>();
+        Page<List<ENTITY>> pageObj = new Page<>();
         pageObj.setActualPage(page);
         pageObj.setItemsTotalCount(itemsCount);
         pageObj.setItemsOnPage(resultList.size());
@@ -89,9 +84,9 @@ public abstract class BaseDao<E extends AbstractEntity> implements IBaseDao<E> {
 
     @Override
     @Transactional
-    public List<E> saveAll(List<E> entities) {
-        List<E> savedEntities = new ArrayList<>();
-        for (E entity : entities) {
+    public List<ENTITY> saveAll(List<ENTITY> entities) {
+        List<ENTITY> savedEntities = new ArrayList<>();
+        for (ENTITY entity : entities) {
             if (!entity.isNew()) {
                 savedEntities.add(em.merge(entity));
             } else {
@@ -104,7 +99,7 @@ public abstract class BaseDao<E extends AbstractEntity> implements IBaseDao<E> {
 
     @Override
     @Transactional
-    public E saveOrUpdate(final E entity) {
+    public ENTITY saveOrUpdate(final ENTITY entity) {
         if (!entity.isNew()) {
             return em.merge(entity);
         }
@@ -115,7 +110,7 @@ public abstract class BaseDao<E extends AbstractEntity> implements IBaseDao<E> {
 
     @Override
     @Transactional
-    public void remove(final E entity) {
+    public void remove(final ENTITY entity) {
         em.remove(em.contains(entity) ? entity : em.merge(entity));
     }
 
@@ -142,17 +137,17 @@ public abstract class BaseDao<E extends AbstractEntity> implements IBaseDao<E> {
     @Override
     @Transactional
     public void remove(Long id) {
-        E e = em.find(clazz, id);
-        if (e != null) {
-            em.remove(e);
+        ENTITY entity = em.find(clazz, id);
+        if (entity != null) {
+            em.remove(entity);
         }
     }
 
 
     @Override
     public boolean isExist(Long id) {
-        E e = em.find(clazz, id);
-        return e != null;
+        ENTITY entity = em.find(clazz, id);
+        return entity != null;
     }
 
     @Override
@@ -161,12 +156,12 @@ public abstract class BaseDao<E extends AbstractEntity> implements IBaseDao<E> {
         return t != null;
     }
     @Override
-    public E get(Long id) {
-        E e = em.find(clazz, id);
-        if (e == null) {
+    public ENTITY get(Long id) {
+        ENTITY entity = em.find(clazz, id);
+        if (entity == null) {
             throw new EntityNotFoundException(createNotFoundExceptionMessage(id,clazz.getSimpleName()));
         }
-        return e;
+        return entity;
     }
 
     @Override
@@ -189,11 +184,11 @@ public abstract class BaseDao<E extends AbstractEntity> implements IBaseDao<E> {
 
     @Override
     public <T> void findWithExecute(Long id, Consumer<T> consumer) {
-        E e = em.find(clazz, id);
-        if (e == null) {
+        ENTITY entity = em.find(clazz, id);
+        if (entity == null) {
             throw new EntityNotFoundException(createNotFoundExceptionMessage(id,clazz.getSimpleName()));
         }
-        consumer.accept((T) e);
+        consumer.accept((T) entity);
     }
 
     private String createNotFoundExceptionMessage(Long id, String className) {

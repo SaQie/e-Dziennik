@@ -11,7 +11,7 @@ import pl.edziennik.eDziennik.server.schoollevel.dao.SchoolLevelDao;
 
 @Service
 @AllArgsConstructor
-public class SchoolValidatorService extends ServiceValidator<SchoolValidators, SchoolRequestApiDto> {
+class SchoolValidatorService extends ServiceValidator<SchoolValidators, SchoolRequestApiDto> {
 
     @Override
     protected void valid(SchoolRequestApiDto dto) {

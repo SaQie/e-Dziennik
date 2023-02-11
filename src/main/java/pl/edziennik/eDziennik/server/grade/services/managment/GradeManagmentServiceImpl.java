@@ -13,7 +13,6 @@ import pl.edziennik.eDziennik.server.studensubject.dao.StudentSubjectDao;
 import pl.edziennik.eDziennik.server.studensubject.domain.StudentSubject;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.mapper.StudentSubjectMapper;
 import pl.edziennik.eDziennik.server.studensubject.domain.dto.response.StudentGradesInSubjectDto;
-import pl.edziennik.eDziennik.server.studensubject.services.StudentSubjectValidatorService;
 import pl.edziennik.eDziennik.server.teacher.dao.TeacherDao;
 import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
 

@@ -9,7 +9,7 @@ import pl.edziennik.eDziennik.server.utils.ValidatorUtil;
 
 @Service
 @AllArgsConstructor
-public class GradeManagmentValidationService extends BaseService {
+class GradeManagmentValidationService extends BaseService {
 
     public static final String EXCEPTION_MESSAGE_GRADE_NOT_BELONG_TO_STUDENT_SUBJECT = "grade.not.belong.to.student.subject";
 

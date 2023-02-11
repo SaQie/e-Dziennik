@@ -13,7 +13,7 @@ import pl.edziennik.eDziennik.server.teacher.services.validator.TeacherValidator
 
 @Service
 @AllArgsConstructor
-public class TeacherValidatorService extends ServiceValidator<TeacherValidators, TeacherRequestApiDto> {
+class TeacherValidatorService extends ServiceValidator<TeacherValidators, TeacherRequestApiDto> {
 
     @Override
     protected void valid(TeacherRequestApiDto dto) {

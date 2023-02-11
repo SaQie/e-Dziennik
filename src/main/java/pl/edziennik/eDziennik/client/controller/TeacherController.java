@@ -9,6 +9,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.eDziennik.authentication.AuthCredentials;
 import pl.edziennik.eDziennik.server.basics.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.ApiResponseCreator;
+import pl.edziennik.eDziennik.server.role.dao.RoleDao;
+import pl.edziennik.eDziennik.server.role.domain.Role;
+import pl.edziennik.eDziennik.server.teacher.dao.TeacherDao;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherResponseApiDto;
 import pl.edziennik.eDziennik.server.teacher.services.TeacherService;
@@ -62,7 +65,8 @@ class TeacherController {
     public ApiResponse<?> deleteTeacher(@PathVariable Long id) {
         service.deleteTeacherById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ApiResponseCreator.buildApiResponse(HttpMethod.DELETE, HttpStatus.OK, "Teacher deleted successfully", uri);
+        return ApiResponseCreator.buildApiResponse(HttpMethod.DELETE, HttpStatus.OK, "Teacher deleted successfully",
+                uri);
     }
 
     @PutMapping("/{id}")

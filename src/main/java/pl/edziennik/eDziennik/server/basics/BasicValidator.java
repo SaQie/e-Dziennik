@@ -27,9 +27,6 @@ public class BasicValidator extends BaseDao<User>{
     @Autowired
     private ResourceCreator resourceCreator;
 
-    @Autowired
-    private UserDao userDao;
-
     public void checkStudentExist(final Long idStudent){
         get(Student.class, idStudent);
     }

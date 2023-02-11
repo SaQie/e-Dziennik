@@ -248,7 +248,6 @@ public class StudentIntegrationTest extends BaseTest {
         StudentResponseApiDto register = service.register(dto);
         StudentRequestApiDto dto2 = util.prepareStudentRequestDto("xxx", "xxx", "xxxx", "00000000000", "test2@example.com");
 
-        Student student = find(Student.class, register.getId());
         // when
         BusinessException exception = assertThrows(BusinessException.class, () -> service.register(dto2));
 

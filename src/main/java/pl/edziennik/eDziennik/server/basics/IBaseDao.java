@@ -8,40 +8,40 @@ import java.util.function.Consumer;
 /**
  * Basics interface for DAO
  *
- * @param <E>
+ * @param <ENTITY>
  */
-public interface IBaseDao<E extends AbstractEntity> {
+public interface IBaseDao<ENTITY extends AbstractEntity> {
 
     /**
      * This method return list of all objects without pagination
      */
-    List<E> findAll();
+    List<ENTITY> findAll();
 
     /**
      * This method return list of objects with pagination functionality
      * Throws BussinesException when page or size is less or equal zero
      */
-    Page<List<E>> findAll(int page, int size);
+    Page<List<ENTITY>> findAll(int page, int size);
 
     /**
      * This method saves new entity or update if entity already exist
      */
-    E saveOrUpdate(final E entity);
+    ENTITY saveOrUpdate(final ENTITY entity);
 
     /**
      * This method saves all entities in list
      */
-    List<E> saveAll(final List<E> entities);
+    List<ENTITY> saveAll(final List<ENTITY> entities);
 
     /**
      * This method return optional of finded entity
      */
-    Optional<E> find(final Long id);
+    Optional<ENTITY> find(final Long id);
 
     /**
      * This method return an object if exists or throws EntityNotFoundException
      */
-    E get(final Long id);
+    ENTITY get(final Long id);
 
     /**
      * This method return true if object exist by id
@@ -57,7 +57,7 @@ public interface IBaseDao<E extends AbstractEntity> {
     /**
      * This method removes an entity
      */
-    void remove(final E entity);
+    void remove(final ENTITY entity);
 
     /**
      * This method removes an entity by id

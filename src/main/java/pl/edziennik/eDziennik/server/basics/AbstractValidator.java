@@ -3,16 +3,19 @@ package pl.edziennik.eDziennik.server.basics;
 import java.util.Optional;
 
 /**
- * Basic interface for {@link Validator} chain
+ * Basic interface for validate
  *
- * @param <T>
+ * @param <INPUT>
  */
-public interface AbstractValidator<T>{
+public interface AbstractValidator<INPUT> {
 
     String getValidatorName();
+
     Integer getValidationNumber();
+
     ValidatorPriority getValidationPriority();
-    Optional<ApiErrorsDto> validate(T e);
+
+    Optional<ApiErrorsDto> validate(INPUT e);
 
 
 }

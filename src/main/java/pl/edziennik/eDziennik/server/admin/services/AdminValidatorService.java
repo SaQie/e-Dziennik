@@ -10,7 +10,7 @@ import pl.edziennik.eDziennik.server.basics.ServiceValidator;
 
 @Service
 @AllArgsConstructor
-public class AdminValidatorService extends ServiceValidator<AdminValidators, AdminRequestApiDto> {
+class AdminValidatorService extends ServiceValidator<AdminValidators, AdminRequestApiDto> {
 
     @Override
     protected void valid(AdminRequestApiDto dto) {
