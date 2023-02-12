@@ -2,19 +2,17 @@ package pl.edziennik.eDziennik;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import liquibase.pro.packaged.P;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
-import pl.edziennik.eDziennik.server.basics.BaseDao;
-import pl.edziennik.eDziennik.server.personinformation.PersonInformation;
-import pl.edziennik.eDziennik.server.school.domain.School;
-import pl.edziennik.eDziennik.server.student.domain.Student;
-import pl.edziennik.eDziennik.server.user.domain.User;
+import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
+import pl.edziennik.eDziennik.server.basics.dao.BaseDao;
+import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
+import pl.edziennik.eDziennik.domain.student.domain.Student;
+import pl.edziennik.eDziennik.domain.user.domain.User;
 
 import java.util.List;
 

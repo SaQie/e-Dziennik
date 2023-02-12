@@ -7,27 +7,21 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
-import pl.edziennik.eDziennik.exceptions.BusinessException;
-import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
-import pl.edziennik.eDziennik.server.basics.BaseDao;
-import pl.edziennik.eDziennik.server.school.domain.School;
-import pl.edziennik.eDziennik.server.school.domain.dto.SchoolRequestApiDto;
-import pl.edziennik.eDziennik.server.school.services.validator.SchoolValidators;
-import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
-import pl.edziennik.eDziennik.server.student.domain.Student;
-import pl.edziennik.eDziennik.server.subject.domain.Subject;
-import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectRequestApiDto;
-import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectResponseApiDto;
-import pl.edziennik.eDziennik.server.subject.services.SubjectService;
-import pl.edziennik.eDziennik.server.subject.services.validator.SubjectValidators;
-import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
-import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
-import pl.edziennik.eDziennik.server.teacher.services.TeacherService;
+import pl.edziennik.eDziennik.server.exceptions.BusinessException;
+import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
+import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
+import pl.edziennik.eDziennik.domain.subject.domain.Subject;
+import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
+import pl.edziennik.eDziennik.domain.subject.dto.SubjectResponseApiDto;
+import pl.edziennik.eDziennik.domain.subject.services.SubjectService;
+import pl.edziennik.eDziennik.domain.subject.services.validator.SubjectValidators;
+import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
+import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
+import pl.edziennik.eDziennik.domain.teacher.services.TeacherService;
 import pl.edziennik.eDziennik.teacher.TeacherIntegrationTestUtil;
 
 import java.util.List;
 
-import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 

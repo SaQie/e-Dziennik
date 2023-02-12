@@ -7,17 +7,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
-import pl.edziennik.eDziennik.exceptions.BusinessException;
-import pl.edziennik.eDziennik.server.role.domain.Role;
-import pl.edziennik.eDziennik.server.teacher.domain.Teacher;
-import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
-import pl.edziennik.eDziennik.server.teacher.services.validator.TeacherValidators;
-import pl.edziennik.eDziennik.server.user.domain.User;
-import pl.edziennik.eDziennik.server.user.domain.dto.UserRequestDto;
-import pl.edziennik.eDziennik.server.user.services.UserService;
-import pl.edziennik.eDziennik.server.user.services.validator.UserValidators;
-
-import java.util.List;
+import pl.edziennik.eDziennik.server.exceptions.BusinessException;
+import pl.edziennik.eDziennik.domain.user.domain.User;
+import pl.edziennik.eDziennik.domain.user.dto.UserRequestDto;
+import pl.edziennik.eDziennik.domain.user.services.UserService;
+import pl.edziennik.eDziennik.domain.user.services.validator.UserValidators;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

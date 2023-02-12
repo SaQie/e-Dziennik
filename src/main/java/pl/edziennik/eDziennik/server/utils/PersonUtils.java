@@ -1,7 +1,7 @@
 package pl.edziennik.eDziennik.server.utils;
 
 import org.springframework.stereotype.Component;
-import pl.edziennik.eDziennik.server.personinformation.PersonInformation;
+import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
 
 /**
  * Utility class for getting person information

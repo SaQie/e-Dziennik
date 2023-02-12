@@ -9,10 +9,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
-import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
-import pl.edziennik.eDziennik.server.grade.domain.Grade;
-import pl.edziennik.eDziennik.server.grade.domain.dto.GradeRequestApiDto;
-import pl.edziennik.eDziennik.server.grade.services.GradeService;
+import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
+import pl.edziennik.eDziennik.domain.grade.domain.Grade;
+import pl.edziennik.eDziennik.domain.grade.dto.GradeRequestApiDto;
+import pl.edziennik.eDziennik.domain.grade.service.GradeService;
 
 import static org.junit.jupiter.api.Assertions.*;
 

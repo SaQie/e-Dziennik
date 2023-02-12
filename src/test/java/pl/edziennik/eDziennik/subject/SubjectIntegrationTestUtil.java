@@ -1,6 +1,6 @@
 package pl.edziennik.eDziennik.subject;
 
-import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectRequestApiDto;
+import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
 
 /**
  * Util class for Subject integration tests {@link SubjectIntegrationTest}

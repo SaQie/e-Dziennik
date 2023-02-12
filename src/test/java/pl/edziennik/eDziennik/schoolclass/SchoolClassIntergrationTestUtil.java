@@ -1,6 +1,6 @@
 package pl.edziennik.eDziennik.schoolclass;
 
-import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassRequestApiDto;
+import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassRequestApiDto;
 
 /**
  * Util class for student integration tests {@link SchoolClassIntegrationTest}

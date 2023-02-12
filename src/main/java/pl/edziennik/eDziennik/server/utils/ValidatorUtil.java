@@ -1,7 +1,7 @@
 package pl.edziennik.eDziennik.server.utils;
 
-import pl.edziennik.eDziennik.server.basics.ApiErrorsDto;
-import pl.edziennik.eDziennik.server.basics.ExceptionType;
+import pl.edziennik.eDziennik.server.basics.dto.ApiErrorsDto;
+import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
 
 public class ValidatorUtil {
 

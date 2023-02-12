@@ -1,7 +1,7 @@
 package pl.edziennik.eDziennik.teacher;
 
-import pl.edziennik.eDziennik.server.role.domain.Role;
-import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
+import pl.edziennik.eDziennik.domain.role.domain.Role;
+import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 
 /**
  * Util class for Teacher integration tests {@link TeacherIntegrationTest}

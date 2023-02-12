@@ -7,13 +7,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
-import pl.edziennik.eDziennik.server.settings.domain.SettingsDto;
-import pl.edziennik.eDziennik.server.settings.domain.SettingsValue;
-import pl.edziennik.eDziennik.server.settings.services.SettingsService;
+import pl.edziennik.eDziennik.domain.settings.dto.SettingsDto;
+import pl.edziennik.eDziennik.domain.settings.dto.SettingsValue;
+import pl.edziennik.eDziennik.domain.settings.services.SettingsService;
 
 import java.math.BigInteger;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;

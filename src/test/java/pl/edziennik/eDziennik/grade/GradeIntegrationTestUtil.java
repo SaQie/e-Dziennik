@@ -1,6 +1,6 @@
 package pl.edziennik.eDziennik.grade;
 
-import pl.edziennik.eDziennik.server.grade.domain.dto.GradeRequestApiDto;
+import pl.edziennik.eDziennik.domain.grade.dto.GradeRequestApiDto;
 
 /**
  * Util class for Grade integration test {@link GradeIntegrationTest}

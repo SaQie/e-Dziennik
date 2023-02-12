@@ -7,24 +7,24 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
-import pl.edziennik.eDziennik.exceptions.BusinessException;
-import pl.edziennik.eDziennik.exceptions.EntityNotFoundException;
+import pl.edziennik.eDziennik.server.exceptions.BusinessException;
+import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 import pl.edziennik.eDziennik.schoolclass.SchoolClassIntergrationTestUtil;
-import pl.edziennik.eDziennik.server.school.domain.School;
-import pl.edziennik.eDziennik.server.schoolclass.domain.SchoolClass;
-import pl.edziennik.eDziennik.server.schoolclass.domain.dto.SchoolClassRequestApiDto;
-import pl.edziennik.eDziennik.server.schoolclass.services.SchoolClassService;
-import pl.edziennik.eDziennik.server.settings.domain.SettingsValue;
-import pl.edziennik.eDziennik.server.settings.services.SettingsService;
-import pl.edziennik.eDziennik.server.student.domain.Student;
-import pl.edziennik.eDziennik.server.student.domain.dto.StudentRequestApiDto;
-import pl.edziennik.eDziennik.server.student.domain.dto.StudentResponseApiDto;
-import pl.edziennik.eDziennik.server.student.services.StudentService;
-import pl.edziennik.eDziennik.server.student.services.validator.StudentValidators;
-import pl.edziennik.eDziennik.server.subject.domain.dto.SubjectRequestApiDto;
-import pl.edziennik.eDziennik.server.subject.services.SubjectService;
-import pl.edziennik.eDziennik.server.teacher.domain.dto.TeacherRequestApiDto;
-import pl.edziennik.eDziennik.server.teacher.services.TeacherService;
+import pl.edziennik.eDziennik.domain.school.domain.School;
+import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
+import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassRequestApiDto;
+import pl.edziennik.eDziennik.domain.schoolclass.services.SchoolClassService;
+import pl.edziennik.eDziennik.domain.settings.dto.SettingsValue;
+import pl.edziennik.eDziennik.domain.settings.services.SettingsService;
+import pl.edziennik.eDziennik.domain.student.domain.Student;
+import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
+import pl.edziennik.eDziennik.domain.student.dto.StudentResponseApiDto;
+import pl.edziennik.eDziennik.domain.student.services.StudentService;
+import pl.edziennik.eDziennik.domain.student.services.validator.StudentValidators;
+import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
+import pl.edziennik.eDziennik.domain.subject.services.SubjectService;
+import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
+import pl.edziennik.eDziennik.domain.teacher.services.TeacherService;
 import pl.edziennik.eDziennik.subject.SubjectIntegrationTestUtil;
 import pl.edziennik.eDziennik.teacher.TeacherIntegrationTestUtil;
 
@@ -179,7 +179,7 @@ public class StudentIntegrationTest extends BaseTest {
         Long idStudent = 1L;
 
         // when
-        Exception exception = assertThrows(pl.edziennik.eDziennik.exceptions.EntityNotFoundException.class, () -> service.findStudentById(idStudent));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> service.findStudentById(idStudent));
 
         // then
         assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent, Student.class.getSimpleName()));
@@ -191,7 +191,7 @@ public class StudentIntegrationTest extends BaseTest {
         Long idStudent = 1L;
 
         // when
-        Exception exception = assertThrows(pl.edziennik.eDziennik.exceptions.EntityNotFoundException.class, () -> service.deleteStudentById(idStudent));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> service.deleteStudentById(idStudent));
 
         // then
         assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent, Student.class.getSimpleName()));
@@ -204,7 +204,7 @@ public class StudentIntegrationTest extends BaseTest {
         StudentRequestApiDto dto = util.prepareStudentRequestDto(idSchool);
 
         // when
-        Exception exception = assertThrows(pl.edziennik.eDziennik.exceptions.EntityNotFoundException.class, () -> service.register(dto));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> service.register(dto));
 
         // then
         assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchool, School.class.getSimpleName()));
