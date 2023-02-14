@@ -1,6 +1,6 @@
 package pl.edziennik.eDziennik.server.basics.validator;
 
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorsDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
 
 import java.util.Optional;
 
@@ -17,7 +17,7 @@ public interface AbstractValidator<INPUT> {
 
     ValidatorPriority getValidationPriority();
 
-    Optional<ApiErrorsDto> validate(INPUT e);
+    Optional<ApiErrorDto> validate(INPUT e);
 
 
 }

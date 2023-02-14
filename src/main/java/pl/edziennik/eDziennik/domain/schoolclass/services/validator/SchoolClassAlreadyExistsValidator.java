@@ -3,7 +3,7 @@ package pl.edziennik.eDziennik.domain.schoolclass.services.validator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.domain.schoolclass.dao.SchoolClassDao;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorsDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
 import pl.edziennik.eDziennik.server.basics.validator.ValidatorPriority;
 import pl.edziennik.eDziennik.domain.school.domain.School;
@@ -40,12 +40,12 @@ class SchoolClassAlreadyExistsValidator implements SchoolClassValidators {
     }
 
     @Override
-    public Optional<ApiErrorsDto> validate(SchoolClassRequestApiDto dto) {
+    public Optional<ApiErrorDto> validate(SchoolClassRequestApiDto dto) {
         if (dao.isSchoolClassAlreadyExist(dto.getClassName(), dto.getIdSchool())){
             String schoolName = dao.get(School.class, dto.getIdSchool()).getName();
             String message = resourceCreator.of(EXCEPTION_MESSAGE_SCHOOL_CLASS_ALREADY_EXIST, dto.getClassName(), schoolName);
 
-            ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
+            ApiErrorDto apiErrorDto = ApiErrorDto.builder()
                     .field(SchoolClassRequestApiDto.CLASS_NAME)
                     .cause(message)
                     .thrownImmediately(false)
@@ -53,7 +53,7 @@ class SchoolClassAlreadyExistsValidator implements SchoolClassValidators {
                     .exceptionType(ExceptionType.BUSINESS)
                     .build();
 
-            return Optional.of(apiErrorsDto);
+            return Optional.of(apiErrorDto);
         }
         return Optional.empty();
     }

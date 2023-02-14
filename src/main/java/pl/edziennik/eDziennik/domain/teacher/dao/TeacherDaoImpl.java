@@ -24,7 +24,7 @@ class TeacherDaoImpl extends BaseDao<Teacher> implements TeacherDao {
     }
 
     @Override
-    public boolean isTeacherExistByPesel(String pesel) {
+    public boolean isTeacherExistsByPesel(String pesel) {
         TypedQuery<Teacher> query = em.createNamedQuery(Queries.GET_TEACHER_BY_PESEL, Teacher.class);
         query.setParameter(Parameters.PESEL, pesel);
         return PersistanceHelper.isObjectExist(query);

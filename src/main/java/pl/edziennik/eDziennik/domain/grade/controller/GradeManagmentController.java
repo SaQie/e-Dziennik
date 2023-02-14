@@ -9,7 +9,7 @@ import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 import pl.edziennik.eDziennik.domain.grade.dto.GradeRequestApiDto;
 import pl.edziennik.eDziennik.domain.grade.service.managment.GradeManagmentService;
-import pl.edziennik.eDziennik.domain.studensubject.dto.response.StudentGradesInSubjectDto;
+import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentGradesInSubjectDto;
 
 import java.net.URI;
 import java.security.Principal;

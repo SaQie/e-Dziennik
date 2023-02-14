@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.eDziennik.domain.admin.dto.AdminRequestApiDto;
 import pl.edziennik.eDziennik.domain.admin.dto.AdminResponseApiDto;
-import pl.edziennik.eDziennik.domain.admin.service.AdminService;
+import pl.edziennik.eDziennik.domain.admin.services.AdminService;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 

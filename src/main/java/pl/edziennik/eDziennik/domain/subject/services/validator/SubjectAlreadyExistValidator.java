@@ -2,7 +2,7 @@ package pl.edziennik.eDziennik.domain.subject.services.validator;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorsDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
 import pl.edziennik.eDziennik.server.basics.validator.ValidatorPriority;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
@@ -41,13 +41,13 @@ class SubjectAlreadyExistValidator implements SubjectValidators{
     }
 
     @Override
-    public Optional<ApiErrorsDto> validate(SubjectRequestApiDto dto) {
+    public Optional<ApiErrorDto> validate(SubjectRequestApiDto dto) {
         if (dao.isSubjectAlreadyExist(dto.getName(), dto.getIdSchoolClass())){
             SchoolClass schoolClass = dao.get(SchoolClass.class, dto.getIdSchoolClass());
 
             String message = resourceCreator.of(EXCEPTION_MESSAGE_SUBJECT_ALREADY_EXIST, dto.getName(), schoolClass.getClassName());
 
-            ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
+            ApiErrorDto apiErrorDto = ApiErrorDto.builder()
                     .field(SubjectRequestApiDto.NAME)
                     .cause(message)
                     .thrownImmediately(false)
@@ -55,7 +55,7 @@ class SubjectAlreadyExistValidator implements SubjectValidators{
                     .exceptionType(ExceptionType.BUSINESS)
                     .build();
 
-            return Optional.of(apiErrorsDto);
+            return Optional.of(apiErrorDto);
         }
         return Optional.empty();
     }

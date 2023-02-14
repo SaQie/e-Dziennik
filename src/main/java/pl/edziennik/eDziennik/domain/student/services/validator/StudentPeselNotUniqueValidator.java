@@ -2,7 +2,7 @@ package pl.edziennik.eDziennik.domain.student.services.validator;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorsDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
 import pl.edziennik.eDziennik.server.basics.validator.ValidatorPriority;
 import pl.edziennik.eDziennik.domain.student.dao.StudentDao;
@@ -39,11 +39,11 @@ class StudentPeselNotUniqueValidator implements StudentValidators{
     }
 
     @Override
-    public Optional<ApiErrorsDto> validate(StudentRequestApiDto dto) {
+    public Optional<ApiErrorDto> validate(StudentRequestApiDto dto) {
         if (dao.isStudentExistsByPesel(dto.getPesel())){
             String message = resourceCreator.of(EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, dto.getPesel());
 
-            ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
+            ApiErrorDto apiErrorDto = ApiErrorDto.builder()
                     .field(StudentRequestApiDto.PESEL)
                     .cause(message)
                     .thrownImmediately(false)
@@ -51,7 +51,7 @@ class StudentPeselNotUniqueValidator implements StudentValidators{
                     .exceptionType(ExceptionType.BUSINESS)
                     .build();
 
-            return Optional.of(apiErrorsDto);
+            return Optional.of(apiErrorDto);
         }
         return Optional.empty();
     }

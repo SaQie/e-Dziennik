@@ -9,10 +9,10 @@ import pl.edziennik.eDziennik.server.basics.service.BaseService;
 import pl.edziennik.eDziennik.domain.grade.domain.Grade;
 import pl.edziennik.eDziennik.domain.grade.dto.GradeRequestApiDto;
 import pl.edziennik.eDziennik.domain.grade.service.GradeService;
-import pl.edziennik.eDziennik.domain.studensubject.dao.StudentSubjectDao;
-import pl.edziennik.eDziennik.domain.studensubject.domain.StudentSubject;
-import pl.edziennik.eDziennik.domain.studensubject.dto.mapper.StudentSubjectMapper;
-import pl.edziennik.eDziennik.domain.studensubject.dto.response.StudentGradesInSubjectDto;
+import pl.edziennik.eDziennik.domain.studentsubject.dao.StudentSubjectDao;
+import pl.edziennik.eDziennik.domain.studentsubject.domain.StudentSubject;
+import pl.edziennik.eDziennik.domain.studentsubject.dto.mapper.StudentSubjectMapper;
+import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentGradesInSubjectDto;
 import pl.edziennik.eDziennik.domain.teacher.dao.TeacherDao;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 

@@ -3,7 +3,7 @@ package pl.edziennik.eDziennik.server.basics.validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorsDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
@@ -35,7 +35,7 @@ public abstract class ServiceValidator<VALIDATORS extends AbstractValidator<INPU
      * @param input -> Object to validate
      */
     protected void runValidatorChain(INPUT input) {
-        List<ApiErrorsDto> errors = new ArrayList<>();
+        List<ApiErrorDto> errors = new ArrayList<>();
         validators.forEach(valid -> valid.validate(input).ifPresent(error -> {
             if (error.isThrownImmediately()) {
                 throw new BusinessException(error);
@@ -60,7 +60,7 @@ public abstract class ServiceValidator<VALIDATORS extends AbstractValidator<INPU
      * @param input -> Object to validate
      */
     protected void validateByPriority(INPUT input) {
-        List<ApiErrorsDto> errors = new ArrayList<>();
+        List<ApiErrorDto> errors = new ArrayList<>();
         validators.stream().sorted(Comparator.comparing(validator -> validator.getValidationPriority().ordinal())).
                 forEach(valid -> valid.validate(input).ifPresent(error -> {
                     if (error.isThrownImmediately()) {
@@ -79,7 +79,7 @@ public abstract class ServiceValidator<VALIDATORS extends AbstractValidator<INPU
      * @param input  -> Object to validate
      */
     protected void validateByIds(INPUT input) {
-        List<ApiErrorsDto> erros = new ArrayList<>();
+        List<ApiErrorDto> erros = new ArrayList<>();
         validators.stream().sorted(Comparator.comparing(AbstractValidator::getValidationNumber)).
                 forEach(valid -> valid.validate(input).ifPresent(error -> {
                     if (error.isThrownImmediately()) {
@@ -114,7 +114,7 @@ public abstract class ServiceValidator<VALIDATORS extends AbstractValidator<INPU
      * @param priority -> Validators priority which will be run
      */
     protected void validateBySelectedPriority(INPUT input, ValidatorPriority priority) {
-        List<ApiErrorsDto> erros = new ArrayList<>();
+        List<ApiErrorDto> erros = new ArrayList<>();
         validators.stream().filter(validator -> validator.getValidationPriority().equals(priority)).
                 forEach(valid -> valid.validate(input).ifPresent(error -> {
                     if (error.isThrownImmediately()) {

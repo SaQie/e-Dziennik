@@ -3,7 +3,7 @@ package pl.edziennik.eDziennik.domain.school.services.validator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.domain.school.dao.SchoolDao;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorsDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
 import pl.edziennik.eDziennik.server.basics.validator.ValidatorPriority;
 import pl.edziennik.eDziennik.domain.school.dto.SchoolRequestApiDto;
@@ -39,12 +39,12 @@ class SchoolRegonAlreadyExistValidator implements SchoolValidators{
     }
 
     @Override
-    public Optional<ApiErrorsDto> validate(SchoolRequestApiDto dto) {
+    public Optional<ApiErrorDto> validate(SchoolRequestApiDto dto) {
         if (dao.isSchoolWithRegonExist(dto.getRegon())){
 
             String message = resourceCreator.of(EXCEPTION_MESSAGE_SCHOOL_WITH_REGON_ALREADY_EXIST, dto.getRegon());
 
-            ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
+            ApiErrorDto apiErrorDto = ApiErrorDto.builder()
                     .field(SchoolRequestApiDto.REGON)
                     .cause(message)
                     .thrownImmediately(false)
@@ -52,7 +52,7 @@ class SchoolRegonAlreadyExistValidator implements SchoolValidators{
                     .exceptionType(ExceptionType.BUSINESS)
                     .build();
 
-            return Optional.of(apiErrorsDto);
+            return Optional.of(apiErrorDto);
 
         }
         return Optional.empty();

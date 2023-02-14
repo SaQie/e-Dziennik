@@ -1,7 +1,7 @@
 package pl.edziennik.eDziennik.domain.grade.service.managment;
 
 import pl.edziennik.eDziennik.domain.grade.dto.GradeRequestApiDto;
-import pl.edziennik.eDziennik.domain.studensubject.dto.response.StudentGradesInSubjectDto;
+import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentGradesInSubjectDto;
 
 public interface GradeManagmentService {
 

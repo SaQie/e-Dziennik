@@ -3,7 +3,7 @@ package pl.edziennik.eDziennik.domain.schoolclass.services.validator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.domain.schoolclass.dao.SchoolClassDao;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorsDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
 import pl.edziennik.eDziennik.server.basics.validator.ValidatorPriority;
 import pl.edziennik.eDziennik.domain.school.domain.School;
@@ -41,7 +41,7 @@ class TeacherNotBelongsToSchoolValidator implements SchoolClassValidators {
     }
 
     @Override
-    public Optional<ApiErrorsDto> validate(SchoolClassRequestApiDto dto) {
+    public Optional<ApiErrorDto> validate(SchoolClassRequestApiDto dto) {
         if (dto.getIdClassTeacher() != null) {
             if (!dao.isTeacherBelongsToSchool(dto.getIdClassTeacher(), dto.getIdSchool())) {
                 Teacher teacher = dao.get(Teacher.class, dto.getIdClassTeacher());
@@ -50,7 +50,7 @@ class TeacherNotBelongsToSchoolValidator implements SchoolClassValidators {
                 String schoolName = dao.get(School.class, dto.getIdSchool()).getName();
                 String message = resourceCreator.of(EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL, teacherName, schoolName);
 
-                ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
+                ApiErrorDto apiErrorDto = ApiErrorDto.builder()
                         .field(SchoolClassRequestApiDto.ID_CLASS_TEACHER)
                         .cause(message)
                         .thrownImmediately(false)
@@ -58,7 +58,7 @@ class TeacherNotBelongsToSchoolValidator implements SchoolClassValidators {
                         .exceptionType(ExceptionType.BUSINESS)
                         .build();
 
-                return Optional.of(apiErrorsDto);
+                return Optional.of(apiErrorDto);
             }
         }
         return Optional.empty();

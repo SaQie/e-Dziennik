@@ -22,7 +22,7 @@ public class ApiResponse<OUTPUT> {
     private URI url;
     private String executionTime;
     private String operationDescription;
-    private List<ApiErrorsDto> errors;
+    private List<ApiErrorDto> errors;
     private OUTPUT result;
 
 

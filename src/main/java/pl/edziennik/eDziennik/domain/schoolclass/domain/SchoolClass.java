@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.domain.schoolclass.domain;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.edziennik.eDziennik.server.basics.entity.AbstractEntity;
@@ -16,6 +17,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Getter
+@EqualsAndHashCode
 public class SchoolClass extends AbstractEntity {
 
     @Id

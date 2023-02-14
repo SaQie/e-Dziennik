@@ -2,7 +2,7 @@ package pl.edziennik.eDziennik.domain.schoolclass.services.validator;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorsDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
 import pl.edziennik.eDziennik.server.basics.validator.ValidatorPriority;
 import pl.edziennik.eDziennik.domain.schoolclass.dao.SchoolClassDao;
@@ -40,7 +40,7 @@ class TeacherIsAlreadySupervisingTeacherValidator implements SchoolClassValidato
     }
 
     @Override
-    public Optional<ApiErrorsDto> validate(SchoolClassRequestApiDto dto) {
+    public Optional<ApiErrorDto> validate(SchoolClassRequestApiDto dto) {
         if (dto.getIdClassTeacher() != null) {
             if (dao.isTeacherAlreadySupervisingTeacher(dto.getIdClassTeacher())) {
                 Teacher teacher = dao.get(Teacher.class, dto.getIdClassTeacher());
@@ -49,7 +49,7 @@ class TeacherIsAlreadySupervisingTeacherValidator implements SchoolClassValidato
                 String teacherName = teacher.getUser().getPersonInformation().getFirstName() + " " + teacher.getUser().getPersonInformation().getLastName();
                 String message = resourceCreator.of(EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER, teacherName,actualTeacherSchoolClassName);
 
-                ApiErrorsDto apiErrorsDto = ApiErrorsDto.builder()
+                ApiErrorDto apiErrorDto = ApiErrorDto.builder()
                         .field(SchoolClassRequestApiDto.ID_CLASS_TEACHER)
                         .cause(message)
                         .thrownImmediately(false)
@@ -57,7 +57,7 @@ class TeacherIsAlreadySupervisingTeacherValidator implements SchoolClassValidato
                         .exceptionType(ExceptionType.BUSINESS)
                         .build();
 
-                return Optional.of(apiErrorsDto);
+                return Optional.of(apiErrorDto);
             }
         }
         return Optional.empty();

@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 import pl.edziennik.eDziennik.server.basics.entity.AbstractEntity;
-import pl.edziennik.eDziennik.domain.studensubject.domain.StudentSubject;
+import pl.edziennik.eDziennik.domain.studentsubject.domain.StudentSubject;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 
 import javax.persistence.*;

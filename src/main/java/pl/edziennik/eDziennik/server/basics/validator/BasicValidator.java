@@ -7,7 +7,7 @@ import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 import pl.edziennik.eDziennik.domain.role.domain.Role;
 import pl.edziennik.eDziennik.domain.school.domain.School;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
-import pl.edziennik.eDziennik.domain.studensubject.domain.StudentSubject;
+import pl.edziennik.eDziennik.domain.studentsubject.domain.StudentSubject;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.subject.domain.Subject;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
