@@ -56,8 +56,7 @@ class StudentServiceImpl implements StudentService {
 
     @Override
     public void deleteStudentById(Long id) {
-        Student student = dao.get(id);
-        dao.remove(student);
+        dao.remove(id);
     }
 
     @Override
@@ -81,7 +80,7 @@ class StudentServiceImpl implements StudentService {
     public StudentResponseApiDto updateStudent(Long id, StudentRequestApiDto requestApiDto) {
         Optional<Student> optionalStudent = dao.find(id);
         if (optionalStudent.isPresent()) {
-            validatorService.valid(requestApiDto);
+//            validatorService.valid(requestApiDto);
             Student student = optionalStudent.get();
             PersonInformation personInformation = PersonInformationMapper.mapToPersonInformation(requestApiDto.getFirstName(), requestApiDto.getLastName(), requestApiDto.getPesel());
             student.getUser().setAddress(AddressMapper.mapToAddress(requestApiDto.getAddress(), requestApiDto.getCity(), requestApiDto.getPostalCode()));
@@ -106,6 +105,7 @@ class StudentServiceImpl implements StudentService {
     }
 
     private void assignAllSchoolClassSubjectsToStudentIfNeeded(Student student, Long idSchoolClass) {
+        // This method will assign automatically all subjects assigned to school class to selected student if configuration is on
         if (settingsService.getSettingsDataByName(SettingsService.AUTOMATICALLY_INSERT_STUDENT_SUBJECTS_WHEN_ADD).isEnabled()) {
             SchoolClass schoolClass = dao.get(SchoolClass.class, idSchoolClass);
             if (!schoolClass.getSubjects().isEmpty()) {

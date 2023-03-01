@@ -41,4 +41,27 @@ public class AdminController {
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
     }
 
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<?> getAdmin(@PathVariable Long id){
+        AdminResponseApiDto responseApiDto = service.getAdminById(id);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+        return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<?> deleteAdminById(@PathVariable Long id){
+        service.deleteAdminById(id);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+        return ApiResponseCreator.buildApiResponse(HttpMethod.DELETE,HttpStatus.OK,"Admin deleted successfully",uri);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<?> updateAdmin(@RequestBody @Valid AdminRequestApiDto dto, @PathVariable Long id){
+        AdminResponseApiDto responseApiDto =service.updateAdmin(dto, id);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+        return ApiResponseCreator.buildApiResponse(HttpMethod.PUT, HttpStatus.OK, responseApiDto, uri);
+    }
 }

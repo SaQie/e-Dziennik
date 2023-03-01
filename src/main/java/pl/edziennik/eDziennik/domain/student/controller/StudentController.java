@@ -57,7 +57,7 @@ public class StudentController {
     }
 
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public ApiResponse<?> updateStudent(@PathVariable Long id, @RequestBody StudentRequestApiDto requestApiDto){
         StudentResponseApiDto responseApiDto = service.updateStudent(id, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()

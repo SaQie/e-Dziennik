@@ -67,7 +67,7 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
     public TeacherResponseApiDto updateTeacher(Long id, TeacherRequestApiDto requestApiDto) {
         Optional<Teacher> optionalTeacher = dao.find(id);
         if (optionalTeacher.isPresent()) {
-            validatorService.valid(requestApiDto);
+//            validatorService.valid(requestApiDto);
             Teacher teacher = optionalTeacher.get();
             teacher.getUser().setAddress(AddressMapper.mapToAddress(requestApiDto.getAddress(), requestApiDto.getCity(), requestApiDto.getPostalCode()));
             teacher.setPhoneNumber(requestApiDto.getPhoneNumber());

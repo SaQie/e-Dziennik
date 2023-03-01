@@ -14,4 +14,10 @@ public interface AdminService {
     void updateAdminLastLoginDate(final String username);
 
     List<AdminResponseApiDto> getAdminList();
+
+    AdminResponseApiDto getAdminById(Long id);
+
+    void deleteAdminById(Long id);
+
+    AdminResponseApiDto updateAdmin(AdminRequestApiDto dto, Long id);
 }

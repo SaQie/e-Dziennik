@@ -25,6 +25,7 @@ import java.util.function.Consumer;
 
 /**
  * Basics dao class
+ *
  * @param <ENTITY>
  */
 @Repository
@@ -59,7 +60,7 @@ public abstract class BaseDao<ENTITY extends AbstractEntity> implements IBaseDao
 
     @Override
     public Page<List<ENTITY>> findAll(int page, int size) {
-        if (page <= 0 || size <=0){
+        if (page <= 0 || size <= 0) {
             throw new BusinessException("Page or size cannot be negative or zero");
         }
         Query query = em.createQuery("select count(c.id) from " + clazz.getName() + " c");
@@ -113,6 +114,9 @@ public abstract class BaseDao<ENTITY extends AbstractEntity> implements IBaseDao
     @Override
     @Transactional
     public void remove(final ENTITY entity) {
+        if (entity == null) {
+            throw new EntityNotFoundException(createNotFoundExceptionMessage(clazz.getSimpleName()));
+        }
         em.remove(em.contains(entity) ? entity : em.merge(entity));
     }
 
@@ -141,8 +145,9 @@ public abstract class BaseDao<ENTITY extends AbstractEntity> implements IBaseDao
     public void remove(Long id) {
         ENTITY entity = em.find(clazz, id);
         if (entity != null) {
-            em.remove(entity);
+            em.remove(em.contains(entity) ? entity : em.merge(entity));
         }
+        throw new EntityNotFoundException(createNotFoundExceptionMessage(id, clazz.getSimpleName()));
     }
 
 
@@ -157,11 +162,12 @@ public abstract class BaseDao<ENTITY extends AbstractEntity> implements IBaseDao
         T t = em.find(clazz, id);
         return t != null;
     }
+
     @Override
     public ENTITY get(Long id) {
         ENTITY entity = em.find(clazz, id);
         if (entity == null) {
-            throw new EntityNotFoundException(createNotFoundExceptionMessage(id,clazz.getSimpleName()));
+            throw new EntityNotFoundException(createNotFoundExceptionMessage(id, clazz.getSimpleName()));
         }
         return entity;
     }
@@ -179,7 +185,7 @@ public abstract class BaseDao<ENTITY extends AbstractEntity> implements IBaseDao
     public <T> void findWithExecute(Class<T> clazz, Long id, Consumer<T> consumer) {
         T t = em.find(clazz, id);
         if (t == null) {
-            throw new EntityNotFoundException(createNotFoundExceptionMessage(id,clazz.getSimpleName()));
+            throw new EntityNotFoundException(createNotFoundExceptionMessage(id, clazz.getSimpleName()));
         }
         consumer.accept(t);
     }
@@ -188,13 +194,17 @@ public abstract class BaseDao<ENTITY extends AbstractEntity> implements IBaseDao
     public <T> void findWithExecute(Long id, Consumer<T> consumer) {
         ENTITY entity = em.find(clazz, id);
         if (entity == null) {
-            throw new EntityNotFoundException(createNotFoundExceptionMessage(id,clazz.getSimpleName()));
+            throw new EntityNotFoundException(createNotFoundExceptionMessage(id, clazz.getSimpleName()));
         }
         consumer.accept((T) entity);
     }
 
     private String createNotFoundExceptionMessage(Long id, String className) {
         return resourceCreator.of("not.found.message", id, className);
+    }
+
+    private String createNotFoundExceptionMessage(String className){
+        return resourceCreator.of("not.found.message.object", className);
     }
 
 }
