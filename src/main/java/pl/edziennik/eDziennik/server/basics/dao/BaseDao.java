@@ -146,6 +146,7 @@ public abstract class BaseDao<ENTITY extends AbstractEntity> implements IBaseDao
         ENTITY entity = em.find(clazz, id);
         if (entity != null) {
             em.remove(em.contains(entity) ? entity : em.merge(entity));
+            return;
         }
         throw new EntityNotFoundException(createNotFoundExceptionMessage(id, clazz.getSimpleName()));
     }
@@ -203,7 +204,7 @@ public abstract class BaseDao<ENTITY extends AbstractEntity> implements IBaseDao
         return resourceCreator.of("not.found.message", id, className);
     }
 
-    private String createNotFoundExceptionMessage(String className){
+    private String createNotFoundExceptionMessage(String className) {
         return resourceCreator.of("not.found.message.object", className);
     }
 

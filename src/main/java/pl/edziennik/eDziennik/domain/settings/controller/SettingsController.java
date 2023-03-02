@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.domain.settings.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,8 @@ public class SettingsController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get settings list",
+            description = "Returns list of all configurations with values")
     public ApiResponse<?> findAllSettings() {
         List<SettingsDto> settings = service.getAllSettings();
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -36,6 +39,8 @@ public class SettingsController {
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Update setting",
+            description = "This method will update specific setting")
     public ApiResponse<?> updateSettings(@PathVariable Long id, @RequestBody SettingsValue value) {
         service.updateSettings(id, value);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -43,10 +48,10 @@ public class SettingsController {
     }
 
     @GetMapping("/testpage")
-    public ApiResponse<?> test(){
+    public ApiResponse<?> test() {
         Page<List<SchoolResponseApiDto>> page = schoolDao.findAll(1, 5).map(SchoolMapper::toDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ApiResponseCreator.buildApiResponse(HttpMethod.GET,HttpStatus.OK,page,uri);
+        return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, page, uri);
     }
 
 }

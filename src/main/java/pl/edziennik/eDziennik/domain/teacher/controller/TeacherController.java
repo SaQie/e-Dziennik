@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.domain.teacher.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,7 @@ class TeacherController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Add new teacher")
     public ApiResponse<?> register(@RequestBody @Valid TeacherRequestApiDto requestApiDto) {
         TeacherResponseApiDto responseApiDto = service.register(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -41,6 +43,8 @@ class TeacherController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get specific teacher",
+            description = "Returns specific information about admin")
     public ApiResponse<?> findTeacher(@PathVariable Long id) {
         TeacherResponseApiDto responseApiDto = service.findTeacherById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -49,6 +53,8 @@ class TeacherController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get teacher list",
+            description = "Returns list of all teachers")
     public ApiResponse<?> findAllTeachers() {
         List<TeacherResponseApiDto> responseApiDtos = service.findAllTeachers();
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -57,6 +63,7 @@ class TeacherController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Delete teacher")
     public ApiResponse<?> deleteTeacher(@PathVariable Long id) {
         service.deleteTeacherById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -66,6 +73,8 @@ class TeacherController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Update teacher",
+            description = "This method will update specific teacher or create new if not exists")
     public ApiResponse<?> updateTeacher(@PathVariable Long id, TeacherRequestApiDto requestApiDto) {
         TeacherResponseApiDto responseApiDto = service.updateTeacher(id, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()

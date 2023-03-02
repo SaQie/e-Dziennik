@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.domain.admin.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,8 @@ public class AdminController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Add administration account",
+            description = "Add administration account, that will have all permissions to manage application")
     public ApiResponse<?> createAdminAccount(@RequestBody @Valid AdminRequestApiDto requestApiDto) {
         AdminResponseApiDto responseApiDto = service.createNewAdminAccount(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -35,6 +38,8 @@ public class AdminController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get admin list",
+            description = "Returns list of admins")
     public ApiResponse<?> getAdminList() {
         List<AdminResponseApiDto> responseApiDto = service.getAdminList();
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -43,6 +48,8 @@ public class AdminController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get specific admin",
+            description = "Returns information about specific admin")
     public ApiResponse<?> getAdmin(@PathVariable Long id){
         AdminResponseApiDto responseApiDto = service.getAdminById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -51,6 +58,7 @@ public class AdminController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Delete admin")
     public ApiResponse<?> deleteAdminById(@PathVariable Long id){
         service.deleteAdminById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -59,6 +67,8 @@ public class AdminController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Update admin",
+            description = "This method will update specific Admin or create new if not exists")
     public ApiResponse<?> updateAdmin(@RequestBody @Valid AdminRequestApiDto dto, @PathVariable Long id){
         AdminResponseApiDto responseApiDto =service.updateAdmin(dto, id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();

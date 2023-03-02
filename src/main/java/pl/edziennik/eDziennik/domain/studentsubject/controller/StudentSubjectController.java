@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.domain.studentsubject.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,8 @@ public class StudentSubjectController {
 
     @PostMapping("/{idStudent}/subjects")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Assign student to subject",
+            description = "This method assigns subject to specific student")
     public ApiResponse<?> assignStudentToSubject(@RequestBody StudentSubjectRequestDto requestApiDto, @PathVariable Long idStudent) {
         requestApiDto.setIdStudent(idStudent);
         StudentSubjectResponseDto responseApiDto = service.assignStudentToSubject(requestApiDto);
@@ -35,6 +38,8 @@ public class StudentSubjectController {
 
     @GetMapping("/{idStudent}/subjects")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get specific student subjects",
+            description = "This method returns list of subjects for specific student")
     public ApiResponse<?> getStudentSubjects(@PathVariable Long idStudent) {
         StudentSubjectsResponseDto responseApiDto = service.getStudentSubjects(idStudent);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -43,6 +48,8 @@ public class StudentSubjectController {
 
     @GetMapping("/{idStudent}/subjects/{idSubject}/grades")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get specific student subject grades",
+            description = "This method returns list of grades for specific student subject")
     public ApiResponse<?> getStudentSubjectRatings(@PathVariable Long idStudent, @PathVariable Long idSubject) {
         StudentGradesInSubjectDto responseApiDto = service.getStudentSubjectGrades(idStudent, idSubject);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -51,6 +58,8 @@ public class StudentSubjectController {
 
     @GetMapping("/{idStudent}/subjects/grades")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get list of all student grades",
+            description = "This method returns list of all specific student grades for all subjects")
     public ApiResponse<?> getStudentAllSubjectsRatings(@PathVariable Long idStudent) {
         AllStudentsGradesInSubjectsDto responseApiDto = service.getStudentAllSubjectsGrades(idStudent);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();

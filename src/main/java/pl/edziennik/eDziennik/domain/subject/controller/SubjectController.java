@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.domain.subject.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ public class SubjectController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Add new subject")
     public ApiResponse<?> createSubject(@RequestBody @Valid SubjectRequestApiDto requestApiDto) {
         SubjectResponseApiDto responseApiDto = service.createNewSubject(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -35,6 +37,8 @@ public class SubjectController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get list of subjects",
+            description = "Returns list of all subjects")
     public ApiResponse<?> findAllSubjects() {
         List<SubjectResponseApiDto> responseApiDtos = service.findAllSubjects();
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -43,6 +47,8 @@ public class SubjectController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get specific subject",
+            description = "Returns specific subject information")
     public ApiResponse<?> findSubjectById(@PathVariable Long id) {
         SubjectResponseApiDto responseApiDto = service.findSubjectById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -51,6 +57,7 @@ public class SubjectController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Delete subject")
     public ApiResponse<?> deleteSubjectById(@PathVariable Long id) {
         service.deleteSubjectById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -59,7 +66,9 @@ public class SubjectController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse updateSubject(@PathVariable Long id, SubjectRequestApiDto requestApiDto) {
+    @Operation(summary = "Update subject",
+            description = "This method will update specific subject or create new if not exists")
+    public ApiResponse<?> updateSubject(@PathVariable Long id, SubjectRequestApiDto requestApiDto) {
         SubjectResponseApiDto responseApiDto = service.updateSubject(id, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/subjects")
