@@ -37,7 +37,6 @@ public class DaoTest extends BaseTest {
         User user = new User();
         personInformation.setFirstName("Test");
         personInformation.setLastName("Testowy");
-        user.setPersonInformation(personInformation);
         // when
         User savedUser = dao.saveOrUpdate(user);
         // then
@@ -49,11 +48,8 @@ public class DaoTest extends BaseTest {
     @Test
     public void shouldDelete() {
         // given
-        PersonInformation personInformation = new PersonInformation();
         User user = new User();
-        personInformation.setFirstName("Test");
-        personInformation.setLastName("Testowy");
-        user.setPersonInformation(personInformation);
+        ;
         dao.saveOrUpdate(user);
         int sizeAfterSave = dao.findAll().size();
         assertEquals(1, sizeAfterSave);
@@ -69,9 +65,6 @@ public class DaoTest extends BaseTest {
         // given
         PersonInformation personInformation = new PersonInformation();
         User user = new User();
-        personInformation.setFirstName("Test");
-        personInformation.setLastName("Testowy");
-        user.setPersonInformation(personInformation);
         User savedUser = dao.saveOrUpdate(user);
         User userAfterUpdate = find(User.class, savedUser.getId());
         assertEquals(personInformation.getFirstName(), userAfterUpdate.getPersonInformation().getFirstName());
@@ -189,7 +182,7 @@ public class DaoTest extends BaseTest {
         assertNotNull(savedUser);
         assertEquals(user.getId(), savedUser.getId());
         assertEquals(expectedNameAfterExecute, savedUser.getPersonInformation().getFirstName());
-        assertEquals(   expectedLastNameAfterExecute, savedUser.getPersonInformation().getLastName());
+        assertEquals(expectedLastNameAfterExecute, savedUser.getPersonInformation().getLastName());
     }
 
     @Test

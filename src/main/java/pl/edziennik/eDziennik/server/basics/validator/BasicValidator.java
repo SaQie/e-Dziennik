@@ -54,7 +54,7 @@ public class BasicValidator extends BaseDao<User> {
         StudentSubject studentSubject = (StudentSubject) PersistanceHelper.getSingleResultOrNull(query);
         if (studentSubject == null){
             Student student = get(Student.class, idStudent);
-            String studentName = student.getUser().getPersonInformation().getFirstName() + " " + student.getUser().getPersonInformation().getLastName();
+            String studentName = student.getPersonInformation().getFirstName() + " " + student.getPersonInformation().getLastName();
             String subjectName = get(Subject.class, idSubject).getName();
             String exceptionMessage = resourceCreator.of("student.subject.not.exist", studentName, subjectName);
             throw new EntityNotFoundException(exceptionMessage);

@@ -32,17 +32,19 @@ public class Role extends AbstractEntity {
         this.name = name;
     }
 
-    public enum RoleConst{
+    public enum RoleConst {
         ROLE_ADMIN(1L),
         ROLE_TEACHER(2L),
-        ROLE_STUDENT(3L);
+        ROLE_STUDENT(3L),
+        ROLE_PARENT(4L);
 
         private Long id;
+
         RoleConst(Long id) {
             this.id = id;
         }
 
-        public Long getId(){
+        public Long getId() {
             return id;
         }
     }

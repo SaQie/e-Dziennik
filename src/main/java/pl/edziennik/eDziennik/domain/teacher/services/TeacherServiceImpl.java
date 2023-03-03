@@ -69,10 +69,9 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
         if (optionalTeacher.isPresent()) {
 //            validatorService.valid(requestApiDto);
             Teacher teacher = optionalTeacher.get();
-            teacher.getUser().setAddress(AddressMapper.mapToAddress(requestApiDto.getAddress(), requestApiDto.getCity(), requestApiDto.getPostalCode()));
-            teacher.setPhoneNumber(requestApiDto.getPhoneNumber());
-            PersonInformation personInformation = PersonInformationMapper.mapToPersonInformation(requestApiDto.getFirstName(), requestApiDto.getLastName(), requestApiDto.getPesel());
-            teacher.getUser().setPersonInformation(personInformation);
+            teacher.setAddress(AddressMapper.mapToAddress(requestApiDto));
+            PersonInformation personInformation = PersonInformationMapper.mapToPersonInformation(requestApiDto);
+            teacher.setPersonInformation(personInformation);
             return TeacherMapper.toDto(teacher);
         }
         return register(requestApiDto);

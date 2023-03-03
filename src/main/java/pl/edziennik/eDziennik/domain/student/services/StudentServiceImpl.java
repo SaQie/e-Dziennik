@@ -61,7 +61,6 @@ class StudentServiceImpl implements StudentService {
 
     @Override
     public List<StudentResponseApiDto> findAllStudents() {
-        TransactionSynchronizationManager.isCurrentTransactionReadOnly();
         return dao.findAll()
                 .stream()
                 .map(StudentMapper::toDto)
@@ -82,13 +81,10 @@ class StudentServiceImpl implements StudentService {
         if (optionalStudent.isPresent()) {
 //            validatorService.valid(requestApiDto);
             Student student = optionalStudent.get();
-            PersonInformation personInformation = PersonInformationMapper.mapToPersonInformation(requestApiDto.getFirstName(), requestApiDto.getLastName(), requestApiDto.getPesel());
-            student.getUser().setAddress(AddressMapper.mapToAddress(requestApiDto.getAddress(), requestApiDto.getCity(), requestApiDto.getPostalCode()));
-            student.setParentFirstName(requestApiDto.getParentFirstName());
-            student.setParentLastName(requestApiDto.getParentLastName());
-            student.setParentPhoneNumber(requestApiDto.getParentPhoneNumber());
+            PersonInformation personInformation = PersonInformationMapper.mapToPersonInformation(requestApiDto);
+            student.setAddress(AddressMapper.mapToAddress(requestApiDto));
             student.getUser().setUsername(requestApiDto.getUsername());
-            student.getUser().setPersonInformation(personInformation);
+            student.setPersonInformation(personInformation);
             return StudentMapper.toDto(student);
         }
         return register(requestApiDto);
@@ -105,7 +101,7 @@ class StudentServiceImpl implements StudentService {
     }
 
     private void assignAllSchoolClassSubjectsToStudentIfNeeded(Student student, Long idSchoolClass) {
-        // This method will assign automatically all subjects assigned to school class to selected student if configuration is on
+        // This method will assign automatically all subjects assigned to school class to selected student if configuration is enabled
         if (settingsService.getSettingsDataByName(SettingsService.AUTOMATICALLY_INSERT_STUDENT_SUBJECTS_WHEN_ADD).isEnabled()) {
             SchoolClass schoolClass = dao.get(SchoolClass.class, idSchoolClass);
             if (!schoolClass.getSubjects().isEmpty()) {

@@ -8,12 +8,13 @@ import org.hibernate.validator.constraints.pl.REGON;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class SchoolRequestApiDto{
+public class SchoolRequestApiDto {
 
     public static final String NAME = "name";
     public static final String ADDRESS = "address";
@@ -43,7 +44,7 @@ public class SchoolRequestApiDto{
     @org.hibernate.validator.constraints.pl.REGON(message = "{regon.invalid}")
     private String regon;
 
-    @NotEmpty(message = "{phoneNumber.empty}")
+    @Pattern(regexp = "[\\d]{9}", message = "{phone.invalid}")
     private String phoneNumber;
 
     @NotNull(message = "{schoolLevel.empty}")

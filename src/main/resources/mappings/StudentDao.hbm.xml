@@ -14,7 +14,7 @@
             JOIN FETCH
             s.user u
             JOIN FETCH
-            u.personInformation pi
+            s.personInformation pi
             WHERE
             pi.pesel = :pesel
             AND

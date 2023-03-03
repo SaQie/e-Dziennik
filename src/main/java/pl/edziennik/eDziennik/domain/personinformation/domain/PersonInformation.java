@@ -22,11 +22,18 @@ public class PersonInformation extends AbstractEntity {
 
     private String firstName;
     private String lastName;
+    private String fullName;
+    private String phoneNumber;
     private String pesel;
 
     @Override
     public boolean isNew() {
         return (id == null);
+    }
+
+    @PrePersist
+    public void setFullName() {
+        this.fullName = firstName + " " + lastName;
     }
 
 }

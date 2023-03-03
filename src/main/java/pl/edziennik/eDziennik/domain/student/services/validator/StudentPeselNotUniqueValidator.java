@@ -16,7 +16,7 @@ import java.util.Optional;
  */
 @Component
 @AllArgsConstructor
-class StudentPeselNotUniqueValidator implements StudentValidators{
+class StudentPeselNotUniqueValidator implements StudentValidators {
 
     private final StudentDao dao;
     private final ResourceCreator resourceCreator;
@@ -40,7 +40,7 @@ class StudentPeselNotUniqueValidator implements StudentValidators{
 
     @Override
     public Optional<ApiErrorDto> validate(StudentRequestApiDto dto) {
-        if (dao.isStudentExistsByPesel(dto.getPesel())){
+        if (dao.isStudentExistsByPesel(dto.getPesel())) {
             String message = resourceCreator.of(EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, dto.getPesel());
 
             ApiErrorDto apiErrorDto = ApiErrorDto.builder()

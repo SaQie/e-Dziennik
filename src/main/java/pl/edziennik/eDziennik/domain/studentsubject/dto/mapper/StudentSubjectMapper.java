@@ -29,7 +29,7 @@ public class StudentSubjectMapper {
             Subject subject = entity.getSubject();
             subjectRatingsList.add(new SubjectGradesResponseDto(subject.getId(), subject.getName(), grades));
         }
-        return new AllStudentsGradesInSubjectsDto(student.getId(), student.getUser().getPersonInformation().getFirstName(), student.getUser().getPersonInformation().getLastName(), subjectRatingsList);
+        return new AllStudentsGradesInSubjectsDto(student.getId(), student.getPersonInformation().getFirstName(), student.getPersonInformation().getLastName(), subjectRatingsList);
     }
 
     public static StudentGradesInSubjectDto toStudentSubjectRatingsDto(StudentSubject entity) {
@@ -41,7 +41,7 @@ public class StudentSubjectMapper {
         Subject subject = entity.getSubject();
         SubjectGradesResponseDto subjectGradesResponseDto = new SubjectGradesResponseDto(subject.getId(), subject.getName(), ratings);
         Student student = entity.getStudent();
-        return new StudentGradesInSubjectDto(student.getId(), student.getUser().getPersonInformation().getFirstName(), student.getUser().getPersonInformation().getLastName(), subjectGradesResponseDto);
+        return new StudentGradesInSubjectDto(student.getId(), student.getPersonInformation().getFirstName(), student.getPersonInformation().getLastName(), subjectGradesResponseDto);
     }
 
     public static StudentSubjectResponseDto toStudentSubjectResponseDto(StudentSubject entity){
@@ -49,7 +49,7 @@ public class StudentSubjectMapper {
         Subject subject = entity.getSubject();
         TeacherSimpleResponseApiDto teacherDto = subject.getTeacher() != null ? TeacherMapper.toSimpleDto(subject.getTeacher()) : null;
         List<SubjectResponseApiDto> subjects = List.of(new SubjectResponseApiDto(subject.getId(), subject.getName(), subject.getDescription(), teacherDto, SchoolClassMapper.toSimpleDto(subject.getSchoolClass())));
-        return new StudentSubjectResponseDto(student.getId(), student.getUser().getPersonInformation().getFirstName(), student.getUser().getPersonInformation().getLastName(), subjects);
+        return new StudentSubjectResponseDto(student.getId(), student.getPersonInformation().getFirstName(), student.getPersonInformation().getLastName(), subjects);
     }
 
 
@@ -62,7 +62,7 @@ public class StudentSubjectMapper {
             subjects.add(subjectDto);
         }
 
-        return new StudentSubjectsResponseDto(student.getId(), student.getUser().getPersonInformation().getFirstName(), student.getUser().getPersonInformation().getLastName(), subjects);
+        return new StudentSubjectsResponseDto(student.getId(), student.getPersonInformation().getFirstName(), student.getPersonInformation().getLastName(), subjects);
     }
 
 

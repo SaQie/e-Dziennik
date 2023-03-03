@@ -30,7 +30,6 @@ class UserServiceImpl extends ServiceValidator<UserValidators, UserRequestDto> i
     public User createUser(UserRequestDto dto) {
         valid(dto);
         User user = UserMapper.toEntity(dto);
-        setUserInformation(user, dto);
         user.setRole(basicValidator.checkRoleExistOrReturnDefault(dto.getRole()));
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         return dao.saveOrUpdate(user);
@@ -52,13 +51,4 @@ class UserServiceImpl extends ServiceValidator<UserValidators, UserRequestDto> i
     }
 
 
-    private void setUserInformation(User user, UserRequestDto dto) {
-        if (!dto.getRole().equals(Role.RoleConst.ROLE_ADMIN.name())) {
-            // I have to do it because administrator not have address, person information etc.
-            PersonInformation personInformation = PersonInformationMapper.mapToPersonInformation(dto.getFirstName(), dto.getLastName(), dto.getPesel());
-            Address address = AddressMapper.mapToAddress(dto.getAddress(), dto.getCity(), dto.getPostalCode());
-            user.setAddress(address);
-            user.setPersonInformation(personInformation);
-        }
-    }
 }

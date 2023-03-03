@@ -1,15 +1,14 @@
-package pl.edziennik.eDziennik.domain.teacher.dto;
+package pl.edziennik.eDziennik.domain.parent.domain.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import pl.edziennik.eDziennik.domain.school.dto.SchoolSimpleResponseApiDto;
+import pl.edziennik.eDziennik.domain.student.dto.StudentSimpleResponseApiDto;
 
 @Getter
 @Builder
-public class TeacherResponseApiDto {
+public class ParentResponseApiDto {
 
     private final Long id;
-
     private final String username;
     private final String firstName;
     private final String lastName;
@@ -18,8 +17,8 @@ public class TeacherResponseApiDto {
     private final String postalCode;
     private final String city;
     private final String pesel;
+    private final String email;
     private final String phoneNumber;
-    private final SchoolSimpleResponseApiDto school;
-    private final String role;
+    private final StudentSimpleResponseApiDto student;
 
 }

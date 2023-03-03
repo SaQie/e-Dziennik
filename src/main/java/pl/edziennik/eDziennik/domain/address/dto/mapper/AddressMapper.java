@@ -1,17 +1,45 @@
 package pl.edziennik.eDziennik.domain.address.dto.mapper;
 
 import pl.edziennik.eDziennik.domain.address.domain.Address;
+import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
+import pl.edziennik.eDziennik.domain.school.dto.SchoolRequestApiDto;
+import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
+import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 
 public class AddressMapper {
 
     private AddressMapper() {
     }
 
-    public static Address mapToAddress(String address, String city, String postalCode){
+    public static Address mapToAddress(TeacherRequestApiDto dto) {
         Address addressEntity = new Address();
-        addressEntity.setAddress(address);
-        addressEntity.setCity(city);
-        addressEntity.setPostalCode(postalCode);
+        addressEntity.setAddress(dto.getAddress());
+        addressEntity.setCity(dto.getCity());
+        addressEntity.setPostalCode(dto.getPostalCode());
+        return addressEntity;
+    }
+
+    public static Address mapToAddress(StudentRequestApiDto dto) {
+        Address addressEntity = new Address();
+        addressEntity.setAddress(dto.getAddress());
+        addressEntity.setCity(dto.getCity());
+        addressEntity.setPostalCode(dto.getPostalCode());
+        return addressEntity;
+    }
+
+    public static Address mapToAddress(SchoolRequestApiDto dto) {
+        Address addressEntity = new Address();
+        addressEntity.setAddress(dto.getAddress());
+        addressEntity.setCity(dto.getCity());
+        addressEntity.setPostalCode(dto.getPostalCode());
+        return addressEntity;
+    }
+
+    public static Address mapToAddress(ParentRequestApiDto dto) {
+        Address addressEntity = new Address();
+        addressEntity.setAddress(dto.getAddress());
+        addressEntity.setCity(dto.getCity());
+        addressEntity.setPostalCode(dto.getPostalCode());
         return addressEntity;
     }
 }

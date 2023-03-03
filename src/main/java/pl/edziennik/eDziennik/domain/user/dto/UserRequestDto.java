@@ -17,12 +17,4 @@ public class UserRequestDto {
     private String email;
     private String role;
 
-    private String firstName;
-    private String lastName;
-    private String pesel;
-
-    private String address;
-    private String postalCode;
-    private String city;
-
 }

@@ -47,7 +47,7 @@ class StudentSubjectAlreadyExistValidator implements StudentSubjectValidators{
             Student student = dao.get(Student.class, dto.getIdStudent());
             Subject subject = dao.get(Subject.class, dto.getIdSubject());
 
-            String studentName = student.getUser().getPersonInformation().getFirstName() + " " + student.getUser().getPersonInformation().getLastName();
+            String studentName = student.getPersonInformation().getFirstName() + " " + student.getPersonInformation().getLastName();
             String subjectName = subject.getName();
             String message = resourceCreator.of(EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST, studentName, subjectName);
 

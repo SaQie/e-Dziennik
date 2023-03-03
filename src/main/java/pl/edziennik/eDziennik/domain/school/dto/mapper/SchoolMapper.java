@@ -38,7 +38,7 @@ public class SchoolMapper {
                 dto.getNip(),
                 dto.getRegon(),
                 dto.getPhoneNumber(),
-                AddressMapper.mapToAddress(dto.getAddress(),dto.getCity(),dto.getPostalCode())
+                AddressMapper.mapToAddress(dto)
         );
     }
 

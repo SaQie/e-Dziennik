@@ -36,12 +36,6 @@ public class User extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Role role;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
-    private PersonInformation personInformation;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
-    private Address address;
-
     public User(String username, String password, String email) {
         this.username = username;
         this.password = password;

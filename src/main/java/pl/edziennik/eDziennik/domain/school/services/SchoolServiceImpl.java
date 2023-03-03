@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-class SchoolServiceImpl implements SchoolService{
+class SchoolServiceImpl implements SchoolService {
 
     private final SchoolDao dao;
     private final SchoolValidatorService validatorService;
@@ -57,13 +57,13 @@ class SchoolServiceImpl implements SchoolService{
     public SchoolResponseApiDto updateSchool(Long id, SchoolRequestApiDto dto) {
         // TODO -> Walidacja
         Optional<School> optionalSchool = dao.find(id);
-        if (optionalSchool.isPresent()){
+        if (optionalSchool.isPresent()) {
             School school = optionalSchool.get();
             school.setName(dto.getName());
             school.setNip(dto.getNip());
             school.setRegon(dto.getRegon());
             school.setPhoneNumber(dto.getPhoneNumber());
-            Address address = AddressMapper.mapToAddress(dto.getAddress(), dto.getCity(), dto.getPostalCode());
+            Address address = AddressMapper.mapToAddress(dto);
             school.setAddress(address);
             return SchoolMapper.toDto(school);
         }
@@ -73,9 +73,9 @@ class SchoolServiceImpl implements SchoolService{
         return SchoolMapper.toDto(dao.saveOrUpdate(school));
     }
 
-    private School mapToEntity(SchoolRequestApiDto dto){
+    private School mapToEntity(SchoolRequestApiDto dto) {
         School school = SchoolMapper.toEntity(dto);
-        dao.findWithExecute(SchoolLevel.class,dto.getIdSchoolLevel(), school::setSchoolLevel);
+        dao.findWithExecute(SchoolLevel.class, dto.getIdSchoolLevel(), school::setSchoolLevel);
         return school;
     }
 }

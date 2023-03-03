@@ -13,7 +13,7 @@
             JOIN FETCH
                 t.user u
             JOIN FETCH
-                u.personInformation pi
+                t.personInformation pi
             WHERE
                 pi.pesel = :pesel
             AND
@@ -30,7 +30,7 @@
             JOIN FETCH
             t.user u
             JOIN FETCH
-            u.personInformation pi
+            t.personInformation pi
             WHERE
             u.username = :username
         </query>
