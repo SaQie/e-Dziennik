@@ -23,13 +23,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class SubjectValidatorUnitTest extends BaseUnitTest {
 
-    private SubjectIntegrationTestUtil util;
-    private SchoolClassIntergrationTestUtil schoolClassUtil;
-
-    public SubjectValidatorUnitTest() {
-        this.util = new SubjectIntegrationTestUtil();
-        this.schoolClassUtil = new SchoolClassIntergrationTestUtil();
-    }
 
     @InjectMocks
     private SubjectAlreadyExistValidator validator;
@@ -43,7 +36,7 @@ public class SubjectValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldReturnApiErrorWhenSubjectAlreadyExists() {
         // given
-        SubjectRequestApiDto dto = util.prepareSubjectRequestDto("Przyroda", null, 1L);
+        SubjectRequestApiDto dto = subjectUtil.prepareSubjectRequestDto("Przyroda", null, 1L);
         when(dao.isSubjectAlreadyExist("Przyroda", 1L)).thenReturn(true);
         when(dao.get(SchoolClass.class, 1L)).thenReturn(new SchoolClass());
         lenient().when(resourceCreator.of(SubjectValidators.EXCEPTION_MESSAGE_SUBJECT_ALREADY_EXIST, dto.getName(), null))
@@ -63,7 +56,7 @@ public class SubjectValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldNotReturnApiErrorWhenSubjectNotExists() {
         // given
-        SubjectRequestApiDto dto = util.prepareSubjectRequestDto("Przyroda", null, 1L);
+        SubjectRequestApiDto dto = subjectUtil.prepareSubjectRequestDto("Przyroda", null, 1L);
         when(dao.isSubjectAlreadyExist("Przyroda", 1L)).thenReturn(false);
 
         // when

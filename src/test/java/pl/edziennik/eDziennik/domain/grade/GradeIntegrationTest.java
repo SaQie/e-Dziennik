@@ -21,30 +21,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @Rollback
 public class GradeIntegrationTest extends BaseTest {
 
-    @Autowired
-    private GradeService service;
-
-    private final GradeIntegrationTestUtil util;
-
-    @BeforeEach
-    public void prepareDb(){
-        clearDb();
-        fillDbWithData();
-    }
-
-    public GradeIntegrationTest() {
-        this.util = new GradeIntegrationTestUtil();
-
-    }
-
     @ParameterizedTest
     @ValueSource(ints = {1,2,3,4,5,6})
     public void shouldSaveNewGrade(int grade){
         // given
-        GradeRequestApiDto expected = util.prepareRequestApi(grade, 1);
+        GradeRequestApiDto expected = gradeUtil.prepareRequestApi(grade, 1);
 
         // when
-        Long id = service.addNewGrade(expected).getId();
+        Long id = gradeService.addNewGrade(expected).getId();
 
         // then
         Grade actual = find(Grade.class, id);
@@ -58,24 +42,24 @@ public class GradeIntegrationTest extends BaseTest {
     @ValueSource(ints = {7,8,9,-1,-2})
     public void shouldThrowsExceptionWhenTryingToSaveGradeThatNotExist(int grade){
         // given
-        GradeRequestApiDto expected = util.prepareRequestApi(grade, 1);
+        GradeRequestApiDto expected = gradeUtil.prepareRequestApi(grade, 1);
         String expectedExceptionMessage = "Grade " + grade + " not found";
 
         // when
         // then
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> service.addNewGrade(expected));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> gradeService.addNewGrade(expected));
         assertEquals(exception.getMessage(), expectedExceptionMessage);
     }
 
     @Test
     public void shouldFindGradeWithGivenId(){
         // given
-        GradeRequestApiDto expected = util.prepareRequestApi(1, 1);
-        Long gradeId = service.addNewGrade(expected).getId();
+        GradeRequestApiDto expected = gradeUtil.prepareRequestApi(1, 1);
+        Long gradeId = gradeService.addNewGrade(expected).getId();
         assertNotNull(gradeId);
 
         // when
-        Long id = service.findGradeById(gradeId).getId();
+        Long id = gradeService.findGradeById(gradeId).getId();
 
         // then
         assertNotNull(id);
@@ -89,12 +73,12 @@ public class GradeIntegrationTest extends BaseTest {
     @Test
     public void shouldUpdateGrade(){
         // given
-        GradeRequestApiDto dto = util.prepareRequestApi(1, 1);
-        Long gradeId = service.addNewGrade(dto).getId();
-        GradeRequestApiDto expected = util.prepareRequestApi(2, 2);
+        GradeRequestApiDto dto = gradeUtil.prepareRequestApi(1, 1);
+        Long gradeId = gradeService.addNewGrade(dto).getId();
+        GradeRequestApiDto expected = gradeUtil.prepareRequestApi(2, 2);
 
         // when
-        Long updated = service.updateGrade(gradeId, expected).getId();
+        Long updated = gradeService.updateGrade(gradeId, expected).getId();
 
         // then
         assertNotNull(updated);

@@ -33,3 +33,6 @@ ALTER TABLE STUDENT
 
 ALTER TABLE STUDENT
     DROP COLUMN IF EXISTS parent_phone_number;
+
+ALTER TABLE STUDENT
+    ADD has_parent_account boolean default false

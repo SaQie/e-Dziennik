@@ -17,6 +17,7 @@ INSERT INTO school_class(id, class_name, created_date, teacher_id, school_id) VA
 INSERT INTO role(id, name) VALUES (1, 'ROLE_ADMIN');
 INSERT INTO role(id, name) VALUES (2, 'ROLE_TEACHER');
 INSERT INTO role(id, name) VALUES (3, 'ROLE_STUDENT');
+INSERT INTO role(id, name) VALUES (4, 'ROLE_PARENT');
 
 insert into app_settings(id,name,value) values (1,'automatically.insert.student.subjects.when.add', false);
 insert into app_settings(id, name, value) values (2,'allow.to.create.student.accounts.independent', false);

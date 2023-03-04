@@ -29,13 +29,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class SchoolClassValidatorUnitTest extends BaseUnitTest {
 
-    private SchoolClassIntergrationTestUtil util;
-
-
-    public SchoolClassValidatorUnitTest() {
-        this.util = new SchoolClassIntergrationTestUtil();
-    }
-
     @InjectMocks
     private SchoolClassAlreadyExistsValidator existsValidator;
 
@@ -54,10 +47,10 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldReturnApiErrorWhenTryingToAddNewSchoolClassAndGivenTeacherIsAlreadySupervisingTeacher() {
         // given
-        SchoolClassRequestApiDto dto = util.prepareSchoolClassRequest(1L);
+        SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(1L);
 
         when(dao.isTeacherAlreadySupervisingTeacher(1L)).thenReturn(true);
-        when(dao.get(Teacher.class, 1L)).thenReturn(util.prepareTeacherForTests());
+        when(dao.get(Teacher.class, 1L)).thenReturn(schoolClassUtil.prepareTeacherForTests());
         lenient().when(resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER, "null null", null))
                 .thenReturn(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER);
 
@@ -75,7 +68,7 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldNotReturnApiErrorWhenTryingToAddNewSchoolClassAndGivenTeacherIsNotSupervisingTeacher() {
         // given
-        SchoolClassRequestApiDto dto = util.prepareSchoolClassRequest(1L);
+        SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(1L);
 
         when(dao.isTeacherAlreadySupervisingTeacher(1L)).thenReturn(false);
         lenient().when(resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER, "null null", null))
@@ -91,10 +84,10 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldReturnApiErrorWhenGivenTeacherIsFromDifferentSchool() {
         // given
-        SchoolClassRequestApiDto dto = util.prepareSchoolClassRequest(1L);
+        SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(1L);
 
         when(dao.isTeacherBelongsToSchool(1L, 100L)).thenReturn(false);
-        when(dao.get(Teacher.class, 1L)).thenReturn(util.prepareTeacherForTests());
+        when(dao.get(Teacher.class, 1L)).thenReturn(schoolClassUtil.prepareTeacherForTests());
         when(dao.get(School.class, 100L)).thenReturn(new School());
         lenient().when(resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL, "null null", null))
                 .thenReturn(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL);
@@ -113,7 +106,7 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldNotReturnApiErrorWhenGivenTeacherIsFromTheSameSchool(){
         // given
-        SchoolClassRequestApiDto dto = util.prepareSchoolClassRequest(1L);
+        SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(1L);
 
         when(dao.isTeacherBelongsToSchool(1L, 100L)).thenReturn(true);
         lenient().when(resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL, "null null", null))
@@ -130,7 +123,7 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldReturnApiErrorWhenSchoolClassAlreadyExists(){
         // given
-        SchoolClassRequestApiDto dto = util.prepareSchoolClassRequest(1L);
+        SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(1L);
 
         when(dao.isSchoolClassAlreadyExist("3B", 100L)).thenReturn(true);
         when(dao.get(School.class, 100L)).thenReturn(new School());
@@ -151,7 +144,7 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldNotReturnApiErrorWhenSchoolClassNotExists(){
         // given
-        SchoolClassRequestApiDto dto = util.prepareSchoolClassRequest(1L);
+        SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(1L);
 
         when(dao.isSchoolClassAlreadyExist("3B", 100L)).thenReturn(false);
         lenient().when(resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_ALREADY_EXIST, "3B", null))

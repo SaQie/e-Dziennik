@@ -21,12 +21,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class SchoolValidatorUnitTest extends BaseUnitTest {
 
-    private SchoolIntegrationTestUtil util;
-
-    public SchoolValidatorUnitTest() {
-        this.util = new SchoolIntegrationTestUtil();
-    }
-
     @InjectMocks
     private SchoolAlreadyExistsValidator existsValidator;
 
@@ -45,7 +39,7 @@ public class SchoolValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldReturnApiErrorWhenSchoolWithGivenNipAlreadyExists() {
         // given
-        SchoolRequestApiDto dto = util.prepareSchoolRequestApi();
+        SchoolRequestApiDto dto = schoolUtil.prepareSchoolRequestApi();
 
         when(dao.isSchoolWithNipExist("89234")).thenReturn(true);
         lenient().when(resourceCreator.of(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_WITH_NIP_ALREADY_EXIST, "89234"))
@@ -65,7 +59,7 @@ public class SchoolValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldReturnApiErrorWhenSchoolWithGivenRegonAlreadyExists() {
         // given
-        SchoolRequestApiDto dto = util.prepareSchoolRequestApi();
+        SchoolRequestApiDto dto = schoolUtil.prepareSchoolRequestApi();
 
         when(dao.isSchoolWithRegonExist("5352")).thenReturn(true);
         lenient().when(resourceCreator.of(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_WITH_REGON_ALREADY_EXIST, "5352"))
@@ -85,7 +79,7 @@ public class SchoolValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldReturnApiErrorWhenSchoolWithGivenNameAlreadyExists() {
         // given
-        SchoolRequestApiDto dto = util.prepareSchoolRequestApi();
+        SchoolRequestApiDto dto = schoolUtil.prepareSchoolRequestApi();
 
         when(dao.isSchoolExist("asdasd")).thenReturn(true);
         lenient().when(resourceCreator.of(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_ALREADY_EXIST, "asdasd"))
@@ -105,7 +99,7 @@ public class SchoolValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldNotReturnApiErrorWhenSchoolWithGivenNameNotExists(){
         // given
-        SchoolRequestApiDto dto = util.prepareSchoolRequestApi();
+        SchoolRequestApiDto dto = schoolUtil.prepareSchoolRequestApi();
 
         when(dao.isSchoolExist("asdasd")).thenReturn(false);
         lenient().when(resourceCreator.of(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_ALREADY_EXIST, "asdasd"))
@@ -121,7 +115,7 @@ public class SchoolValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldNotReturnApiErrorWhenSchoolWithGivenRegonNotExists(){
         // given
-        SchoolRequestApiDto dto = util.prepareSchoolRequestApi();
+        SchoolRequestApiDto dto = schoolUtil.prepareSchoolRequestApi();
 
         when(dao.isSchoolWithRegonExist("5352")).thenReturn(false);
         lenient().when(resourceCreator.of(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_WITH_REGON_ALREADY_EXIST, "5352"))
@@ -137,7 +131,7 @@ public class SchoolValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldNotReturnApiErrorWhenSchoolWithGivenNipNotExists(){
         // given
-        SchoolRequestApiDto dto = util.prepareSchoolRequestApi();
+        SchoolRequestApiDto dto = schoolUtil.prepareSchoolRequestApi();
 
         when(dao.isSchoolWithNipExist("89234")).thenReturn(false);
         lenient().when(resourceCreator.of(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_WITH_NIP_ALREADY_EXIST, "89234"))

@@ -23,29 +23,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Rollback
 public class SchoolIntegrationTest extends BaseTest {
-
-    @Autowired
-    private SchoolService service;
-
-    private SchoolIntegrationTestUtil util;
-
-    @BeforeEach
-    public void prepareDb() {
-        clearDb();
-        fillDbWithData();
-    }
-
-    public SchoolIntegrationTest() {
-        this.util = new SchoolIntegrationTestUtil();
-    }
-
     @Test
     public void shouldSaveNewSchool() {
         // given
-        SchoolRequestApiDto expected = util.prepareSchoolRequestApi();
+        SchoolRequestApiDto expected = schoolUtil.prepareSchoolRequestApi();
 
         // when
-        Long id = service.createNewSchool(expected).getId();
+        Long id = schoolService.createNewSchool(expected).getId();
 
         // then
         assertNotNull(id);
@@ -63,12 +47,12 @@ public class SchoolIntegrationTest extends BaseTest {
     @Test
     public void shouldUpdateSchool() {
         // given
-        SchoolRequestApiDto dto = util.prepareSchoolRequestApi();
-        Long id = service.createNewSchool(dto).getId();
-        SchoolRequestApiDto expected = util.prepareSchoolRequestApi("afterEdit", "555555", "555555");
+        SchoolRequestApiDto dto = schoolUtil.prepareSchoolRequestApi();
+        Long id = schoolService.createNewSchool(dto).getId();
+        SchoolRequestApiDto expected = schoolUtil.prepareSchoolRequestApi("afterEdit", "555555", "555555");
 
         // when
-        Long updated = service.updateSchool(id, expected).getId();
+        Long updated = schoolService.updateSchool(id, expected).getId();
 
         // then
         assertNotNull(updated);
@@ -89,10 +73,10 @@ public class SchoolIntegrationTest extends BaseTest {
     public void shouldThrowsExceptionWhenSchoolLevelNotExist() {
         // given
         Long idSchoolLevel = 99L;
-        SchoolRequestApiDto dto = util.prepareSchoolRequestApi(idSchoolLevel);
+        SchoolRequestApiDto dto = schoolUtil.prepareSchoolRequestApi(idSchoolLevel);
 
         // when
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> service.createNewSchool(dto));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> schoolService.createNewSchool(dto));
 
         // then
         assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchoolLevel, SchoolLevel.class.getSimpleName()));
@@ -101,11 +85,11 @@ public class SchoolIntegrationTest extends BaseTest {
     @Test
     public void shouldReturnSchoolWithGivenId() {
         // given
-        SchoolRequestApiDto expected = util.prepareSchoolRequestApi();
-        Long id = service.createNewSchool(expected).getId();
+        SchoolRequestApiDto expected = schoolUtil.prepareSchoolRequestApi();
+        Long id = schoolService.createNewSchool(expected).getId();
 
         // when
-        SchoolResponseApiDto actual = service.findSchoolById(id);
+        SchoolResponseApiDto actual = schoolService.findSchoolById(id);
 
         // then
         assertEquals(expected.getName(), actual.getName());
@@ -122,7 +106,7 @@ public class SchoolIntegrationTest extends BaseTest {
         // given
         Long idSchool = 99L;
         // when
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> service.deleteSchoolById(idSchool));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> schoolService.deleteSchoolById(idSchool));
 
         // then
         assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchool, School.class.getSimpleName()));
@@ -132,14 +116,14 @@ public class SchoolIntegrationTest extends BaseTest {
     @Test
     public void shouldThrowsExceptionWhenSchoolAlreadyExist() {
         // given
-        SchoolRequestApiDto dto = util.prepareSchoolRequestApi();
+        SchoolRequestApiDto dto = schoolUtil.prepareSchoolRequestApi();
         // first school
-        service.createNewSchool(dto);
+        schoolService.createNewSchool(dto);
 
         // second school with the same name
-        SchoolRequestApiDto dto2 = util.prepareSchoolRequestApi("asdasd", "1111", "2222");
+        SchoolRequestApiDto dto2 = schoolUtil.prepareSchoolRequestApi("asdasd", "1111", "2222");
         // when
-        BusinessException exception = assertThrows(BusinessException.class, () -> service.createNewSchool(dto2));
+        BusinessException exception = assertThrows(BusinessException.class, () -> schoolService.createNewSchool(dto2));
 
         // then
         assertEquals(1, exception.getErrors().size());
@@ -155,14 +139,14 @@ public class SchoolIntegrationTest extends BaseTest {
     @Test
     public void shouldThrowsBusinessExceptionWhenSchoolWithRegonAlreadyExist() {
         // given
-        SchoolRequestApiDto dto = util.prepareSchoolRequestApi();
+        SchoolRequestApiDto dto = schoolUtil.prepareSchoolRequestApi();
         // first school
-        service.createNewSchool(dto);
+        schoolService.createNewSchool(dto);
 
         // second school with the same regon number
-        SchoolRequestApiDto dto2 = util.prepareSchoolRequestApi("test2", "12313", "5352");
+        SchoolRequestApiDto dto2 = schoolUtil.prepareSchoolRequestApi("test2", "12313", "5352");
         // when
-        BusinessException exception = assertThrows(BusinessException.class, () -> service.createNewSchool(dto2));
+        BusinessException exception = assertThrows(BusinessException.class, () -> schoolService.createNewSchool(dto2));
 
         // then
         assertEquals(1, exception.getErrors().size());
@@ -175,14 +159,14 @@ public class SchoolIntegrationTest extends BaseTest {
     @Test
     public void shouldThrowsBusinessExceptionWhenSchoolWithNipAlreadyExist() {
         // given
-        SchoolRequestApiDto dto = util.prepareSchoolRequestApi();
+        SchoolRequestApiDto dto = schoolUtil.prepareSchoolRequestApi();
         // first school
-        service.createNewSchool(dto);
+        schoolService.createNewSchool(dto);
 
         // second school with the same nip number
-        SchoolRequestApiDto dto2 = util.prepareSchoolRequestApi("test2", "89234", "511352");
+        SchoolRequestApiDto dto2 = schoolUtil.prepareSchoolRequestApi("test2", "89234", "511352");
         // when
-        BusinessException exception = assertThrows(BusinessException.class, () -> service.createNewSchool(dto2));
+        BusinessException exception = assertThrows(BusinessException.class, () -> schoolService.createNewSchool(dto2));
 
         // then
         assertEquals(1, exception.getErrors().size());

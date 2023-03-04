@@ -1,6 +1,7 @@
 package pl.edziennik.eDziennik.domain.parent.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ParentRequestApiDto {
 
     public static final String USERNAME = "username";

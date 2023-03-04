@@ -25,7 +25,8 @@ spring:
       /mappings/SchoolDao.hbm.xml,
       /mappings/AdminDao.hbm.xml,
       /mappings/UserDao.hbm.xml,
-      /mappings/SettingsDao.hbm.xml
+      /mappings/SettingsDao.hbm.xml,
+      /mappings/ParentDao.hbm.xml
   datasource:
     url: jdbc:postgresql://localhost:5432/diary_db
     username: postgres

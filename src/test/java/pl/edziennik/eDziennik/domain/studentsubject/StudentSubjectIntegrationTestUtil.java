@@ -33,11 +33,11 @@ public class StudentSubjectIntegrationTestUtil {
         SchoolClass schoolClass = new SchoolClass();
         User user = new User();
         PersonInformation personInformation = new PersonInformation();
-        user.setPersonInformation(personInformation);
         schoolClass.setClassName(className);
         Student student = new Student();
         student.setUser(user);
         student.setSchoolClass(schoolClass);
+        student.setPersonInformation(personInformation);
         return student;
     }
 

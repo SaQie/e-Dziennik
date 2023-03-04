@@ -20,28 +20,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @Rollback
 public class AdminIntegrationTest extends BaseTest {
 
-    @Autowired
-    private AdminService service;
-
-    private AdminIntegrationTestUtil util;
-
-    @BeforeEach
-    public void prepareDb() {
-        clearDb();
-        fillDbWithData();
-    }
-
-    public AdminIntegrationTest() {
-        this.util = new AdminIntegrationTestUtil();
-    }
-
     @Test
-    public void shouldAddNewAdministratorAccount(){
+    public void shouldAddNewAdministratorAccount() {
         // given
-        AdminRequestApiDto expected = util.prepareAdminRequest();
+        AdminRequestApiDto expected = adminUtil.prepareAdminRequest();
 
         // when
-        Long id = service.createNewAdminAccount(expected).getId();
+        Long id = adminService.createNewAdminAccount(expected).getId();
 
         // then
         assertNotNull(id);
@@ -53,16 +38,16 @@ public class AdminIntegrationTest extends BaseTest {
     }
 
     @Test
-    public void shouldThrowsExceptionWhenTryingToAddMoreThanOneAdministratorAccount(){
+    public void shouldThrowsExceptionWhenTryingToAddMoreThanOneAdministratorAccount() {
         // given
         String expectedValidatorName = "AdminAlreadyExistValidator";
-        AdminRequestApiDto firstAdminAccount = util.prepareAdminRequest();
-        Long id = service.createNewAdminAccount(firstAdminAccount).getId();
+        AdminRequestApiDto firstAdminAccount = adminUtil.prepareAdminRequest();
+        Long id = adminService.createNewAdminAccount(firstAdminAccount).getId();
         assertNotNull(id);
 
-        AdminRequestApiDto secondAdminAccount = util.prepareAdminRequest();
+        AdminRequestApiDto secondAdminAccount = adminUtil.prepareAdminRequest();
         // when
-        BusinessException exception = assertThrows(BusinessException.class, () -> service.createNewAdminAccount(secondAdminAccount));
+        BusinessException exception = assertThrows(BusinessException.class, () -> adminService.createNewAdminAccount(secondAdminAccount));
 
         // then
         assertEquals(1, exception.getErrors().size());

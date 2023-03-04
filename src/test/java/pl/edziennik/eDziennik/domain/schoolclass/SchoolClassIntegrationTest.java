@@ -30,33 +30,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @Rollback
 public class SchoolClassIntegrationTest extends BaseTest {
 
-    @Autowired
-    private SchoolClassService service;
-
-    @Autowired
-    private TeacherService teacherService;
-
-    private final SchoolClassIntergrationTestUtil util;
-    private final TeacherIntegrationTestUtil teacherUtil;
-
-    public SchoolClassIntegrationTest() {
-        this.util = new SchoolClassIntergrationTestUtil();
-        this.teacherUtil = new TeacherIntegrationTestUtil();
-    }
-
-    @BeforeEach
-    public void prepareDb() {
-        clearDb();
-        fillDbWithData();
-    }
-
     @Test
     public void shouldInsertNewSchoolClass() {
         // given
-        SchoolClassRequestApiDto expected = util.prepareSchoolClassRequest();
+        SchoolClassRequestApiDto expected = schoolClassUtil.prepareSchoolClassRequest();
 
         // when
-        Long id = service.createSchoolClass(expected).getId();
+        Long id = schoolClassService.createSchoolClass(expected).getId();
 
         // then
         assertNotNull(id);
@@ -71,12 +51,12 @@ public class SchoolClassIntegrationTest extends BaseTest {
         // given
         TeacherRequestApiDto teacherRequest = teacherUtil.prepareTeacherRequestDto();
         Long teacherId = teacherService.register(teacherRequest).getId();
-        SchoolClassRequestApiDto dto = util.prepareSchoolClassRequest();
-        Long id = service.createSchoolClass(dto).getId();
-        SchoolClassRequestApiDto expected = util.prepareSchoolClassRequest("5B", teacherId);
+        SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest();
+        Long id = schoolClassService.createSchoolClass(dto).getId();
+        SchoolClassRequestApiDto expected = schoolClassUtil.prepareSchoolClassRequest("5B", teacherId);
 
         // when
-        Long updated = service.updateSchoolClass(id, expected).getId();
+        Long updated = schoolClassService.updateSchoolClass(id, expected).getId();
 
         // then
         assertNotNull(updated);
@@ -92,12 +72,12 @@ public class SchoolClassIntegrationTest extends BaseTest {
     @Test
     public void shouldDeteleSchoolClass() {
         // given
-        SchoolClassRequestApiDto expected = util.prepareSchoolClassRequest();
-        Long id = service.createSchoolClass(expected).getId();
+        SchoolClassRequestApiDto expected = schoolClassUtil.prepareSchoolClassRequest();
+        Long id = schoolClassService.createSchoolClass(expected).getId();
         assertNotNull(id);
 
         // when
-        service.deleteSchoolClassById(id);
+        schoolClassService.deleteSchoolClassById(id);
 
         // then
         SchoolClass schoolClass = find(SchoolClass.class, id);
@@ -107,12 +87,12 @@ public class SchoolClassIntegrationTest extends BaseTest {
     @Test
     public void shouldFindSchoolClassById() {
         // given
-        SchoolClassRequestApiDto expected = util.prepareSchoolClassRequest();
-        Long id = service.createSchoolClass(expected).getId();
+        SchoolClassRequestApiDto expected = schoolClassUtil.prepareSchoolClassRequest();
+        Long id = schoolClassService.createSchoolClass(expected).getId();
         assertNotNull(id);
 
         // when
-        SchoolClassResponseApiDto actual = service.findSchoolClassById(id);
+        SchoolClassResponseApiDto actual = schoolClassService.findSchoolClassById(id);
 
         // then
         assertNotNull(actual);
@@ -125,11 +105,11 @@ public class SchoolClassIntegrationTest extends BaseTest {
     public void shouldThrowsExceptionWhenTryingToSaveSchoolClassIfTeacherNotExist() {
         // given
         Long idTeacher = 222L;
-        SchoolClassRequestApiDto expected = util.prepareSchoolClassRequest(idTeacher);
+        SchoolClassRequestApiDto expected = schoolClassUtil.prepareSchoolClassRequest(idTeacher);
 
         // when
 
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> service.createSchoolClass(expected));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> schoolClassService.createSchoolClass(expected));
 
         // then
         assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idTeacher, Teacher.class.getSimpleName()));
@@ -145,10 +125,10 @@ public class SchoolClassIntegrationTest extends BaseTest {
         assertNotNull(teacherId);
 
         Long idSchool = 222L;
-        SchoolClassRequestApiDto expected = util.prepareSchoolClassRequest(idTeacher, idSchool);
+        SchoolClassRequestApiDto expected = schoolClassUtil.prepareSchoolClassRequest(idTeacher, idSchool);
 
         // when
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> service.createSchoolClass(expected));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> schoolClassService.createSchoolClass(expected));
 
         // then
         assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchool, School.class.getSimpleName()));
@@ -157,13 +137,13 @@ public class SchoolClassIntegrationTest extends BaseTest {
     @Test
     public void shouldThrowsBusinessExceptionWhenTryingToSaveNewSchoolClassAndSchoolClassAlreadyExist() {
         // given
-        SchoolClassRequestApiDto requestApiDto = util.prepareSchoolClassRequest();
-        Long id = service.createSchoolClass(requestApiDto).getId();
+        SchoolClassRequestApiDto requestApiDto = schoolClassUtil.prepareSchoolClassRequest();
+        Long id = schoolClassService.createSchoolClass(requestApiDto).getId();
         assertNotNull(id);
 
         // when
-        SchoolClassRequestApiDto requestApiDto2 = util.prepareSchoolClassRequest();
-        BusinessException exception = assertThrows(BusinessException.class, () -> service.createSchoolClass(requestApiDto2));
+        SchoolClassRequestApiDto requestApiDto2 = schoolClassUtil.prepareSchoolClassRequest();
+        BusinessException exception = assertThrows(BusinessException.class, () -> schoolClassService.createSchoolClass(requestApiDto2));
 
         // then
         assertEquals(1, exception.getErrors().size());
@@ -181,15 +161,15 @@ public class SchoolClassIntegrationTest extends BaseTest {
         TeacherResponseApiDto teacherResponseDto = teacherService.register(teacherDto);
 
         // create school class with teacher
-        SchoolClassRequestApiDto requestApiDto = util.prepareSchoolClassRequest(teacherResponseDto.getId());
-        Long id = service.createSchoolClass(requestApiDto).getId();
+        SchoolClassRequestApiDto requestApiDto = schoolClassUtil.prepareSchoolClassRequest(teacherResponseDto.getId());
+        Long id = schoolClassService.createSchoolClass(requestApiDto).getId();
         assertNotNull(id);
 
         // create second school class with the same teacher
-        SchoolClassRequestApiDto schoolClassRequestApiDto = util.prepareSchoolClassRequest("9B", teacherResponseDto.getId());
+        SchoolClassRequestApiDto schoolClassRequestApiDto = schoolClassUtil.prepareSchoolClassRequest("9B", teacherResponseDto.getId());
 
         // when
-        BusinessException exception = assertThrows(BusinessException.class, () -> service.createSchoolClass(schoolClassRequestApiDto));
+        BusinessException exception = assertThrows(BusinessException.class, () -> schoolClassService.createSchoolClass(schoolClassRequestApiDto));
 
         // then
         assertEquals(1, exception.getErrors().size());
@@ -206,10 +186,10 @@ public class SchoolClassIntegrationTest extends BaseTest {
         TeacherRequestApiDto teacherDto = teacherUtil.prepareTeacherRequestDto();
         TeacherResponseApiDto teacherResponseDto = teacherService.register(teacherDto);
 
-        SchoolClassRequestApiDto requestApiDto = util.prepareSchoolClassRequest(teacherResponseDto.getId(), 101L);
+        SchoolClassRequestApiDto requestApiDto = schoolClassUtil.prepareSchoolClassRequest(teacherResponseDto.getId(), 101L);
 
         // when
-        BusinessException exception = assertThrows(BusinessException.class, () -> service.createSchoolClass(requestApiDto));
+        BusinessException exception = assertThrows(BusinessException.class, () -> schoolClassService.createSchoolClass(requestApiDto));
 
         // then
         assertEquals(1, exception.getErrors().size());

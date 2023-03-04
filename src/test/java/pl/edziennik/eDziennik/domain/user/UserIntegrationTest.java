@@ -21,26 +21,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @Rollback
 public class UserIntegrationTest extends BaseTest {
 
-    @Autowired
-    private UserService userService;
-
-    private UserIntegrationTestUtil util;
-
-    public UserIntegrationTest() {
-        this.util = new UserIntegrationTestUtil();
-    }
-
-    @BeforeEach
-    public void prepareDb() {
-        clearDb();
-        fillDbWithData();
-    }
-
-
     @Test
     public void shouldSaveUser() {
         // given
-        UserRequestDto dto = util.prepareRequestDto("Kamil", "test@example.com");
+        UserRequestDto dto = userUtil.prepareRequestDto("Kamil", "test@example.com");
 
         // when
         User user = userService.createUser(dto);
@@ -55,10 +39,10 @@ public class UserIntegrationTest extends BaseTest {
     @Test
     public void shouldThrowsExceptionWhenTryingToSaveExistingUser() {
         // given
-        UserRequestDto dto = util.prepareRequestDto("Kamil", "test@example.com");
+        UserRequestDto dto = userUtil.prepareRequestDto("Kamil", "test@example.com");
 
         userService.createUser(dto);
-        UserRequestDto dto2 = util.prepareRequestDto("Kamil", "test1@example.com");
+        UserRequestDto dto2 = userUtil.prepareRequestDto("Kamil", "test1@example.com");
         // when
         BusinessException exception = assertThrows(BusinessException.class, () -> userService.createUser(dto2));
 
@@ -73,10 +57,10 @@ public class UserIntegrationTest extends BaseTest {
     @Test
     public void shouldThrowsExceptionWhenTryingToSaveUserWithTheSameEmail() {
         // given
-        UserRequestDto dto = util.prepareRequestDto("Kamil", "test@example.com");
+        UserRequestDto dto = userUtil.prepareRequestDto("Kamil", "test@example.com");
 
         userService.createUser(dto);
-        UserRequestDto dto2 = util.prepareRequestDto("Kamil1", "test@example.com");
+        UserRequestDto dto2 = userUtil.prepareRequestDto("Kamil1", "test@example.com");
         // when
         BusinessException exception = assertThrows(BusinessException.class, () -> userService.createUser(dto2));
 

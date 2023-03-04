@@ -25,12 +25,6 @@ import java.util.Optional;
 @ExtendWith(MockitoExtension.class)
 public class StudentSubjectValidatorUnitTest extends BaseUnitTest {
 
-    private StudentSubjectIntegrationTestUtil util;
-
-    public StudentSubjectValidatorUnitTest() {
-        this.util = new StudentSubjectIntegrationTestUtil();
-    }
-
     @InjectMocks
     private StudentCannotBeAssignedToSubjectFromDifferentClassValidator validator;
 
@@ -46,11 +40,11 @@ public class StudentSubjectValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldReturnApiErrorWhenStudentSubjectAlreadyExists() {
         // given
-        StudentSubjectRequestDto dto = util.prepareStudentSubjectRequestDto(1L, 1L);
+        StudentSubjectRequestDto dto = studentSubjectUtil.prepareStudentSubjectRequestDto(1L, 1L);
 
         when(dao.isStudentSubjectAlreadyExist(1L, 1L)).thenReturn(true);
-        when(dao.get(Student.class, 1L)).thenReturn(util.prepareStudentWithSchoolClass("1b"));
-        when(dao.get(Subject.class, 1L)).thenReturn(util.prepareSubjectWithSchoolClass("1b"));
+        when(dao.get(Student.class, 1L)).thenReturn(studentSubjectUtil.prepareStudentWithSchoolClass("1b"));
+        when(dao.get(Subject.class, 1L)).thenReturn(studentSubjectUtil.prepareSubjectWithSchoolClass("1b"));
 
         lenient().when(resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST, "null null", null))
                 .thenReturn(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST);
@@ -70,10 +64,10 @@ public class StudentSubjectValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldReturnApiErrorWhenTryingToAssignStudentToSubjectFromDifferentSchoolClass() {
         // given
-        StudentSubjectRequestDto dto = util.prepareStudentSubjectRequestDto(1L, 1L);
+        StudentSubjectRequestDto dto = studentSubjectUtil.prepareStudentSubjectRequestDto(1L, 1L);
 
-        when(dao.get(Student.class, 1L)).thenReturn(util.prepareStudentWithSchoolClass("1b"));
-        when(dao.get(Subject.class, 1L)).thenReturn(util.prepareSubjectWithSchoolClass("2b"));
+        when(dao.get(Student.class, 1L)).thenReturn(studentSubjectUtil.prepareStudentWithSchoolClass("1b"));
+        when(dao.get(Subject.class, 1L)).thenReturn(studentSubjectUtil.prepareSubjectWithSchoolClass("2b"));
         lenient().when(resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS, "null null", null))
                 .thenReturn(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS);
 
@@ -91,7 +85,7 @@ public class StudentSubjectValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldNotReturnApiErrorWhenStudentSubjectNotExists() {
         // given
-        StudentSubjectRequestDto dto = util.prepareStudentSubjectRequestDto(1L, 1L);
+        StudentSubjectRequestDto dto = studentSubjectUtil.prepareStudentSubjectRequestDto(1L, 1L);
 
         when(dao.isStudentSubjectAlreadyExist(1L, 1L)).thenReturn(false);
         lenient().when(resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST, "null null", null))
@@ -107,10 +101,10 @@ public class StudentSubjectValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldNotReturnApiErrorWhenTryingToAssignStudentToSubjectFromTheSameSchoolClass() {
         // given
-        StudentSubjectRequestDto dto = util.prepareStudentSubjectRequestDto(1L, 1L);
+        StudentSubjectRequestDto dto = studentSubjectUtil.prepareStudentSubjectRequestDto(1L, 1L);
 
-        when(dao.get(Student.class, 1L)).thenReturn(util.prepareStudentWithSchoolClass("1b"));
-        when(dao.get(Subject.class, 1L)).thenReturn(util.prepareSubjectWithSchoolClass("1b"));
+        when(dao.get(Student.class, 1L)).thenReturn(studentSubjectUtil.prepareStudentWithSchoolClass("1b"));
+        when(dao.get(Subject.class, 1L)).thenReturn(studentSubjectUtil.prepareSubjectWithSchoolClass("1b"));
         lenient().when(resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS, "null null", null))
                 .thenReturn(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS);
 

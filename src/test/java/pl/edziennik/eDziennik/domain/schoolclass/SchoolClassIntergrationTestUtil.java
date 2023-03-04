@@ -48,7 +48,7 @@ public class SchoolClassIntergrationTestUtil {
         Teacher teacher = new Teacher();
         User user = new User();
         PersonInformation personInformation = new PersonInformation();
-        user.setPersonInformation(personInformation);
+        teacher.setPersonInformation(personInformation);
         teacher.setUser(user);
         return teacher;
     }

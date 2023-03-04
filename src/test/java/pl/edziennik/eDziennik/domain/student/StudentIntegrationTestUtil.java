@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.domain.student;
 
+import liquibase.repackaged.org.apache.commons.lang3.RandomStringUtils;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 
 /**
@@ -10,14 +11,14 @@ public class StudentIntegrationTestUtil {
     public StudentRequestApiDto prepareStudentRequestDto() {
         return new StudentRequestApiDto(
                 "Test",
-                "Test123",
+                RandomStringUtils.random(8),
                 "Kamil",
                 "Nowak",
                 "Lubawka",
                 "58-100",
                 "Lubawka2",
-                "123123123",
-                "test@example.com",
+                RandomStringUtils.randomNumeric(9),
+                RandomStringUtils.random(8),
                 "Tomasz",
                 "Nowak",
                 "100200300",
@@ -35,7 +36,7 @@ public class StudentIntegrationTestUtil {
                 "Lubawka",
                 "58-100",
                 "Lubawka2",
-                "123123123",
+                RandomStringUtils.randomNumeric(9),
                 email,
                 "Tomasz",
                 "Nowak",
@@ -54,7 +55,7 @@ public class StudentIntegrationTestUtil {
                 "Lubawka",
                 "58-100",
                 "Lubawka2",
-                "123123123",
+                RandomStringUtils.randomNumeric(9),
                 email,
                 "Tomasz",
                 "Nowak",
@@ -92,8 +93,8 @@ public class StudentIntegrationTestUtil {
                 "Lubawka",
                 "58-100",
                 "Lubawka2",
-                "123123123",
-                "test@example.com",
+                RandomStringUtils.randomNumeric(9),
+                RandomStringUtils.random(8),
                 "Tomasz",
                 "Nowak",
                 "100200300",

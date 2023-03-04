@@ -30,26 +30,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Rollback
 public class SubjectIntegrationTest extends BaseTest {
 
-    @Autowired
-    private SubjectService service;
-
-    @Autowired
-    private TeacherService teacherService;
-
-    @BeforeEach
-    public void prepareDb() {
-        clearDb();
-        fillDbWithData();
-    }
-
-    private final SubjectIntegrationTestUtil util;
-    private final TeacherIntegrationTestUtil teacherUtil;
-
-    public SubjectIntegrationTest() {
-        this.util = new SubjectIntegrationTestUtil();
-        this.teacherUtil = new TeacherIntegrationTestUtil();
-    }
-
     @Test
     public void shouldSaveNewSubjectWithTeacher() {
         // given
@@ -57,10 +37,10 @@ public class SubjectIntegrationTest extends BaseTest {
         Long teacherId = teacherService.register(dto).getId();
         assertNotNull(teacherId);
 
-        SubjectRequestApiDto expected = util.prepareSubjectRequestDto(teacherId);
+        SubjectRequestApiDto expected = subjectUtil.prepareSubjectRequestDto(teacherId);
 
         // when
-        Long subjectId = service.createNewSubject(expected).getId();
+        Long subjectId = subjectService.createNewSubject(expected).getId();
 
         // then
         assertNotNull(subjectId);
@@ -79,12 +59,12 @@ public class SubjectIntegrationTest extends BaseTest {
         Long teacherId = teacherService.register(teacherDto).getId();
         assertNotNull(teacherId);
 
-        SubjectRequestApiDto dto = util.prepareSubjectRequestDto(teacherId);
-        Long subjectId = service.createNewSubject(dto).getId();
-        SubjectRequestApiDto expected = util.prepareSubjectRequestDto("Chemia", teacherId);
+        SubjectRequestApiDto dto = subjectUtil.prepareSubjectRequestDto(teacherId);
+        Long subjectId = subjectService.createNewSubject(dto).getId();
+        SubjectRequestApiDto expected = subjectUtil.prepareSubjectRequestDto("Chemia", teacherId);
 
         // when
-        Long updated = service.updateSubject(subjectId, expected).getId();
+        Long updated = subjectService.updateSubject(subjectId, expected).getId();
 
         // then
         assertNotNull(updated);
@@ -100,10 +80,10 @@ public class SubjectIntegrationTest extends BaseTest {
     @Test
     public void shouldSaveNewSubjectWithoutTeacher() {
         // given
-        SubjectRequestApiDto expected = util.prepareSubjectRequestDto(null);
+        SubjectRequestApiDto expected = subjectUtil.prepareSubjectRequestDto(null);
 
         // when
-        Long subjectId = service.createNewSubject(expected).getId();
+        Long subjectId = subjectService.createNewSubject(expected).getId();
 
         // then
         assertNotNull(subjectId);
@@ -119,10 +99,10 @@ public class SubjectIntegrationTest extends BaseTest {
     public void shouldThrowsExceptionWhenSaveNewSubjectAndTeacherNotExist() {
         // given
         Long idTeacher = 222L;
-        SubjectRequestApiDto expected = util.prepareSubjectRequestDto(idTeacher);
+        SubjectRequestApiDto expected = subjectUtil.prepareSubjectRequestDto(idTeacher);
 
         // when
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> service.createNewSubject(expected));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> subjectService.createNewSubject(expected));
 
         // then
         assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idTeacher, Teacher.class.getSimpleName()));
@@ -131,12 +111,12 @@ public class SubjectIntegrationTest extends BaseTest {
     @Test
     public void shouldFindSubjectWithGivenId() {
         // given
-        SubjectRequestApiDto expected = util.prepareSubjectRequestDto(null);
-        Long idSubject = service.createNewSubject(expected).getId();
+        SubjectRequestApiDto expected = subjectUtil.prepareSubjectRequestDto(null);
+        Long idSubject = subjectService.createNewSubject(expected).getId();
         assertNotNull(idSubject);
 
         // when
-        SubjectResponseApiDto actual = service.findSubjectById(idSubject);
+        SubjectResponseApiDto actual = subjectService.findSubjectById(idSubject);
 
         // then
         assertNotNull(actual);
@@ -148,16 +128,16 @@ public class SubjectIntegrationTest extends BaseTest {
     @Test
     public void shouldFindListOfSubjects() {
         // given
-        SubjectRequestApiDto firstSubject = util.prepareSubjectRequestDto(null);
-        SubjectRequestApiDto secondSubject = util.prepareSubjectRequestDto("Chemia", null);
+        SubjectRequestApiDto firstSubject = subjectUtil.prepareSubjectRequestDto(null);
+        SubjectRequestApiDto secondSubject = subjectUtil.prepareSubjectRequestDto("Chemia", null);
 
-        Long firstSubjectId = service.createNewSubject(firstSubject).getId();
+        Long firstSubjectId = subjectService.createNewSubject(firstSubject).getId();
         assertNotNull(firstSubjectId);
-        Long secondSubjectId = service.createNewSubject(secondSubject).getId();
+        Long secondSubjectId = subjectService.createNewSubject(secondSubject).getId();
         assertNotNull(secondSubjectId);
 
         // when
-        List<SubjectResponseApiDto> actual = service.findAllSubjects();
+        List<SubjectResponseApiDto> actual = subjectService.findAllSubjects();
 
         // then
         assertEquals(2, actual.size());
@@ -167,14 +147,14 @@ public class SubjectIntegrationTest extends BaseTest {
     @Test
     public void shouldThrowsExceptionWhenTryingToSaveSubjectAndSubjectAlreadyExist() {
         // given
-        SubjectRequestApiDto dto = util.prepareSubjectRequestDto(null);
+        SubjectRequestApiDto dto = subjectUtil.prepareSubjectRequestDto(null);
         // first subject
-        service.createNewSubject(dto);
+        subjectService.createNewSubject(dto);
 
         // second subject with the same name
-        SubjectRequestApiDto dto2 = util.prepareSubjectRequestDto(null);
+        SubjectRequestApiDto dto2 = subjectUtil.prepareSubjectRequestDto(null);
         // when
-        BusinessException exception = assertThrows(BusinessException.class, () -> service.createNewSubject(dto2));
+        BusinessException exception = assertThrows(BusinessException.class, () -> subjectService.createNewSubject(dto2));
 
         // then
         assertEquals(1, exception.getErrors().size());

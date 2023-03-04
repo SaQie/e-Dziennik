@@ -21,12 +21,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class UserValidatorUnitTest extends BaseUnitTest {
 
-    private UserIntegrationTestUtil util;
-
-    public UserValidatorUnitTest() {
-        this.util = new UserIntegrationTestUtil();
-    }
-
     @InjectMocks
     private UserWithEmailAlreadyExistsValidator emailValidator;
 
@@ -42,7 +36,7 @@ public class UserValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldReturnApiErrorWhenUserWithEmailAlreadyExists() {
         // given
-        UserRequestDto dto = util.prepareRequestDto("Kamil", "test@example.com");
+        UserRequestDto dto = userUtil.prepareRequestDto("Kamil", "test@example.com");
         when(dao.isUserExistByEmail("test@example.com")).thenReturn(true);
         lenient().when(resourceCreator.of(UserValidators.EXCEPTION_MESSAGE_USER_ALREADY_EXISTS_BY_EMAIL, dto.getEmail()))
                 .thenReturn(UserValidators.EXCEPTION_MESSAGE_USER_ALREADY_EXISTS_BY_EMAIL);
@@ -61,7 +55,7 @@ public class UserValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldReturnApiErrorWhenUserWithUsernameAlreadyExists() {
         // given
-        UserRequestDto dto = util.prepareRequestDto("Kamil", "test@example.com");
+        UserRequestDto dto = userUtil.prepareRequestDto("Kamil", "test@example.com");
         when(dao.isUserExistByUsername("Kamil")).thenReturn(true);
         lenient().when(resourceCreator.of(UserValidators.EXCEPTION_MESSAGE_USER_ALREADY_EXISTS, dto.getUsername()))
                 .thenReturn(UserValidators.EXCEPTION_MESSAGE_USER_ALREADY_EXISTS);
@@ -78,9 +72,9 @@ public class UserValidatorUnitTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldNotReturnApiErrorWhenUserWithUsernameNotExists(){
+    public void shouldNotReturnApiErrorWhenUserWithUsernameNotExists() {
         // given
-        UserRequestDto dto = util.prepareRequestDto("Kamil", "test@example.com");
+        UserRequestDto dto = userUtil.prepareRequestDto("Kamil", "test@example.com");
         when(dao.isUserExistByUsername("Kamil")).thenReturn(false);
 
         // when
@@ -91,9 +85,9 @@ public class UserValidatorUnitTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldNotReturnApiErrorWhenUserWithEmailNotExists(){
+    public void shouldNotReturnApiErrorWhenUserWithEmailNotExists() {
         // given
-        UserRequestDto dto = util.prepareRequestDto("Kamil", "test@example.com");
+        UserRequestDto dto = userUtil.prepareRequestDto("Kamil", "test@example.com");
         when(dao.isUserExistByEmail("test@example.com")).thenReturn(false);
 
         // when

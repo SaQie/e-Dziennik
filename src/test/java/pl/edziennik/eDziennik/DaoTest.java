@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import pl.edziennik.eDziennik.domain.address.domain.Address;
 import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 import pl.edziennik.eDziennik.server.basics.dao.BaseDao;
 import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
@@ -33,10 +34,7 @@ public class DaoTest extends BaseTest {
     @Test
     public void shouldInsert() {
         // given
-        PersonInformation personInformation = new PersonInformation();
         User user = new User();
-        personInformation.setFirstName("Test");
-        personInformation.setLastName("Testowy");
         // when
         User savedUser = dao.saveOrUpdate(user);
         // then
@@ -65,58 +63,44 @@ public class DaoTest extends BaseTest {
         // given
         PersonInformation personInformation = new PersonInformation();
         User user = new User();
+        user.setUsername("asdasd");
+        user.setPassword("cxzxc");
+        user.setEmail("test@o2.pl");
         User savedUser = dao.saveOrUpdate(user);
-        User userAfterUpdate = find(User.class, savedUser.getId());
-        assertEquals(personInformation.getFirstName(), userAfterUpdate.getPersonInformation().getFirstName());
-        assertEquals(personInformation.getLastName(), userAfterUpdate.getPersonInformation().getLastName());
+        savedUser.setEmail("afterEdit@o2.pl");
         // when
-        PersonInformation personInformation2 = find(PersonInformation.class, personInformation.getId());
-        personInformation2.setFirstName("After");
+        savedUser = dao.saveOrUpdate(savedUser);
+
         // then
-        User userAfterUpdate2 = dao.get(User.class, userAfterUpdate.getId());
-        assertEquals("After", userAfterUpdate2.getPersonInformation().getFirstName());
+        User userAfterUpdate = dao.get(User.class, savedUser.getId());
+        assertEquals("afterEdit@o2.pl", userAfterUpdate.getEmail());
     }
 
     @Test
     public void shouldFind() {
         // given
-        PersonInformation personInformation = new PersonInformation();
         User user = new User();
-        personInformation.setFirstName("Test");
-        personInformation.setLastName("Testowy");
-        user.setPersonInformation(personInformation);
         User savedUser = dao.saveOrUpdate(user);
         // when
         User userAfterFind = dao.get(User.class, savedUser.getId());
         // then
         assertNotNull(userAfterFind);
         assertEquals(user.getId(), userAfterFind.getId());
-        assertEquals(user.getPersonInformation().getFirstName(), userAfterFind.getPersonInformation().getFirstName());
-        assertEquals(user.getPersonInformation().getLastName(), userAfterFind.getPersonInformation().getLastName());
     }
 
     @Test
     public void shouldFindAll() {
         // given
-        PersonInformation personInformation1 = new PersonInformation();
         User user = new User();
-        personInformation1.setFirstName("Test");
-        personInformation1.setLastName("Testowy");
-        user.setPersonInformation(personInformation1);
+        user.setUsername("first");
         dao.saveOrUpdate(user);
 
-        PersonInformation personInformation2 = new PersonInformation();
         User user2 = new User();
-        personInformation2.setFirstName("Test2");
-        personInformation2.setLastName("Testowy2");
-        user2.setPersonInformation(personInformation2);
+        user2.setUsername("second");
         dao.saveOrUpdate(user2);
 
-        PersonInformation personInformation3 = new PersonInformation();
         User user3 = new User();
-        personInformation3.setFirstName("Test3");
-        personInformation3.setLastName("Testowy3");
-        user3.setPersonInformation(personInformation3);
+        user3.setUsername("third");
         dao.saveOrUpdate(user3);
 
         // when
@@ -129,23 +113,11 @@ public class DaoTest extends BaseTest {
     @Test
     public void shouldSaveAll() {
         // given
-        PersonInformation personInformation = new PersonInformation();
         User user = new User();
-        personInformation.setFirstName("Test");
-        personInformation.setLastName("Testowy");
-        user.setPersonInformation(personInformation);
 
-        PersonInformation personInformation2 = new PersonInformation();
         User user2 = new User();
-        personInformation2.setFirstName("Test2");
-        personInformation2.setLastName("Testowy2");
-        user2.setPersonInformation(personInformation2);
 
-        PersonInformation personInformation3 = new PersonInformation();
         User user3 = new User();
-        personInformation3.setFirstName("Test3");
-        personInformation3.setLastName("Testowy3");
-        user3.setPersonInformation(personInformation3);
 
         // when
         dao.saveAll(List.of(user3, user2, user));
@@ -159,30 +131,21 @@ public class DaoTest extends BaseTest {
     @Test
     public void shouldFindWithExecute() {
         // given
-        String expectedNameAfterExecute = "AfterExecute";
-        String expectedLastNameAfterExecute = "AfterExecute2";
+        String expectedNameAfterExecute = "something";
 
-        PersonInformation personInformation = new PersonInformation();
         User user = new User();
-        personInformation.setFirstName("Test");
-        personInformation.setLastName("Testowy");
-        user.setPersonInformation(personInformation);
         Long savedId = dao.saveOrUpdate(user).getId();
 
         // when
-        PersonInformation personInformation2 = new PersonInformation();
-        personInformation2.setFirstName(expectedNameAfterExecute);
-        personInformation2.setLastName(expectedLastNameAfterExecute);
-        dao.findWithExecute(User.class, savedId, savedStudent -> {
-            savedStudent.setPersonInformation(personInformation2);
+        dao.findWithExecute(User.class, savedId, savedUser -> {
+            savedUser.setUsername(expectedNameAfterExecute);
         });
 
         // then
         User savedUser = dao.get(User.class, savedId);
         assertNotNull(savedUser);
         assertEquals(user.getId(), savedUser.getId());
-        assertEquals(expectedNameAfterExecute, savedUser.getPersonInformation().getFirstName());
-        assertEquals(expectedLastNameAfterExecute, savedUser.getPersonInformation().getLastName());
+        assertEquals(expectedNameAfterExecute, expectedNameAfterExecute);
     }
 
     @Test
@@ -190,12 +153,9 @@ public class DaoTest extends BaseTest {
         // given
         Long idStudent = 999L;
         // when
-        PersonInformation personInformation = new PersonInformation();
-        personInformation.setFirstName("a");
-        personInformation.setLastName("b");
         Exception exception = assertThrows(EntityNotFoundException.class,
                 () -> dao.findWithExecute(Student.class, idStudent,
-                        savedStudent -> savedStudent.getUser().setPersonInformation(personInformation)));
+                        savedStudent -> savedStudent.setAddress(new Address())));
         // then
         assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent, Student.class.getSimpleName()));
     }

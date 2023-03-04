@@ -67,7 +67,7 @@ public class StudentIntegrationTest extends BaseTest {
     }
 
     @BeforeEach
-    void prepareDb() {
+    public void prepareDb() {
         clearDb();
         fillDbWithData();
     }
@@ -83,15 +83,12 @@ public class StudentIntegrationTest extends BaseTest {
         // then
         assertNotNull(id);
         Student actual = find(Student.class, id);
-        assertEquals(expected.getFirstName(), actual.getUser().getPersonInformation().getFirstName());
-        assertEquals(expected.getLastName(), actual.getUser().getPersonInformation().getLastName());
-        assertEquals(expected.getAddress(), actual.getUser().getAddress().getAddress());
-        assertEquals(expected.getPesel(), actual.getUser().getPersonInformation().getPesel());
-        assertEquals(expected.getCity(), actual.getUser().getAddress().getCity());
+        assertEquals(expected.getFirstName(), actual.getPersonInformation().getFirstName());
+        assertEquals(expected.getLastName(), actual.getPersonInformation().getLastName());
+        assertEquals(expected.getAddress(), actual.getAddress().getAddress());
+        assertEquals(expected.getPesel(), actual.getPersonInformation().getPesel());
+        assertEquals(expected.getCity(), actual.getAddress().getCity());
         assertEquals(expected.getUsername(), actual.getUser().getUsername());
-        assertEquals(expected.getParentFirstName(), actual.getParentFirstName());
-        assertEquals(expected.getParentPhoneNumber(), actual.getParentPhoneNumber());
-        assertEquals(expected.getParentLastName(), actual.getParentLastName());
     }
 
     @Test
@@ -108,15 +105,12 @@ public class StudentIntegrationTest extends BaseTest {
         assertNotNull(updated);
         assertEquals(updated, id);
         Student actual = find(Student.class, updated);
-        assertEquals(expected.getFirstName(), actual.getUser().getPersonInformation().getFirstName());
-        assertEquals(expected.getLastName(), actual.getUser().getPersonInformation().getLastName());
-        assertEquals(expected.getAddress(), actual.getUser().getAddress().getAddress());
-        assertEquals(expected.getPesel(), actual.getUser().getPersonInformation().getPesel());
-        assertEquals(expected.getCity(), actual.getUser().getAddress().getCity());
+        assertEquals(expected.getFirstName(), actual.getPersonInformation().getFirstName());
+        assertEquals(expected.getLastName(), actual.getPersonInformation().getLastName());
+        assertEquals(expected.getAddress(), actual.getAddress().getAddress());
+        assertEquals(expected.getPesel(), actual.getPersonInformation().getPesel());
+        assertEquals(expected.getCity(), actual.getAddress().getCity());
         assertEquals(expected.getUsername(), actual.getUser().getUsername());
-        assertEquals(expected.getParentFirstName(), actual.getParentFirstName());
-        assertEquals(expected.getParentPhoneNumber(), actual.getParentPhoneNumber());
-        assertEquals(expected.getParentLastName(), actual.getParentLastName());
 
     }
 
@@ -168,9 +162,6 @@ public class StudentIntegrationTest extends BaseTest {
         assertEquals(expected.getAddress(), actual.getAddress());
         assertEquals(expected.getPesel(), actual.getPesel());
         assertEquals(expected.getCity(), actual.getCity());
-        assertEquals(expected.getParentFirstName(), actual.getParentFirstName());
-        assertEquals(expected.getParentPhoneNumber(), actual.getParentPhoneNumber());
-        assertEquals(expected.getParentLastName(), actual.getParentLastName());
     }
 
     @Test

@@ -21,51 +21,40 @@ import static org.junit.jupiter.api.Assertions.*;
 @Rollback
 public class SettingsIntegrationTest extends BaseTest {
 
-    @Autowired
-    private SettingsService service;
-
-    private BigInteger expectedNumberOfSettings;
-
-    @BeforeEach
-    void prepareDb() {
-        clearDb();
-        fillDbWithData();
-        expectedNumberOfSettings = (BigInteger) em.createNativeQuery("select count(*) from app_settings").getSingleResult();
-    }
 
     @Test
-    public void shouldFindAllSettings(){
+    public void shouldFindAllSettings() {
         // when
-        service.refreshCache();
-        List<SettingsDto> allSettings = service.getAllSettings();
+        settingsService.refreshCache();
+        List<SettingsDto> allSettings = settingsService.getAllSettings();
 
         // then
         assertEquals(expectedNumberOfSettings.intValue(), allSettings.size());
     }
 
     @Test
-    public void shouldUpdateSettingById(){
+    public void shouldUpdateSettingById() {
         // given
         Long id = 1L;
 
-        service.refreshCache();
+        settingsService.refreshCache();
         // when
-        service.updateSettings(id, new SettingsValue(true));
+        settingsService.updateSettings(id, new SettingsValue(true));
 
         // then
-        SettingsDto settingsDto = service.getSettingsDataByName(SettingsService.AUTOMATICALLY_INSERT_STUDENT_SUBJECTS_WHEN_ADD);
+        SettingsDto settingsDto = settingsService.getSettingsDataByName(SettingsService.AUTOMATICALLY_INSERT_STUDENT_SUBJECTS_WHEN_ADD);
         assertTrue(settingsDto.isEnabled());
     }
 
 
     @Test
-    public void shouldReturnSettingByName(){
+    public void shouldReturnSettingByName() {
         // given
         String settingName = SettingsService.AUTOMATICALLY_INSERT_STUDENT_SUBJECTS_WHEN_ADD;
 
-        service.refreshCache();
+        settingsService.refreshCache();
         // when
-        SettingsDto settingsDto = service.getSettingsDataByName(settingName);
+        SettingsDto settingsDto = settingsService.getSettingsDataByName(settingName);
 
         // then
         assertEquals(settingsDto.getId(), 1L);

@@ -27,12 +27,6 @@ import java.util.Optional;
 @ExtendWith(MockitoExtension.class)
 public class AdminValidatorUnitTest extends BaseUnitTest {
 
-    private AdminIntegrationTestUtil util;
-
-    public AdminValidatorUnitTest() {
-        this.util = new AdminIntegrationTestUtil();
-    }
-
     @InjectMocks
     private AdminAlreadyExistValidator validator;
 
@@ -45,7 +39,7 @@ public class AdminValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldReturnApiErrorWhenAdminAlreadyExists() {
         // given
-        AdminRequestApiDto dto = util.prepareAdminRequest();
+        AdminRequestApiDto dto = adminUtil.prepareAdminRequest();
 
         when(dao.findAll()).thenReturn(List.of(new Admin()));
         lenient().when(resourceCreator.of(AdminValidators.EXCEPTION_MESSAGE_ADMIN_ALREADY_EXIST))
@@ -64,7 +58,7 @@ public class AdminValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldNotReturnApiErrorWhenAminNotExists() {
         // given
-        AdminRequestApiDto dto = util.prepareAdminRequest();
+        AdminRequestApiDto dto = adminUtil.prepareAdminRequest();
 
         when(dao.findAll()).thenReturn(Collections.emptyList());
         lenient().when(resourceCreator.of(AdminValidators.EXCEPTION_MESSAGE_ADMIN_ALREADY_EXIST))

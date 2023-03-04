@@ -22,12 +22,6 @@ import java.util.Optional;
 @ExtendWith(MockitoExtension.class)
 public class TeacherValidatorUnitTest extends BaseUnitTest {
 
-    private TeacherIntegrationTestUtil util;
-
-    public TeacherValidatorUnitTest() {
-        this.util = new TeacherIntegrationTestUtil();
-    }
-
     @InjectMocks
     private TeacherPeselNotUniqueValidator validator;
 
@@ -40,7 +34,7 @@ public class TeacherValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldReturnApiErrorWhenTeacherWithPeselAlreadyExists() {
         // given
-        TeacherRequestApiDto dto = util.prepareTeacherRequestDto();
+        TeacherRequestApiDto dto = teacherUtil.prepareTeacherRequestDto();
         when(teacherDao.isTeacherExistsByPesel("123123")).thenReturn(true);
         lenient().when(resourceCreator.of(TeacherPeselNotUniqueValidator.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, dto.getPesel()))
                 .thenReturn(TeacherPeselNotUniqueValidator.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE);
@@ -59,7 +53,7 @@ public class TeacherValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldNotReturnApiErrorWhenTeacherWithPeselNotExists(){
         // given
-        TeacherRequestApiDto dto = util.prepareTeacherRequestDto();
+        TeacherRequestApiDto dto = teacherUtil.prepareTeacherRequestDto();
         when(teacherDao.isTeacherExistsByPesel("123123")).thenReturn(false);
 
         // when

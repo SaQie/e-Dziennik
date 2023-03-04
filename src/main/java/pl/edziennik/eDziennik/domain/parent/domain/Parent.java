@@ -35,7 +35,13 @@ public class Parent extends AbstractEntity {
     private Address address;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
+    @JoinColumn(name = "student_id", referencedColumnName = "id")
     private Student student;
+
+    public void setStudent(Student student) {
+        this.student = student;
+        student.setParent(this);
+    }
 
     public Parent(PersonInformation personInformation, Address address) {
         this.personInformation = personInformation;

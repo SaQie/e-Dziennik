@@ -1,4 +1,4 @@
-package pl.edziennik.eDziennik.domain.parent.service;
+package pl.edziennik.eDziennik.domain.parent.services;
 
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentResponseApiDto;

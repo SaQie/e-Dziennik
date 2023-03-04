@@ -27,32 +27,32 @@ public class BasicValidator extends BaseDao<User> {
     @Autowired
     private ResourceCreator resourceCreator;
 
-    public void checkStudentExist(final Long idStudent){
+    public void checkStudentExist(final Long idStudent) {
         get(Student.class, idStudent);
     }
 
-    public void checkSubjectExist(final Long idSubject){
+    public void checkSubjectExist(final Long idSubject) {
         get(Subject.class, idSubject);
     }
 
-    public void checkTeacherExist(final Long idTeacher){
+    public void checkTeacherExist(final Long idTeacher) {
         get(Teacher.class, idTeacher);
     }
 
-    public void checkSchoolExist(final Long idSchool){
+    public void checkSchoolExist(final Long idSchool) {
         get(School.class, idSchool);
     }
 
-    public void checkSchoolClassExist(final Long idSchoolClass){
+    public void checkSchoolClassExist(final Long idSchoolClass) {
         get(SchoolClass.class, idSchoolClass);
     }
 
-    public StudentSubject checkStudentSubjectExist(final Long idStudent, final Long idSubject){
-        TypedQuery<StudentSubject> query = em.createNamedQuery("StudentSubject.findSubjectStudent", StudentSubject.class);
+    public StudentSubject checkStudentSubjectExist(final Long idStudent, final Long idSubject) {
+        TypedQuery<StudentSubject> query = em.createNamedQuery(Query.STUDENT_SUBJECT_FIND_STUDENT_SUBJECT, StudentSubject.class);
         query.setParameter("idStudent", idStudent);
         query.setParameter("idSubject", idSubject);
         StudentSubject studentSubject = (StudentSubject) PersistanceHelper.getSingleResultOrNull(query);
-        if (studentSubject == null){
+        if (studentSubject == null) {
             Student student = get(Student.class, idStudent);
             String studentName = student.getPersonInformation().getFirstName() + " " + student.getPersonInformation().getLastName();
             String subjectName = get(Subject.class, idSubject).getName();
@@ -62,13 +62,20 @@ public class BasicValidator extends BaseDao<User> {
         return studentSubject;
     }
 
-    public Role checkRoleExistOrReturnDefault(String roleName){
-        TypedQuery<Role> query = em.createNamedQuery("Role.getRoleByName", Role.class);
+    public Role checkRoleExistOrReturnDefault(String roleName) {
+        TypedQuery<Role> query = em.createNamedQuery(Query.ROLE_GET_ROLE_BY_NAME, Role.class);
         query.setParameter("name", roleName);
         Optional<Role> role = PersistanceHelper.getSingleResultAsOptional(query);
-        return role.orElse(get(Role.class,Role.RoleConst.ROLE_STUDENT.getId()));
+        return role.orElse(get(Role.class, Role.RoleConst.ROLE_STUDENT.getId()));
     }
 
+
+    private static final class Query {
+
+        private static final String ROLE_GET_ROLE_BY_NAME = "Role.getRoleByName";
+        private static final String STUDENT_SUBJECT_FIND_STUDENT_SUBJECT = "StudentSubject.findSubjectStudent";
+
+    }
 
 
 }

@@ -1,7 +1,8 @@
-package pl.edziennik.eDziennik.domain.parent.service;
+package pl.edziennik.eDziennik.domain.parent.services;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.domain.parent.dao.ParentDao;
 import pl.edziennik.eDziennik.domain.parent.domain.Parent;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
@@ -14,6 +15,7 @@ import pl.edziennik.eDziennik.domain.user.services.UserService;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -21,10 +23,13 @@ class ParentServiceImpl extends BaseService implements ParentService {
 
     private final UserService userService;
     private final ParentDao dao;
+    private final ParentValidatorService validatorService;
 
 
     @Override
+    @Transactional
     public ParentResponseApiDto register(ParentRequestApiDto dto) {
+        validatorService.valid(dto);
         Parent parent = mapToEntity(dto);
         User user = userService.createUser(UserMapper.toDto(dto));
         parent.setUser(user);

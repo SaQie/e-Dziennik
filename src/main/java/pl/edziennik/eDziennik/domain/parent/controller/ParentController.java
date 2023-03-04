@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentResponseApiDto;
-import pl.edziennik.eDziennik.domain.parent.service.ParentService;
-import pl.edziennik.eDziennik.domain.school.dto.SchoolRequestApiDto;
-import pl.edziennik.eDziennik.domain.school.dto.SchoolResponseApiDto;
+import pl.edziennik.eDziennik.domain.parent.services.ParentService;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 
