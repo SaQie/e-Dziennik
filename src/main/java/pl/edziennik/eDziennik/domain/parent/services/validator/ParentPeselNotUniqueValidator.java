@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.domain.parent.dao.ParentDao;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
-import pl.edziennik.eDziennik.server.basics.validator.ValidatorPriority;
+import pl.edziennik.eDziennik.server.basics.validator.ValidatePurpose;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
@@ -21,21 +21,10 @@ class ParentPeselNotUniqueValidator implements ParentValidators {
     private final ParentDao dao;
     private final ResourceCreator resourceCreator;
 
-    public static final Integer VALIDATOR_ID = 2;
 
     @Override
-    public String getValidatorName() {
-        return this.getClass().getSimpleName();
-    }
-
-    @Override
-    public Integer getValidationNumber() {
-        return VALIDATOR_ID;
-    }
-
-    @Override
-    public ValidatorPriority getValidationPriority() {
-        return ValidatorPriority.HIGH;
+    public String getValidatorId() {
+        return PARENT_PESEL_NOT_UNIQUE_VALIDATOR;
     }
 
     @Override
@@ -48,7 +37,7 @@ class ParentPeselNotUniqueValidator implements ParentValidators {
                     .field(ParentRequestApiDto.PESEL)
                     .cause(message)
                     .thrownImmediately(false)
-                    .errorThrownedBy(getValidatorName())
+                    .errorThrownedBy(getValidatorId())
                     .exceptionType(ExceptionType.BUSINESS)
                     .build();
 

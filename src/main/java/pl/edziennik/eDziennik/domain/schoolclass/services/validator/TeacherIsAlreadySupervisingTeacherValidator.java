@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
-import pl.edziennik.eDziennik.server.basics.validator.ValidatorPriority;
+import pl.edziennik.eDziennik.server.basics.validator.ValidatePurpose;
 import pl.edziennik.eDziennik.domain.schoolclass.dao.SchoolClassDao;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassRequestApiDto;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
@@ -22,21 +22,10 @@ class TeacherIsAlreadySupervisingTeacherValidator implements SchoolClassValidato
     private final SchoolClassDao dao;
     private final ResourceCreator resourceCreator;
 
-    public static final Integer VALIDATOR_ID = 2;
 
     @Override
-    public String getValidatorName() {
-        return this.getClass().getSimpleName();
-    }
-
-    @Override
-    public Integer getValidationNumber() {
-        return VALIDATOR_ID;
-    }
-
-    @Override
-    public ValidatorPriority getValidationPriority() {
-        return ValidatorPriority.HIGH;
+    public String getValidatorId() {
+        return TEACHER_IS_ALREADY_SUPERVISING_TEACHER_VALIDATOR_NAME;
     }
 
     @Override
@@ -47,13 +36,13 @@ class TeacherIsAlreadySupervisingTeacherValidator implements SchoolClassValidato
                 String actualTeacherSchoolClassName = dao.findSchoolClassNameBySupervisingTeacher(dto.getIdClassTeacher());
 
                 String teacherName = teacher.getPersonInformation().getFirstName() + " " + teacher.getPersonInformation().getLastName();
-                String message = resourceCreator.of(EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER, teacherName,actualTeacherSchoolClassName);
+                String message = resourceCreator.of(EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER, teacherName, actualTeacherSchoolClassName);
 
                 ApiErrorDto apiErrorDto = ApiErrorDto.builder()
                         .field(SchoolClassRequestApiDto.ID_CLASS_TEACHER)
                         .cause(message)
                         .thrownImmediately(false)
-                        .errorThrownedBy(getValidatorName())
+                        .errorThrownedBy(getValidatorId())
                         .exceptionType(ExceptionType.BUSINESS)
                         .build();
 

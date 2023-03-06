@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.request.StudentSubjectRequestDto;
 import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
-import pl.edziennik.eDziennik.server.basics.validator.ValidatorPriority;
+import pl.edziennik.eDziennik.server.basics.validator.ValidatePurpose;
 import pl.edziennik.eDziennik.domain.studentsubject.dao.StudentSubjectDao;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.subject.domain.Subject;
@@ -18,27 +18,15 @@ import java.util.Optional;
  */
 @Component
 @AllArgsConstructor
-class StudentCannotBeAssignedToSubjectFromDifferentClassValidator implements StudentSubjectValidators{
+class StudentCannotBeAssignedToSubjectFromDifferentClassValidator implements StudentSubjectValidators {
 
     private final StudentSubjectDao dao;
     private final ResourceCreator resourceCreator;
 
-    public static final Integer VALIDATOR_ID = 2;
-
 
     @Override
-    public String getValidatorName() {
-        return this.getClass().getSimpleName();
-    }
-
-    @Override
-    public Integer getValidationNumber() {
-        return VALIDATOR_ID;
-    }
-
-    @Override
-    public ValidatorPriority getValidationPriority() {
-        return ValidatorPriority.HIGH;
+    public String getValidatorId() {
+        return STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FRON_DIFFERENT_CLASS_VALIDATOR_NAME;
     }
 
     @Override
@@ -46,7 +34,7 @@ class StudentCannotBeAssignedToSubjectFromDifferentClassValidator implements Stu
         Student student = dao.get(Student.class, dto.getIdStudent());
         Subject subject = dao.get(Subject.class, dto.getIdSubject());
 
-        if (!student.getSchoolClass().equals(subject.getSchoolClass())){
+        if (!student.getSchoolClass().equals(subject.getSchoolClass())) {
             String studentName = student.getPersonInformation().getFirstName() + " " + student.getPersonInformation().getLastName();
             String subjectName = subject.getName();
 
@@ -56,7 +44,7 @@ class StudentCannotBeAssignedToSubjectFromDifferentClassValidator implements Stu
                     .field(StudentSubjectRequestDto.ID_SUBJECT)
                     .cause(message)
                     .thrownImmediately(false)
-                    .errorThrownedBy(getValidatorName())
+                    .errorThrownedBy(getValidatorId())
                     .exceptionType(ExceptionType.BUSINESS)
                     .build();
 

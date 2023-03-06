@@ -3,6 +3,7 @@ package pl.edziennik.eDziennik.server.basics.validator;
 import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
 
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Basic interface for validate
@@ -11,11 +12,16 @@ import java.util.Optional;
  */
 public interface AbstractValidator<INPUT> {
 
-    String getValidatorName();
+    String getValidatorId();
 
-    Integer getValidationNumber();
-
-    ValidatorPriority getValidationPriority();
+    /**
+     * Override this method if needed to define more specific validate purpose
+     *
+     * @return
+     */
+    default Set<ValidatePurpose> getValidatorPurposes() {
+        return Set.of(ValidatePurpose.CREATE);
+    }
 
     Optional<ApiErrorDto> validate(INPUT e);
 

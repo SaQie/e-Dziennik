@@ -17,6 +17,7 @@ public class TeacherResponseApiDto {
     private final String address;
     private final String postalCode;
     private final String city;
+    private final String email;
     private final String pesel;
     private final String phoneNumber;
     private final SchoolSimpleResponseApiDto school;

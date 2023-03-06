@@ -10,8 +10,8 @@ import pl.edziennik.eDziennik.server.basics.validator.ServiceValidator;
 @AllArgsConstructor
 class TeacherValidatorService extends ServiceValidator<TeacherValidators, TeacherRequestApiDto> {
 
-    @Override
-    protected void valid(TeacherRequestApiDto dto) {
-        runValidatorChain(dto);
+    protected void validate(TeacherRequestApiDto dto) {
+        runValidators(dto);
     }
+
 }

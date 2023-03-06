@@ -6,7 +6,7 @@ import pl.edziennik.eDziennik.domain.teacher.dao.TeacherDao;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
-import pl.edziennik.eDziennik.server.basics.validator.ValidatorPriority;
+import pl.edziennik.eDziennik.server.basics.validator.ValidatePurpose;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Optional;
@@ -16,38 +16,26 @@ import java.util.Optional;
  */
 @Component
 @AllArgsConstructor
-class TeacherPeselNotUniqueValidator implements TeacherValidators{
+class TeacherPeselNotUniqueValidator implements TeacherValidators {
 
     private final TeacherDao dao;
     private final ResourceCreator resourceCreator;
 
-    public static final Integer VALIDATOR_ID = 2;
-
     @Override
-    public String getValidatorName() {
-        return this.getClass().getSimpleName();
-    }
-
-    @Override
-    public Integer getValidationNumber() {
-        return VALIDATOR_ID;
-    }
-
-    @Override
-    public ValidatorPriority getValidationPriority() {
-        return ValidatorPriority.HIGH;
+    public String getValidatorId() {
+        return TEACHER_PESEL_NOT_UNIQUE_VALIDATOR_NAME;
     }
 
     @Override
     public Optional<ApiErrorDto> validate(TeacherRequestApiDto dto) {
-        if (dao.isTeacherExistsByPesel(dto.getPesel())){
+        if (dao.isTeacherExistsByPesel(dto.getPesel())) {
             String message = resourceCreator.of(EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, dto.getPesel());
 
             ApiErrorDto apiErrorDto = ApiErrorDto.builder()
                     .field(TeacherRequestApiDto.PESEL)
                     .cause(message)
                     .thrownImmediately(false)
-                    .errorThrownedBy(getValidatorName())
+                    .errorThrownedBy(getValidatorId())
                     .exceptionType(ExceptionType.BUSINESS)
                     .build();
 

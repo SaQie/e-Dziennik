@@ -19,6 +19,7 @@ public class ParentIntegrationTestUtil {
                 "IdontKnow",
                 RandomStringUtils.randomNumeric(9),
                 RandomStringUtils.random(8),
+                "123123",
                 1L
         );
     }
@@ -34,6 +35,7 @@ public class ParentIntegrationTestUtil {
                 "IdontKnow",
                 RandomStringUtils.randomNumeric(9),
                 RandomStringUtils.random(8),
+                "123123",
                 idStudent
         );
     }
@@ -49,6 +51,7 @@ public class ParentIntegrationTestUtil {
                 "IdontKnow",
                 pesel,
                 RandomStringUtils.random(8),
+                "123123",
                 idStudent
         );
     }
@@ -64,6 +67,7 @@ public class ParentIntegrationTestUtil {
                 "IdontKnow",
                 "81818181818",
                 email,
+                "123123",
                 idStudent
         );
     }

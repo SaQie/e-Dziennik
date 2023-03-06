@@ -10,9 +10,8 @@ import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassRequestApiDto;
 @AllArgsConstructor
 class SchoolClassValidatorService extends ServiceValidator<SchoolClassValidators, SchoolClassRequestApiDto> {
 
-    @Override
-    protected void valid(SchoolClassRequestApiDto dto) {
-        runValidatorChain(dto);
 
+    protected void valid(SchoolClassRequestApiDto dto) {
+        runValidators(dto);
     }
 }

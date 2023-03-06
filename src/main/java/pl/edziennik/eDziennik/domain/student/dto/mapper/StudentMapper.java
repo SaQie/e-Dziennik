@@ -29,12 +29,29 @@ public class StudentMapper {
                 .pesel(entity.getPersonInformation().getPesel())
                 .fullName(entity.getPersonInformation().getFullName())
                 .email(entity.getUser().getEmail())
+                .phoneNumber(entity.getPersonInformation().getPhoneNumber())
                 .parent(ParentMapper.toSimpleDto(entity.getParent()))
                 .school(SchoolMapper.toSimpleDto(entity.getSchool()))
                 .schoolClass(SchoolClassMapper.toSimpleDto(entity.getSchoolClass()))
                 .role(entity.getUser().getRole().getName())
                 .build();
 
+    }
+
+    public static StudentRequestApiDto toRequestDto(Student entity) {
+        return StudentRequestApiDto.builder()
+                .username(entity.getUser().getUsername())
+                .firstName(entity.getPersonInformation().getFirstName())
+                .lastName(entity.getPersonInformation().getLastName())
+                .address(entity.getAddress().getAddress())
+                .postalCode(entity.getAddress().getPostalCode())
+                .city(entity.getAddress().getCity())
+                .pesel(entity.getPersonInformation().getPesel())
+                .email(entity.getUser().getEmail())
+                .phoneNumber(entity.getPersonInformation().getPhoneNumber())
+                .idSchool(entity.getSchool().getId())
+                .idSchoolClass(entity.getSchoolClass().getId())
+                .build();
     }
 
     public static StudentSimpleResponseApiDto toSimpleDto(Student student) {

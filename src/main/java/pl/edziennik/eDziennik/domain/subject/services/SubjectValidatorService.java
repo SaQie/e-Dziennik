@@ -10,8 +10,7 @@ import pl.edziennik.eDziennik.domain.subject.services.validator.SubjectValidator
 @AllArgsConstructor
 class SubjectValidatorService extends ServiceValidator<SubjectValidators, SubjectRequestApiDto> {
 
-    @Override
     protected void valid(SubjectRequestApiDto dto) {
-        runValidatorChain(dto);
+        runValidators(dto);
     }
 }

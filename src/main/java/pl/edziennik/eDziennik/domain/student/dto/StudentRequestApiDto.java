@@ -2,17 +2,16 @@ package pl.edziennik.eDziennik.domain.student.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Builder
 public class StudentRequestApiDto{
 
     public static final String USERNAME = "username";
@@ -23,11 +22,9 @@ public class StudentRequestApiDto{
     public static final String CITY = "city";
     public static final String PESEL = "pesel";
     public static final String ROLE = "role";
-    public static final String PARENT_PHONE_NUMBER = "parentPhoneNumber";
+    public static final String PHONE_NUMBER = "phoneNumber";
     public static final String ID_SCHOOL = "idSchool";
     public static final String ID_SCHOOL_CLASS = "idSchoolClass";
-    public static final String PARENT_FIRST_NAME = "parentFirstName";
-    public static final String PARENT_LAST_NAME = "parentLastName";
     public static final String EMAIL = "email";
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -62,14 +59,8 @@ public class StudentRequestApiDto{
     @NotEmpty(message = "{email.empty}")
     private String email;
 
-    @NotEmpty(message = "{parentFirstName.empty}")
-    private String parentFirstName;
-
-    @NotEmpty(message = "{parentLastName.empty}")
-    private String parentLastName;
-
-    @NotEmpty(message = "{phoneNumber.empty}")
-    private String parentPhoneNumber;
+    @Pattern(regexp = "[\\d]{9}", message = "{phone.invalid}")
+    private String phoneNumber;
 
     @NotNull(message = "{school.empty}")
     private Long idSchool;

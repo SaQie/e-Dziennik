@@ -5,10 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Getter
 @AllArgsConstructor
@@ -24,6 +21,7 @@ public class ParentRequestApiDto {
     public static final String PESEL = "pesel";
     public static final String ROLE = "role";
     public static final String EMAIL = "email";
+    public static final String PHONE_NUMBER = "phoneNumber";
     public static final String ID_STUDENT = "idStudent";
 
 
@@ -58,6 +56,9 @@ public class ParentRequestApiDto {
     @Email(message = "{email.is.not.valid}")
     @NotEmpty(message = "{email.empty}")
     private String email;
+
+    @Pattern(regexp = "[\\d]{9}", message = "{phone.invalid}")
+    private String phoneNumber;
 
     @NotNull(message = "{student.empty}")
     private Long idStudent;

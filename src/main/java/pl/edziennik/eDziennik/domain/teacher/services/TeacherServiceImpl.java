@@ -33,7 +33,7 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
     @Override
     @Transactional
     public TeacherResponseApiDto register(TeacherRequestApiDto dto) {
-        validatorService.valid(dto);
+        validatorService.validate(dto);
         User user = userService.createUser(UserMapper.toDto(dto));
         Teacher teacher = mapToEntity(dto);
         teacher.setUser(user);

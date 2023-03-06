@@ -28,6 +28,7 @@ public class TeacherMapper {
                     .pesel(entity.getPersonInformation().getPesel())
                     .phoneNumber(entity.getPersonInformation().getPhoneNumber())
                     .school(SchoolMapper.toSimpleDto(entity.getSchool()))
+                    .email(entity.getUser().getEmail())
                     .role(entity.getUser().getRole().getName())
                     .build();
         }
@@ -39,6 +40,7 @@ public class TeacherMapper {
                 .fullName(entity.getPersonInformation().getFullName())
                 .address(entity.getAddress().getAddress())
                 .postalCode(entity.getAddress().getPostalCode())
+                .email(entity.getUser().getEmail())
                 .city(entity.getAddress().getCity())
                 .pesel(entity.getPersonInformation().getPesel())
                 .phoneNumber(entity.getPersonInformation().getPhoneNumber())

@@ -28,7 +28,7 @@ class UserServiceImpl extends ServiceValidator<UserValidators, UserRequestDto> i
     @Override
     @Transactional
     public User createUser(UserRequestDto dto) {
-        valid(dto);
+        runValidators(dto);
         User user = UserMapper.toEntity(dto);
         user.setRole(basicValidator.checkRoleExistOrReturnDefault(dto.getRole()));
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
@@ -45,10 +45,8 @@ class UserServiceImpl extends ServiceValidator<UserValidators, UserRequestDto> i
         }
     }
 
-    @Override
-    protected void valid(UserRequestDto dto) {
-        runValidatorChain(dto);
-    }
+
+
 
 
 }

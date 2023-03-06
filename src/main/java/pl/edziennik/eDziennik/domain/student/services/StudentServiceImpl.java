@@ -21,6 +21,7 @@ import pl.edziennik.eDziennik.domain.subject.domain.Subject;
 import pl.edziennik.eDziennik.domain.user.domain.User;
 import pl.edziennik.eDziennik.domain.user.dto.mapper.UserMapper;
 import pl.edziennik.eDziennik.domain.user.services.UserService;
+import pl.edziennik.eDziennik.server.basics.validator.ValidatePurpose;
 
 import java.util.List;
 import java.util.Optional;
@@ -56,6 +57,8 @@ class StudentServiceImpl implements StudentService {
 
     @Override
     public void deleteStudentById(Long id) {
+        Student student = dao.get(id);
+        validatorService.checkStudentStillHasParent(student);
         dao.remove(id);
     }
 

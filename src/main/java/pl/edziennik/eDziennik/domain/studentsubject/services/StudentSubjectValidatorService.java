@@ -10,9 +10,9 @@ import pl.edziennik.eDziennik.domain.studentsubject.services.validator.StudentSu
 @AllArgsConstructor
 class StudentSubjectValidatorService extends ServiceValidator<StudentSubjectValidators, StudentSubjectRequestDto> {
 
-    @Override
+
     protected void valid(StudentSubjectRequestDto dto) {
-        runValidatorChain(dto);
+        runValidators(dto);
         basicValidator.checkStudentExist(dto.getIdStudent());
         basicValidator.checkSubjectExist(dto.getIdSubject());
     }

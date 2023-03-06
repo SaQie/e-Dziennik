@@ -6,7 +6,7 @@ import pl.edziennik.eDziennik.domain.parent.dao.ParentDao;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
-import pl.edziennik.eDziennik.server.basics.validator.ValidatorPriority;
+import pl.edziennik.eDziennik.server.basics.validator.ValidatePurpose;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
@@ -22,21 +22,10 @@ class StudentAlreadyHasParentValidator implements ParentValidators {
     private final ParentDao dao;
     private final ResourceCreator resourceCreator;
 
-    public static final Integer VALIDATOR_ID = 1;
 
     @Override
-    public String getValidatorName() {
-        return this.getClass().getSimpleName();
-    }
-
-    @Override
-    public Integer getValidationNumber() {
-        return VALIDATOR_ID;
-    }
-
-    @Override
-    public ValidatorPriority getValidationPriority() {
-        return ValidatorPriority.HIGH;
+    public String getValidatorId() {
+        return STUDENT_ALREADY_HAS_PARENT_VALIDATOR;
     }
 
     @Override
@@ -52,7 +41,7 @@ class StudentAlreadyHasParentValidator implements ParentValidators {
                     .field(ParentRequestApiDto.ID_STUDENT)
                     .cause(message)
                     .thrownImmediately(false)
-                    .errorThrownedBy(getValidatorName())
+                    .errorThrownedBy(getValidatorId())
                     .exceptionType(ExceptionType.BUSINESS)
                     .build();
 

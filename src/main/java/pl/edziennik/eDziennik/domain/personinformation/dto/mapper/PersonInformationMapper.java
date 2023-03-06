@@ -25,6 +25,7 @@ public class PersonInformationMapper {
         personInformation.setPesel(dto.getPesel());
         personInformation.setFirstName(dto.getFirstName());
         personInformation.setLastName(dto.getLastName());
+        personInformation.setPhoneNumber(dto.getPhoneNumber());
         return personInformation;
     }
 

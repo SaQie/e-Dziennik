@@ -19,8 +19,6 @@ public class StudentIntegrationTestUtil {
                 "Lubawka2",
                 RandomStringUtils.randomNumeric(9),
                 RandomStringUtils.random(8),
-                "Tomasz",
-                "Nowak",
                 "100200300",
                 100L,
                 100L
@@ -38,8 +36,6 @@ public class StudentIntegrationTestUtil {
                 "Lubawka2",
                 RandomStringUtils.randomNumeric(9),
                 email,
-                "Tomasz",
-                "Nowak",
                 "100200300",
                 100L,
                 100L
@@ -57,8 +53,6 @@ public class StudentIntegrationTestUtil {
                 "Lubawka2",
                 RandomStringUtils.randomNumeric(9),
                 email,
-                "Tomasz",
-                "Nowak",
                 "100200300",
                 100L,
                 idSchoolClass
@@ -76,8 +70,6 @@ public class StudentIntegrationTestUtil {
                 "Lubawka2",
                 pesel,
                 email,
-                "Tomasz",
-                "Nowak",
                 "100200300",
                 100L,
                 100L
@@ -95,8 +87,6 @@ public class StudentIntegrationTestUtil {
                 "Lubawka2",
                 RandomStringUtils.randomNumeric(9),
                 RandomStringUtils.random(8),
-                "Tomasz",
-                "Nowak",
                 "100200300",
                 idSchool,
                 idSchoolClass
@@ -115,8 +105,6 @@ public class StudentIntegrationTestUtil {
                 "Lubawka2",
                 pesel,
                 "test@example.com",
-                "Tomasz",
-                "Nowak",
                 "100200300",
                 100L,
                 100L
@@ -135,8 +123,6 @@ public class StudentIntegrationTestUtil {
                 "Lubawka2",
                 "123123123",
                 "test@example.com",
-                "Tomasz",
-                "Nowak",
                 "100200300",
                 idSchool,
                 100L

@@ -41,6 +41,11 @@ public class Parent extends AbstractEntity {
     public void setStudent(Student student) {
         this.student = student;
         student.setParent(this);
+        student.setHasParentAccount(true);
+    }
+
+    public void setUser(User user){
+        this.user = user;
     }
 
     public Parent(PersonInformation personInformation, Address address) {

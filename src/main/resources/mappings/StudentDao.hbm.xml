@@ -22,4 +22,21 @@
         </query>
     </named-query>
 
+
+    <named-query name="Student.getStudentByUsername">
+        <query>
+            SELECT
+            s
+            FROM
+            Student s
+            JOIN FETCH
+            s.user u
+            WHERE
+            u.username = :username
+            AND
+            u.role.id = 3
+        </query>
+    </named-query>
+
+
 </entity-mappings>

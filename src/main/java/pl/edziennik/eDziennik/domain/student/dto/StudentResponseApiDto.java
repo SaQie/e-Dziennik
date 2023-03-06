@@ -20,6 +20,7 @@ public class StudentResponseApiDto {
     private final String city;
     private final String pesel;
     private final String email;
+    private final String phoneNumber;
     private final ParentSimpleResponseApiDto parent;
     private final SchoolSimpleResponseApiDto school;
     private final SchoolClassSimpleResponseApiDto schoolClass;

@@ -7,10 +7,7 @@ import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Base class for validation
@@ -30,11 +27,11 @@ public abstract class ServiceValidator<VALIDATORS extends AbstractValidator<INPU
     public BasicValidator basicValidator;
 
     /**
-     * This method run chain-of-responsibility pattern of defined validators
+     * This method run chain-of-responsibility pattern of defined validators (all validators)
      *
      * @param input -> Object to validate
      */
-    protected void runValidatorChain(INPUT input) {
+    protected void runValidators(INPUT input) {
         List<ApiErrorDto> errors = new ArrayList<>();
         validators.forEach(valid -> valid.validate(input).ifPresent(error -> {
             if (error.isThrownImmediately()) {
@@ -48,84 +45,64 @@ public abstract class ServiceValidator<VALIDATORS extends AbstractValidator<INPU
     }
 
     /**
-     * Method which need to be overrided by concrete validator service
+     * This method run chain-of-responsibility patter of defined by validate purpose validators
      *
-     * @param dto
+     * @param input           -> Object to validate
+     * @param validatePurpose -> Type of validation
      */
-    protected abstract void valid(INPUT dto);
+    protected void runValidators(INPUT input, ValidatePurpose validatePurpose) {
+        List<ApiErrorDto> errors = new ArrayList<>();
+        validators.stream()
+                .filter(validator -> validator.getValidatorPurposes().contains(validatePurpose))
+                .forEach(specificValidator -> specificValidator.validate(input)
+                        .ifPresent(error -> {
+                            if (error.isThrownImmediately()) {
+                                throw new BusinessException(error);
+                            }
+                            errors.add(error);
+                        }));
+        if (!errors.isEmpty()) {
+            throw new BusinessException(errors);
+        }
+
+    }
 
     /**
-     * This method run chain-of-responsibility pattern of defined validators sorted by priority (High-Low)
+     * This method run chain-of-responsibility pattern of defined by validate purpose set validators
      *
-     * @param input -> Object to validate
+     * @param input              -> Object to validate
+     * @param validatePurposeSet -> Types of validation
      */
-    protected void validateByPriority(INPUT input) {
+    protected void runValidators(INPUT input, Set<ValidatePurpose> validatePurposeSet) {
         List<ApiErrorDto> errors = new ArrayList<>();
-        validators.stream().sorted(Comparator.comparing(validator -> validator.getValidationPriority().ordinal())).
-                forEach(valid -> valid.validate(input).ifPresent(error -> {
-                    if (error.isThrownImmediately()) {
-                        throw new BusinessException(error);
-                    }
-                    errors.add(error);
-                }));
+        validators.stream()
+                .filter(validator -> validator.getValidatorPurposes().containsAll(validatePurposeSet))
+                .forEach(specificValidator -> specificValidator.validate(input)
+                        .ifPresent(error -> {
+                            if (error.isThrownImmediately()) {
+                                throw new BusinessException(error);
+                            }
+                            errors.add(error);
+                        }));
         if (!errors.isEmpty()) {
             throw new BusinessException(errors);
         }
     }
 
     /**
-     * This method run chain-of-responsibility patter of defined validators sorted by ids ASC
-     *
-     * @param input  -> Object to validate
-     */
-    protected void validateByIds(INPUT input) {
-        List<ApiErrorDto> erros = new ArrayList<>();
-        validators.stream().sorted(Comparator.comparing(AbstractValidator::getValidationNumber)).
-                forEach(valid -> valid.validate(input).ifPresent(error -> {
-                    if (error.isThrownImmediately()) {
-                        throw new BusinessException(error);
-                    }
-                    erros.add(error);
-                }));
-        if (!erros.isEmpty()) {
-            throw new BusinessException(erros);
-        }
-    }
-
-    /**
      * This method run only one selected validator by Id
      *
-     * @param input  -> Object to validate
+     * @param input       -> Object to validate
      * @param validatorId -> Validator id which will be run
      */
-    protected void runSelectedValidator(INPUT input, Integer validatorId) {
+    protected void runValidator(INPUT input, String validatorId) {
         if (validators != null && !validators.isEmpty()) {
-            validators.stream().filter(item -> Objects.equals(item.getValidationNumber(), validatorId))
-                    .findFirst().ifPresent(validator -> validator.validate(input).ifPresent(error -> {
+            validators.stream()
+                    .filter(item -> Objects.equals(item.getValidatorId(), validatorId))
+                    .forEach(validator -> validator.validate(input).ifPresent(error -> {
                         throw new BusinessException(error);
                     }));
         }
     }
-
-    /**
-     * This method run chain-of-responsibility patter for defined validators with only selected priority
-     *
-     * @param input -> Object to validate
-     * @param priority -> Validators priority which will be run
-     */
-    protected void validateBySelectedPriority(INPUT input, ValidatorPriority priority) {
-        List<ApiErrorDto> erros = new ArrayList<>();
-        validators.stream().filter(validator -> validator.getValidationPriority().equals(priority)).
-                forEach(valid -> valid.validate(input).ifPresent(error -> {
-                    if (error.isThrownImmediately()) {
-                        throw new BusinessException(error);
-                    }
-                    erros.add(error);
-                }));
-        if (!erros.isEmpty()) {
-            throw new BusinessException(erros);
-        }
-    }
-
 
 }

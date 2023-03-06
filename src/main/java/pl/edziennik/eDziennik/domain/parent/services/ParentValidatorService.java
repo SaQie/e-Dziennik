@@ -8,8 +8,7 @@ import pl.edziennik.eDziennik.server.basics.validator.ServiceValidator;
 @Service
 class ParentValidatorService extends ServiceValidator<ParentValidators, ParentRequestApiDto> {
 
-    @Override
     protected void valid(ParentRequestApiDto dto) {
-        runValidatorChain(dto);
+        runValidators(dto);
     }
 }

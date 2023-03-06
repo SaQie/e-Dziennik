@@ -27,6 +27,8 @@ public class Student extends AbstractEntity implements Serializable {
     @SequenceGenerator(name = "student_id_seq", sequenceName = "student_id_seq", allocationSize = 1)
     private Long id;
 
+    private boolean hasParentAccount;
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
@@ -45,7 +47,7 @@ public class Student extends AbstractEntity implements Serializable {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
-    @OneToOne(mappedBy = "student", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Parent parent;
 
     @Override

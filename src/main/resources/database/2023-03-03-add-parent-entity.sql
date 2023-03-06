@@ -17,7 +17,7 @@ ALTER TABLE PARENT
 
 ALTER TABLE PARENT
     ADD user_id int not null unique,
-    ADD FOREIGN KEY (user_id) references users (id);
+    ADD FOREIGN KEY (user_id) references users(id);
 
 ALTER TABLE PARENT
     ADD student_id int not null unique,
@@ -33,6 +33,10 @@ ALTER TABLE STUDENT
 
 ALTER TABLE STUDENT
     DROP COLUMN IF EXISTS parent_phone_number;
+
+ALTER TABLE STUDENT
+    ADD parent_id int unique,
+    ADD FOREIGN KEY (parent_id) references parent(id);
 
 ALTER TABLE STUDENT
     ADD has_parent_account boolean default false

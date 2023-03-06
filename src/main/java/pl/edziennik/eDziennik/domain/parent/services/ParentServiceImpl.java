@@ -31,8 +31,6 @@ class ParentServiceImpl extends BaseService implements ParentService {
     public ParentResponseApiDto register(ParentRequestApiDto dto) {
         validatorService.valid(dto);
         Parent parent = mapToEntity(dto);
-        User user = userService.createUser(UserMapper.toDto(dto));
-        parent.setUser(user);
         return ParentMapper.toDto(dao.saveOrUpdate(parent));
     }
 
@@ -57,8 +55,10 @@ class ParentServiceImpl extends BaseService implements ParentService {
 
     private Parent mapToEntity(ParentRequestApiDto dto) {
         Parent parent = ParentMapper.toEntity(dto);
-        dao.findWithExecute(Student.class, dto.getIdStudent(), parent::setStudent);
+        User user = userService.createUser(UserMapper.toDto(dto));
+        Student student = dao.get(Student.class, dto.getIdStudent());
+        parent.setStudent(student);
+        parent.setUser(user);
         return parent;
-
     }
 }
