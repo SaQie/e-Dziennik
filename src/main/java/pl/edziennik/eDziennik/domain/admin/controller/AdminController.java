@@ -11,6 +11,9 @@ import pl.edziennik.eDziennik.domain.admin.dto.AdminResponseApiDto;
 import pl.edziennik.eDziennik.domain.admin.services.AdminService;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
+import pl.edziennik.eDziennik.server.basics.dto.Page;
+import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
+import pl.edziennik.eDziennik.server.basics.handler.Pageable;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -40,8 +43,8 @@ public class AdminController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get admin list",
             description = "Returns list of admins")
-    public ApiResponse<?> getAdminList() {
-        List<AdminResponseApiDto> responseApiDto = service.getAdminList();
+    public ApiResponse<Page<List<AdminResponseApiDto>>> getAdminList(@Pageable PageRequest pageRequest) {
+        Page<List<AdminResponseApiDto>> responseApiDto = service.getAdminList(pageRequest);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
     }
@@ -50,7 +53,7 @@ public class AdminController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get specific admin",
             description = "Returns information about specific admin")
-    public ApiResponse<?> getAdmin(@PathVariable Long id){
+    public ApiResponse<AdminResponseApiDto> getAdmin(@PathVariable Long id) {
         AdminResponseApiDto responseApiDto = service.getAdminById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
@@ -59,18 +62,18 @@ public class AdminController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Delete admin")
-    public ApiResponse<?> deleteAdminById(@PathVariable Long id){
+    public ApiResponse<?> deleteAdminById(@PathVariable Long id) {
         service.deleteAdminById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ApiResponseCreator.buildApiResponse(HttpMethod.DELETE,HttpStatus.OK,"Admin deleted successfully",uri);
+        return ApiResponseCreator.buildApiResponse(HttpMethod.DELETE, HttpStatus.OK, "Admin deleted successfully", uri);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Update admin",
             description = "This method will update specific Admin or create new if not exists")
-    public ApiResponse<?> updateAdmin(@RequestBody @Valid AdminRequestApiDto dto, @PathVariable Long id){
-        AdminResponseApiDto responseApiDto =service.updateAdmin(dto, id);
+    public ApiResponse<AdminResponseApiDto> updateAdmin(@RequestBody @Valid AdminRequestApiDto dto, @PathVariable Long id) {
+        AdminResponseApiDto responseApiDto = service.updateAdmin(dto, id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.PUT, HttpStatus.OK, responseApiDto, uri);
     }

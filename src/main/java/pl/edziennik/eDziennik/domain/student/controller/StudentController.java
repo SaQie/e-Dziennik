@@ -11,6 +11,9 @@ import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.domain.student.dto.StudentResponseApiDto;
 import pl.edziennik.eDziennik.domain.student.services.StudentService;
+import pl.edziennik.eDziennik.server.basics.dto.Page;
+import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
+import pl.edziennik.eDziennik.server.basics.handler.Pageable;
 
 import java.net.URI;
 import java.util.List;
@@ -57,8 +60,8 @@ public class StudentController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get list of students",
             description = "Returns list of all students")
-    public ApiResponse<?> findAllStudents() {
-        List<StudentResponseApiDto> responseApiDtos = service.findAllStudents();
+    public ApiResponse<Page<List<StudentResponseApiDto>>> findAllStudents(@Pageable PageRequest pageRequest) {
+        Page<List<StudentResponseApiDto>> responseApiDtos = service.findAllStudents(pageRequest);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
     }

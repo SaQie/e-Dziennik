@@ -7,6 +7,8 @@ import pl.edziennik.eDziennik.domain.address.dto.mapper.AddressMapper;
 import pl.edziennik.eDziennik.domain.teacher.dao.TeacherDao;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.domain.teacher.dto.mapper.TeacherMapper;
+import pl.edziennik.eDziennik.server.basics.dto.Page;
+import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
 import pl.edziennik.eDziennik.domain.personinformation.dto.mapper.PersonInformationMapper;
@@ -54,11 +56,8 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
     }
 
     @Override
-    public List<TeacherResponseApiDto> findAllTeachers() {
-        return dao.findAll()
-                .stream()
-                .map(TeacherMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<List<TeacherResponseApiDto>> findAllTeachers(PageRequest pageRequest) {
+        return dao.findAll(pageRequest).map(TeacherMapper::toDto);
     }
 
 

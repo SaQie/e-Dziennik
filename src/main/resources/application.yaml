@@ -34,6 +34,12 @@ spring:
   liquibase:
     change-log: classpath:liquibase-changeLog.xml
 
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        web: DEBUG
+
 
 jwt:
   secret: testtt

@@ -2,6 +2,8 @@ package pl.edziennik.eDziennik.domain.teacher.services;
 
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherResponseApiDto;
+import pl.edziennik.eDziennik.server.basics.dto.Page;
+import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
 
 import java.util.List;
 
@@ -13,7 +15,7 @@ public interface TeacherService {
 
     void deleteTeacherById(final Long id);
 
-    List<TeacherResponseApiDto> findAllTeachers();
+    Page<List<TeacherResponseApiDto>> findAllTeachers(PageRequest pageRequest);
 
 
     TeacherResponseApiDto updateTeacher(final Long id, final TeacherRequestApiDto requestApiDto);

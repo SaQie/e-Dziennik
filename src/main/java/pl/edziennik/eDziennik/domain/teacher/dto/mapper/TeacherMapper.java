@@ -8,6 +8,8 @@ import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherResponseApiDto;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherSimpleResponseApiDto;
 
+import java.util.List;
+
 
 public class TeacherMapper {
 
@@ -46,6 +48,10 @@ public class TeacherMapper {
                 .phoneNumber(entity.getPersonInformation().getPhoneNumber())
                 .role(entity.getUser().getRole().getName())
                 .build();
+    }
+
+    public static List<TeacherResponseApiDto> toDto(List<Teacher> entities) {
+        return entities.stream().map(TeacherMapper::toDto).toList();
     }
 
     public static Teacher toEntity(TeacherRequestApiDto dto) {

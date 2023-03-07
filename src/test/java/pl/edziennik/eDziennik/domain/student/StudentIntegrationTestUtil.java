@@ -3,6 +3,9 @@ package pl.edziennik.eDziennik.domain.student;
 import liquibase.repackaged.org.apache.commons.lang3.RandomStringUtils;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Util class for student integration tests {@link StudentIntegrationTest}
  */
@@ -127,5 +130,27 @@ public class StudentIntegrationTestUtil {
                 idSchool,
                 100L
         );
+    }
+
+    public List<StudentRequestApiDto> prepareTestsStudents(int studentsToGenerate) {
+        List<StudentRequestApiDto> students = new ArrayList<>();
+        for (int i = 0; i < studentsToGenerate; i++) {
+            StudentRequestApiDto dto = new StudentRequestApiDto(
+                    RandomStringUtils.random(5),
+                    RandomStringUtils.random(5),
+                    RandomStringUtils.random(5),
+                    RandomStringUtils.random(5),
+                    RandomStringUtils.random(5),
+                    RandomStringUtils.random(5),
+                    RandomStringUtils.random(5),
+                    RandomStringUtils.randomNumeric(9),
+                    RandomStringUtils.random(8),
+                    RandomStringUtils.randomNumeric(9),
+                    100L,
+                    100L
+            );
+            students.add(dto);
+        }
+        return students;
     }
 }

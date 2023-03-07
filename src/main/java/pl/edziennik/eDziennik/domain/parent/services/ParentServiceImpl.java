@@ -12,6 +12,8 @@ import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.user.domain.User;
 import pl.edziennik.eDziennik.domain.user.dto.mapper.UserMapper;
 import pl.edziennik.eDziennik.domain.user.services.UserService;
+import pl.edziennik.eDziennik.server.basics.dto.Page;
+import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 
 import java.util.List;
@@ -46,11 +48,9 @@ class ParentServiceImpl extends BaseService implements ParentService {
     }
 
     @Override
-    public List<ParentResponseApiDto> findAll() {
-        return dao.findAll()
-                .stream()
-                .map(ParentMapper::toDto)
-                .toList();
+    public Page<List<ParentResponseApiDto>> findAll(PageRequest pageRequest) {
+        return dao.findAll(pageRequest)
+                .map(ParentMapper::toDto);
     }
 
     private Parent mapToEntity(ParentRequestApiDto dto) {

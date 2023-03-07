@@ -11,6 +11,9 @@ import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectResponseApiDto;
 import pl.edziennik.eDziennik.domain.subject.services.SubjectService;
+import pl.edziennik.eDziennik.server.basics.dto.Page;
+import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
+import pl.edziennik.eDziennik.server.basics.handler.Pageable;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -39,8 +42,8 @@ public class SubjectController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get list of subjects",
             description = "Returns list of all subjects")
-    public ApiResponse<?> findAllSubjects() {
-        List<SubjectResponseApiDto> responseApiDtos = service.findAllSubjects();
+    public ApiResponse<?> findAllSubjects(@Pageable PageRequest pageRequest) {
+        Page<List<SubjectResponseApiDto>> responseApiDtos = service.findAllSubjects(pageRequest);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
     }

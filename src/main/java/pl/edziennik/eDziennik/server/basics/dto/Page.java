@@ -13,12 +13,12 @@ import java.util.function.Function;
 @Setter
 public class Page<INPUT> {
 
-    private Integer pagesCount;
-    private Long itemsTotalCount;
     private Integer actualPage;
     private Integer itemsOnPage;
+    private Integer pagesCount;
+    private Long itemsTotalCount;
 
-    private INPUT entity;
+    private INPUT entities;
 
     /**
      * Method maps wrapped page object to another
@@ -29,8 +29,8 @@ public class Page<INPUT> {
         page.setItemsOnPage(this.itemsOnPage);
         page.setPagesCount(this.pagesCount);
         page.setItemsTotalCount(this.itemsTotalCount);
-        OUTPUT entity = function.apply(this.entity);
-        page.setEntity(entity);
+        OUTPUT entity = function.apply(this.entities);
+        page.setEntities(entity);
         return page;
     }
 

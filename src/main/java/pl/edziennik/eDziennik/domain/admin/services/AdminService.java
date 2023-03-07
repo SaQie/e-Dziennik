@@ -2,6 +2,8 @@ package pl.edziennik.eDziennik.domain.admin.services;
 
 import pl.edziennik.eDziennik.domain.admin.dto.AdminRequestApiDto;
 import pl.edziennik.eDziennik.domain.admin.dto.AdminResponseApiDto;
+import pl.edziennik.eDziennik.server.basics.dto.Page;
+import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
 
 import java.util.List;
 
@@ -13,7 +15,7 @@ public interface AdminService {
 
     void updateAdminLastLoginDate(final String username);
 
-    List<AdminResponseApiDto> getAdminList();
+    Page<List<AdminResponseApiDto>> getAdminList(PageRequest pageRequest);
 
     AdminResponseApiDto getAdminById(Long id);
 

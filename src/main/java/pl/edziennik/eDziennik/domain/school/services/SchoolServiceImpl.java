@@ -11,6 +11,8 @@ import pl.edziennik.eDziennik.domain.school.dto.SchoolRequestApiDto;
 import pl.edziennik.eDziennik.domain.school.dto.SchoolResponseApiDto;
 import pl.edziennik.eDziennik.domain.school.dto.mapper.SchoolMapper;
 import pl.edziennik.eDziennik.domain.schoollevel.domain.SchoolLevel;
+import pl.edziennik.eDziennik.server.basics.dto.Page;
+import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -45,11 +47,8 @@ class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
-    public List<SchoolResponseApiDto> findAllSchools() {
-        return dao.findAll()
-                .stream()
-                .map(SchoolMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<List<SchoolResponseApiDto>> findAllSchools(PageRequest pageRequest) {
+        return dao.findAll(pageRequest).map(SchoolMapper::toDto);
     }
 
     @Override

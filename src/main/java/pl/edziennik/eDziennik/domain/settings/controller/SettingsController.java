@@ -47,11 +47,4 @@ public class SettingsController {
         return ApiResponseCreator.buildApiResponse(HttpMethod.PATCH, HttpStatus.OK, "Settings updated sucessfully", uri);
     }
 
-    @GetMapping("/testpage")
-    public ApiResponse<?> test() {
-        Page<List<SchoolResponseApiDto>> page = schoolDao.findAll(1, 5).map(SchoolMapper::toDto);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, page, uri);
-    }
-
 }

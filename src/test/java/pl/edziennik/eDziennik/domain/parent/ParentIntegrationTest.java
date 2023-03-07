@@ -18,6 +18,7 @@ import pl.edziennik.eDziennik.domain.schoolclass.services.validator.SchoolClassV
 import pl.edziennik.eDziennik.domain.student.StudentIntegrationTestUtil;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.domain.student.services.StudentService;
+import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 
 import java.util.List;
@@ -96,7 +97,7 @@ public class ParentIntegrationTest extends BaseTest {
         parentService.register(dto);
 
         // when
-        List<ParentResponseApiDto> allParents = parentService.findAll();
+        List<ParentResponseApiDto> allParents = parentService.findAll(new PageRequest(1,20)).getEntities();
 
         // then
         assertEquals(2, allParents.size());

@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.server.basics.dao;
 
+import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
 import pl.edziennik.eDziennik.server.basics.entity.AbstractEntity;
 import pl.edziennik.eDziennik.server.basics.dto.Page;
 
@@ -24,7 +25,7 @@ public interface IBaseDao<ENTITY extends AbstractEntity> {
      * This method return list of objects with pagination functionality
      * Throws BussinesException when page or size is less or equal zero
      */
-    Page<List<ENTITY>> findAll(int page, int size);
+    Page<List<ENTITY>> findAll(PageRequest pageRequest);
 
     /**
      * This method saves new entity or update if entity already exist

@@ -8,6 +8,8 @@ import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentSimpleResponseApiDt
 import pl.edziennik.eDziennik.domain.personinformation.dto.mapper.PersonInformationMapper;
 import pl.edziennik.eDziennik.domain.student.dto.mapper.StudentMapper;
 
+import java.util.List;
+
 public class ParentMapper {
 
     private ParentMapper() {
@@ -37,6 +39,10 @@ public class ParentMapper {
                 .fullName(entity.getPersonInformation().getFullName())
                 .student(StudentMapper.toSimpleDto(entity.getStudent()))
                 .build();
+    }
+
+    public static List<ParentResponseApiDto> toDto(List<Parent> entities) {
+        return entities.stream().map(ParentMapper::toDto).toList();
     }
 
     public static ParentSimpleResponseApiDto toSimpleDto(Parent parent) {

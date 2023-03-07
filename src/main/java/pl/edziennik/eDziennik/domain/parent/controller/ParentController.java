@@ -11,6 +11,9 @@ import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentResponseApiDto;
 import pl.edziennik.eDziennik.domain.parent.services.ParentService;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
+import pl.edziennik.eDziennik.server.basics.dto.Page;
+import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
+import pl.edziennik.eDziennik.server.basics.handler.Pageable;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -39,8 +42,8 @@ class ParentController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get parents list",
             description = "Returns list of all parents")
-    public ApiResponse<?> findAllParents() {
-        List<ParentResponseApiDto> responseApiDtos = service.findAll();
+    public ApiResponse<Page<List<ParentResponseApiDto>>> findAllParents(@Pageable PageRequest pageRequest) {
+        Page<List<ParentResponseApiDto>> responseApiDtos = service.findAll(pageRequest);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
     }

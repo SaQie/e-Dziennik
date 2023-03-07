@@ -10,6 +10,8 @@ import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectResponseApiDto;
 import pl.edziennik.eDziennik.domain.subject.dto.mapper.SubjectMapper;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
+import pl.edziennik.eDziennik.server.basics.dto.Page;
+import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,11 +48,8 @@ class SubjectServiceImpl implements SubjectService{
     }
 
     @Override
-    public List<SubjectResponseApiDto> findAllSubjects() {
-        return dao.findAll()
-                .stream()
-                .map(SubjectMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<List<SubjectResponseApiDto>> findAllSubjects(PageRequest pageRequest) {
+        return dao.findAll(pageRequest).map(SubjectMapper::toDto);
     }
 
     @Override

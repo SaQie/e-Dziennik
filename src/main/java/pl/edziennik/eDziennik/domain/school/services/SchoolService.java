@@ -2,6 +2,8 @@ package pl.edziennik.eDziennik.domain.school.services;
 
 import pl.edziennik.eDziennik.domain.school.dto.SchoolRequestApiDto;
 import pl.edziennik.eDziennik.domain.school.dto.SchoolResponseApiDto;
+import pl.edziennik.eDziennik.server.basics.dto.Page;
+import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
 
 import java.util.List;
 
@@ -13,7 +15,7 @@ public interface SchoolService {
 
     void deleteSchoolById(final Long id);
 
-    List<SchoolResponseApiDto> findAllSchools();
+    Page<List<SchoolResponseApiDto>> findAllSchools(PageRequest pageRequest);
 
     SchoolResponseApiDto updateSchool(final Long id, final SchoolRequestApiDto dto);
 }

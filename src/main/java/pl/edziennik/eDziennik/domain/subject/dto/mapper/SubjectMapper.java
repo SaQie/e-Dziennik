@@ -6,6 +6,8 @@ import pl.edziennik.eDziennik.domain.subject.dto.SubjectResponseApiDto;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.domain.teacher.dto.mapper.TeacherMapper;
 
+import java.util.List;
+
 public class SubjectMapper {
 
 
@@ -21,7 +23,7 @@ public class SubjectMapper {
                     TeacherMapper.toSimpleDto(entity.getTeacher()),
                     SchoolClassMapper.toSimpleDto(entity.getSchoolClass())
             );
-        }else{
+        } else {
             return new SubjectResponseApiDto(
                     entity.getId(),
                     entity.getName(),
@@ -29,6 +31,10 @@ public class SubjectMapper {
                     SchoolClassMapper.toSimpleDto(entity.getSchoolClass())
             );
         }
+    }
+
+    public static List<SubjectResponseApiDto> toDto(List<Subject> entites) {
+        return entites.stream().map(SubjectMapper::toDto).toList();
     }
 
     public static Subject toEntity(SubjectRequestApiDto dto) {

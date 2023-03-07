@@ -7,6 +7,8 @@ import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassResponseApiDto;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassSimpleResponseApiDto;
 import pl.edziennik.eDziennik.domain.teacher.dto.mapper.TeacherMapper;
 
+import java.util.List;
+
 public class SchoolClassMapper {
 
     private SchoolClassMapper() {
@@ -20,7 +22,7 @@ public class SchoolClassMapper {
                     SchoolMapper.toSimpleDto(entity.getSchool()),
                     TeacherMapper.toSimpleDto(entity.getTeacher())
             );
-        }else{
+        } else {
             return new SchoolClassResponseApiDto(
                     entity.getId(),
                     entity.getClassName(),
@@ -28,6 +30,10 @@ public class SchoolClassMapper {
                     null
             );
         }
+    }
+
+    public static List<SchoolClassResponseApiDto> toDto(List<SchoolClass> entities) {
+        return entities.stream().map(SchoolClassMapper::toDto).toList();
     }
 
     public static SchoolClass toEntity(SchoolClassRequestApiDto dto) {

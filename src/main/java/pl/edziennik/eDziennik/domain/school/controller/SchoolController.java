@@ -11,6 +11,9 @@ import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 import pl.edziennik.eDziennik.domain.school.dto.SchoolRequestApiDto;
 import pl.edziennik.eDziennik.domain.school.dto.SchoolResponseApiDto;
 import pl.edziennik.eDziennik.domain.school.services.SchoolService;
+import pl.edziennik.eDziennik.server.basics.dto.Page;
+import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
+import pl.edziennik.eDziennik.server.basics.handler.Pageable;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -40,8 +43,8 @@ class SchoolController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get school list",
             description = "Returns list of all schools")
-    public ApiResponse findAllSchools() {
-        List<SchoolResponseApiDto> responseApiDtos = service.findAllSchools();
+    public ApiResponse<Page<List<SchoolResponseApiDto>>> findAllSchools(@Pageable PageRequest pageRequest) {
+        Page<List<SchoolResponseApiDto>> responseApiDtos = service.findAllSchools(pageRequest);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
     }

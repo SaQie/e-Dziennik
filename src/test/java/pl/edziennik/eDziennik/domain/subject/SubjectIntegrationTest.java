@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
+import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
@@ -137,7 +138,7 @@ public class SubjectIntegrationTest extends BaseTest {
         assertNotNull(secondSubjectId);
 
         // when
-        List<SubjectResponseApiDto> actual = subjectService.findAllSubjects();
+        List<SubjectResponseApiDto> actual = subjectService.findAllSubjects(new PageRequest(1, 10)).getEntities();
 
         // then
         assertEquals(2, actual.size());

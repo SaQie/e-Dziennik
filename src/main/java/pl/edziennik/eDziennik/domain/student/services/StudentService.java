@@ -2,6 +2,8 @@ package pl.edziennik.eDziennik.domain.student.services;
 
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.domain.student.dto.StudentResponseApiDto;
+import pl.edziennik.eDziennik.server.basics.dto.Page;
+import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
 
 import java.util.List;
 
@@ -14,7 +16,7 @@ public interface StudentService {
 
     void deleteStudentById(final Long id);
 
-    List<StudentResponseApiDto> findAllStudents();
+    Page<List<StudentResponseApiDto>> findAllStudents(PageRequest pageRequest);
 
 
     StudentResponseApiDto updateStudent(final Long id, final StudentRequestApiDto requestApiDto);

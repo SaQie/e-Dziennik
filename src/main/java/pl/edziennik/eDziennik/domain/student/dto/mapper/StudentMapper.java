@@ -11,6 +11,8 @@ import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.domain.student.dto.StudentResponseApiDto;
 import pl.edziennik.eDziennik.domain.student.dto.StudentSimpleResponseApiDto;
 
+import java.util.List;
+
 public class StudentMapper {
 
 
@@ -36,6 +38,10 @@ public class StudentMapper {
                 .role(entity.getUser().getRole().getName())
                 .build();
 
+    }
+
+    public static List<StudentResponseApiDto> toDto(List<Student> entities) {
+        return entities.stream().map(StudentMapper::toDto).toList();
     }
 
     public static StudentRequestApiDto toRequestDto(Student entity) {

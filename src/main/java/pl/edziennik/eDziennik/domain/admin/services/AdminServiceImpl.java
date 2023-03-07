@@ -3,19 +3,16 @@ package pl.edziennik.eDziennik.domain.admin.services;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.edziennik.eDziennik.domain.address.dto.mapper.AddressMapper;
 import pl.edziennik.eDziennik.domain.admin.dao.AdminDao;
 import pl.edziennik.eDziennik.domain.admin.domain.Admin;
 import pl.edziennik.eDziennik.domain.admin.dto.AdminRequestApiDto;
 import pl.edziennik.eDziennik.domain.admin.dto.AdminResponseApiDto;
 import pl.edziennik.eDziennik.domain.admin.dto.mapper.AdminMapper;
-import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
-import pl.edziennik.eDziennik.domain.personinformation.dto.mapper.PersonInformationMapper;
-import pl.edziennik.eDziennik.domain.student.domain.Student;
-import pl.edziennik.eDziennik.domain.student.dto.mapper.StudentMapper;
 import pl.edziennik.eDziennik.domain.user.domain.User;
 import pl.edziennik.eDziennik.domain.user.dto.mapper.UserMapper;
 import pl.edziennik.eDziennik.domain.user.services.UserService;
+import pl.edziennik.eDziennik.server.basics.dto.Page;
+import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 
 import java.time.LocalDateTime;
@@ -54,8 +51,8 @@ class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<AdminResponseApiDto> getAdminList() {
-        return dao.findAll().stream().map(AdminMapper::mapToDto).toList();
+    public Page<List<AdminResponseApiDto>> getAdminList(PageRequest pageRequest) {
+        return dao.findAll(pageRequest).map(AdminMapper::mapToDto);
     }
 
     @Override

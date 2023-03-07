@@ -8,6 +8,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
 import pl.edziennik.eDziennik.domain.teacher.TeacherIntegrationTestUtil;
+import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 import pl.edziennik.eDziennik.domain.schoolclass.SchoolClassIntergrationTestUtil;
@@ -140,7 +141,7 @@ public class StudentIntegrationTest extends BaseTest {
         assertNotNull(secondStudentId);
 
         // when
-        int actual = service.findAllStudents().size();
+        int actual = service.findAllStudents(new PageRequest(1, 20)).getEntities().size();
 
         // then
         assertEquals(2, actual);

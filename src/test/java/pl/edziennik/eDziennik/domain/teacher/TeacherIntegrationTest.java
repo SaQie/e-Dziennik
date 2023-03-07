@@ -9,6 +9,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
 import pl.edziennik.eDziennik.domain.teacher.services.validator.TeacherValidators;
+import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 import pl.edziennik.eDziennik.domain.school.domain.School;
@@ -98,7 +99,7 @@ public class TeacherIntegrationTest extends BaseTest {
         assertNotNull(secondTeacherId);
 
         // when
-        int actual = teacherService.findAllTeachers().size();
+        int actual = teacherService.findAllTeachers(new PageRequest(1, 20)).getEntities().size();
 
         // then
         assertEquals(2, actual);

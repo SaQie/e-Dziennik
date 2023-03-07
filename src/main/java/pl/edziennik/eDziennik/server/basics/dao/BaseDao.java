@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
 import pl.edziennik.eDziennik.server.basics.entity.AbstractEntity;
 import pl.edziennik.eDziennik.server.basics.dto.Page;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
@@ -59,7 +60,9 @@ public abstract class BaseDao<ENTITY extends AbstractEntity> implements IBaseDao
     }
 
     @Override
-    public Page<List<ENTITY>> findAll(int page, int size) {
+    public Page<List<ENTITY>> findAll(PageRequest pageRequest) {
+        int page = pageRequest.getPage();
+        int size = pageRequest.getSize();
         if (page <= 0 || size <= 0) {
             throw new BusinessException("Page or size cannot be negative or zero");
         }
@@ -78,9 +81,9 @@ public abstract class BaseDao<ENTITY extends AbstractEntity> implements IBaseDao
         Page<List<ENTITY>> pageObj = new Page<>();
         pageObj.setActualPage(page);
         pageObj.setItemsTotalCount(itemsCount);
-        pageObj.setItemsOnPage(resultList.size());
+        pageObj.setItemsOnPage(size);
         pageObj.setPagesCount(pagesCount.intValue());
-        pageObj.setEntity(resultList);
+        pageObj.setEntities(resultList);
 
         return pageObj;
     }
