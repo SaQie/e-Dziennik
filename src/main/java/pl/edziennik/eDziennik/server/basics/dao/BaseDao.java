@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.server.basics.dao;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,8 @@ import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
@@ -63,8 +66,8 @@ public abstract class BaseDao<ENTITY extends AbstractEntity> implements IBaseDao
     public Page<List<ENTITY>> findAll(PageRequest pageRequest) {
         int page = pageRequest.getPage();
         int size = pageRequest.getSize();
-        if (page <= 0 || size <= 0) {
-            throw new BusinessException("Page or size cannot be negative or zero");
+        if (page < 0 || size < 0) {
+            throw new BusinessException("Page or size cannot be negative");
         }
         Query query = em.createQuery("select count(c.id) from " + clazz.getName() + " c");
         long itemsCount = (long) query.getSingleResult();
@@ -74,12 +77,12 @@ public abstract class BaseDao<ENTITY extends AbstractEntity> implements IBaseDao
 
         Query findAllQuery = em.createQuery("from " + clazz.getName());
         findAllQuery.setMaxResults(size);
-        findAllQuery.setFirstResult((page - 1) * size);
+        findAllQuery.setFirstResult(page * size);
 
         List<ENTITY> resultList = findAllQuery.getResultList();
 
         Page<List<ENTITY>> pageObj = new Page<>();
-        pageObj.setActualPage(page);
+        pageObj.setActualPage(page + 1);
         pageObj.setItemsTotalCount(itemsCount);
         pageObj.setItemsOnPage(size);
         pageObj.setPagesCount(pagesCount.intValue());
@@ -148,7 +151,7 @@ public abstract class BaseDao<ENTITY extends AbstractEntity> implements IBaseDao
     public void remove(Long id) {
         ENTITY entity = em.find(clazz, id);
         if (entity != null) {
-            em.remove(em.contains(entity) ? entity : em.merge(entity));
+            em.remove(entity);
             return;
         }
         throw new EntityNotFoundException(createNotFoundExceptionMessage(id, clazz.getSimpleName()));
@@ -210,5 +213,6 @@ public abstract class BaseDao<ENTITY extends AbstractEntity> implements IBaseDao
     private String createNotFoundExceptionMessage(String className) {
         return resourceCreator.of("not.found.message.object", className);
     }
+
 
 }

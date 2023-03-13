@@ -61,7 +61,10 @@ public class StudentMapper {
     }
 
     public static StudentSimpleResponseApiDto toSimpleDto(Student student) {
-        return new StudentSimpleResponseApiDto(student.getId(), student.getPersonInformation().getFullName());
+        if (student != null) {
+            return new StudentSimpleResponseApiDto(student.getId(), student.getPersonInformation().getFullName());
+        }
+        return null;
     }
 
     public static Student toEntity(StudentRequestApiDto dto) {

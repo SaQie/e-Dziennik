@@ -5,7 +5,7 @@ CREATE TABLE person_information
     last_name    varchar(50)  NOT NULL,
     full_name    varchar(100) NOT NULL,
     phone_number varchar(10),
-    pesel        varchar(11)  NOT NULL UNIQUE
+    pesel        varchar(11)  NOT NULL
 );
 
 ALTER TABLE student

@@ -6,6 +6,7 @@ import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentResponseApiDto;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentSimpleResponseApiDto;
 import pl.edziennik.eDziennik.domain.personinformation.dto.mapper.PersonInformationMapper;
+import pl.edziennik.eDziennik.domain.role.domain.Role;
 import pl.edziennik.eDziennik.domain.student.dto.mapper.StudentMapper;
 
 import java.util.List;
@@ -38,6 +39,7 @@ public class ParentMapper {
                 .postalCode(entity.getAddress().getPostalCode())
                 .fullName(entity.getPersonInformation().getFullName())
                 .student(StudentMapper.toSimpleDto(entity.getStudent()))
+                .role(Role.RoleConst.ROLE_PARENT.name())
                 .build();
     }
 

@@ -19,6 +19,7 @@ public class ParentResponseApiDto {
     private final String pesel;
     private final String email;
     private final String phoneNumber;
+    private final String role;
     private final StudentSimpleResponseApiDto student;
 
 }

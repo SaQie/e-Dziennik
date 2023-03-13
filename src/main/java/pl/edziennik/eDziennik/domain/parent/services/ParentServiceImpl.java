@@ -44,6 +44,7 @@ class ParentServiceImpl extends BaseService implements ParentService {
 
     @Override
     public void deleteById(Long id) {
+        validatorService.checkParentHasStudent(id);
         dao.remove(id);
     }
 

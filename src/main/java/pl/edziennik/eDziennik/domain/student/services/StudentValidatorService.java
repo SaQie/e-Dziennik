@@ -20,8 +20,4 @@ class StudentValidatorService extends ServiceValidator<StudentValidators, Studen
         basicValidator.checkSchoolClassExist(dto.getIdSchoolClass());
         basicValidator.checkSchoolExist(dto.getIdSchool());
     }
-
-    protected void checkStudentStillHasParent(Student student) {
-        runValidators(StudentMapper.toRequestDto(student), ValidatePurpose.DELETE);
-    }
 }

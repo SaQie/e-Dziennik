@@ -1,6 +1,7 @@
 package pl.edziennik.eDziennik.server.basics.validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
@@ -25,6 +26,8 @@ public abstract class ServiceValidator<VALIDATORS extends AbstractValidator<INPU
     protected ResourceCreator resourceCreator;
     @Autowired
     public BasicValidator basicValidator;
+    @Autowired
+    private ApplicationContext context;
 
     /**
      * This method run chain-of-responsibility pattern of defined validators (all validators)
@@ -102,6 +105,22 @@ public abstract class ServiceValidator<VALIDATORS extends AbstractValidator<INPU
                     .forEach(validator -> validator.validate(input).ifPresent(error -> {
                         throw new BusinessException(error);
                     }));
+        }
+    }
+
+    /**
+     * This method run selected validator by validator name with any input
+     *
+     * @param input
+     * @param validatorId -> validator name defined in xxxValidators interface
+     * @param <T>
+     */
+    protected <T> void runSelectedValidator(T input, String validatorId) {
+        validatorId = Character.toLowerCase(validatorId.charAt(0)) + validatorId.substring(1);
+        AbstractValidator<T> bean = context.getBean(validatorId, AbstractValidator.class);
+        Optional<ApiErrorDto> validateResult = bean.validate(input);
+        if (validateResult.isPresent()) {
+            throw new BusinessException(validateResult.get());
         }
     }
 

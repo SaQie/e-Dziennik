@@ -20,7 +20,7 @@ ALTER TABLE PARENT
     ADD FOREIGN KEY (user_id) references users(id);
 
 ALTER TABLE PARENT
-    ADD student_id int not null unique,
+    ADD student_id int unique,
     ADD FOREIGN KEY (student_id) references student (id);
 
 ALTER TABLE STUDENT

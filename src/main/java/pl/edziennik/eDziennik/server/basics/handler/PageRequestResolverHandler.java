@@ -37,9 +37,9 @@ public class PageRequestResolverHandler implements HandlerMethodArgumentResolver
         int page = checkPageableParameterValue(paramPage);
 
         // if size is zero (parameter for page size not provided) set to default value (20)
-        size = size == 0 ? size = 20 : size;
+        size = size == 0 ? size = 3 : size;
         // if size is zero (parameter for page not provided) set to default value (1)
-        page = page == 0 ? page = 1 : page;
+        page = page == 0 ? page = 0 : page;
 
         return new PageRequest(page, size);
     }

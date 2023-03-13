@@ -23,6 +23,11 @@ public interface AbstractValidator<INPUT> {
         return Set.of(ValidatePurpose.CREATE);
     }
 
+    default String getValidatorName(Class clazz) {
+        return clazz.getSimpleName().substring(0, 1).toLowerCase()
+                + clazz.getSimpleName().substring(1);
+    }
+
     Optional<ApiErrorDto> validate(INPUT e);
 
 
