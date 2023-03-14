@@ -11,6 +11,8 @@ import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassSimpleResponseAp
 public class StudentResponseApiDto {
 
     private final Long id;
+    private final Long userId;
+
     private final String username;
     private final String firstName;
     private final String lastName;

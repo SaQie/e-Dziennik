@@ -60,7 +60,9 @@ class StudentServiceImpl implements StudentService {
     @Override
     public void deleteStudentById(Long id) {
         Student student = dao.get(id);
-        student.getParent().clearStudent();
+        if (student.getParent() != null) {
+            student.getParent().clearStudent();
+        }
         dao.remove(student);
     }
 

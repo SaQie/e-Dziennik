@@ -20,6 +20,7 @@ public class TeacherMapper {
         if (entity.getSchool() != null) {
             return TeacherResponseApiDto.builder()
                     .id(entity.getId())
+                    .userId(entity.getUser().getId())
                     .username(entity.getUser().getUsername())
                     .firstName(entity.getPersonInformation().getFirstName())
                     .lastName(entity.getPersonInformation().getLastName())
@@ -36,6 +37,7 @@ public class TeacherMapper {
         }
         return TeacherResponseApiDto.builder()
                 .id(entity.getId())
+                .userId(entity.getUser().getId())
                 .username(entity.getUser().getUsername())
                 .firstName(entity.getPersonInformation().getFirstName())
                 .lastName(entity.getPersonInformation().getLastName())

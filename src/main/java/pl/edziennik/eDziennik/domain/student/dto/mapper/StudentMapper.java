@@ -22,6 +22,7 @@ public class StudentMapper {
     public static StudentResponseApiDto toDto(Student entity) {
         return StudentResponseApiDto.builder()
                 .id(entity.getId())
+                .userId(entity.getUser().getId())
                 .username(entity.getUser().getUsername())
                 .firstName(entity.getPersonInformation().getFirstName())
                 .lastName(entity.getPersonInformation().getLastName())

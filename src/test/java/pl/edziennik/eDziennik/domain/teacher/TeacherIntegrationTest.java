@@ -99,7 +99,7 @@ public class TeacherIntegrationTest extends BaseTest {
         assertNotNull(secondTeacherId);
 
         // when
-        int actual = teacherService.findAllTeachers(new PageRequest(1, 20)).getEntities().size();
+        int actual = teacherService.findAllTeachers(new PageRequest(0, 20)).getEntities().size();
 
         // then
         assertEquals(2, actual);

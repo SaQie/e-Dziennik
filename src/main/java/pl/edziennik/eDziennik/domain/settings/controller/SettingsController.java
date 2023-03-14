@@ -21,7 +21,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/settings")
+@RequestMapping("/api/v1/settings")
 public class SettingsController {
 
     private final SettingsService service;

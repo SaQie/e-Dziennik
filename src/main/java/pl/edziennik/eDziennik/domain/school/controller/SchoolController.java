@@ -20,7 +20,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/schools")
+@RequestMapping("/api/v1/schools")
 @AllArgsConstructor
 @SuppressWarnings("rawtypes")
 class SchoolController {

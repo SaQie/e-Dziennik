@@ -141,7 +141,7 @@ public class StudentIntegrationTest extends BaseTest {
         assertNotNull(secondStudentId);
 
         // when
-        int actual = service.findAllStudents(new PageRequest(1, 20)).getEntities().size();
+        int actual = service.findAllStudents(new PageRequest(0, 20)).getEntities().size();
 
         // then
         assertEquals(2, actual);

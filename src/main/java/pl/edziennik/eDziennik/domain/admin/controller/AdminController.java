@@ -19,7 +19,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
-@RequestMapping("/api/admins")
+@RequestMapping("/api/v1/admins")
 @RestController
 @AllArgsConstructor
 public class AdminController {

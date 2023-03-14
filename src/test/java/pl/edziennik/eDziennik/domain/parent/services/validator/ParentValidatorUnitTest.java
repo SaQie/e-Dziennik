@@ -17,6 +17,8 @@ import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassRequestApiDto;
 import pl.edziennik.eDziennik.domain.schoolclass.services.validator.SchoolClassValidators;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
+import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
+import pl.edziennik.eDziennik.domain.student.services.validator.StudentValidators;
 import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
@@ -31,6 +33,9 @@ public class ParentValidatorUnitTest extends BaseUnitTest {
 
     @InjectMocks
     private StudentAlreadyHasParentValidator hasParentValidator;
+
+    @InjectMocks
+    private ParentStillHasStudentValidator parentStillHasStudentValidator;
 
     @Mock
     private ResourceCreator resourceCreator;
@@ -78,6 +83,42 @@ public class ParentValidatorUnitTest extends BaseUnitTest {
 
         // when
         Optional<ApiErrorDto> validationResult = hasParentValidator.validate(parentRequestApiDto);
+
+        // then
+        assertFalse(validationResult.isPresent());
+    }
+
+    @Test
+    public void shouldReturnApiErrorWhenDeleteAndParentHasStudent() {
+        // given
+        Parent parent = new Parent();
+        Student student = new Student();
+        parent.setStudent(student);
+        student.setPersonInformation(new PersonInformation());
+
+        when(parentDao.get(1L)).thenReturn(parent);
+        lenient().when(resourceCreator.of(ParentValidators.EXCEPTON_MESSAGE_PARENT_STILL_HAS_STUDENT, null))
+                .thenReturn(ParentValidators.EXCEPTON_MESSAGE_PARENT_STILL_HAS_STUDENT);
+
+        // when
+        Optional<ApiErrorDto> validationResult = parentStillHasStudentValidator.validate(1L);
+
+        // then
+        assertTrue(validationResult.isPresent());
+        ApiErrorDto error = validationResult.get();
+        assertEquals(error.getErrorThrownedBy(), ParentValidators.PARENT_STILL_HAS_STUDENT_VALIDATOR);
+        assertEquals(error.getCause(), getErrorMessage(ParentValidators.EXCEPTON_MESSAGE_PARENT_STILL_HAS_STUDENT));
+    }
+
+    @Test
+    public void shouldNotReturnApiErrorWhenDeleteAndStudentDoesNotHaveParent() {
+        // given
+        Parent parent = new Parent();
+
+        when(parentDao.get(1L)).thenReturn(parent);
+
+        // when
+        Optional<ApiErrorDto> validationResult = parentStillHasStudentValidator.validate(1L);
 
         // then
         assertFalse(validationResult.isPresent());

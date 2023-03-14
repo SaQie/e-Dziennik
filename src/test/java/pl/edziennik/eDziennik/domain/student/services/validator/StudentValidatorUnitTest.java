@@ -32,9 +32,6 @@ public class StudentValidatorUnitTest extends BaseUnitTest {
     private StudentPeselNotUniqueValidator peselNotUniqueValidator;
 
     @InjectMocks
-    private StudentStillHasParentValidator hasParentValidator;
-
-    @InjectMocks
     private StudentSchoolClassNotBelongsToSchoolValidator belongsToSchoolValidator;
 
     @Mock
@@ -74,44 +71,6 @@ public class StudentValidatorUnitTest extends BaseUnitTest {
 
         // when
         Optional<ApiErrorDto> validationResult = peselNotUniqueValidator.validate(request);
-
-        // then
-        assertFalse(validationResult.isPresent());
-    }
-
-    @Test
-    public void shouldReturnApiErrorWhenDeleteAndStudentHasParent() {
-        // given
-        StudentRequestApiDto request = studentUtil.prepareStudentRequestDto();
-        Student student = new Student();
-        student.setParent(new Parent());
-        student.setPersonInformation(new PersonInformation());
-
-        when(dao.getByUsername(request.getUsername())).thenReturn(student);
-        lenient().when(resourceCreator.of(StudentValidators.EXCEPTION_MESSAGE_STUDENT_STILL_HAS_PARENT, null))
-                .thenReturn(StudentValidators.EXCEPTION_MESSAGE_STUDENT_STILL_HAS_PARENT);
-
-        // when
-        Optional<ApiErrorDto> validationResult = hasParentValidator.validate(request);
-
-        // then
-        assertTrue(validationResult.isPresent());
-        ApiErrorDto error = validationResult.get();
-        assertEquals(error.getErrorThrownedBy(), StudentValidators.STUDENT_STILL_HAS_PARENT_VALIDATOR);
-        assertEquals(error.getCause(), getErrorMessage(StudentValidators.EXCEPTION_MESSAGE_STUDENT_STILL_HAS_PARENT));
-    }
-
-    @Test
-    public void shouldNotReturnApiErrorWhenDeleteAndStudentDoesNotHaveParent() {
-        // given
-        StudentRequestApiDto request = studentUtil.prepareStudentRequestDto();
-        Student student = new Student();
-        student.setPersonInformation(new PersonInformation());
-
-        when(dao.getByUsername(request.getUsername())).thenReturn(student);
-
-        // when
-        Optional<ApiErrorDto> validationResult = hasParentValidator.validate(request);
 
         // then
         assertFalse(validationResult.isPresent());

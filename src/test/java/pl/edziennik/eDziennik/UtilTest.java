@@ -60,7 +60,7 @@ public class UtilTest extends BaseTest {
     @Test
     public void shouldThrowsExceptionWhenPageRequestValuesIsNegativeOrZero() {
         // given
-        PageRequest pageRequest = new PageRequest(0, 0);
+        PageRequest pageRequest = new PageRequest(-1, -1);
         // when
         BusinessException exception = assertThrows(BusinessException.class, () -> studentService.findAllStudents(pageRequest));
 
@@ -79,13 +79,13 @@ public class UtilTest extends BaseTest {
         studentRequestApiDtos.forEach(dto -> studentService.register(dto));
 
         // when
-        Page<List<StudentResponseApiDto>> firstPage = studentService.findAllStudents(new PageRequest(1, size));
+        Page<List<StudentResponseApiDto>> firstPage = studentService.findAllStudents(new PageRequest(0, size));
 
-        Page<List<StudentResponseApiDto>> secondPage = studentService.findAllStudents(new PageRequest(2, size));
+        Page<List<StudentResponseApiDto>> secondPage = studentService.findAllStudents(new PageRequest(1, size));
 
-        Page<List<StudentResponseApiDto>> thirdPage = studentService.findAllStudents(new PageRequest(3, size));
+        Page<List<StudentResponseApiDto>> thirdPage = studentService.findAllStudents(new PageRequest(2, size));
 
-        Page<List<StudentResponseApiDto>> fourthPage = studentService.findAllStudents(new PageRequest(4, size));
+        Page<List<StudentResponseApiDto>> fourthPage = studentService.findAllStudents(new PageRequest(3, size));
 
         // then
 

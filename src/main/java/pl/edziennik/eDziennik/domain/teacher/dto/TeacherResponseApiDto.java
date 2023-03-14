@@ -9,6 +9,7 @@ import pl.edziennik.eDziennik.domain.school.dto.SchoolSimpleResponseApiDto;
 public class TeacherResponseApiDto {
 
     private final Long id;
+    private final Long userId;
 
     private final String username;
     private final String firstName;

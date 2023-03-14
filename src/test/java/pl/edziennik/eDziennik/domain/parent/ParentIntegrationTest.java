@@ -59,13 +59,16 @@ public class ParentIntegrationTest extends BaseTest {
     public void shouldDeleteParent() {
         // given
         Long idParent = createBaseParent();
+        Parent parent = find(Parent.class, idParent);
+        // firstly i need to delete student
+        studentService.deleteStudentById(parent.getStudent().getId());
 
         // when
         parentService.deleteById(idParent);
 
         // then
-        Parent parent = find(Parent.class, idParent);
-        assertNull(parent);
+        Parent actual = find(Parent.class, idParent);
+        assertNull(actual);
     }
 
     @Test
@@ -97,7 +100,7 @@ public class ParentIntegrationTest extends BaseTest {
         parentService.register(dto);
 
         // when
-        List<ParentResponseApiDto> allParents = parentService.findAll(new PageRequest(1,20)).getEntities();
+        List<ParentResponseApiDto> allParents = parentService.findAll(new PageRequest(0,20)).getEntities();
 
         // then
         assertEquals(2, allParents.size());

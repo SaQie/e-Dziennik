@@ -138,7 +138,7 @@ public class SubjectIntegrationTest extends BaseTest {
         assertNotNull(secondSubjectId);
 
         // when
-        List<SubjectResponseApiDto> actual = subjectService.findAllSubjects(new PageRequest(1, 10)).getEntities();
+        List<SubjectResponseApiDto> actual = subjectService.findAllSubjects(new PageRequest(0, 10)).getEntities();
 
         // then
         assertEquals(2, actual.size());

@@ -20,7 +20,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/parents")
+@RequestMapping("/api/v1/parents")
 @AllArgsConstructor
 class ParentController {
 

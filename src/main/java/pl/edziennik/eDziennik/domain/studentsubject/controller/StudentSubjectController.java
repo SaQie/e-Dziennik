@@ -19,7 +19,7 @@ import java.net.URI;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/students")
+@RequestMapping("/api/v1/students")
 public class StudentSubjectController {
 
     private final StudentSubjectService service;

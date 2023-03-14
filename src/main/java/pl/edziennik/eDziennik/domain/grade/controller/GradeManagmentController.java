@@ -15,7 +15,7 @@ import java.net.URI;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("/api/grade-managment")
+@RequestMapping("/api/v1/grade-managment")
 @AllArgsConstructor
 public class GradeManagmentController {
 

@@ -13,7 +13,9 @@ import pl.edziennik.eDziennik.domain.user.dto.mapper.UserMapper;
 import pl.edziennik.eDziennik.domain.user.services.UserService;
 import pl.edziennik.eDziennik.server.basics.dto.Page;
 import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
+import pl.edziennik.eDziennik.server.basics.service.BaseService;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
+import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,7 +23,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-class AdminServiceImpl implements AdminService {
+class AdminServiceImpl extends BaseService implements AdminService {
 
     private final AdminValidatorService validator;
     private final AdminDao dao;
@@ -64,7 +66,7 @@ class AdminServiceImpl implements AdminService {
     @Override
     public void deleteAdminById(Long id) {
         if (dao.findAll().size() == 1) {
-            throw new BusinessException("You cannot delete last admin account");
+            throw new BusinessException(getMessage("cannot.delete.last.admin.account"));
         }
         dao.remove(id);
     }
