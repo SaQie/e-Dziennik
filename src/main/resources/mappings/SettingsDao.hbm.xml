@@ -7,7 +7,8 @@
     <named-query name="Settings.getAllSettingsData">
         <query>
             SELECT
-            new pl.edziennik.eDziennik.domain.settings.dto.SettingsDto(s.id,s.name, s.value)
+            new pl.edziennik.eDziennik.domain.settings.dto.SettingsDto(s.id,s.name, s.booleanValue, s.stringValue,
+            s.longValue)
             FROM
             Settings s
         </query>

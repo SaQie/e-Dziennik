@@ -106,7 +106,7 @@ class StudentServiceImpl implements StudentService {
 
     private void assignAllSchoolClassSubjectsToStudentIfNeeded(Student student, Long idSchoolClass) {
         // This method will assign automatically all subjects assigned to school class to selected student if configuration is enabled
-        if (settingsService.getSettingsDataByName(SettingsService.AUTOMATICALLY_INSERT_STUDENT_SUBJECTS_WHEN_ADD).isEnabled()) {
+        if (settingsService.getSettingsDataByName(SettingsService.AUTOMATICALLY_INSERT_STUDENT_SUBJECTS_WHEN_ADD).getBooleanValue()) {
             SchoolClass schoolClass = dao.get(SchoolClass.class, idSchoolClass);
             if (!schoolClass.getSubjects().isEmpty()) {
                 List<Subject> subjects = schoolClass.getSubjects();

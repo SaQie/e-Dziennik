@@ -19,5 +19,5 @@ INSERT INTO role(id, name) VALUES (2, 'ROLE_TEACHER');
 INSERT INTO role(id, name) VALUES (3, 'ROLE_STUDENT');
 INSERT INTO role(id, name) VALUES (4, 'ROLE_PARENT');
 
-insert into app_settings(id,name,value) values (1,'automatically.insert.student.subjects.when.add', false);
-insert into app_settings(id, name, value) values (2,'allow.to.create.student.accounts.independent', false);
+insert into app_settings(id,name, boolean_value) values (1,'automatically.insert.student.subjects.when.add', false);
+insert into app_settings(id, name, boolean_value) values (2,'allow.to.create.student.accounts.independent', false);

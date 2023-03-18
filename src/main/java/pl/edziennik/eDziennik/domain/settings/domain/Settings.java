@@ -3,7 +3,9 @@ package pl.edziennik.eDziennik.domain.settings.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Check;
 import pl.edziennik.eDziennik.server.basics.entity.AbstractEntity;
+import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 
 import javax.persistence.*;
 
@@ -20,10 +22,24 @@ public class Settings extends AbstractEntity {
     private Long id;
 
     private String name;
-    private boolean value;
+    private Boolean booleanValue;
+    private String stringValue;
+    private Long longValue;
 
     @Override
     public boolean isNew() {
         return (id == null);
+    }
+
+    @PrePersist
+    @PreUpdate
+    public void checkValues() {
+        if (!isValidValues()) {
+            throw new BusinessException("One of settings value must be not null");
+        }
+    }
+
+    private boolean isValidValues() {
+        return booleanValue != null || stringValue != null || longValue != null;
     }
 }

@@ -39,6 +39,7 @@ public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
         authResponseDto.setMessage(resourceCreator.of("bad.credentials.message"));
         ApiResponse<AuthResponseDto> apiResponseDto = ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.UNAUTHORIZED, authResponseDto, new URI(request.getRequestURI()));
         String jsonObject = new ObjectMapper().writeValueAsString(apiResponseDto);
+        response.setCharacterEncoding("UTF-8");
         response.getWriter().write(jsonObject);
     }
 }

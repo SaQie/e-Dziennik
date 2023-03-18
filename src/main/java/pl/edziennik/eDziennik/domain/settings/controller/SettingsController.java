@@ -15,6 +15,7 @@ import pl.edziennik.eDziennik.domain.school.dto.mapper.SchoolMapper;
 import pl.edziennik.eDziennik.domain.settings.dto.SettingsDto;
 import pl.edziennik.eDziennik.domain.settings.services.SettingsService;
 import pl.edziennik.eDziennik.domain.settings.dto.SettingsValue;
+import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.net.URI;
 import java.util.List;
@@ -25,7 +26,7 @@ import java.util.List;
 public class SettingsController {
 
     private final SettingsService service;
-    private final SchoolDao schoolDao;
+    private ResourceCreator resourceCreator;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -44,7 +45,7 @@ public class SettingsController {
     public ApiResponse<?> updateSettings(@PathVariable Long id, @RequestBody SettingsValue value) {
         service.updateSettings(id, value);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ApiResponseCreator.buildApiResponse(HttpMethod.PATCH, HttpStatus.OK, "Settings updated sucessfully", uri);
+        return ApiResponseCreator.buildApiResponse(HttpMethod.PATCH, HttpStatus.OK, resourceCreator.of("settings.updated.successfully"), uri);
     }
 
 }

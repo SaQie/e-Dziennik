@@ -34,16 +34,30 @@ class SettingsServiceImpl implements SettingsService {
     public List<SettingsDto> getAllSettings() {
         List<SettingsDto> translatedSettingsData = new ArrayList<>();
         for (SettingsDto settingsDto : cacheSettingsList) {
-            translatedSettingsData.add(new SettingsDto(settingsDto.getId(), resourceCreator.of(settingsDto.getName()), settingsDto.isEnabled()));
+            addCorrectValue(settingsDto, translatedSettingsData);
         }
         return translatedSettingsData;
+    }
+
+    private void addCorrectValue(SettingsDto settingsDto, List<SettingsDto> translatedSettingsData) {
+        if (settingsDto.getBooleanValue() != null) {
+            translatedSettingsData.add(new SettingsDto(settingsDto.getId(), resourceCreator.of(settingsDto.getName()), settingsDto.getBooleanValue()));
+            return;
+        }
+        if (settingsDto.getStringValue() != null) {
+            translatedSettingsData.add(new SettingsDto(settingsDto.getId(), resourceCreator.of(settingsDto.getName()), settingsDto.getStringValue()));
+            return;
+        }
+        if (settingsDto.getLongValue() != null) {
+            translatedSettingsData.add(new SettingsDto(settingsDto.getId(), resourceCreator.of(settingsDto.getName()), settingsDto.getLongValue()));
+        }
     }
 
     @Override
     public void updateSetting(String name, SettingsValue value) {
         Settings settings = settingsDao.findByName(name)
                 .orElseThrow(() -> new BusinessException("Setting with name " + name + " not exists"));
-        settings.setValue(value.getEnabled());
+        setCorrectValue(settings, value);
         settingsDao.saveOrUpdate(settings);
         refreshCache();
     }
@@ -52,9 +66,26 @@ class SettingsServiceImpl implements SettingsService {
     @Override
     public void updateSettings(Long id, SettingsValue value) {
         Settings settings = settingsDao.get(id);
-        settings.setValue(value.getEnabled());
+        setCorrectValue(settings, value);
         settingsDao.saveOrUpdate(settings);
         refreshCache();
+    }
+
+    private void setCorrectValue(Settings settings, SettingsValue value) {
+        settings.setLongValue(null);
+        settings.setBooleanValue(null);
+        settings.setStringValue(null);
+        if (value.getBooleanValue() != null) {
+            settings.setBooleanValue(value.getBooleanValue());
+            return;
+        }
+        if (value.getStringValue() != null) {
+            settings.setStringValue(value.getStringValue());
+            return;
+        }
+        if (value.getLongValue() != null) {
+            settings.setLongValue(value.getLongValue());
+        }
     }
 
     @Override
@@ -81,7 +112,22 @@ class SettingsServiceImpl implements SettingsService {
         if (settingsDto == null) {
             throw new BusinessException("Setting with name " + name + " Not found !");
         }
-        return new SettingsDto(settingsDto.getId(), resourceCreator.of(settingsDto.getName()), settingsDto.isEnabled());
+        return returnCorrectSettingsDto(settingsDto);
+    }
+
+    private SettingsDto returnCorrectSettingsDto(SettingsDto settingsDto) {
+        Long settingId = settingsDto.getId();
+        String translatedName = resourceCreator.of(settingsDto.getName());
+        if (settingsDto.getBooleanValue() != null) {
+            return new SettingsDto(settingId, translatedName, settingsDto.getBooleanValue());
+        }
+        if (settingsDto.getStringValue() != null) {
+            return new SettingsDto(settingId, translatedName, settingsDto.getStringValue());
+        }
+        if (settingsDto.getLongValue() != null) {
+            return new SettingsDto(settingId, translatedName, settingsDto.getLongValue());
+        }
+        throw new BusinessException(resourceCreator.of("setting.value.not.set", settingsDto.getName()));
     }
 
 }
