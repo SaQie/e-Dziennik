@@ -2,11 +2,13 @@ package pl.edziennik.eDziennik.domain.settings.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.edziennik.eDziennik.domain.schoollevel.domain.SchoolLevel;
 import pl.edziennik.eDziennik.domain.settings.domain.Settings;
-import pl.edziennik.eDziennik.server.exceptions.BusinessException;
-import pl.edziennik.eDziennik.domain.settings.dao.SettingsDao;
 import pl.edziennik.eDziennik.domain.settings.dto.SettingsDto;
 import pl.edziennik.eDziennik.domain.settings.dto.SettingsValue;
+import pl.edziennik.eDziennik.domain.settings.repository.SettingsRepostory;
+import pl.edziennik.eDziennik.server.basics.service.BaseService;
+import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import javax.annotation.PostConstruct;
@@ -14,10 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-class SettingsServiceImpl implements SettingsService {
+class SettingsServiceImpl extends BaseService implements SettingsService {
 
     @Autowired
-    private SettingsDao settingsDao;
+    private SettingsRepostory settingsRepostory;
 
     @Autowired
     private ResourceCreator resourceCreator;
@@ -55,19 +57,20 @@ class SettingsServiceImpl implements SettingsService {
 
     @Override
     public void updateSetting(String name, SettingsValue value) {
-        Settings settings = settingsDao.findByName(name)
+        Settings settings = settingsRepostory.findByName(name)
                 .orElseThrow(() -> new BusinessException("Setting with name " + name + " not exists"));
         setCorrectValue(settings, value);
-        settingsDao.saveOrUpdate(settings);
+        settingsRepostory.save(settings);
         refreshCache();
     }
 
 
     @Override
     public void updateSettings(Long id, SettingsValue value) {
-        Settings settings = settingsDao.get(id);
+        Settings settings = settingsRepostory.findById(id)
+                .orElseThrow(notFoundException(id, SchoolLevel.class));
         setCorrectValue(settings, value);
-        settingsDao.saveOrUpdate(settings);
+        settingsRepostory.save(settings);
         refreshCache();
     }
 
@@ -99,7 +102,7 @@ class SettingsServiceImpl implements SettingsService {
     }
 
     private List<SettingsDto> getActualSettingsData() {
-        return settingsDao.getAllSettingsData();
+        return settingsRepostory.getAllSettings();
     }
 
 

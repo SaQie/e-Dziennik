@@ -2,12 +2,14 @@ package pl.edziennik.eDziennik.domain.student.services.validator;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
-import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
-import pl.edziennik.eDziennik.domain.school.dao.SchoolDao;
 import pl.edziennik.eDziennik.domain.school.domain.School;
+import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
+import pl.edziennik.eDziennik.domain.schoolclass.repository.SchoolClassRepository;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.service.BaseService;
+import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Optional;
@@ -17,9 +19,11 @@ import java.util.Optional;
  */
 @Component
 @AllArgsConstructor
-class StudentSchoolClassNotBelongsToSchoolValidator implements StudentValidators {
+class StudentSchoolClassNotBelongsToSchoolValidator extends BaseService implements StudentValidators {
 
-    private final SchoolDao dao;
+    private final SchoolRepository repository;
+    private final SchoolClassRepository schoolClassRepository;
+
     private final ResourceCreator resourceCreator;
 
 
@@ -30,8 +34,11 @@ class StudentSchoolClassNotBelongsToSchoolValidator implements StudentValidators
 
     @Override
     public Optional<ApiErrorDto> validate(StudentRequestApiDto dto) {
-        School school = dao.get(dto.getIdSchool());
-        SchoolClass schoolClass = dao.get(SchoolClass.class, dto.getIdSchoolClass());
+        School school = repository.findById(dto.getIdSchool())
+                .orElseThrow(notFoundException(dto.getIdSchool(), School.class));
+        SchoolClass schoolClass = schoolClassRepository.findById(dto.getIdSchoolClass())
+                .orElseThrow(notFoundException(dto.getIdSchoolClass(), SchoolClass.class));
+
         if (!school.getSchoolClasses().contains(schoolClass)) {
             String message = resourceCreator.of(EXCEPTION_MESSAGE_SCHOOL_CLASS_NOT_BELONG_TO_SCHOOL, schoolClass.getClassName(), school.getName());
 

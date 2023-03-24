@@ -1,24 +1,15 @@
 package pl.edziennik.eDziennik.domain.parent;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
 import pl.edziennik.eDziennik.domain.parent.domain.Parent;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentResponseApiDto;
-import pl.edziennik.eDziennik.domain.parent.services.ParentService;
 import pl.edziennik.eDziennik.domain.parent.services.validator.ParentValidators;
-import pl.edziennik.eDziennik.domain.school.domain.School;
-import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassRequestApiDto;
-import pl.edziennik.eDziennik.domain.schoolclass.services.validator.SchoolClassValidators;
-import pl.edziennik.eDziennik.domain.student.StudentIntegrationTestUtil;
-import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
-import pl.edziennik.eDziennik.domain.student.services.StudentService;
-import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 
 import java.util.List;
@@ -100,7 +91,7 @@ public class ParentIntegrationTest extends BaseTest {
         parentService.register(dto);
 
         // when
-        List<ParentResponseApiDto> allParents = parentService.findAll(new PageRequest(0,20)).getEntities();
+        List<ParentResponseApiDto> allParents = parentService.findAll(PageRequest.of(0, 20)).getContent();
 
         // then
         assertEquals(2, allParents.size());

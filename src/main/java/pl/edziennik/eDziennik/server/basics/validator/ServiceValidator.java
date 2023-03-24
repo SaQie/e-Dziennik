@@ -3,8 +3,8 @@ package pl.edziennik.eDziennik.server.basics.validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-import pl.edziennik.eDziennik.server.basics.service.BaseService;
 import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.service.BaseService;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
@@ -24,8 +24,6 @@ public abstract class ServiceValidator<VALIDATORS extends AbstractValidator<INPU
     private List<VALIDATORS> validators;
     @Autowired
     protected ResourceCreator resourceCreator;
-    @Autowired
-    public BasicValidator basicValidator;
     @Autowired
     private ApplicationContext context;
 

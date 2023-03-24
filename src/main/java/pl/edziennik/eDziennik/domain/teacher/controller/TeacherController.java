@@ -2,23 +2,21 @@ package pl.edziennik.eDziennik.domain.teacher.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pl.edziennik.eDziennik.server.authentication.AuthCredentials;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherResponseApiDto;
 import pl.edziennik.eDziennik.domain.teacher.services.TeacherService;
-import pl.edziennik.eDziennik.server.basics.dto.Page;
-import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
-import pl.edziennik.eDziennik.server.basics.handler.Pageable;
+import pl.edziennik.eDziennik.server.authentication.AuthCredentials;
+import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
+import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/teachers")
@@ -58,8 +56,8 @@ class TeacherController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get teacher list",
             description = "Returns list of all teachers")
-    public ApiResponse<Page<List<TeacherResponseApiDto>>> findAllTeachers(@Pageable PageRequest pageRequest) {
-        Page<List<TeacherResponseApiDto>> responseApiDtos = service.findAllTeachers(pageRequest);
+    public ApiResponse<Page<TeacherResponseApiDto>> findAllTeachers(Pageable pageable) {
+        Page<TeacherResponseApiDto> responseApiDtos = service.findAllTeachers(pageable);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
     }

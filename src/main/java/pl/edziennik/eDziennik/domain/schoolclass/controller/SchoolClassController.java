@@ -2,22 +2,20 @@ package pl.edziennik.eDziennik.domain.schoolclass.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassRequestApiDto;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassResponseApiDto;
 import pl.edziennik.eDziennik.domain.schoolclass.services.SchoolClassService;
-import pl.edziennik.eDziennik.server.basics.dto.Page;
-import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
-import pl.edziennik.eDziennik.server.basics.handler.Pageable;
+import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
+import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -53,13 +51,14 @@ public class SchoolClassController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get school class list",
             description = "Returns list of all school classes")
-    public ApiResponse<?> findAllSchoolClasses(@RequestParam(required = false) Long schoolId, @Pageable PageRequest pageRequest) {
+    public ApiResponse<?> findAllSchoolClasses(@RequestParam(required = false) Long schoolId, Pageable pageable) {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+        Page<SchoolClassResponseApiDto> responseApiDtos;
         if (schoolId == null) {
-            Page<List<SchoolClassResponseApiDto>> responseApiDtos = service.findAllSchoolClasses(pageRequest);
+            responseApiDtos = service.findAllSchoolClasses(pageable);
             return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
         }
-        List<SchoolClassResponseApiDto> responseApiDtos = service.findSchoolClassesBySchoolId(schoolId);
+        responseApiDtos = service.findSchoolClassesBySchoolId(pageable, schoolId);
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
     }
 

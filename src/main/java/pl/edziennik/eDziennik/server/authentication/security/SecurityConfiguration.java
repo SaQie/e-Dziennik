@@ -13,13 +13,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import pl.edziennik.eDziennik.server.authentication.AuthUserDetailsService;
 import pl.edziennik.eDziennik.server.authentication.security.jwt.*;
 import pl.edziennik.eDziennik.server.authentication.security.jwt.dto.AuthResponseDto;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
-import pl.edziennik.eDziennik.server.basics.handler.PageRequestResolverHandler;
 import pl.edziennik.eDziennik.server.utils.JwtUtils;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
@@ -28,7 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 
 /**
  * Security configuration

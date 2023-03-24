@@ -1,30 +1,23 @@
 package pl.edziennik.eDziennik.domain.subject;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
-import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
-import pl.edziennik.eDziennik.server.exceptions.BusinessException;
-import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.domain.subject.domain.Subject;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectResponseApiDto;
-import pl.edziennik.eDziennik.domain.subject.services.SubjectService;
 import pl.edziennik.eDziennik.domain.subject.services.validator.SubjectValidators;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
-import pl.edziennik.eDziennik.domain.teacher.services.TeacherService;
-import pl.edziennik.eDziennik.domain.teacher.TeacherIntegrationTestUtil;
-
-import java.util.List;
+import pl.edziennik.eDziennik.server.exceptions.BusinessException;
+import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -138,10 +131,10 @@ public class SubjectIntegrationTest extends BaseTest {
         assertNotNull(secondSubjectId);
 
         // when
-        List<SubjectResponseApiDto> actual = subjectService.findAllSubjects(new PageRequest(0, 10)).getEntities();
+        Page<SubjectResponseApiDto> actual = subjectService.findAllSubjects(PageRequest.of(0, 20));
 
         // then
-        assertEquals(2, actual.size());
+        assertEquals(2, actual.getContent().size());
 
     }
 

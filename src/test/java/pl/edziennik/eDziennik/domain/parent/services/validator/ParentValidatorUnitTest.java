@@ -4,25 +4,23 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.edziennik.eDziennik.BaseUnitTest;
-import pl.edziennik.eDziennik.domain.parent.dao.ParentDao;
 import pl.edziennik.eDziennik.domain.parent.domain.Parent;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
+import pl.edziennik.eDziennik.domain.parent.repository.ParentRepository;
 import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
-import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassRequestApiDto;
-import pl.edziennik.eDziennik.domain.schoolclass.services.validator.SchoolClassValidators;
+import pl.edziennik.eDziennik.domain.role.domain.Role;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
-import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
-import pl.edziennik.eDziennik.domain.student.services.validator.StudentValidators;
+import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
 import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class ParentValidatorUnitTest extends BaseUnitTest {
@@ -41,7 +39,10 @@ public class ParentValidatorUnitTest extends BaseUnitTest {
     private ResourceCreator resourceCreator;
 
     @Mock
-    private ParentDao parentDao;
+    private ParentRepository repository;
+
+    @Mock
+    private StudentRepository studentRepository;
 
     @Test
     public void shouldReturnApiErrorWhenStudentAlreadyHasParent() {
@@ -53,7 +54,8 @@ public class ParentValidatorUnitTest extends BaseUnitTest {
         student.setParent(parent);
         student.setPersonInformation(personInformation);
 
-        when(parentDao.get(Student.class, parentRequestApiDto.getIdStudent())).thenReturn(student);
+        when(studentRepository.findById(parentRequestApiDto.getIdStudent())).thenReturn(Optional.of(student));
+
         lenient().when(resourceCreator.of(ParentValidators.EXCEPTION_MESSAGE_STUDENT_ALREADY_HAS_PARENT_VALIDATOR, null))
                 .thenReturn(ParentValidators.EXCEPTION_MESSAGE_STUDENT_ALREADY_HAS_PARENT_VALIDATOR);
 
@@ -77,7 +79,7 @@ public class ParentValidatorUnitTest extends BaseUnitTest {
         PersonInformation personInformation = new PersonInformation();
         student.setPersonInformation(personInformation);
 
-        when(parentDao.get(Student.class, parentRequestApiDto.getIdStudent())).thenReturn(student);
+        when(studentRepository.findById(parentRequestApiDto.getIdStudent())).thenReturn(Optional.of(student));
         lenient().when(resourceCreator.of(ParentValidators.EXCEPTION_MESSAGE_STUDENT_ALREADY_HAS_PARENT_VALIDATOR, null))
                 .thenReturn(ParentValidators.EXCEPTION_MESSAGE_STUDENT_ALREADY_HAS_PARENT_VALIDATOR);
 
@@ -96,7 +98,7 @@ public class ParentValidatorUnitTest extends BaseUnitTest {
         parent.setStudent(student);
         student.setPersonInformation(new PersonInformation());
 
-        when(parentDao.get(1L)).thenReturn(parent);
+        when(repository.findById(1L)).thenReturn(Optional.of(parent));
         lenient().when(resourceCreator.of(ParentValidators.EXCEPTON_MESSAGE_PARENT_STILL_HAS_STUDENT, null))
                 .thenReturn(ParentValidators.EXCEPTON_MESSAGE_PARENT_STILL_HAS_STUDENT);
 
@@ -115,7 +117,7 @@ public class ParentValidatorUnitTest extends BaseUnitTest {
         // given
         Parent parent = new Parent();
 
-        when(parentDao.get(1L)).thenReturn(parent);
+        when(repository.findById(1L)).thenReturn(Optional.of(parent));
 
         // when
         Optional<ApiErrorDto> validationResult = parentStillHasStudentValidator.validate(1L);
@@ -129,7 +131,7 @@ public class ParentValidatorUnitTest extends BaseUnitTest {
         // given
         ParentRequestApiDto parentRequestApiDto = parentUtil.prepareParentRequestApiDto(1L);
 
-        when(parentDao.isParentExistsByPesel(parentRequestApiDto.getPesel())).thenReturn(true);
+        when(repository.existsByPesel(parentRequestApiDto.getPesel(), Role.RoleConst.ROLE_PARENT.getId())).thenReturn(true);
         lenient().when(resourceCreator.of(ParentValidators.EXCEPTION_MESSAGE_PARENT_PESEL_ALREADY_EXISTS, parentRequestApiDto.getPesel()))
                 .thenReturn(ParentValidators.EXCEPTION_MESSAGE_PARENT_PESEL_ALREADY_EXISTS);
 
@@ -149,7 +151,7 @@ public class ParentValidatorUnitTest extends BaseUnitTest {
         // given
         ParentRequestApiDto parentRequestApiDto = parentUtil.prepareParentRequestApiDto(1L);
 
-        when(parentDao.isParentExistsByPesel(parentRequestApiDto.getPesel())).thenReturn(false);
+        when(repository.existsByPesel(parentRequestApiDto.getPesel(), Role.RoleConst.ROLE_PARENT.getId())).thenReturn(false);
         lenient().when(resourceCreator.of(ParentValidators.EXCEPTION_MESSAGE_PARENT_PESEL_ALREADY_EXISTS, parentRequestApiDto.getPesel()))
                 .thenReturn(ParentValidators.EXCEPTION_MESSAGE_PARENT_PESEL_ALREADY_EXISTS);
 

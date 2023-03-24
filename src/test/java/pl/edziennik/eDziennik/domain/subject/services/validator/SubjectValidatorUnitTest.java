@@ -6,11 +6,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.edziennik.eDziennik.BaseUnitTest;
-import pl.edziennik.eDziennik.domain.schoolclass.SchoolClassIntergrationTestUtil;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
-import pl.edziennik.eDziennik.domain.subject.SubjectIntegrationTestUtil;
-import pl.edziennik.eDziennik.domain.subject.dao.SubjectDao;
+import pl.edziennik.eDziennik.domain.schoolclass.repository.SchoolClassRepository;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
+import pl.edziennik.eDziennik.domain.subject.repository.SubjectRepository;
 import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
@@ -28,7 +27,10 @@ public class SubjectValidatorUnitTest extends BaseUnitTest {
     private SubjectAlreadyExistValidator validator;
 
     @Mock
-    private SubjectDao dao;
+    private SubjectRepository repository;
+
+    @Mock
+    private SchoolClassRepository schoolClassRepository;
 
     @Mock
     private ResourceCreator resourceCreator;
@@ -37,8 +39,8 @@ public class SubjectValidatorUnitTest extends BaseUnitTest {
     public void shouldReturnApiErrorWhenSubjectAlreadyExists() {
         // given
         SubjectRequestApiDto dto = subjectUtil.prepareSubjectRequestDto("Przyroda", null, 1L);
-        when(dao.isSubjectAlreadyExist("Przyroda", 1L)).thenReturn(true);
-        when(dao.get(SchoolClass.class, 1L)).thenReturn(new SchoolClass());
+        when(repository.existsByNameAndSchoolClassId("Przyroda", 1L)).thenReturn(true);
+        when(schoolClassRepository.findById(1L)).thenReturn(Optional.of(new SchoolClass()));
         lenient().when(resourceCreator.of(SubjectValidators.EXCEPTION_MESSAGE_SUBJECT_ALREADY_EXIST, dto.getName(), null))
                 .thenReturn(SubjectValidators.EXCEPTION_MESSAGE_SUBJECT_ALREADY_EXIST);
 
@@ -57,7 +59,7 @@ public class SubjectValidatorUnitTest extends BaseUnitTest {
     public void shouldNotReturnApiErrorWhenSubjectNotExists() {
         // given
         SubjectRequestApiDto dto = subjectUtil.prepareSubjectRequestDto("Przyroda", null, 1L);
-        when(dao.isSubjectAlreadyExist("Przyroda", 1L)).thenReturn(false);
+        when(repository.existsByNameAndSchoolClassId("Przyroda", 1L)).thenReturn(false);
 
         // when
         Optional<ApiErrorDto> validationResult = validator.validate(dto);

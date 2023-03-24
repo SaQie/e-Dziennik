@@ -1,11 +1,9 @@
 package pl.edziennik.eDziennik.domain.parent.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentResponseApiDto;
-import pl.edziennik.eDziennik.server.basics.dto.Page;
-import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
-
-import java.util.List;
 
 public interface ParentService {
 
@@ -15,5 +13,5 @@ public interface ParentService {
 
     void deleteById(Long id);
 
-    Page<List<ParentResponseApiDto>> findAll(PageRequest pageRequest);
+    Page<ParentResponseApiDto> findAll(Pageable pageable);
 }

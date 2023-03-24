@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.edziennik.eDziennik.domain.user.domain.User;
-import pl.edziennik.eDziennik.domain.user.dao.UserDao;
+import pl.edziennik.eDziennik.domain.user.repository.UserRepository;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -14,11 +14,11 @@ import javax.persistence.EntityNotFoundException;
 @AllArgsConstructor
 public class AuthUserDetailsService implements UserDetailsService {
 
-    private final UserDao userDao;
+    private final UserRepository repository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userDao.getByUsername(username);
+        User user = repository.getByUsername(username);
         if (user != null){
             return new AuthUserDetails(user);
         }

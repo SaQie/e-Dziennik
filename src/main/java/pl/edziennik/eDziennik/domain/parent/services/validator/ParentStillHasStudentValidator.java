@@ -2,10 +2,11 @@ package pl.edziennik.eDziennik.domain.parent.services.validator;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.eDziennik.domain.parent.dao.ParentDao;
 import pl.edziennik.eDziennik.domain.parent.domain.Parent;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
+import pl.edziennik.eDziennik.domain.parent.repository.ParentRepository;
 import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.service.BaseService;
 import pl.edziennik.eDziennik.server.basics.validator.AbstractValidator;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
@@ -17,9 +18,9 @@ import static pl.edziennik.eDziennik.domain.parent.services.validator.ParentVali
 
 @Component
 @AllArgsConstructor
-public class ParentStillHasStudentValidator implements AbstractValidator<Long> {
+public class ParentStillHasStudentValidator extends BaseService implements AbstractValidator<Long> {
 
-    private final ParentDao dao;
+    private final ParentRepository repository;
     private final ResourceCreator resourceCreator;
 
     @Override
@@ -29,7 +30,8 @@ public class ParentStillHasStudentValidator implements AbstractValidator<Long> {
 
     @Override
     public Optional<ApiErrorDto> validate(Long id) {
-        Parent parent = dao.get(id);
+        Parent parent = repository.findById(id)
+                .orElseThrow(notFoundException(id, Parent.class));
         if (parent.getStudent() != null) {
 
             String message = resourceCreator.of(EXCEPTON_MESSAGE_PARENT_STILL_HAS_STUDENT, parent.getStudent().getPersonInformation().getFullName());

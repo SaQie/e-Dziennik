@@ -3,18 +3,20 @@ package pl.edziennik.eDziennik.domain.grade.service.managment;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.edziennik.eDziennik.server.exceptions.BusinessException;
-import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
-import pl.edziennik.eDziennik.server.basics.service.BaseService;
 import pl.edziennik.eDziennik.domain.grade.domain.Grade;
 import pl.edziennik.eDziennik.domain.grade.dto.GradeRequestApiDto;
+import pl.edziennik.eDziennik.domain.grade.repository.GradeRepository;
 import pl.edziennik.eDziennik.domain.grade.service.GradeService;
-import pl.edziennik.eDziennik.domain.studentsubject.dao.StudentSubjectDao;
+import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.studentsubject.domain.StudentSubject;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.mapper.StudentSubjectMapper;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentGradesInSubjectDto;
-import pl.edziennik.eDziennik.domain.teacher.dao.TeacherDao;
+import pl.edziennik.eDziennik.domain.studentsubject.repository.StudentSubjectRepository;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
+import pl.edziennik.eDziennik.domain.teacher.repository.TeacherRepository;
+import pl.edziennik.eDziennik.server.basics.service.BaseService;
+import pl.edziennik.eDziennik.server.exceptions.BusinessException;
+import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 
 import java.util.Optional;
 
@@ -22,33 +24,37 @@ import java.util.Optional;
 @AllArgsConstructor
 class GradeManagmentServiceImpl extends BaseService implements GradeManagmentService{
 
-    private final TeacherDao teacherDao;
+    private final TeacherRepository teacherRepository;
     private final GradeService gradeService;
-    private final StudentSubjectDao dao;
+    private final GradeRepository repository;
+    private final StudentSubjectRepository studentSubjectRepository;
     private final GradeManagmentValidationService validatorService;
 
     @Override
     @Transactional
     public StudentGradesInSubjectDto assignGradeToStudentSubject(Long idStudent, Long idSubject, GradeRequestApiDto dto) {
-        StudentSubject studentSubject = basicValidator.checkStudentSubjectExist(idStudent, idSubject);
+        StudentSubject studentSubject = studentSubjectRepository.findByStudentIdAndSubjectId(idStudent, idSubject)
+                .orElseThrow(notFoundException(idStudent, Student.class));
         Grade grade = insertNewGrade(dto, studentSubject);
         studentSubject.addGrade(grade);
-        StudentSubject studentSubjectAfterSave = dao.saveOrUpdate(studentSubject);
+        StudentSubject studentSubjectAfterSave = studentSubjectRepository.save(studentSubject);
         return StudentSubjectMapper.toStudentSubjectRatingsDto(studentSubjectAfterSave);
     }
 
     @Override
     public void deleteGradeFromStudentSubject(Long idStudent, Long idSubject, Long idGrade) {
         // TODO -> Sprawdzac czy ocena zgadza sie z tym studentem i przedmiotem
-        StudentSubject studentSubject = basicValidator.checkStudentSubjectExist(idStudent, idSubject);
+        StudentSubject studentSubject = studentSubjectRepository.findByStudentIdAndSubjectId(idStudent, idSubject)
+                .orElseThrow(notFoundException(idStudent, Student.class));
         validatorService.checkGradeExistInStudentSubject(idGrade, studentSubject.getId());
         gradeService.deleteGradeById(idGrade);
     }
 
     @Override
     public StudentGradesInSubjectDto updateStudentSubjectGrade(Long idStudent, Long idSubject, Long idGrade, GradeRequestApiDto requestApiDto) {
-        StudentSubject studentSubject = dao.findSubjectStudent(idStudent, idSubject).orElseThrow(() -> new EntityNotFoundException("Student " + idStudent + " not assigned to subject " + idSubject));
-        Optional<Grade> optionalGrade = dao.find(Grade.class, idGrade);
+        StudentSubject studentSubject = studentSubjectRepository.findByStudentIdAndSubjectId(idStudent, idSubject)
+                .orElseThrow(() -> new EntityNotFoundException("Student " + idStudent + " not assigned to subject " + idSubject));
+        Optional<Grade> optionalGrade = repository.findById(idGrade);
         if (optionalGrade.isPresent()){
             Grade grade = optionalGrade.get();
             grade.setGrade(Grade.GradeConst.getByRating(requestApiDto.getGrade()));
@@ -61,9 +67,10 @@ class GradeManagmentServiceImpl extends BaseService implements GradeManagmentSer
 
 
     private Grade insertNewGrade(GradeRequestApiDto dto, StudentSubject studentSubject) {
-        Teacher teacher = teacherDao.getByUsername(dto.getTeacherName());
-        Long gradeId = gradeService.addNewGrade(dto).getId();
-        Grade grade = dao.get(Grade.class, gradeId);
+        Teacher teacher = teacherRepository.getByUserUsername(dto.getTeacherName());
+        Long idGrade = gradeService.addNewGrade(dto).getId();
+        Grade grade = repository.findById(idGrade)
+                .orElseThrow(notFoundException(idGrade, Grade.class));
         grade.setStudentSubject(studentSubject);
         grade.setTeacher(teacher);
         return grade;

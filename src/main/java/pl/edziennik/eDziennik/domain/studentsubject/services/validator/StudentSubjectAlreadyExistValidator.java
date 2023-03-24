@@ -2,13 +2,15 @@ package pl.edziennik.eDziennik.domain.studentsubject.services.validator;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.eDziennik.domain.studentsubject.dto.request.StudentSubjectRequestDto;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
-import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
-import pl.edziennik.eDziennik.server.basics.validator.ValidatePurpose;
-import pl.edziennik.eDziennik.domain.studentsubject.dao.StudentSubjectDao;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
+import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
+import pl.edziennik.eDziennik.domain.studentsubject.dto.request.StudentSubjectRequestDto;
+import pl.edziennik.eDziennik.domain.studentsubject.repository.StudentSubjectRepository;
 import pl.edziennik.eDziennik.domain.subject.domain.Subject;
+import pl.edziennik.eDziennik.domain.subject.repository.SubjectRepository;
+import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.service.BaseService;
+import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Optional;
@@ -18,9 +20,13 @@ import java.util.Optional;
  */
 @Component
 @AllArgsConstructor
-class StudentSubjectAlreadyExistValidator implements StudentSubjectValidators {
+class StudentSubjectAlreadyExistValidator extends BaseService implements StudentSubjectValidators {
 
-    private final StudentSubjectDao dao;
+    private final StudentSubjectRepository repository;
+    private final StudentRepository studentRepository;
+    private final SubjectRepository subjectRepository;
+
+
     private final ResourceCreator resourceCreator;
 
     @Override
@@ -30,13 +36,16 @@ class StudentSubjectAlreadyExistValidator implements StudentSubjectValidators {
 
     @Override
     public Optional<ApiErrorDto> validate(StudentSubjectRequestDto dto) {
-        if (dao.isStudentSubjectAlreadyExist(dto.getIdStudent(), dto.getIdSubject())) {
+        if (repository.existsByStudentIdAndSubjectId(dto.getIdStudent(), dto.getIdSubject())) {
 
-            Student student = dao.get(Student.class, dto.getIdStudent());
-            Subject subject = dao.get(Subject.class, dto.getIdSubject());
+            Student student = studentRepository.findById(dto.getIdStudent())
+                    .orElseThrow(notFoundException(dto.getIdStudent(), Student.class));
+            Subject subject = subjectRepository.findById(dto.getIdSubject())
+                    .orElseThrow(notFoundException(dto.getIdSubject(), Subject.class));
 
-            String studentName = student.getPersonInformation().getFirstName() + " " + student.getPersonInformation().getLastName();
+            String studentName = student.getPersonInformation().getFullName();
             String subjectName = subject.getName();
+
             String message = resourceCreator.of(EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST, studentName, subjectName);
 
             ApiErrorDto apiErrorDto = ApiErrorDto.builder()

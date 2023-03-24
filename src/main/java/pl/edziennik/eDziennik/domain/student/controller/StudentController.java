@@ -2,21 +2,19 @@ package pl.edziennik.eDziennik.domain.student.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.domain.student.dto.StudentResponseApiDto;
 import pl.edziennik.eDziennik.domain.student.services.StudentService;
-import pl.edziennik.eDziennik.server.basics.dto.Page;
-import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
-import pl.edziennik.eDziennik.server.basics.handler.Pageable;
+import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
+import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/students")
@@ -60,8 +58,8 @@ public class StudentController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get list of students",
             description = "Returns list of all students")
-    public ApiResponse<Page<List<StudentResponseApiDto>>> findAllStudents(@Pageable PageRequest pageRequest) {
-        Page<List<StudentResponseApiDto>> responseApiDtos = service.findAllStudents(pageRequest);
+    public ApiResponse<Page<StudentResponseApiDto>> findAllStudents(Pageable pageable) {
+        Page<StudentResponseApiDto> responseApiDtos = service.findAllStudents(pageable);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
     }

@@ -2,9 +2,10 @@ package pl.edziennik.eDziennik.domain.student.services;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.edziennik.eDziennik.domain.student.dao.StudentDao;
-import pl.edziennik.eDziennik.domain.student.domain.Student;
-import pl.edziennik.eDziennik.domain.student.dto.mapper.StudentMapper;
+import pl.edziennik.eDziennik.domain.school.domain.School;
+import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
+import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
+import pl.edziennik.eDziennik.domain.schoolclass.repository.SchoolClassRepository;
 import pl.edziennik.eDziennik.server.basics.validator.ServiceValidator;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.domain.student.services.validator.StudentValidators;
@@ -14,10 +15,13 @@ import pl.edziennik.eDziennik.server.basics.validator.ValidatePurpose;
 @AllArgsConstructor
 class StudentValidatorService extends ServiceValidator<StudentValidators, StudentRequestApiDto> {
 
+    private final SchoolClassRepository schoolClassRepository;
+    private final SchoolRepository schoolRepository;
+
 
     protected void valid(StudentRequestApiDto dto) {
         runValidators(dto, ValidatePurpose.CREATE);
-        basicValidator.checkSchoolClassExist(dto.getIdSchoolClass());
-        basicValidator.checkSchoolExist(dto.getIdSchool());
+        schoolClassRepository.findById(dto.getIdSchoolClass()).orElseThrow(notFoundException(dto.getIdSchoolClass(), SchoolClass.class));
+        schoolRepository.findById(dto.getIdSchool()).orElseThrow(notFoundException(dto.getIdSchool(), School.class));
     }
 }

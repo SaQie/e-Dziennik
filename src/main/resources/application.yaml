@@ -10,23 +10,10 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
+        format_sql: false
     hibernate:
       ddl-auto: none
     show-sql: true
-    mapping-resources:
-      /mappings/TeacherDao.hbm.xml,
-      /mappings/RoleDao.hbm.xml,
-      /mappings/StudentDao.hbm.xml,
-      /mappings/StudentSubjectDao.hbm.xml,
-      /mappings/SchoolClassDao.hbm.xml,
-      /mappings/SubjectDao.hbm.xml,
-      /mappings/PersonInformationDao.hbm.xml,
-      /mappings/SchoolDao.hbm.xml,
-      /mappings/AdminDao.hbm.xml,
-      /mappings/UserDao.hbm.xml,
-      /mappings/SettingsDao.hbm.xml,
-      /mappings/ParentDao.hbm.xml
   datasource:
     url: jdbc:postgresql://localhost:5432/diary_db
     username: postgres

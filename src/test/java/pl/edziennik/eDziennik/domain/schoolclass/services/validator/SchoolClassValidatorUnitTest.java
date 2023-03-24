@@ -6,20 +6,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.edziennik.eDziennik.BaseUnitTest;
-import pl.edziennik.eDziennik.domain.admin.dao.AdminDao;
-import pl.edziennik.eDziennik.domain.admin.domain.Admin;
-import pl.edziennik.eDziennik.domain.admin.dto.AdminRequestApiDto;
-import pl.edziennik.eDziennik.domain.admin.services.validator.AdminValidators;
+import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
 import pl.edziennik.eDziennik.domain.school.domain.School;
-import pl.edziennik.eDziennik.domain.schoolclass.SchoolClassIntergrationTestUtil;
-import pl.edziennik.eDziennik.domain.schoolclass.dao.SchoolClassDao;
+import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassRequestApiDto;
-import pl.edziennik.eDziennik.domain.studentsubject.dto.request.StudentSubjectRequestDto;
+import pl.edziennik.eDziennik.domain.schoolclass.repository.SchoolClassRepository;
+import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
+import pl.edziennik.eDziennik.domain.teacher.repository.TeacherRepository;
 import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,7 +36,16 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
     private TeacherNotBelongsToSchoolValidator teacherNotBelongsToSchoolValidator;
 
     @Mock
-    private SchoolClassDao dao;
+    private SchoolClassRepository repository;
+
+    @Mock
+    private TeacherRepository teacherRepository;
+
+    @Mock
+    private StudentRepository studentRepository;
+
+    @Mock
+    private SchoolRepository schoolRepository;
 
     @Mock
     private ResourceCreator resourceCreator;
@@ -49,9 +55,9 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
         // given
         SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(1L);
 
-        when(dao.isTeacherAlreadySupervisingTeacher(1L)).thenReturn(true);
-        when(dao.get(Teacher.class, 1L)).thenReturn(schoolClassUtil.prepareTeacherForTests());
-        lenient().when(resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER, "null null", null))
+        when(repository.existsByTeacherId(1L)).thenReturn(true);
+        when(teacherRepository.findById(1L)).thenReturn(Optional.of(schoolClassUtil.prepareTeacherForTests()));
+        lenient().when(resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER, null, null))
                 .thenReturn(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER);
 
         // when
@@ -69,9 +75,11 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
     public void shouldNotReturnApiErrorWhenTryingToAddNewSchoolClassAndGivenTeacherIsNotSupervisingTeacher() {
         // given
         SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(1L);
+        Teacher teacher = new Teacher();
+        teacher.setPersonInformation(new PersonInformation());
 
-        when(dao.isTeacherAlreadySupervisingTeacher(1L)).thenReturn(false);
-        lenient().when(resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER, "null null", null))
+        when(repository.existsByTeacherId(1L)).thenReturn(false);
+        lenient().when(resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER, null, null))
                 .thenReturn(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER);
 
         // when
@@ -86,10 +94,10 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
         // given
         SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(1L);
 
-        when(dao.isTeacherBelongsToSchool(1L, 100L)).thenReturn(false);
-        when(dao.get(Teacher.class, 1L)).thenReturn(schoolClassUtil.prepareTeacherForTests());
-        when(dao.get(School.class, 100L)).thenReturn(new School());
-        lenient().when(resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL, "null null", null))
+        when(repository.existsByTeacherIdAndSchoolId(1L, 100L)).thenReturn(false);
+        when(teacherRepository.findById(1L)).thenReturn(Optional.of(schoolClassUtil.prepareTeacherForTests()));
+        when(schoolRepository.findById(100L)).thenReturn(Optional.of(new School()));
+        lenient().when(resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL, null, null))
                 .thenReturn(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL);
 
         // when
@@ -108,7 +116,7 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
         // given
         SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(1L);
 
-        when(dao.isTeacherBelongsToSchool(1L, 100L)).thenReturn(true);
+        when(repository.existsByTeacherIdAndSchoolId(1L, 100L)).thenReturn(true);
         lenient().when(resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL, "null null", null))
                 .thenReturn(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL);
 
@@ -125,8 +133,8 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
         // given
         SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(1L);
 
-        when(dao.isSchoolClassAlreadyExist("3B", 100L)).thenReturn(true);
-        when(dao.get(School.class, 100L)).thenReturn(new School());
+        when(repository.existsByClassNameAndSchoolId("3B", 100L)).thenReturn(true);
+        when(schoolRepository.findById(100L)).thenReturn(Optional.of(new School()));
         lenient().when(resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_ALREADY_EXIST, "3B", null))
                 .thenReturn(SchoolClassValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_ALREADY_EXIST);
 
@@ -146,7 +154,7 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
         // given
         SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(1L);
 
-        when(dao.isSchoolClassAlreadyExist("3B", 100L)).thenReturn(false);
+        when(repository.existsByClassNameAndSchoolId("3B", 100L)).thenReturn(false);
         lenient().when(resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_ALREADY_EXIST, "3B", null))
                 .thenReturn(SchoolClassValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_ALREADY_EXIST);
 

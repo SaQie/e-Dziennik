@@ -1,24 +1,24 @@
 package pl.edziennik.eDziennik.domain.admin.services;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.edziennik.eDziennik.domain.admin.dao.AdminDao;
 import pl.edziennik.eDziennik.domain.admin.domain.Admin;
 import pl.edziennik.eDziennik.domain.admin.dto.AdminRequestApiDto;
 import pl.edziennik.eDziennik.domain.admin.dto.AdminResponseApiDto;
 import pl.edziennik.eDziennik.domain.admin.dto.mapper.AdminMapper;
+import pl.edziennik.eDziennik.domain.admin.repository.AdminRepository;
+import pl.edziennik.eDziennik.domain.parent.domain.Parent;
 import pl.edziennik.eDziennik.domain.user.domain.User;
 import pl.edziennik.eDziennik.domain.user.dto.mapper.UserMapper;
 import pl.edziennik.eDziennik.domain.user.services.UserService;
-import pl.edziennik.eDziennik.server.basics.dto.Page;
-import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
-import pl.edziennik.eDziennik.server.utils.ResourceCreator;
+import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,7 +26,7 @@ import java.util.Optional;
 class AdminServiceImpl extends BaseService implements AdminService {
 
     private final AdminValidatorService validator;
-    private final AdminDao dao;
+    private final AdminRepository repository;
     private final UserService userService;
 
     @Override
@@ -36,44 +36,45 @@ class AdminServiceImpl extends BaseService implements AdminService {
         Admin admin = new Admin();
         User user = userService.createUser(UserMapper.toDto(dto));
         admin.setUser(user);
-        return AdminMapper.mapToDto(dao.saveOrUpdate(admin));
+        return AdminMapper.mapToDto(repository.save(admin));
     }
 
     @Override
     public AdminResponseApiDto getAdminByUsername(String username) {
-        Admin admin = dao.getByUsername(username);
+        Admin admin = repository.getAdminByUsername(username);
         return admin == null ? null : AdminMapper.mapToDto(admin);
     }
 
     @Override
     @Transactional
     public void updateAdminLastLoginDate(String username) {
-        Admin admin = dao.getByUsername(username);
+        Admin admin = repository.getAdminByUsername(username);
         admin.getUser().setLastLoginDate(LocalDateTime.now());
     }
 
     @Override
-    public Page<List<AdminResponseApiDto>> getAdminList(PageRequest pageRequest) {
-        return dao.findAll(pageRequest).map(AdminMapper::mapToDto);
+    public Page<AdminResponseApiDto> getAdminList(Pageable pageRequest) {
+        return repository.findAll(pageRequest).map(AdminMapper::mapToDto);
     }
 
     @Override
     public AdminResponseApiDto getAdminById(Long id) {
-        Admin admin = dao.get(id);
+        Admin admin = repository.findById(id)
+                .orElseThrow(notFoundException(id, Admin.class));
         return AdminMapper.mapToDto(admin);
     }
 
     @Override
     public void deleteAdminById(Long id) {
-        if (dao.findAll().size() == 1) {
+        if (repository.findAll().size() == 1) {
             throw new BusinessException(getMessage("cannot.delete.last.admin.account"));
         }
-        dao.remove(id);
+        repository.deleteById(id);
     }
 
     @Override
     public AdminResponseApiDto updateAdmin(AdminRequestApiDto dto, Long id) {
-        Optional<Admin> optionalStudent = dao.find(id);
+        Optional<Admin> optionalStudent = repository.findById(id);
         if (optionalStudent.isPresent()) {
 //            validatorService.valid(requestApiDto);
             Admin admin = optionalStudent.get();

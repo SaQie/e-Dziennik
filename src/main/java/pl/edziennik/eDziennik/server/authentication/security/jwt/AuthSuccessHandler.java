@@ -11,12 +11,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import pl.edziennik.eDziennik.domain.user.domain.User;
+import pl.edziennik.eDziennik.domain.user.repository.UserRepository;
+import pl.edziennik.eDziennik.domain.user.services.UserService;
+import pl.edziennik.eDziennik.server.authentication.security.jwt.dto.AuthResponseDto;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
-import pl.edziennik.eDziennik.server.authentication.security.jwt.dto.AuthResponseDto;
-import pl.edziennik.eDziennik.domain.user.dao.UserDao;
-import pl.edziennik.eDziennik.domain.user.domain.User;
-import pl.edziennik.eDziennik.domain.user.services.UserService;
 import pl.edziennik.eDziennik.server.utils.JwtUtils;
 
 import javax.servlet.ServletException;
@@ -33,7 +33,7 @@ import java.net.URI;
 public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     @Autowired
-    private UserDao dao;
+    private UserRepository repository;
 
     @Autowired
     private UserService service;
@@ -49,7 +49,7 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         UserDetails principal = jwtUtils.getPrincipal(authentication);
-        User user = dao.getByUsername(principal.getUsername());
+        User user = repository.getByUsername(principal.getUsername());
         String token = jwtUtils.generateJwtToken(principal, user.getId());
         String refreshToken = jwtUtils.generateRefreshToken(principal, user.getId());
         AuthResponseDto authResponseDto = new AuthResponseDto();

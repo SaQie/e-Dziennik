@@ -2,22 +2,20 @@ package pl.edziennik.eDziennik.domain.subject.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectResponseApiDto;
 import pl.edziennik.eDziennik.domain.subject.services.SubjectService;
-import pl.edziennik.eDziennik.server.basics.dto.Page;
-import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
-import pl.edziennik.eDziennik.server.basics.handler.Pageable;
+import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
+import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -42,8 +40,8 @@ public class SubjectController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get list of subjects",
             description = "Returns list of all subjects")
-    public ApiResponse<?> findAllSubjects(@Pageable PageRequest pageRequest) {
-        Page<List<SubjectResponseApiDto>> responseApiDtos = service.findAllSubjects(pageRequest);
+    public ApiResponse<?> findAllSubjects(Pageable pageable) {
+        Page<SubjectResponseApiDto> responseApiDtos = service.findAllSubjects(pageable);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
     }

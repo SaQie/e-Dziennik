@@ -15,3 +15,4 @@ ALTER TABLE app_settings
 
 insert into app_settings(id,name, boolean_value) values (1,'automatically.insert.student.subjects.when.add', false);
 insert into app_settings(id, name, boolean_value) values (2,'allow.to.create.student.accounts.independent', false);
+insert into app_settings(id, name, long_value) values (3, 'school.for.which.students.can.register', 1);

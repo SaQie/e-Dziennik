@@ -1,43 +1,45 @@
 package pl.edziennik.eDziennik.domain.student.services;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 import pl.edziennik.eDziennik.domain.address.dto.mapper.AddressMapper;
 import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
 import pl.edziennik.eDziennik.domain.personinformation.dto.mapper.PersonInformationMapper;
 import pl.edziennik.eDziennik.domain.school.domain.School;
+import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
+import pl.edziennik.eDziennik.domain.schoolclass.repository.SchoolClassRepository;
 import pl.edziennik.eDziennik.domain.settings.services.SettingsService;
+import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.domain.student.dto.StudentResponseApiDto;
 import pl.edziennik.eDziennik.domain.student.dto.mapper.StudentMapper;
-import pl.edziennik.eDziennik.domain.studentsubject.dao.StudentSubjectDao;
+import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
 import pl.edziennik.eDziennik.domain.studentsubject.domain.StudentSubject;
-import pl.edziennik.eDziennik.domain.student.dao.StudentDao;
-import pl.edziennik.eDziennik.domain.student.domain.Student;
+import pl.edziennik.eDziennik.domain.studentsubject.repository.StudentSubjectRepository;
 import pl.edziennik.eDziennik.domain.subject.domain.Subject;
 import pl.edziennik.eDziennik.domain.user.domain.User;
 import pl.edziennik.eDziennik.domain.user.dto.mapper.UserMapper;
 import pl.edziennik.eDziennik.domain.user.services.UserService;
-import pl.edziennik.eDziennik.server.basics.dto.Page;
-import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
-import pl.edziennik.eDziennik.server.basics.validator.ValidatePurpose;
+import pl.edziennik.eDziennik.server.basics.service.BaseService;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-class StudentServiceImpl implements StudentService {
+class StudentServiceImpl extends BaseService implements StudentService {
 
-    private final StudentDao dao;
+    private final StudentRepository repository;
+    private final SchoolClassRepository schoolClassRepository;
+    private final SchoolRepository schoolRepository;
     private final StudentValidatorService validatorService;
     private final UserService userService;
     private final SettingsService settingsService;
-    private final StudentSubjectDao studentSubjectDao;
+    private final StudentSubjectRepository studentSubjectRepository;
 
 
     @Override
@@ -48,32 +50,34 @@ class StudentServiceImpl implements StudentService {
         User user = userService.createUser(UserMapper.toDto(dto));
         student.setUser(user);
         assignAllSchoolClassSubjectsToStudentIfNeeded(student, dto.getIdSchoolClass());
-        return StudentMapper.toDto(dao.saveOrUpdate(student));
+        return StudentMapper.toDto(repository.save(student));
     }
 
     @Override
     public StudentResponseApiDto findStudentById(Long id) {
-        Student student = dao.get(id);
+        Student student = repository.findById(id)
+                .orElseThrow(notFoundException(id, Student.class));
         return StudentMapper.toDto(student);
     }
 
     @Override
     public void deleteStudentById(Long id) {
-        Student student = dao.get(id);
+        Student student = repository.findById(id)
+                .orElseThrow(notFoundException(id, Student.class));
         if (student.getParent() != null) {
             student.getParent().clearStudent();
         }
-        dao.remove(student);
+        repository.delete(student);
     }
 
     @Override
-    public Page<List<StudentResponseApiDto>> findAllStudents(PageRequest pageRequest) {
-        return dao.findAll(pageRequest).map(StudentMapper::toDto);
+    public Page<StudentResponseApiDto> findAllStudents(Pageable pageable) {
+        return repository.findAll(pageable).map(StudentMapper::toDto);
     }
 
     @Override
     public StudentResponseApiDto getStudentByUsername(String username) {
-        Student student = dao.getByUsername(username);
+        Student student = repository.getByUserUsername(username);
         return student == null ? null : StudentMapper.toDto(student);
     }
 
@@ -81,7 +85,7 @@ class StudentServiceImpl implements StudentService {
     @Override
     @Transactional
     public StudentResponseApiDto updateStudent(Long id, StudentRequestApiDto requestApiDto) {
-        Optional<Student> optionalStudent = dao.find(id);
+        Optional<Student> optionalStudent = repository.findById(id);
         if (optionalStudent.isPresent()) {
 //            validatorService.valid(requestApiDto);
             Student student = optionalStudent.get();
@@ -97,8 +101,10 @@ class StudentServiceImpl implements StudentService {
 
     private Student mapToEntity(StudentRequestApiDto dto) {
         Student student = StudentMapper.toEntity(dto);
-        School school = dao.get(School.class, dto.getIdSchool());
-        SchoolClass schoolClass = dao.get(SchoolClass.class, dto.getIdSchoolClass());
+        School school = schoolRepository.findById(dto.getIdSchool())
+                .orElseThrow(notFoundException(dto.getIdSchool(), School.class));
+        SchoolClass schoolClass = schoolClassRepository.findById(dto.getIdSchool())
+                .orElseThrow(notFoundException(dto.getIdSchool(), SchoolClass.class));
         student.setSchool(school);
         student.setSchoolClass(schoolClass);
         return student;
@@ -107,14 +113,15 @@ class StudentServiceImpl implements StudentService {
     private void assignAllSchoolClassSubjectsToStudentIfNeeded(Student student, Long idSchoolClass) {
         // This method will assign automatically all subjects assigned to school class to selected student if configuration is enabled
         if (settingsService.getSettingsDataByName(SettingsService.AUTOMATICALLY_INSERT_STUDENT_SUBJECTS_WHEN_ADD).getBooleanValue()) {
-            SchoolClass schoolClass = dao.get(SchoolClass.class, idSchoolClass);
+            SchoolClass schoolClass = schoolClassRepository.findById(idSchoolClass)
+                    .orElseThrow(notFoundException(idSchoolClass, SchoolClass.class));
             if (!schoolClass.getSubjects().isEmpty()) {
                 List<Subject> subjects = schoolClass.getSubjects();
                 for (Subject subject : subjects) {
                     StudentSubject studentSubject = new StudentSubject();
                     studentSubject.setStudent(student);
                     studentSubject.setSubject(subject);
-                    studentSubjectDao.saveOrUpdate(studentSubject);
+                    studentSubjectRepository.save(studentSubject);
                 }
             }
         }

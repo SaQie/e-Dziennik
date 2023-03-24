@@ -1,11 +1,9 @@
 package pl.edziennik.eDziennik.domain.admin.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import pl.edziennik.eDziennik.domain.admin.dto.AdminRequestApiDto;
 import pl.edziennik.eDziennik.domain.admin.dto.AdminResponseApiDto;
-import pl.edziennik.eDziennik.server.basics.dto.Page;
-import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
-
-import java.util.List;
 
 public interface AdminService {
 
@@ -15,7 +13,7 @@ public interface AdminService {
 
     void updateAdminLastLoginDate(final String username);
 
-    Page<List<AdminResponseApiDto>> getAdminList(PageRequest pageRequest);
+    Page<AdminResponseApiDto> getAdminList(Pageable pageable);
 
     AdminResponseApiDto getAdminById(Long id);
 

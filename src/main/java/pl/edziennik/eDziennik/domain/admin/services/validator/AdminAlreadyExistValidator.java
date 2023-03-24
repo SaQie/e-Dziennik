@@ -2,11 +2,10 @@ package pl.edziennik.eDziennik.domain.admin.services.validator;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.eDziennik.domain.admin.dao.AdminDao;
 import pl.edziennik.eDziennik.domain.admin.dto.AdminRequestApiDto;
+import pl.edziennik.eDziennik.domain.admin.repository.AdminRepository;
 import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
-import pl.edziennik.eDziennik.server.basics.validator.ValidatePurpose;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Optional;
@@ -16,7 +15,7 @@ import java.util.Optional;
 class AdminAlreadyExistValidator implements AdminValidators {
 
     private final ResourceCreator resourceCreator;
-    private final AdminDao dao;
+    private final AdminRepository repository;
 
     @Override
     public String getValidatorId() {
@@ -25,7 +24,7 @@ class AdminAlreadyExistValidator implements AdminValidators {
 
     @Override
     public Optional<ApiErrorDto> validate(AdminRequestApiDto dto) {
-        if (!dao.findAll().isEmpty()) {
+        if (!repository.findAll().isEmpty()) {
 
             String message = resourceCreator.of(EXCEPTION_MESSAGE_ADMIN_ALREADY_EXIST);
 

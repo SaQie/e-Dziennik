@@ -2,6 +2,8 @@ package pl.edziennik.eDziennik.domain.admin.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -11,13 +13,9 @@ import pl.edziennik.eDziennik.domain.admin.dto.AdminResponseApiDto;
 import pl.edziennik.eDziennik.domain.admin.services.AdminService;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
-import pl.edziennik.eDziennik.server.basics.dto.Page;
-import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
-import pl.edziennik.eDziennik.server.basics.handler.Pageable;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 
 @RequestMapping("/api/v1/admins")
 @RestController
@@ -43,8 +41,8 @@ public class AdminController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get admin list",
             description = "Returns list of admins")
-    public ApiResponse<Page<List<AdminResponseApiDto>>> getAdminList(@Pageable PageRequest pageRequest) {
-        Page<List<AdminResponseApiDto>> responseApiDto = service.getAdminList(pageRequest);
+    public ApiResponse<Page<AdminResponseApiDto>> getAdminList(Pageable pageable) {
+        Page<AdminResponseApiDto> responseApiDto = service.getAdminList(pageable);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
     }

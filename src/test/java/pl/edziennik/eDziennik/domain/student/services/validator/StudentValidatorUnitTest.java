@@ -6,14 +6,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.edziennik.eDziennik.BaseUnitTest;
-import pl.edziennik.eDziennik.domain.parent.domain.Parent;
-import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
-import pl.edziennik.eDziennik.domain.school.dao.SchoolDao;
+import pl.edziennik.eDziennik.domain.role.domain.Role;
 import pl.edziennik.eDziennik.domain.school.domain.School;
+import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
-import pl.edziennik.eDziennik.domain.student.dao.StudentDao;
-import pl.edziennik.eDziennik.domain.student.domain.Student;
+import pl.edziennik.eDziennik.domain.schoolclass.repository.SchoolClassRepository;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
+import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
 import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
@@ -35,10 +34,13 @@ public class StudentValidatorUnitTest extends BaseUnitTest {
     private StudentSchoolClassNotBelongsToSchoolValidator belongsToSchoolValidator;
 
     @Mock
-    private StudentDao dao;
+    private StudentRepository studentRepository;
 
     @Mock
-    private SchoolDao schoolDao;
+    private SchoolRepository schoolRepository;
+
+    @Mock
+    private SchoolClassRepository schoolClassRepository;
 
     @Mock
     private ResourceCreator resourceCreator;
@@ -48,7 +50,7 @@ public class StudentValidatorUnitTest extends BaseUnitTest {
     public void shouldReturnApiErrorWhenStudentPeselNotUnique() {
         // given
         StudentRequestApiDto request = studentUtil.prepareStudentRequestDto();
-        when(dao.isStudentExistsByPesel(request.getPesel())).thenReturn(true);
+        when(studentRepository.isStudentExistsByPesel(request.getPesel(), Role.RoleConst.ROLE_STUDENT.getId())).thenReturn(true);
         lenient().when(resourceCreator.of(StudentValidators.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, request.getPesel()))
                 .thenReturn(StudentValidators.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE);
 
@@ -67,7 +69,7 @@ public class StudentValidatorUnitTest extends BaseUnitTest {
     public void shouldNotReturnApiErrorWhenStudentPeselIsUnique() {
         // given
         StudentRequestApiDto request = studentUtil.prepareStudentRequestDto();
-        when(dao.isStudentExistsByPesel(request.getPesel())).thenReturn(false);
+        when(studentRepository.isStudentExistsByPesel(request.getPesel(), Role.RoleConst.ROLE_STUDENT.getId())).thenReturn(false);
 
         // when
         Optional<ApiErrorDto> validationResult = peselNotUniqueValidator.validate(request);
@@ -84,8 +86,8 @@ public class StudentValidatorUnitTest extends BaseUnitTest {
         School school = new School();
         school.setSchoolClasses(Collections.emptyList());
 
-        when(schoolDao.get(request.getIdSchool())).thenReturn(school);
-        when(schoolDao.get(SchoolClass.class, request.getIdSchoolClass())).thenReturn(schoolClass);
+        when(schoolRepository.findById(request.getIdSchool())).thenReturn(Optional.of(school));
+        when(schoolClassRepository.findById(request.getIdSchoolClass())).thenReturn(Optional.of(schoolClass));
         lenient().when(resourceCreator.of(StudentValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_NOT_BELONG_TO_SCHOOL, null, null))
                 .thenReturn(StudentValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_NOT_BELONG_TO_SCHOOL);
 
@@ -107,8 +109,8 @@ public class StudentValidatorUnitTest extends BaseUnitTest {
         School school = new School();
         school.setSchoolClasses(List.of(schoolClass));
 
-        when(schoolDao.get(request.getIdSchool())).thenReturn(school);
-        when(schoolDao.get(SchoolClass.class, request.getIdSchoolClass())).thenReturn(schoolClass);
+        when(schoolRepository.findById(request.getIdSchool())).thenReturn(Optional.of(school));
+        when(schoolClassRepository.findById(request.getIdSchoolClass())).thenReturn(Optional.of(schoolClass));
 
         // when
         Optional<ApiErrorDto> validationResult = belongsToSchoolValidator.validate(request);

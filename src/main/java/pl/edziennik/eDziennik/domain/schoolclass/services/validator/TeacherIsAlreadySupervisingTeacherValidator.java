@@ -2,12 +2,13 @@ package pl.edziennik.eDziennik.domain.schoolclass.services.validator;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
-import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
-import pl.edziennik.eDziennik.server.basics.validator.ValidatePurpose;
-import pl.edziennik.eDziennik.domain.schoolclass.dao.SchoolClassDao;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassRequestApiDto;
+import pl.edziennik.eDziennik.domain.schoolclass.repository.SchoolClassRepository;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
+import pl.edziennik.eDziennik.domain.teacher.repository.TeacherRepository;
+import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.service.BaseService;
+import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Optional;
@@ -17,9 +18,11 @@ import java.util.Optional;
  */
 @Component
 @AllArgsConstructor
-class TeacherIsAlreadySupervisingTeacherValidator implements SchoolClassValidators {
+class TeacherIsAlreadySupervisingTeacherValidator extends BaseService implements SchoolClassValidators {
 
-    private final SchoolClassDao dao;
+    private final SchoolClassRepository repository;
+    private final TeacherRepository teacherRepository;
+
     private final ResourceCreator resourceCreator;
 
 
@@ -31,11 +34,12 @@ class TeacherIsAlreadySupervisingTeacherValidator implements SchoolClassValidato
     @Override
     public Optional<ApiErrorDto> validate(SchoolClassRequestApiDto dto) {
         if (dto.getIdClassTeacher() != null) {
-            if (dao.isTeacherAlreadySupervisingTeacher(dto.getIdClassTeacher())) {
-                Teacher teacher = dao.get(Teacher.class, dto.getIdClassTeacher());
-                String actualTeacherSchoolClassName = dao.findSchoolClassNameBySupervisingTeacher(dto.getIdClassTeacher());
+            if (repository.existsByTeacherId(dto.getIdClassTeacher())) {
+                Teacher teacher = teacherRepository.findById(dto.getIdClassTeacher())
+                        .orElseThrow(notFoundException(dto.getIdClassTeacher(), Teacher.class));
+                String actualTeacherSchoolClassName = repository.getSchoolClassNameBySupervisingTeacherId(dto.getIdClassTeacher());
 
-                String teacherName = teacher.getPersonInformation().getFirstName() + " " + teacher.getPersonInformation().getLastName();
+                String teacherName = teacher.getPersonInformation().getFullName();
                 String message = resourceCreator.of(EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER, teacherName, actualTeacherSchoolClassName);
 
                 ApiErrorDto apiErrorDto = ApiErrorDto.builder()

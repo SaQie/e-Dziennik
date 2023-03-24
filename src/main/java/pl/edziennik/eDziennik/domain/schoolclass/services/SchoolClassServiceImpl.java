@@ -1,86 +1,95 @@
 package pl.edziennik.eDziennik.domain.schoolclass.services;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.domain.school.domain.School;
-import pl.edziennik.eDziennik.domain.schoolclass.dao.SchoolClassDao;
+import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassRequestApiDto;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassResponseApiDto;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.mapper.SchoolClassMapper;
+import pl.edziennik.eDziennik.domain.schoolclass.repository.SchoolClassRepository;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
-import pl.edziennik.eDziennik.server.basics.dto.Page;
-import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
+import pl.edziennik.eDziennik.domain.teacher.repository.TeacherRepository;
+import pl.edziennik.eDziennik.server.basics.service.BaseService;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-class SchoolClassServiceImpl implements SchoolClassService {
+class SchoolClassServiceImpl extends BaseService implements SchoolClassService {
 
     private final SchoolClassValidatorService validatorService;
-    private final SchoolClassDao dao;
+    private final SchoolClassRepository repository;
+    private final SchoolRepository schoolRepository;
+    private final TeacherRepository teacherRepository;
 
     @Override
     @Transactional
     public SchoolClassResponseApiDto createSchoolClass(SchoolClassRequestApiDto dto) {
         validatorService.valid(dto);
         SchoolClass schoolClass = mapToEntity(dto);
-        SchoolClass savedSchoolClass = dao.saveOrUpdate(schoolClass);
+        SchoolClass savedSchoolClass = repository.save(schoolClass);
         return SchoolClassMapper.toDto(savedSchoolClass);
     }
 
     @Override
     public SchoolClassResponseApiDto findSchoolClassById(Long id) {
-        SchoolClass schoolClass = dao.get(id);
+        SchoolClass schoolClass = repository.findById(id)
+                .orElseThrow(notFoundException(id, SchoolClass.class));
         return SchoolClassMapper.toDto(schoolClass);
     }
 
     @Override
     public void deleteSchoolClassById(Long id) {
-        SchoolClass schoolClass = dao.get(id);
-        dao.remove(schoolClass);
+        SchoolClass schoolClass = repository.findById(id)
+                .orElseThrow(notFoundException(id, SchoolClass.class));
+        repository.delete(schoolClass);
     }
 
     @Override
-    public Page<List<SchoolClassResponseApiDto>> findAllSchoolClasses(PageRequest pageRequest) {
-        return dao.findAll(pageRequest).map(SchoolClassMapper::toDto);
+    public Page<SchoolClassResponseApiDto> findAllSchoolClasses(Pageable pageable) {
+        return repository.findAll(pageable).map(SchoolClassMapper::toDto);
     }
 
     @Override
     @Transactional
     public SchoolClassResponseApiDto updateSchoolClass(Long id, SchoolClassRequestApiDto dto) {
         // TODO -> Walidacja
-        Optional<SchoolClass> schoolClassOptional = dao.find(id);
+        Optional<SchoolClass> schoolClassOptional = repository.findById(id);
 
         if (schoolClassOptional.isPresent()) {
             SchoolClass schoolClass = schoolClassOptional.get();
-            schoolClass.setSchool(dao.get(School.class, dto.getIdSchool()));
+            schoolRepository.findById(dto.getIdSchool())
+                    .ifPresentOrElse(schoolClass::setSchool, notFoundException(School.class, dto.getIdSchool()));
+
+            teacherRepository.findById(dto.getIdClassTeacher())
+                    .ifPresentOrElse(schoolClass::setTeacher, notFoundException(Teacher.class, dto.getIdClassTeacher()));
             schoolClass.setClassName(dto.getClassName());
-            schoolClass.setTeacher(dao.get(Teacher.class, dto.getIdClassTeacher()));
             return SchoolClassMapper.toDto(schoolClass);
         }
 
-        SchoolClass schoolClass = dao.saveOrUpdate(SchoolClassMapper.toEntity(dto));
+        SchoolClass schoolClass = repository.save(SchoolClassMapper.toEntity(dto));
         return SchoolClassMapper.toDto(schoolClass);
 
     }
 
     @Override
-    public List<SchoolClassResponseApiDto> findSchoolClassesBySchoolId(Long schoolId) {
-        return dao.findSchoolClassesBySchoolId(schoolId).stream()
-                .map(SchoolClassMapper::toDto)
-                .toList();
+    public Page<SchoolClassResponseApiDto> findSchoolClassesBySchoolId(Pageable pageable, Long idSchool) {
+        return repository.findSchoolClassesBySchoolId(pageable, idSchool).map(SchoolClassMapper::toDto);
     }
 
     private SchoolClass mapToEntity(SchoolClassRequestApiDto dto) {
         SchoolClass schoolClass = SchoolClassMapper.toEntity(dto);
-        dao.findWithExecute(School.class, dto.getIdSchool(), schoolClass::setSchool);
+        schoolRepository.findById(dto.getIdSchool())
+                .ifPresentOrElse(schoolClass::setSchool, notFoundException(School.class, dto.getIdSchool()));
+
         if (dto.getIdClassTeacher() != null) {
-            dao.findWithExecute(Teacher.class, dto.getIdClassTeacher(), schoolClass::setTeacher);
+            teacherRepository.findById(dto.getIdClassTeacher())
+                    .ifPresentOrElse(schoolClass::setTeacher, notFoundException(Teacher.class, dto.getIdClassTeacher()));
         }
         return schoolClass;
     }

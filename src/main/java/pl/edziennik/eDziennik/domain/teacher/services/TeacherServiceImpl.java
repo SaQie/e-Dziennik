@@ -1,33 +1,34 @@
 package pl.edziennik.eDziennik.domain.teacher.services;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.domain.address.dto.mapper.AddressMapper;
-import pl.edziennik.eDziennik.domain.teacher.dao.TeacherDao;
-import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
-import pl.edziennik.eDziennik.domain.teacher.dto.mapper.TeacherMapper;
-import pl.edziennik.eDziennik.server.basics.dto.Page;
-import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
-import pl.edziennik.eDziennik.server.basics.service.BaseService;
 import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
 import pl.edziennik.eDziennik.domain.personinformation.dto.mapper.PersonInformationMapper;
 import pl.edziennik.eDziennik.domain.school.domain.School;
+import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
+import pl.edziennik.eDziennik.domain.subject.domain.Subject;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
+import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherResponseApiDto;
+import pl.edziennik.eDziennik.domain.teacher.dto.mapper.TeacherMapper;
+import pl.edziennik.eDziennik.domain.teacher.repository.TeacherRepository;
 import pl.edziennik.eDziennik.domain.user.domain.User;
 import pl.edziennik.eDziennik.domain.user.dto.mapper.UserMapper;
 import pl.edziennik.eDziennik.domain.user.services.UserService;
+import pl.edziennik.eDziennik.server.basics.service.BaseService;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 class TeacherServiceImpl extends BaseService implements TeacherService {
 
-    private final TeacherDao dao;
+    private final TeacherRepository repository;
+    private final SchoolRepository schoolRepository;
 
     private final TeacherValidatorService validatorService;
     private final UserService userService;
@@ -39,32 +40,34 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
         User user = userService.createUser(UserMapper.toDto(dto));
         Teacher teacher = mapToEntity(dto);
         teacher.setUser(user);
-        return TeacherMapper.toDto(dao.saveOrUpdate(teacher));
+        return TeacherMapper.toDto(repository.save(teacher));
     }
 
 
     @Override
     public TeacherResponseApiDto findTeacherById(Long id) {
-        Teacher teacher = dao.get(id);
+        Teacher teacher = repository.findById(id)
+                .orElseThrow(notFoundException(id, Teacher.class));
         return TeacherMapper.toDto(teacher);
     }
 
     @Override
     public void deleteTeacherById(Long id) {
-        Teacher teacher = dao.get(id);
-        dao.remove(teacher);
+        Teacher teacher = repository.findById(id)
+                .orElseThrow(notFoundException(id, Teacher.class));
+        repository.delete(teacher);
     }
 
     @Override
-    public Page<List<TeacherResponseApiDto>> findAllTeachers(PageRequest pageRequest) {
-        return dao.findAll(pageRequest).map(TeacherMapper::toDto);
+    public Page<TeacherResponseApiDto> findAllTeachers(Pageable pageable) {
+        return repository.findAll(pageable).map(TeacherMapper::toDto);
     }
 
 
     @Override
     @Transactional
     public TeacherResponseApiDto updateTeacher(Long id, TeacherRequestApiDto requestApiDto) {
-        Optional<Teacher> optionalTeacher = dao.find(id);
+        Optional<Teacher> optionalTeacher = repository.findById(id);
         if (optionalTeacher.isPresent()) {
 //            validatorService.valid(requestApiDto);
             Teacher teacher = optionalTeacher.get();
@@ -78,14 +81,14 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
 
     @Override
     public TeacherResponseApiDto getTeacherByUsername(String username) {
-        Teacher teacher = dao.getByUsername(username);
+        Teacher teacher = repository.getByUserUsername(username);
         return teacher == null ? null : TeacherMapper.toDto(teacher);
     }
 
     private Teacher mapToEntity(TeacherRequestApiDto dto) {
         Teacher teacher = TeacherMapper.toEntity(dto);
         if (dto.getIdSchool() != null) {
-            dao.findWithExecute(School.class, dto.getIdSchool(), teacher::setSchool);
+            schoolRepository.findById(dto.getIdSchool()).ifPresent(teacher::setSchool);
         }
         return teacher;
     }

@@ -1,11 +1,9 @@
 package pl.edziennik.eDziennik.domain.schoolclass.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassRequestApiDto;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassResponseApiDto;
-import pl.edziennik.eDziennik.server.basics.dto.Page;
-import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
-
-import java.util.List;
 
 public interface SchoolClassService {
 
@@ -16,7 +14,7 @@ public interface SchoolClassService {
 
     void deleteSchoolClassById(final Long id);
 
-    Page<List<SchoolClassResponseApiDto>> findAllSchoolClasses(PageRequest pageRequest);
+    Page<SchoolClassResponseApiDto> findAllSchoolClasses(Pageable Pageable);
     SchoolClassResponseApiDto updateSchoolClass(final Long id, final SchoolClassRequestApiDto dto);
-    List<SchoolClassResponseApiDto> findSchoolClassesBySchoolId(Long schoolId);
+    Page<SchoolClassResponseApiDto> findSchoolClassesBySchoolId(Pageable pageable,Long schoolId);
 }

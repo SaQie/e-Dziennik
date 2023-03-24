@@ -2,11 +2,10 @@ package pl.edziennik.eDziennik.domain.user.services.validator;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import pl.edziennik.eDziennik.domain.user.dto.UserRequestDto;
+import pl.edziennik.eDziennik.domain.user.repository.UserRepository;
 import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
-import pl.edziennik.eDziennik.server.basics.validator.ValidatePurpose;
-import pl.edziennik.eDziennik.domain.user.dao.UserDao;
-import pl.edziennik.eDziennik.domain.user.dto.UserRequestDto;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Optional;
@@ -18,7 +17,7 @@ import java.util.Optional;
 @AllArgsConstructor
 class UserWithUsernameAlreadyExistsValidator implements UserValidators {
 
-    private final UserDao dao;
+    private final UserRepository repository;
     private final ResourceCreator resourceCreator;
 
 
@@ -29,7 +28,7 @@ class UserWithUsernameAlreadyExistsValidator implements UserValidators {
 
     @Override
     public Optional<ApiErrorDto> validate(UserRequestDto dto) {
-        if (dao.isUserExistByUsername(dto.getUsername())) {
+        if (repository.existsByUsername(dto.getUsername())) {
 
             String message = resourceCreator.of(EXCEPTION_MESSAGE_USER_ALREADY_EXISTS, dto.getUsername());
 

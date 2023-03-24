@@ -1,11 +1,9 @@
 package pl.edziennik.eDziennik.domain.subject.services;
 
-import pl.edziennik.eDziennik.domain.subject.dto.SubjectResponseApiDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
-import pl.edziennik.eDziennik.server.basics.dto.Page;
-import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
-
-import java.util.List;
+import pl.edziennik.eDziennik.domain.subject.dto.SubjectResponseApiDto;
 
 public interface SubjectService {
 
@@ -15,7 +13,7 @@ public interface SubjectService {
 
     void deleteSubjectById(final Long id);
 
-    Page<List<SubjectResponseApiDto>> findAllSubjects(PageRequest pageRequest);
+    Page<SubjectResponseApiDto> findAllSubjects(Pageable pageable);
 
     SubjectResponseApiDto updateSubject(final Long id, final SubjectRequestApiDto requestApiDto);
 }

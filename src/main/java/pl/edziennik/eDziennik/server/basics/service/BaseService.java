@@ -2,8 +2,10 @@ package pl.edziennik.eDziennik.server.basics.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.edziennik.eDziennik.server.basics.validator.BasicValidator;
+import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
+
+import java.util.function.Supplier;
 
 /**
  * Basics class for service
@@ -14,20 +16,28 @@ public abstract class BaseService {
     @Autowired
     private ResourceCreator resourceCreator;
 
-    @Autowired
-    public BasicValidator basicValidator;
 
     /**
      * Returns translated message
      */
-    protected String getMessage(String messageKey){
+    protected String getMessage(String messageKey) {
         return resourceCreator.of(messageKey);
     }
 
     /**
      * Return translated message with params
      */
-    protected String getMessage(String messageKey, Object... objects){
+    protected String getMessage(String messageKey, Object... objects) {
         return resourceCreator.of(messageKey, objects);
+    }
+
+    protected Supplier<EntityNotFoundException> notFoundException(Long id, Class clazz) {
+        return () -> new EntityNotFoundException(getMessage("not.found.message", id, clazz.getSimpleName()));
+    }
+
+    protected Runnable notFoundException(Class clazz, Long id) {
+        return () -> {
+            throw new EntityNotFoundException(getMessage("not.found.message", id, clazz.getSimpleName()));
+        };
     }
 }

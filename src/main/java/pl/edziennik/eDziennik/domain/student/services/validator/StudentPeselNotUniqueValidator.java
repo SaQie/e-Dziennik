@@ -2,10 +2,11 @@ package pl.edziennik.eDziennik.domain.student.services.validator;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import pl.edziennik.eDziennik.domain.role.domain.Role;
+import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
+import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
 import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
-import pl.edziennik.eDziennik.domain.student.dao.StudentDao;
-import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Optional;
@@ -17,7 +18,7 @@ import java.util.Optional;
 @AllArgsConstructor
 class StudentPeselNotUniqueValidator implements StudentValidators {
 
-    private final StudentDao dao;
+    private final StudentRepository repository;
     private final ResourceCreator resourceCreator;
 
 
@@ -28,7 +29,7 @@ class StudentPeselNotUniqueValidator implements StudentValidators {
 
     @Override
     public Optional<ApiErrorDto> validate(StudentRequestApiDto dto) {
-        if (dao.isStudentExistsByPesel(dto.getPesel())) {
+        if (repository.isStudentExistsByPesel(dto.getPesel(), Role.RoleConst.ROLE_STUDENT.getId())) {
             String message = resourceCreator.of(EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, dto.getPesel());
 
             ApiErrorDto apiErrorDto = ApiErrorDto.builder()

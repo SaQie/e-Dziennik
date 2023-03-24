@@ -4,15 +4,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
-import pl.edziennik.eDziennik.domain.teacher.TeacherIntegrationTestUtil;
-import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
-import pl.edziennik.eDziennik.server.exceptions.BusinessException;
-import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
-import pl.edziennik.eDziennik.domain.schoolclass.SchoolClassIntergrationTestUtil;
 import pl.edziennik.eDziennik.domain.school.domain.School;
+import pl.edziennik.eDziennik.domain.schoolclass.SchoolClassIntergrationTestUtil;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassRequestApiDto;
 import pl.edziennik.eDziennik.domain.schoolclass.services.SchoolClassService;
@@ -23,11 +20,14 @@ import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.domain.student.dto.StudentResponseApiDto;
 import pl.edziennik.eDziennik.domain.student.services.StudentService;
 import pl.edziennik.eDziennik.domain.student.services.validator.StudentValidators;
+import pl.edziennik.eDziennik.domain.subject.SubjectIntegrationTestUtil;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.domain.subject.services.SubjectService;
+import pl.edziennik.eDziennik.domain.teacher.TeacherIntegrationTestUtil;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.domain.teacher.services.TeacherService;
-import pl.edziennik.eDziennik.domain.subject.SubjectIntegrationTestUtil;
+import pl.edziennik.eDziennik.server.exceptions.BusinessException;
+import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 
 import javax.persistence.Query;
 import java.util.List;
@@ -141,7 +141,7 @@ public class StudentIntegrationTest extends BaseTest {
         assertNotNull(secondStudentId);
 
         // when
-        int actual = service.findAllStudents(new PageRequest(0, 20)).getEntities().size();
+        int actual = service.findAllStudents(PageRequest.of(0, 20)).getContent().size();
 
         // then
         assertEquals(2, actual);

@@ -2,6 +2,8 @@ package pl.edziennik.eDziennik.domain.parent.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -11,13 +13,9 @@ import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentResponseApiDto;
 import pl.edziennik.eDziennik.domain.parent.services.ParentService;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
-import pl.edziennik.eDziennik.server.basics.dto.Page;
-import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
-import pl.edziennik.eDziennik.server.basics.handler.Pageable;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/parents")
@@ -42,8 +40,8 @@ class ParentController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get parents list",
             description = "Returns list of all parents")
-    public ApiResponse<Page<List<ParentResponseApiDto>>> findAllParents(@Pageable PageRequest pageRequest) {
-        Page<List<ParentResponseApiDto>> responseApiDtos = service.findAll(pageRequest);
+    public ApiResponse<Page<ParentResponseApiDto>> findAllParents(Pageable pageable) {
+        Page<ParentResponseApiDto> responseApiDtos = service.findAll(pageable);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
     }

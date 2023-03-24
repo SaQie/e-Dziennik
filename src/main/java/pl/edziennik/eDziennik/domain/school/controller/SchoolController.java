@@ -2,22 +2,20 @@ package pl.edziennik.eDziennik.domain.school.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 import pl.edziennik.eDziennik.domain.school.dto.SchoolRequestApiDto;
 import pl.edziennik.eDziennik.domain.school.dto.SchoolResponseApiDto;
 import pl.edziennik.eDziennik.domain.school.services.SchoolService;
-import pl.edziennik.eDziennik.server.basics.dto.Page;
-import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
-import pl.edziennik.eDziennik.server.basics.handler.Pageable;
+import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
+import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/schools")
@@ -43,8 +41,8 @@ class SchoolController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get school list",
             description = "Returns list of all schools")
-    public ApiResponse<Page<List<SchoolResponseApiDto>>> findAllSchools(@Pageable PageRequest pageRequest) {
-        Page<List<SchoolResponseApiDto>> responseApiDtos = service.findAllSchools(pageRequest);
+    public ApiResponse<Page<SchoolResponseApiDto>> findAllSchools(Pageable pageable) {
+        Page<SchoolResponseApiDto> responseApiDtos = service.findAllSchools(pageable);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
     }

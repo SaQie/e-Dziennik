@@ -1,11 +1,9 @@
 package pl.edziennik.eDziennik.domain.student.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.domain.student.dto.StudentResponseApiDto;
-import pl.edziennik.eDziennik.server.basics.dto.Page;
-import pl.edziennik.eDziennik.server.basics.dto.PageRequest;
-
-import java.util.List;
 
 public interface StudentService {
 
@@ -16,7 +14,7 @@ public interface StudentService {
 
     void deleteStudentById(final Long id);
 
-    Page<List<StudentResponseApiDto>> findAllStudents(PageRequest pageRequest);
+    Page<StudentResponseApiDto> findAllStudents(Pageable pageable);
 
 
     StudentResponseApiDto updateStudent(final Long id, final StudentRequestApiDto requestApiDto);
