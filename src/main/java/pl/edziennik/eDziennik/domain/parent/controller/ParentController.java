@@ -13,6 +13,7 @@ import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentResponseApiDto;
 import pl.edziennik.eDziennik.domain.parent.services.ParentService;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
+import pl.edziennik.eDziennik.server.basics.page.PageDto;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -40,8 +41,8 @@ class ParentController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get parents list",
             description = "Returns list of all parents")
-    public ApiResponse<Page<ParentResponseApiDto>> findAllParents(Pageable pageable) {
-        Page<ParentResponseApiDto> responseApiDtos = service.findAll(pageable);
+    public ApiResponse<PageDto<ParentResponseApiDto>> findAllParents(Pageable pageable) {
+        PageDto<ParentResponseApiDto> responseApiDtos = service.findAll(pageable);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
     }

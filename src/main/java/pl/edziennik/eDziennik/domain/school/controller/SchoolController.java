@@ -2,7 +2,6 @@ package pl.edziennik.eDziennik.domain.school.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -13,6 +12,7 @@ import pl.edziennik.eDziennik.domain.school.dto.SchoolResponseApiDto;
 import pl.edziennik.eDziennik.domain.school.services.SchoolService;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
+import pl.edziennik.eDziennik.server.basics.page.PageDto;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -41,8 +41,8 @@ class SchoolController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get school list",
             description = "Returns list of all schools")
-    public ApiResponse<Page<SchoolResponseApiDto>> findAllSchools(Pageable pageable) {
-        Page<SchoolResponseApiDto> responseApiDtos = service.findAllSchools(pageable);
+    public ApiResponse<PageDto<SchoolResponseApiDto>> findAllSchools(Pageable pageable) {
+        PageDto<SchoolResponseApiDto> responseApiDtos = service.findAllSchools(pageable);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
     }

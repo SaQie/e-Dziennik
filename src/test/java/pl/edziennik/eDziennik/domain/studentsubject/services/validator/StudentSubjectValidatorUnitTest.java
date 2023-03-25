@@ -10,7 +10,7 @@ import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.request.StudentSubjectRequestDto;
 import pl.edziennik.eDziennik.domain.studentsubject.repository.StudentSubjectRepository;
 import pl.edziennik.eDziennik.domain.subject.repository.SubjectRepository;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Optional;
@@ -53,11 +53,11 @@ public class StudentSubjectValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST);
 
         // when
-        Optional<ApiErrorDto> validationResult = existValidator.validate(dto);
+        Optional<ApiValidationResult> validationResult = existValidator.validate(dto);
 
         // then
         assertTrue(validationResult.isPresent());
-        ApiErrorDto error = validationResult.get();
+        ApiValidationResult error = validationResult.get();
         assertEquals(error.getErrorThrownedBy(), StudentSubjectValidators.STUDENT_SUBJECT_ALREADY_EXIST_VALIDATOR_NAME);
         assertEquals(error.getField(), StudentSubjectRequestDto.ID_SUBJECT);
         assertEquals(error.getCause(), getErrorMessage(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST));
@@ -75,11 +75,11 @@ public class StudentSubjectValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS);
 
         // when
-        Optional<ApiErrorDto> validationResult = validator.validate(dto);
+        Optional<ApiValidationResult> validationResult = validator.validate(dto);
 
         // then
         assertTrue(validationResult.isPresent());
-        ApiErrorDto error = validationResult.get();
+        ApiValidationResult error = validationResult.get();
         assertEquals(error.getErrorThrownedBy(), StudentSubjectValidators.STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FRON_DIFFERENT_CLASS_VALIDATOR_NAME);
         assertEquals(error.getField(), StudentSubjectRequestDto.ID_SUBJECT);
         assertEquals(error.getCause(), getErrorMessage(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS));
@@ -95,7 +95,7 @@ public class StudentSubjectValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST);
 
         // when
-        Optional<ApiErrorDto> validationResult = existValidator.validate(dto);
+        Optional<ApiValidationResult> validationResult = existValidator.validate(dto);
 
         // then
         assertFalse(validationResult.isPresent());
@@ -112,7 +112,7 @@ public class StudentSubjectValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS);
 
         // when
-        Optional<ApiErrorDto> validationResult = validator.validate(dto);
+        Optional<ApiValidationResult> validationResult = validator.validate(dto);
 
         // then
         assertFalse(validationResult.isPresent());

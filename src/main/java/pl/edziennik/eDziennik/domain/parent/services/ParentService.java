@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentResponseApiDto;
+import pl.edziennik.eDziennik.server.basics.page.PageDto;
 
 public interface ParentService {
 
@@ -13,5 +14,5 @@ public interface ParentService {
 
     void deleteById(Long id);
 
-    Page<ParentResponseApiDto> findAll(Pageable pageable);
+    PageDto<ParentResponseApiDto> findAll(Pageable pageable);
 }

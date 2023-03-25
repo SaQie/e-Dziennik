@@ -13,7 +13,7 @@ import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
 import pl.edziennik.eDziennik.domain.role.domain.Role;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Optional;
@@ -60,11 +60,11 @@ public class ParentValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(ParentValidators.EXCEPTION_MESSAGE_STUDENT_ALREADY_HAS_PARENT_VALIDATOR);
 
         // when
-        Optional<ApiErrorDto> validationResult = hasParentValidator.validate(parentRequestApiDto);
+        Optional<ApiValidationResult> validationResult = hasParentValidator.validate(parentRequestApiDto);
 
         // then
         assertTrue(validationResult.isPresent());
-        ApiErrorDto error = validationResult.get();
+        ApiValidationResult error = validationResult.get();
         assertEquals(error.getErrorThrownedBy(), ParentValidators.STUDENT_ALREADY_HAS_PARENT_VALIDATOR);
         assertEquals(error.getField(), ParentRequestApiDto.ID_STUDENT);
         assertEquals(error.getCause(), getErrorMessage(ParentValidators.EXCEPTION_MESSAGE_STUDENT_ALREADY_HAS_PARENT_VALIDATOR));
@@ -84,7 +84,7 @@ public class ParentValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(ParentValidators.EXCEPTION_MESSAGE_STUDENT_ALREADY_HAS_PARENT_VALIDATOR);
 
         // when
-        Optional<ApiErrorDto> validationResult = hasParentValidator.validate(parentRequestApiDto);
+        Optional<ApiValidationResult> validationResult = hasParentValidator.validate(parentRequestApiDto);
 
         // then
         assertFalse(validationResult.isPresent());
@@ -103,11 +103,11 @@ public class ParentValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(ParentValidators.EXCEPTON_MESSAGE_PARENT_STILL_HAS_STUDENT);
 
         // when
-        Optional<ApiErrorDto> validationResult = parentStillHasStudentValidator.validate(1L);
+        Optional<ApiValidationResult> validationResult = parentStillHasStudentValidator.validate(1L);
 
         // then
         assertTrue(validationResult.isPresent());
-        ApiErrorDto error = validationResult.get();
+        ApiValidationResult error = validationResult.get();
         assertEquals(error.getErrorThrownedBy(), ParentValidators.PARENT_STILL_HAS_STUDENT_VALIDATOR);
         assertEquals(error.getCause(), getErrorMessage(ParentValidators.EXCEPTON_MESSAGE_PARENT_STILL_HAS_STUDENT));
     }
@@ -120,7 +120,7 @@ public class ParentValidatorUnitTest extends BaseUnitTest {
         when(repository.findById(1L)).thenReturn(Optional.of(parent));
 
         // when
-        Optional<ApiErrorDto> validationResult = parentStillHasStudentValidator.validate(1L);
+        Optional<ApiValidationResult> validationResult = parentStillHasStudentValidator.validate(1L);
 
         // then
         assertFalse(validationResult.isPresent());
@@ -136,11 +136,11 @@ public class ParentValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(ParentValidators.EXCEPTION_MESSAGE_PARENT_PESEL_ALREADY_EXISTS);
 
         // when
-        Optional<ApiErrorDto> validationResult = peselNotUniqueValidator.validate(parentRequestApiDto);
+        Optional<ApiValidationResult> validationResult = peselNotUniqueValidator.validate(parentRequestApiDto);
 
         // then
         assertTrue(validationResult.isPresent());
-        ApiErrorDto error = validationResult.get();
+        ApiValidationResult error = validationResult.get();
         assertEquals(error.getErrorThrownedBy(), ParentValidators.PARENT_PESEL_NOT_UNIQUE_VALIDATOR);
         assertEquals(error.getField(), ParentRequestApiDto.PESEL);
         assertEquals(error.getCause(), getErrorMessage(ParentValidators.EXCEPTION_MESSAGE_PARENT_PESEL_ALREADY_EXISTS));
@@ -156,7 +156,7 @@ public class ParentValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(ParentValidators.EXCEPTION_MESSAGE_PARENT_PESEL_ALREADY_EXISTS);
 
         // when
-        Optional<ApiErrorDto> validationResult = peselNotUniqueValidator.validate(parentRequestApiDto);
+        Optional<ApiValidationResult> validationResult = peselNotUniqueValidator.validate(parentRequestApiDto);
 
         // then
         assertFalse(validationResult.isPresent());

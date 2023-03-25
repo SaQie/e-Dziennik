@@ -13,6 +13,7 @@ import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassResponseApiDto;
 import pl.edziennik.eDziennik.domain.schoolclass.services.SchoolClassService;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
+import pl.edziennik.eDziennik.server.basics.page.PageDto;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -53,7 +54,7 @@ public class SchoolClassController {
             description = "Returns list of all school classes")
     public ApiResponse<?> findAllSchoolClasses(@RequestParam(required = false) Long schoolId, Pageable pageable) {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        Page<SchoolClassResponseApiDto> responseApiDtos;
+        PageDto<SchoolClassResponseApiDto> responseApiDtos;
         if (schoolId == null) {
             responseApiDtos = service.findAllSchoolClasses(pageable);
             return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);

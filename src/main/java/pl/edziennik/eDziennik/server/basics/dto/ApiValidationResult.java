@@ -16,7 +16,7 @@ import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
 @Builder
 @AllArgsConstructor
 @EqualsAndHashCode
-public class ApiErrorDto {
+public class ApiValidationResult {
 
     private final String field;
     private final String cause;
@@ -28,7 +28,7 @@ public class ApiErrorDto {
     @JsonIgnore
     private final boolean thrownImmediately;
 
-    public ApiErrorDto(String field, String cause, boolean thrownImmediately, String errorThrownedBy, ExceptionType type) {
+    public ApiValidationResult(String field, String cause, boolean thrownImmediately, String errorThrownedBy, ExceptionType type) {
         this.field = field;
         this.cause = cause;
         this.thrownImmediately = thrownImmediately;

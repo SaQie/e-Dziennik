@@ -1,20 +1,20 @@
 package pl.edziennik.eDziennik.server.exceptions;
 
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BusinessException extends RuntimeException{
 
-    private List<ApiErrorDto> errors = new ArrayList<>();
+    private List<ApiValidationResult> errors = new ArrayList<>();
 
-    public BusinessException(List<ApiErrorDto> errors) {
+    public BusinessException(List<ApiValidationResult> errors) {
         super(errors.get(0).getCause());
         this.errors = errors;
     }
 
-    public BusinessException(ApiErrorDto error) {
+    public BusinessException(ApiValidationResult error) {
         super(error.getCause());
         this.errors.add(error);
     }
@@ -23,7 +23,7 @@ public class BusinessException extends RuntimeException{
         super(message);
     }
 
-    public List<ApiErrorDto> getErrors() {
+    public List<ApiValidationResult> getErrors() {
         return errors;
     }
 }

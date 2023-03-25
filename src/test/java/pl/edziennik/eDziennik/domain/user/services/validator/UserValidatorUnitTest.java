@@ -8,7 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pl.edziennik.eDziennik.BaseUnitTest;
 import pl.edziennik.eDziennik.domain.user.dto.UserRequestDto;
 import pl.edziennik.eDziennik.domain.user.repository.UserRepository;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Optional;
@@ -41,11 +41,11 @@ public class UserValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(UserValidators.EXCEPTION_MESSAGE_USER_ALREADY_EXISTS_BY_EMAIL);
 
         // when
-        Optional<ApiErrorDto> validationResult = emailValidator.validate(dto);
+        Optional<ApiValidationResult> validationResult = emailValidator.validate(dto);
 
         // then
         assertTrue(validationResult.isPresent());
-        ApiErrorDto error = validationResult.get();
+        ApiValidationResult error = validationResult.get();
         assertEquals(error.getErrorThrownedBy(), UserValidators.USER_WITH_EMAIL_ALREADY_EXIST_VALIDATOR_NAME);
         assertEquals(error.getField(), UserRequestDto.EMAIL);
         assertEquals(error.getCause(), getErrorMessage(UserValidators.EXCEPTION_MESSAGE_USER_ALREADY_EXISTS_BY_EMAIL));
@@ -60,11 +60,11 @@ public class UserValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(UserValidators.EXCEPTION_MESSAGE_USER_ALREADY_EXISTS);
 
         // when
-        Optional<ApiErrorDto> validationResult = usernameValidator.validate(dto);
+        Optional<ApiValidationResult> validationResult = usernameValidator.validate(dto);
 
         // then
         assertTrue(validationResult.isPresent());
-        ApiErrorDto error = validationResult.get();
+        ApiValidationResult error = validationResult.get();
         assertEquals(error.getErrorThrownedBy(), UserValidators.USER_WITH_USERNAME_ALREADY_EXIST_VALIDATOR_NAME);
         assertEquals(error.getField(), UserRequestDto.USERNAME);
         assertEquals(error.getCause(), getErrorMessage(UserValidators.EXCEPTION_MESSAGE_USER_ALREADY_EXISTS));
@@ -77,7 +77,7 @@ public class UserValidatorUnitTest extends BaseUnitTest {
         when(userRepository.existsByUsername("Kamil")).thenReturn(false);
 
         // when
-        Optional<ApiErrorDto> validationResult = usernameValidator.validate(dto);
+        Optional<ApiValidationResult> validationResult = usernameValidator.validate(dto);
 
         // then
         assertFalse(validationResult.isPresent());
@@ -90,7 +90,7 @@ public class UserValidatorUnitTest extends BaseUnitTest {
         when(userRepository.existsByEmail("test@example.com")).thenReturn(false);
 
         // when
-        Optional<ApiErrorDto> validationResult = emailValidator.validate(dto);
+        Optional<ApiValidationResult> validationResult = emailValidator.validate(dto);
 
         // then
         assertFalse(validationResult.isPresent());

@@ -14,6 +14,7 @@ import pl.edziennik.eDziennik.domain.school.dto.mapper.SchoolMapper;
 import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
 import pl.edziennik.eDziennik.domain.schoollevel.domain.SchoolLevel;
 import pl.edziennik.eDziennik.domain.schoollevel.repository.SchoolLevelRepository;
+import pl.edziennik.eDziennik.server.basics.page.PageDto;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 
 import java.util.Optional;
@@ -50,8 +51,9 @@ class SchoolServiceImpl extends BaseService implements SchoolService {
     }
 
     @Override
-    public Page<SchoolResponseApiDto> findAllSchools(Pageable pageable) {
-        return schoolRepository.findAll(pageable).map(SchoolMapper::toDto);
+    public PageDto<SchoolResponseApiDto> findAllSchools(Pageable pageable) {
+        Page<SchoolResponseApiDto> page = schoolRepository.findAll(pageable).map(SchoolMapper::toDto);
+        return PageDto.fromPage(page);
     }
 
     @Override

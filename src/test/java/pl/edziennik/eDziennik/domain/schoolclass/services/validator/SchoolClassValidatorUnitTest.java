@@ -14,7 +14,7 @@ import pl.edziennik.eDziennik.domain.schoolclass.repository.SchoolClassRepositor
 import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.domain.teacher.repository.TeacherRepository;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Optional;
@@ -61,11 +61,11 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER);
 
         // when
-        Optional<ApiErrorDto> validationResult = alreadySupervisingTeacherValidator.validate(dto);
+        Optional<ApiValidationResult> validationResult = alreadySupervisingTeacherValidator.validate(dto);
 
         // then
         assertTrue(validationResult.isPresent());
-        ApiErrorDto error = validationResult.get();
+        ApiValidationResult error = validationResult.get();
         assertEquals(error.getErrorThrownedBy(), SchoolClassValidators.TEACHER_IS_ALREADY_SUPERVISING_TEACHER_VALIDATOR_NAME);
         assertEquals(error.getField(), SchoolClassRequestApiDto.ID_CLASS_TEACHER);
         assertEquals(error.getCause(), getErrorMessage(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER));
@@ -83,7 +83,7 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER);
 
         // when
-        Optional<ApiErrorDto> validationResult = alreadySupervisingTeacherValidator.validate(dto);
+        Optional<ApiValidationResult> validationResult = alreadySupervisingTeacherValidator.validate(dto);
 
         // then
         assertFalse(validationResult.isPresent());
@@ -101,11 +101,11 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL);
 
         // when
-        Optional<ApiErrorDto> validationResult = teacherNotBelongsToSchoolValidator.validate(dto);
+        Optional<ApiValidationResult> validationResult = teacherNotBelongsToSchoolValidator.validate(dto);
 
         // then
         assertTrue(validationResult.isPresent());
-        ApiErrorDto error = validationResult.get();
+        ApiValidationResult error = validationResult.get();
         assertEquals(error.getErrorThrownedBy(), SchoolClassValidators.TEACHER_NOT_BELONGS_TO_SCHOOL_VALIDATOR_NAME);
         assertEquals(error.getField(), SchoolClassRequestApiDto.ID_CLASS_TEACHER);
         assertEquals(error.getCause(), getErrorMessage(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL));
@@ -121,7 +121,7 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL);
 
         // when
-        Optional<ApiErrorDto> validationResult = teacherNotBelongsToSchoolValidator.validate(dto);
+        Optional<ApiValidationResult> validationResult = teacherNotBelongsToSchoolValidator.validate(dto);
 
         // then
         assertFalse(validationResult.isPresent());
@@ -139,11 +139,11 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(SchoolClassValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_ALREADY_EXIST);
 
         // when
-        Optional<ApiErrorDto> validationResult = existsValidator.validate(dto);
+        Optional<ApiValidationResult> validationResult = existsValidator.validate(dto);
 
         // then
         assertTrue(validationResult.isPresent());
-        ApiErrorDto error = validationResult.get();
+        ApiValidationResult error = validationResult.get();
         assertEquals(error.getErrorThrownedBy(), SchoolClassValidators.SCHOOL_CLASS_ALREADY_EXISTS_VALIDATOR_NAME);
         assertEquals(error.getField(), SchoolClassRequestApiDto.CLASS_NAME);
         assertEquals(error.getCause(), getErrorMessage(SchoolClassValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_ALREADY_EXIST));
@@ -159,7 +159,7 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(SchoolClassValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_ALREADY_EXIST);
 
         // when
-        Optional<ApiErrorDto> validationResult = existsValidator.validate(dto);
+        Optional<ApiValidationResult> validationResult = existsValidator.validate(dto);
 
         // then
         assertFalse(validationResult.isPresent());

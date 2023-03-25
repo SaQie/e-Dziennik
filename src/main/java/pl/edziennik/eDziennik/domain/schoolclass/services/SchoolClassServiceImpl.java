@@ -14,6 +14,7 @@ import pl.edziennik.eDziennik.domain.schoolclass.dto.mapper.SchoolClassMapper;
 import pl.edziennik.eDziennik.domain.schoolclass.repository.SchoolClassRepository;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.domain.teacher.repository.TeacherRepository;
+import pl.edziennik.eDziennik.server.basics.page.PageDto;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 
 import java.util.Optional;
@@ -51,8 +52,9 @@ class SchoolClassServiceImpl extends BaseService implements SchoolClassService {
     }
 
     @Override
-    public Page<SchoolClassResponseApiDto> findAllSchoolClasses(Pageable pageable) {
-        return repository.findAll(pageable).map(SchoolClassMapper::toDto);
+    public PageDto<SchoolClassResponseApiDto> findAllSchoolClasses(Pageable pageable) {
+        Page<SchoolClassResponseApiDto> page = repository.findAll(pageable).map(SchoolClassMapper::toDto);
+        return PageDto.fromPage(page);
     }
 
     @Override
@@ -78,8 +80,9 @@ class SchoolClassServiceImpl extends BaseService implements SchoolClassService {
     }
 
     @Override
-    public Page<SchoolClassResponseApiDto> findSchoolClassesBySchoolId(Pageable pageable, Long idSchool) {
-        return repository.findSchoolClassesBySchoolId(pageable, idSchool).map(SchoolClassMapper::toDto);
+    public PageDto<SchoolClassResponseApiDto> findSchoolClassesBySchoolId(Pageable pageable, Long idSchool) {
+        Page<SchoolClassResponseApiDto> page = repository.findSchoolClassesBySchoolId(pageable, idSchool).map(SchoolClassMapper::toDto);
+        return PageDto.fromPage(page);
     }
 
     private SchoolClass mapToEntity(SchoolClassRequestApiDto dto) {

@@ -3,7 +3,7 @@ package pl.edziennik.eDziennik.server.basics.validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
@@ -33,7 +33,7 @@ public abstract class ServiceValidator<VALIDATORS extends AbstractValidator<INPU
      * @param input -> Object to validate
      */
     protected void runValidators(INPUT input) {
-        List<ApiErrorDto> errors = new ArrayList<>();
+        List<ApiValidationResult> errors = new ArrayList<>();
         validators.forEach(valid -> valid.validate(input).ifPresent(error -> {
             if (error.isThrownImmediately()) {
                 throw new BusinessException(error);
@@ -52,7 +52,7 @@ public abstract class ServiceValidator<VALIDATORS extends AbstractValidator<INPU
      * @param validatePurpose -> Type of validation
      */
     protected void runValidators(INPUT input, ValidatePurpose validatePurpose) {
-        List<ApiErrorDto> errors = new ArrayList<>();
+        List<ApiValidationResult> errors = new ArrayList<>();
         validators.stream()
                 .filter(validator -> validator.getValidatorPurposes().contains(validatePurpose))
                 .forEach(specificValidator -> specificValidator.validate(input)
@@ -75,7 +75,7 @@ public abstract class ServiceValidator<VALIDATORS extends AbstractValidator<INPU
      * @param validatePurposeSet -> Types of validation
      */
     protected void runValidators(INPUT input, Set<ValidatePurpose> validatePurposeSet) {
-        List<ApiErrorDto> errors = new ArrayList<>();
+        List<ApiValidationResult> errors = new ArrayList<>();
         validators.stream()
                 .filter(validator -> validator.getValidatorPurposes().containsAll(validatePurposeSet))
                 .forEach(specificValidator -> specificValidator.validate(input)
@@ -116,7 +116,7 @@ public abstract class ServiceValidator<VALIDATORS extends AbstractValidator<INPU
     protected <T> void runSelectedValidator(T input, String validatorId) {
         validatorId = Character.toLowerCase(validatorId.charAt(0)) + validatorId.substring(1);
         AbstractValidator<T> bean = context.getBean(validatorId, AbstractValidator.class);
-        Optional<ApiErrorDto> validateResult = bean.validate(input);
+        Optional<ApiValidationResult> validateResult = bean.validate(input);
         if (validateResult.isPresent()) {
             throw new BusinessException(validateResult.get());
         }

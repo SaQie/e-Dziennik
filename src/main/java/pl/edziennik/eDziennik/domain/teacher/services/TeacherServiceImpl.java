@@ -19,6 +19,7 @@ import pl.edziennik.eDziennik.domain.teacher.repository.TeacherRepository;
 import pl.edziennik.eDziennik.domain.user.domain.User;
 import pl.edziennik.eDziennik.domain.user.dto.mapper.UserMapper;
 import pl.edziennik.eDziennik.domain.user.services.UserService;
+import pl.edziennik.eDziennik.server.basics.page.PageDto;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 
 import java.util.Optional;
@@ -59,8 +60,9 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
     }
 
     @Override
-    public Page<TeacherResponseApiDto> findAllTeachers(Pageable pageable) {
-        return repository.findAll(pageable).map(TeacherMapper::toDto);
+    public PageDto<TeacherResponseApiDto> findAllTeachers(Pageable pageable) {
+        Page<TeacherResponseApiDto> page = repository.findAll(pageable).map(TeacherMapper::toDto);
+        return PageDto.fromPage(page);
     }
 
 

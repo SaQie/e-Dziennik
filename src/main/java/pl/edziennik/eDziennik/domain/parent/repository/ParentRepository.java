@@ -1,9 +1,13 @@
 package pl.edziennik.eDziennik.domain.parent.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import pl.edziennik.eDziennik.domain.parent.domain.Parent;
+import pl.edziennik.eDziennik.domain.student.domain.Student;
 
 @Repository
 public interface ParentRepository extends JpaRepository<Parent, Long> {
@@ -14,5 +18,16 @@ public interface ParentRepository extends JpaRepository<Parent, Long> {
             "WHERE pi.pesel = :pesel " +
             "AND u.role.id = :idRole")
     boolean existsByPesel(String pesel, Long idRole);
+
+    @EntityGraph(
+            type = EntityGraph.EntityGraphType.FETCH,
+            attributePaths = {
+                    "student",
+                    "user",
+                    "personInformation",
+                    "address"
+            }
+    )
+    Page<Parent> findAll(Pageable pageable);
 
 }

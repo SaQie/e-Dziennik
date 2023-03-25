@@ -14,6 +14,7 @@ import pl.edziennik.eDziennik.domain.subject.dto.mapper.SubjectMapper;
 import pl.edziennik.eDziennik.domain.subject.repository.SubjectRepository;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.domain.teacher.repository.TeacherRepository;
+import pl.edziennik.eDziennik.server.basics.page.PageDto;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 
 import java.util.Optional;
@@ -52,8 +53,9 @@ class SubjectServiceImpl extends BaseService implements SubjectService {
     }
 
     @Override
-    public Page<SubjectResponseApiDto> findAllSubjects(Pageable pageable) {
-        return repository.findAll(pageable).map(SubjectMapper::toDto);
+    public PageDto<SubjectResponseApiDto> findAllSubjects(Pageable pageable) {
+        Page<SubjectResponseApiDto> page = repository.findAll(pageable).map(SubjectMapper::toDto);
+        return PageDto.fromPage(page);
     }
 
     @Override

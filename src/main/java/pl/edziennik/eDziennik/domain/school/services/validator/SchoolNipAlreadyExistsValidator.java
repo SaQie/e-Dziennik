@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.domain.school.dto.SchoolRequestApiDto;
 import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
@@ -26,12 +26,12 @@ class SchoolNipAlreadyExistsValidator implements SchoolValidators {
     }
 
     @Override
-    public Optional<ApiErrorDto> validate(SchoolRequestApiDto dto) {
+    public Optional<ApiValidationResult> validate(SchoolRequestApiDto dto) {
         if (repository.existsByNip(dto.getNip())) {
 
             String message = resourceCreator.of(EXCEPTION_MESSAGE_SCHOOL_WITH_NIP_ALREADY_EXIST, dto.getNip());
 
-            ApiErrorDto apiErrorDto = ApiErrorDto.builder()
+            ApiValidationResult apiValidationResult = ApiValidationResult.builder()
                     .field(SchoolRequestApiDto.NIP)
                     .cause(message)
                     .thrownImmediately(false)
@@ -39,7 +39,7 @@ class SchoolNipAlreadyExistsValidator implements SchoolValidators {
                     .exceptionType(ExceptionType.BUSINESS)
                     .build();
 
-            return Optional.of(apiErrorDto);
+            return Optional.of(apiValidationResult);
 
         }
         return Optional.empty();

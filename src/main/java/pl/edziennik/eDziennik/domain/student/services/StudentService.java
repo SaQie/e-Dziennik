@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.domain.student.dto.StudentResponseApiDto;
+import pl.edziennik.eDziennik.server.basics.page.PageDto;
 
 public interface StudentService {
 
@@ -14,7 +15,7 @@ public interface StudentService {
 
     void deleteStudentById(final Long id);
 
-    Page<StudentResponseApiDto> findAllStudents(Pageable pageable);
+    PageDto<StudentResponseApiDto> findAllStudents(Pageable pageable);
 
 
     StudentResponseApiDto updateStudent(final Long id, final StudentRequestApiDto requestApiDto);

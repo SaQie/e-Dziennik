@@ -10,7 +10,7 @@ import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.domain.schoolclass.repository.SchoolClassRepository;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.domain.subject.repository.SubjectRepository;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Optional;
@@ -45,11 +45,11 @@ public class SubjectValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(SubjectValidators.EXCEPTION_MESSAGE_SUBJECT_ALREADY_EXIST);
 
         // when
-        Optional<ApiErrorDto> validationResult = validator.validate(dto);
+        Optional<ApiValidationResult> validationResult = validator.validate(dto);
 
         // then
         assertTrue(validationResult.isPresent());
-        ApiErrorDto error = validationResult.get();
+        ApiValidationResult error = validationResult.get();
         assertEquals(error.getErrorThrownedBy(), SubjectValidators.SUBJECT_ALREADY_EXIST_VALIDATOR_NAME);
         assertEquals(error.getField(), SubjectRequestApiDto.NAME);
         assertEquals(error.getCause(), getErrorMessage(SubjectValidators.EXCEPTION_MESSAGE_SUBJECT_ALREADY_EXIST));
@@ -62,7 +62,7 @@ public class SubjectValidatorUnitTest extends BaseUnitTest {
         when(repository.existsByNameAndSchoolClassId("Przyroda", 1L)).thenReturn(false);
 
         // when
-        Optional<ApiErrorDto> validationResult = validator.validate(dto);
+        Optional<ApiValidationResult> validationResult = validator.validate(dto);
 
         // then
         assertFalse(validationResult.isPresent());

@@ -24,6 +24,7 @@ import pl.edziennik.eDziennik.domain.subject.domain.Subject;
 import pl.edziennik.eDziennik.domain.user.domain.User;
 import pl.edziennik.eDziennik.domain.user.dto.mapper.UserMapper;
 import pl.edziennik.eDziennik.domain.user.services.UserService;
+import pl.edziennik.eDziennik.server.basics.page.PageDto;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 
 import java.util.List;
@@ -71,8 +72,9 @@ class StudentServiceImpl extends BaseService implements StudentService {
     }
 
     @Override
-    public Page<StudentResponseApiDto> findAllStudents(Pageable pageable) {
-        return repository.findAll(pageable).map(StudentMapper::toDto);
+    public PageDto<StudentResponseApiDto> findAllStudents(Pageable pageable) {
+        Page<StudentResponseApiDto> page = repository.findAll(pageable).map(StudentMapper::toDto);
+        return PageDto.fromPage(page);
     }
 
     @Override

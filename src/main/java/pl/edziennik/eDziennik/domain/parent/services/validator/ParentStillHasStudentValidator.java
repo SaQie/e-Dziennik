@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.domain.parent.domain.Parent;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.parent.repository.ParentRepository;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 import pl.edziennik.eDziennik.server.basics.validator.AbstractValidator;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
@@ -29,14 +29,14 @@ public class ParentStillHasStudentValidator extends BaseService implements Abstr
     }
 
     @Override
-    public Optional<ApiErrorDto> validate(Long id) {
+    public Optional<ApiValidationResult> validate(Long id) {
         Parent parent = repository.findById(id)
                 .orElseThrow(notFoundException(id, Parent.class));
         if (parent.getStudent() != null) {
 
             String message = resourceCreator.of(EXCEPTON_MESSAGE_PARENT_STILL_HAS_STUDENT, parent.getStudent().getPersonInformation().getFullName());
 
-            ApiErrorDto apiErrorDto = ApiErrorDto.builder()
+            ApiValidationResult apiValidationResult = ApiValidationResult.builder()
                     .field(ParentRequestApiDto.ID_STUDENT)
                     .cause(message)
                     .thrownImmediately(false)
@@ -44,7 +44,7 @@ public class ParentStillHasStudentValidator extends BaseService implements Abstr
                     .exceptionType(ExceptionType.BUSINESS)
                     .build();
 
-            return Optional.of(apiErrorDto);
+            return Optional.of(apiValidationResult);
 
         }
         return Optional.empty();

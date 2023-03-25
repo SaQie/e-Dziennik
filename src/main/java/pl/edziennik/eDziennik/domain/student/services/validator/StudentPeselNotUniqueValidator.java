@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.domain.role.domain.Role;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
@@ -28,11 +28,11 @@ class StudentPeselNotUniqueValidator implements StudentValidators {
     }
 
     @Override
-    public Optional<ApiErrorDto> validate(StudentRequestApiDto dto) {
+    public Optional<ApiValidationResult> validate(StudentRequestApiDto dto) {
         if (repository.isStudentExistsByPesel(dto.getPesel(), Role.RoleConst.ROLE_STUDENT.getId())) {
             String message = resourceCreator.of(EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, dto.getPesel());
 
-            ApiErrorDto apiErrorDto = ApiErrorDto.builder()
+            ApiValidationResult apiValidationResult = ApiValidationResult.builder()
                     .field(StudentRequestApiDto.PESEL)
                     .cause(message)
                     .thrownImmediately(false)
@@ -40,7 +40,7 @@ class StudentPeselNotUniqueValidator implements StudentValidators {
                     .exceptionType(ExceptionType.BUSINESS)
                     .build();
 
-            return Optional.of(apiErrorDto);
+            return Optional.of(apiValidationResult);
         }
         return Optional.empty();
     }

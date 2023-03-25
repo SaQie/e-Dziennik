@@ -13,6 +13,7 @@ import pl.edziennik.eDziennik.domain.admin.dto.AdminResponseApiDto;
 import pl.edziennik.eDziennik.domain.admin.services.AdminService;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
+import pl.edziennik.eDziennik.server.basics.page.PageDto;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -41,8 +42,8 @@ public class AdminController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get admin list",
             description = "Returns list of admins")
-    public ApiResponse<Page<AdminResponseApiDto>> getAdminList(Pageable pageable) {
-        Page<AdminResponseApiDto> responseApiDto = service.getAdminList(pageable);
+    public ApiResponse<PageDto<AdminResponseApiDto>> getAdminList(Pageable pageable) {
+        PageDto<AdminResponseApiDto> responseApiDto = service.getAdminList(pageable);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
     }

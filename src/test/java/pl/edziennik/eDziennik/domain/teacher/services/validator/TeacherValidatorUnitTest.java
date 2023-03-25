@@ -9,7 +9,7 @@ import pl.edziennik.eDziennik.BaseUnitTest;
 import pl.edziennik.eDziennik.domain.role.domain.Role;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.domain.teacher.repository.TeacherRepository;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Optional;
@@ -39,11 +39,11 @@ public class TeacherValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(TeacherPeselNotUniqueValidator.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE);
 
         // when
-        Optional<ApiErrorDto> validationResult = validator.validate(dto);
+        Optional<ApiValidationResult> validationResult = validator.validate(dto);
 
         // then
         assertTrue(validationResult.isPresent());
-        ApiErrorDto error = validationResult.get();
+        ApiValidationResult error = validationResult.get();
         assertEquals(error.getErrorThrownedBy(), TeacherPeselNotUniqueValidator.TEACHER_PESEL_NOT_UNIQUE_VALIDATOR_NAME);
         assertEquals(error.getField(), TeacherRequestApiDto.PESEL);
         assertEquals(error.getCause(), getErrorMessage(TeacherPeselNotUniqueValidator.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE));
@@ -56,7 +56,7 @@ public class TeacherValidatorUnitTest extends BaseUnitTest {
         when(teacherRepository.isTeacherExistsByPesel("123123", Role.RoleConst.ROLE_TEACHER.getId())).thenReturn(false);
 
         // when
-        Optional<ApiErrorDto> validationResult = validator.validate(dto);
+        Optional<ApiValidationResult> validationResult = validator.validate(dto);
 
         // then
         assertFalse(validationResult.isPresent());

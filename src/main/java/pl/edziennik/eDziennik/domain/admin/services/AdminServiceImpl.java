@@ -14,6 +14,7 @@ import pl.edziennik.eDziennik.domain.parent.domain.Parent;
 import pl.edziennik.eDziennik.domain.user.domain.User;
 import pl.edziennik.eDziennik.domain.user.dto.mapper.UserMapper;
 import pl.edziennik.eDziennik.domain.user.services.UserService;
+import pl.edziennik.eDziennik.server.basics.page.PageDto;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
@@ -53,8 +54,9 @@ class AdminServiceImpl extends BaseService implements AdminService {
     }
 
     @Override
-    public Page<AdminResponseApiDto> getAdminList(Pageable pageRequest) {
-        return repository.findAll(pageRequest).map(AdminMapper::mapToDto);
+    public PageDto<AdminResponseApiDto> getAdminList(Pageable pageRequest) {
+        Page<AdminResponseApiDto> page = repository.findAll(pageRequest).map(AdminMapper::mapToDto);
+        return PageDto.fromPage(page);
     }
 
     @Override

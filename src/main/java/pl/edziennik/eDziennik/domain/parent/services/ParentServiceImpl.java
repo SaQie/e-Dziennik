@@ -15,6 +15,7 @@ import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
 import pl.edziennik.eDziennik.domain.user.domain.User;
 import pl.edziennik.eDziennik.domain.user.dto.mapper.UserMapper;
 import pl.edziennik.eDziennik.domain.user.services.UserService;
+import pl.edziennik.eDziennik.server.basics.page.PageDto;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 
 @Service
@@ -49,9 +50,10 @@ class ParentServiceImpl extends BaseService implements ParentService {
     }
 
     @Override
-    public Page<ParentResponseApiDto> findAll(Pageable pageable) {
-        return repository.findAll(pageable)
+    public PageDto<ParentResponseApiDto> findAll(Pageable pageable) {
+        Page<ParentResponseApiDto> page = repository.findAll(pageable)
                 .map(ParentMapper::toDto);
+        return PageDto.fromPage(page);
     }
 
     private Parent mapToEntity(ParentRequestApiDto dto) {

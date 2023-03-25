@@ -9,7 +9,7 @@ import pl.edziennik.eDziennik.BaseUnitTest;
 import pl.edziennik.eDziennik.domain.admin.domain.Admin;
 import pl.edziennik.eDziennik.domain.admin.dto.AdminRequestApiDto;
 import pl.edziennik.eDziennik.domain.admin.repository.AdminRepository;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Collections;
@@ -42,11 +42,11 @@ public class AdminValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(AdminValidators.EXCEPTION_MESSAGE_ADMIN_ALREADY_EXIST);
 
         // when
-        Optional<ApiErrorDto> validationResult = validator.validate(dto);
+        Optional<ApiValidationResult> validationResult = validator.validate(dto);
 
         // then
         assertTrue(validationResult.isPresent());
-        ApiErrorDto error = validationResult.get();
+        ApiValidationResult error = validationResult.get();
         assertEquals(error.getErrorThrownedBy(), AdminValidators.ADMIN_ALREADY_EXISTS_VALIDATOR_NAME);
         assertEquals(error.getCause(), getErrorMessage(AdminValidators.EXCEPTION_MESSAGE_ADMIN_ALREADY_EXIST));
     }
@@ -61,7 +61,7 @@ public class AdminValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(AdminValidators.EXCEPTION_MESSAGE_ADMIN_ALREADY_EXIST);
 
         // when
-        Optional<ApiErrorDto> validationResult = validator.validate(dto);
+        Optional<ApiValidationResult> validationResult = validator.validate(dto);
 
         // then
         assertFalse(validationResult.isPresent());

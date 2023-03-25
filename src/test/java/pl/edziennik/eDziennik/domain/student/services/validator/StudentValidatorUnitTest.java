@@ -13,7 +13,7 @@ import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.domain.schoolclass.repository.SchoolClassRepository;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Collections;
@@ -55,11 +55,11 @@ public class StudentValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(StudentValidators.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE);
 
         // when
-        Optional<ApiErrorDto> validationResult = peselNotUniqueValidator.validate(request);
+        Optional<ApiValidationResult> validationResult = peselNotUniqueValidator.validate(request);
 
         // then
         assertTrue(validationResult.isPresent());
-        ApiErrorDto error = validationResult.get();
+        ApiValidationResult error = validationResult.get();
         assertEquals(error.getErrorThrownedBy(), StudentValidators.STUDENT_PESEL_NOT_UNIQUE_VALIDATOR_NAME);
         assertEquals(error.getField(), StudentRequestApiDto.PESEL);
         assertEquals(error.getCause(), getErrorMessage(StudentValidators.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE));
@@ -72,7 +72,7 @@ public class StudentValidatorUnitTest extends BaseUnitTest {
         when(studentRepository.isStudentExistsByPesel(request.getPesel(), Role.RoleConst.ROLE_STUDENT.getId())).thenReturn(false);
 
         // when
-        Optional<ApiErrorDto> validationResult = peselNotUniqueValidator.validate(request);
+        Optional<ApiValidationResult> validationResult = peselNotUniqueValidator.validate(request);
 
         // then
         assertFalse(validationResult.isPresent());
@@ -92,11 +92,11 @@ public class StudentValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(StudentValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_NOT_BELONG_TO_SCHOOL);
 
         // when
-        Optional<ApiErrorDto> validationResult = belongsToSchoolValidator.validate(request);
+        Optional<ApiValidationResult> validationResult = belongsToSchoolValidator.validate(request);
 
         // then
         assertTrue(validationResult.isPresent());
-        ApiErrorDto error = validationResult.get();
+        ApiValidationResult error = validationResult.get();
         assertEquals(error.getErrorThrownedBy(), StudentValidators.STUDENT_SCHOOL_CLASS_NOT_BELONGS_TO_SCHOOL_VALIDATOR_NAME);
         assertEquals(error.getCause(), getErrorMessage(StudentValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_NOT_BELONG_TO_SCHOOL));
     }
@@ -113,7 +113,7 @@ public class StudentValidatorUnitTest extends BaseUnitTest {
         when(schoolClassRepository.findById(request.getIdSchoolClass())).thenReturn(Optional.of(schoolClass));
 
         // when
-        Optional<ApiErrorDto> validationResult = belongsToSchoolValidator.validate(request);
+        Optional<ApiValidationResult> validationResult = belongsToSchoolValidator.validate(request);
 
         // then
         assertFalse(validationResult.isPresent());

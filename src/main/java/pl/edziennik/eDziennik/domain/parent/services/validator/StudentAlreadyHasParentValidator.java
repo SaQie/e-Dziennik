@@ -6,7 +6,7 @@ import pl.edziennik.eDziennik.domain.parent.domain.Parent;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
@@ -30,7 +30,7 @@ class StudentAlreadyHasParentValidator extends BaseService implements ParentVali
     }
 
     @Override
-    public Optional<ApiErrorDto> validate(ParentRequestApiDto dto) {
+    public Optional<ApiValidationResult> validate(ParentRequestApiDto dto) {
         Student student = repository.findById(dto.getIdStudent())
                 .orElseThrow(notFoundException(dto.getIdStudent(), Parent.class));
         if (student.getParent() != null) {
@@ -39,7 +39,7 @@ class StudentAlreadyHasParentValidator extends BaseService implements ParentVali
 
             String message = resourceCreator.of(EXCEPTION_MESSAGE_STUDENT_ALREADY_HAS_PARENT_VALIDATOR, studentFullName);
 
-            ApiErrorDto apiErrorDto = ApiErrorDto.builder()
+            ApiValidationResult apiValidationResult = ApiValidationResult.builder()
                     .field(ParentRequestApiDto.ID_STUDENT)
                     .cause(message)
                     .thrownImmediately(false)
@@ -47,7 +47,7 @@ class StudentAlreadyHasParentValidator extends BaseService implements ParentVali
                     .exceptionType(ExceptionType.BUSINESS)
                     .build();
 
-            return Optional.of(apiErrorDto);
+            return Optional.of(apiValidationResult);
 
         }
 

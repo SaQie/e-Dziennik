@@ -6,7 +6,7 @@ import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassRequestApiDto;
 import pl.edziennik.eDziennik.domain.schoolclass.repository.SchoolClassRepository;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.domain.teacher.repository.TeacherRepository;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
@@ -32,7 +32,7 @@ class TeacherIsAlreadySupervisingTeacherValidator extends BaseService implements
     }
 
     @Override
-    public Optional<ApiErrorDto> validate(SchoolClassRequestApiDto dto) {
+    public Optional<ApiValidationResult> validate(SchoolClassRequestApiDto dto) {
         if (dto.getIdClassTeacher() != null) {
             if (repository.existsByTeacherId(dto.getIdClassTeacher())) {
                 Teacher teacher = teacherRepository.findById(dto.getIdClassTeacher())
@@ -42,7 +42,7 @@ class TeacherIsAlreadySupervisingTeacherValidator extends BaseService implements
                 String teacherName = teacher.getPersonInformation().getFullName();
                 String message = resourceCreator.of(EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER, teacherName, actualTeacherSchoolClassName);
 
-                ApiErrorDto apiErrorDto = ApiErrorDto.builder()
+                ApiValidationResult apiValidationResult = ApiValidationResult.builder()
                         .field(SchoolClassRequestApiDto.ID_CLASS_TEACHER)
                         .cause(message)
                         .thrownImmediately(false)
@@ -50,7 +50,7 @@ class TeacherIsAlreadySupervisingTeacherValidator extends BaseService implements
                         .exceptionType(ExceptionType.BUSINESS)
                         .build();
 
-                return Optional.of(apiErrorDto);
+                return Optional.of(apiValidationResult);
             }
         }
         return Optional.empty();

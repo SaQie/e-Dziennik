@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.domain.user.dto.UserRequestDto;
 import pl.edziennik.eDziennik.domain.user.repository.UserRepository;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
@@ -26,12 +26,12 @@ class UserWithEmailAlreadyExistsValidator implements UserValidators {
     }
 
     @Override
-    public Optional<ApiErrorDto> validate(UserRequestDto dto) {
+    public Optional<ApiValidationResult> validate(UserRequestDto dto) {
         if (repository.existsByEmail(dto.getEmail())) {
 
             String message = resourceCreator.of(EXCEPTION_MESSAGE_USER_ALREADY_EXISTS_BY_EMAIL, dto.getEmail());
 
-            ApiErrorDto apiErrorDto = ApiErrorDto.builder()
+            ApiValidationResult apiValidationResult = ApiValidationResult.builder()
                     .field(UserRequestDto.EMAIL)
                     .cause(message)
                     .thrownImmediately(false)
@@ -39,7 +39,7 @@ class UserWithEmailAlreadyExistsValidator implements UserValidators {
                     .exceptionType(ExceptionType.BUSINESS)
                     .build();
 
-            return Optional.of(apiErrorDto);
+            return Optional.of(apiValidationResult);
 
         }
         return Optional.empty();

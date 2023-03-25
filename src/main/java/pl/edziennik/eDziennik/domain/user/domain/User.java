@@ -33,7 +33,7 @@ public class User extends AbstractEntity {
     private LocalDateTime lastLoginDate;
     private String email;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Role role;
 
     public User(String username, String password, String email) {

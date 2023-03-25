@@ -13,6 +13,7 @@ import pl.edziennik.eDziennik.domain.student.dto.StudentResponseApiDto;
 import pl.edziennik.eDziennik.domain.student.services.StudentService;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
+import pl.edziennik.eDziennik.server.basics.page.PageDto;
 
 import java.net.URI;
 
@@ -58,8 +59,8 @@ public class StudentController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get list of students",
             description = "Returns list of all students")
-    public ApiResponse<Page<StudentResponseApiDto>> findAllStudents(Pageable pageable) {
-        Page<StudentResponseApiDto> responseApiDtos = service.findAllStudents(pageable);
+    public ApiResponse<PageDto<StudentResponseApiDto>> findAllStudents(Pageable pageable) {
+        PageDto<StudentResponseApiDto> responseApiDtos = service.findAllStudents(pageable);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
     }

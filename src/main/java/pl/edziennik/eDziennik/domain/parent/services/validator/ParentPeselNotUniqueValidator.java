@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.parent.repository.ParentRepository;
 import pl.edziennik.eDziennik.domain.role.domain.Role;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
@@ -28,12 +28,12 @@ class ParentPeselNotUniqueValidator implements ParentValidators {
     }
 
     @Override
-    public Optional<ApiErrorDto> validate(ParentRequestApiDto dto) {
+    public Optional<ApiValidationResult> validate(ParentRequestApiDto dto) {
         if (repository.existsByPesel(dto.getPesel(), Role.RoleConst.ROLE_PARENT.getId())) {
 
             String message = resourceCreator.of(EXCEPTION_MESSAGE_PARENT_PESEL_ALREADY_EXISTS, dto.getPesel());
 
-            ApiErrorDto apiErrorDto = ApiErrorDto.builder()
+            ApiValidationResult apiValidationResult = ApiValidationResult.builder()
                     .field(ParentRequestApiDto.PESEL)
                     .cause(message)
                     .thrownImmediately(false)
@@ -41,7 +41,7 @@ class ParentPeselNotUniqueValidator implements ParentValidators {
                     .exceptionType(ExceptionType.BUSINESS)
                     .build();
 
-            return Optional.of(apiErrorDto);
+            return Optional.of(apiValidationResult);
 
         }
         return Optional.empty();

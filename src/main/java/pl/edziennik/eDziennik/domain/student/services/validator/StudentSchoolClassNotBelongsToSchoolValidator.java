@@ -7,7 +7,7 @@ import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.domain.schoolclass.repository.SchoolClassRepository;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
@@ -33,7 +33,7 @@ class StudentSchoolClassNotBelongsToSchoolValidator extends BaseService implemen
     }
 
     @Override
-    public Optional<ApiErrorDto> validate(StudentRequestApiDto dto) {
+    public Optional<ApiValidationResult> validate(StudentRequestApiDto dto) {
         School school = repository.findById(dto.getIdSchool())
                 .orElseThrow(notFoundException(dto.getIdSchool(), School.class));
         SchoolClass schoolClass = schoolClassRepository.findById(dto.getIdSchoolClass())
@@ -42,7 +42,7 @@ class StudentSchoolClassNotBelongsToSchoolValidator extends BaseService implemen
         if (!school.getSchoolClasses().contains(schoolClass)) {
             String message = resourceCreator.of(EXCEPTION_MESSAGE_SCHOOL_CLASS_NOT_BELONG_TO_SCHOOL, schoolClass.getClassName(), school.getName());
 
-            ApiErrorDto apiErrorDto = ApiErrorDto.builder()
+            ApiValidationResult apiValidationResult = ApiValidationResult.builder()
                     .field(StudentRequestApiDto.ID_SCHOOL_CLASS)
                     .cause(message)
                     .thrownImmediately(false)
@@ -50,7 +50,7 @@ class StudentSchoolClassNotBelongsToSchoolValidator extends BaseService implemen
                     .exceptionType(ExceptionType.BUSINESS)
                     .build();
 
-            return Optional.of(apiErrorDto);
+            return Optional.of(apiValidationResult);
         }
         return Optional.empty();
     }

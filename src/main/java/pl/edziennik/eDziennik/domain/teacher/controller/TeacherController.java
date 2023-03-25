@@ -14,6 +14,7 @@ import pl.edziennik.eDziennik.domain.teacher.services.TeacherService;
 import pl.edziennik.eDziennik.server.authentication.AuthCredentials;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
+import pl.edziennik.eDziennik.server.basics.page.PageDto;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -56,8 +57,8 @@ class TeacherController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get teacher list",
             description = "Returns list of all teachers")
-    public ApiResponse<Page<TeacherResponseApiDto>> findAllTeachers(Pageable pageable) {
-        Page<TeacherResponseApiDto> responseApiDtos = service.findAllTeachers(pageable);
+    public ApiResponse<PageDto<TeacherResponseApiDto>> findAllTeachers(Pageable pageable) {
+        PageDto<TeacherResponseApiDto> responseApiDtos = service.findAllTeachers(pageable);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
     }

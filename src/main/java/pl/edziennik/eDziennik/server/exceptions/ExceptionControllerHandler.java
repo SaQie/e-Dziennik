@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 
@@ -34,7 +34,7 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<ApiResponse> handleException(RuntimeException exception, WebRequest request) throws URISyntaxException {
         HttpServletRequest httpRequest = ((ServletWebRequest) request).getRequest();
         URI uri = new URI(httpRequest.getRequestURL().toString());
-        List<ApiErrorDto> errors = List.of(new ApiErrorDto(null, exception.getMessage(), false, "HANDLER", ExceptionType.VALIDATION));
+        List<ApiValidationResult> errors = List.of(new ApiValidationResult(null, exception.getMessage(), false, "HANDLER", ExceptionType.VALIDATION));
         log.error("ERROR ON PATH " + request.getDescription(false) + " ERROR MESSAGE: " + exception.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 ApiResponseCreator.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.NOT_FOUND, uri, errors));
@@ -54,7 +54,7 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatus status, WebRequest request) {
         HttpServletRequest httpRequest = ((ServletWebRequest) request).getRequest();
         BindingResult bindingResult = exception.getBindingResult();
-        List<ApiErrorDto> errors = getErrors(bindingResult);
+        List<ApiValidationResult> errors = getErrors(bindingResult);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponseCreator.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.BAD_REQUEST, httpRequest.getRequestURL().toString(), errors));
     }
 
@@ -68,10 +68,10 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
     }
 
 
-    private static List<ApiErrorDto> getErrors(BindingResult bindingResult) {
+    private static List<ApiValidationResult> getErrors(BindingResult bindingResult) {
         return bindingResult.getFieldErrors()
                 .stream()
-                .map(error -> new ApiErrorDto(error.getField(), error.getDefaultMessage(), false, MethodArgumentNotValidException.class.getSimpleName(), ExceptionType.VALIDATION))
+                .map(error -> new ApiValidationResult(error.getField(), error.getDefaultMessage(), false, MethodArgumentNotValidException.class.getSimpleName(), ExceptionType.VALIDATION))
                 .toList();
     }
 }

@@ -15,7 +15,8 @@ public interface StudentSubjectRepository extends JpaRepository<StudentSubject, 
 
     Optional<StudentSubject> findByStudentIdAndSubjectId(Long idStudent, Long idSubject);
 
-    @Query("SELECT ss from StudentSubject ss JOIN FETCH ss.student " +
+    @Query("SELECT ss from StudentSubject ss " +
+            "JOIN FETCH ss.student " +
             "JOIN FETCH ss.subject " +
             "WHERE ss.student.id =:idStudent")
     List<StudentSubject> findStudentSubjectsByStudentId(Long idStudent);

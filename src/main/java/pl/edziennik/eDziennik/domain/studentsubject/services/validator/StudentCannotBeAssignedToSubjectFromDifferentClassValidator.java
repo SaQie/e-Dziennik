@@ -8,10 +8,9 @@ import pl.edziennik.eDziennik.domain.studentsubject.dto.request.StudentSubjectRe
 import pl.edziennik.eDziennik.domain.studentsubject.repository.StudentSubjectRepository;
 import pl.edziennik.eDziennik.domain.subject.domain.Subject;
 import pl.edziennik.eDziennik.domain.subject.repository.SubjectRepository;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
-import pl.edziennik.eDziennik.server.utils.PersonUtils;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Optional;
@@ -37,7 +36,7 @@ class StudentCannotBeAssignedToSubjectFromDifferentClassValidator extends BaseSe
     }
 
     @Override
-    public Optional<ApiErrorDto> validate(StudentSubjectRequestDto dto) {
+    public Optional<ApiValidationResult> validate(StudentSubjectRequestDto dto) {
         Student student = studentRepository.findById(dto.getIdStudent())
                 .orElseThrow(notFoundException(dto.getIdStudent(), Student.class));
         Subject subject = subjectRepository.findById(dto.getIdSubject())
@@ -49,7 +48,7 @@ class StudentCannotBeAssignedToSubjectFromDifferentClassValidator extends BaseSe
 
             String message = resourceCreator.of(EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS, studentName, subjectName);
 
-            ApiErrorDto apiErrorDto = ApiErrorDto.builder()
+            ApiValidationResult apiValidationResult = ApiValidationResult.builder()
                     .field(StudentSubjectRequestDto.ID_SUBJECT)
                     .cause(message)
                     .thrownImmediately(false)
@@ -57,7 +56,7 @@ class StudentCannotBeAssignedToSubjectFromDifferentClassValidator extends BaseSe
                     .exceptionType(ExceptionType.BUSINESS)
                     .build();
 
-            return Optional.of(apiErrorDto);
+            return Optional.of(apiValidationResult);
         }
         return Optional.empty();
     }

@@ -13,6 +13,7 @@ import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -37,13 +38,13 @@ public class School extends AbstractEntity {
     private SchoolLevel schoolLevel;
 
     @OneToMany(mappedBy = "school", orphanRemoval = true)
-    private Collection<SchoolClass> schoolClasses = new ArrayList<>();
+    private List<SchoolClass> schoolClasses = new ArrayList<>();
 
     @OneToMany(mappedBy = "school", orphanRemoval = true)
-    private Collection<Student> students = new ArrayList<>();
+    private List<Student> students = new ArrayList<>();
 
     @OneToMany(mappedBy = "school", orphanRemoval = true)
-    private Collection<Teacher> teachers = new ArrayList<>();
+    private List<Teacher> teachers = new ArrayList<>();
 
     @Override
     public boolean isNew() {

@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import pl.edziennik.eDziennik.domain.admin.dto.AdminRequestApiDto;
 import pl.edziennik.eDziennik.domain.admin.dto.AdminResponseApiDto;
+import pl.edziennik.eDziennik.server.basics.page.PageDto;
 
 public interface AdminService {
 
@@ -13,7 +14,7 @@ public interface AdminService {
 
     void updateAdminLastLoginDate(final String username);
 
-    Page<AdminResponseApiDto> getAdminList(Pageable pageable);
+    PageDto<AdminResponseApiDto> getAdminList(Pageable pageable);
 
     AdminResponseApiDto getAdminById(Long id);
 

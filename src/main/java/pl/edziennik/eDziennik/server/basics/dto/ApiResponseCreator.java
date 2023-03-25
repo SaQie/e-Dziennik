@@ -51,7 +51,7 @@ public class ApiResponseCreator {
                 .build();
     }
 
-    public static<T> ApiResponse<T> buildApiResponse(HttpMethod method, HttpStatus status, URI url, List<ApiErrorDto> errors){
+    public static<T> ApiResponse<T> buildApiResponse(HttpMethod method, HttpStatus status, URI url, List<ApiValidationResult> errors){
         return ApiResponse.
                 <T>builder()
                 .method(method.name())
@@ -64,7 +64,7 @@ public class ApiResponseCreator {
     }
 
     @SneakyThrows
-    public static<T> ApiResponse<T> buildApiResponse(HttpMethod method, HttpStatus status, String url, List<ApiErrorDto> errors){
+    public static<T> ApiResponse<T> buildApiResponse(HttpMethod method, HttpStatus status, String url, List<ApiValidationResult> errors){
         return ApiResponse.
                 <T>builder()
                 .method(method.name())

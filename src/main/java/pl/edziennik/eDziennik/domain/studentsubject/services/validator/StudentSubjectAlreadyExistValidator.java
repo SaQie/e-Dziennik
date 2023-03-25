@@ -8,7 +8,7 @@ import pl.edziennik.eDziennik.domain.studentsubject.dto.request.StudentSubjectRe
 import pl.edziennik.eDziennik.domain.studentsubject.repository.StudentSubjectRepository;
 import pl.edziennik.eDziennik.domain.subject.domain.Subject;
 import pl.edziennik.eDziennik.domain.subject.repository.SubjectRepository;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
@@ -35,7 +35,7 @@ class StudentSubjectAlreadyExistValidator extends BaseService implements Student
     }
 
     @Override
-    public Optional<ApiErrorDto> validate(StudentSubjectRequestDto dto) {
+    public Optional<ApiValidationResult> validate(StudentSubjectRequestDto dto) {
         if (repository.existsByStudentIdAndSubjectId(dto.getIdStudent(), dto.getIdSubject())) {
 
             Student student = studentRepository.findById(dto.getIdStudent())
@@ -48,7 +48,7 @@ class StudentSubjectAlreadyExistValidator extends BaseService implements Student
 
             String message = resourceCreator.of(EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST, studentName, subjectName);
 
-            ApiErrorDto apiErrorDto = ApiErrorDto.builder()
+            ApiValidationResult apiValidationResult = ApiValidationResult.builder()
                     .field(StudentSubjectRequestDto.ID_SUBJECT)
                     .cause(message)
                     .thrownImmediately(false)
@@ -56,7 +56,7 @@ class StudentSubjectAlreadyExistValidator extends BaseService implements Student
                     .exceptionType(ExceptionType.BUSINESS)
                     .build();
 
-            return Optional.of(apiErrorDto);
+            return Optional.of(apiValidationResult);
         }
         return Optional.empty();
     }

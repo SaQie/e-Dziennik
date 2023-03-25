@@ -8,7 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pl.edziennik.eDziennik.BaseUnitTest;
 import pl.edziennik.eDziennik.domain.school.dto.SchoolRequestApiDto;
 import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Optional;
@@ -45,11 +45,11 @@ public class SchoolValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_WITH_NIP_ALREADY_EXIST);
 
         // when
-        Optional<ApiErrorDto> validationResult = nipAlreadyExistsValidator.validate(dto);
+        Optional<ApiValidationResult> validationResult = nipAlreadyExistsValidator.validate(dto);
 
         // then
         assertTrue(validationResult.isPresent());
-        ApiErrorDto error = validationResult.get();
+        ApiValidationResult error = validationResult.get();
         assertEquals(error.getErrorThrownedBy(), SchoolValidators.SCHOOL_NIP_ALREADY_EXISTS_VALIDATOR_NAME);
         assertEquals(error.getField(), SchoolRequestApiDto.NIP);
         assertEquals(error.getCause(), getErrorMessage(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_WITH_NIP_ALREADY_EXIST));
@@ -65,11 +65,11 @@ public class SchoolValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_WITH_REGON_ALREADY_EXIST);
 
         // when
-        Optional<ApiErrorDto> validationResult = regonAlreadyExistValidator.validate(dto);
+        Optional<ApiValidationResult> validationResult = regonAlreadyExistValidator.validate(dto);
 
         // then
         assertTrue(validationResult.isPresent());
-        ApiErrorDto error = validationResult.get();
+        ApiValidationResult error = validationResult.get();
         assertEquals(error.getErrorThrownedBy(), SchoolValidators.SCHOOL_REGON_ALREADY_EXISTS_VALIDATOR_NAME);
         assertEquals(error.getField(), SchoolRequestApiDto.REGON);
         assertEquals(error.getCause(), getErrorMessage(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_WITH_REGON_ALREADY_EXIST));
@@ -85,11 +85,11 @@ public class SchoolValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_ALREADY_EXIST);
 
         // when
-        Optional<ApiErrorDto> validationResult = existsValidator.validate(dto);
+        Optional<ApiValidationResult> validationResult = existsValidator.validate(dto);
 
         // then
         assertTrue(validationResult.isPresent());
-        ApiErrorDto error = validationResult.get();
+        ApiValidationResult error = validationResult.get();
         assertEquals(error.getErrorThrownedBy(), SchoolValidators.SCHOOL_ALREADY_EXISTS_VALIDATOR_NAME);
         assertEquals(error.getField(), SchoolRequestApiDto.NAME);
         assertEquals(error.getCause(), getErrorMessage(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_ALREADY_EXIST));
@@ -105,7 +105,7 @@ public class SchoolValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_ALREADY_EXIST);
 
         // when
-        Optional<ApiErrorDto> validationResult = existsValidator.validate(dto);
+        Optional<ApiValidationResult> validationResult = existsValidator.validate(dto);
 
         // then
         assertFalse(validationResult.isPresent());
@@ -121,7 +121,7 @@ public class SchoolValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_WITH_REGON_ALREADY_EXIST);
 
         // when
-        Optional<ApiErrorDto> validationResult = regonAlreadyExistValidator.validate(dto);
+        Optional<ApiValidationResult> validationResult = regonAlreadyExistValidator.validate(dto);
 
         // then
         assertFalse(validationResult.isPresent());
@@ -137,7 +137,7 @@ public class SchoolValidatorUnitTest extends BaseUnitTest {
                 .thenReturn(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_WITH_NIP_ALREADY_EXIST);
 
         // when
-        Optional<ApiErrorDto> validationResult = nipAlreadyExistsValidator.validate(dto);
+        Optional<ApiValidationResult> validationResult = nipAlreadyExistsValidator.validate(dto);
 
         // then
         assertFalse(validationResult.isPresent());

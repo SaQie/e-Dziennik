@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassRequestApiDto;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassResponseApiDto;
+import pl.edziennik.eDziennik.server.basics.page.PageDto;
 
 public interface SchoolClassService {
 
@@ -14,7 +15,7 @@ public interface SchoolClassService {
 
     void deleteSchoolClassById(final Long id);
 
-    Page<SchoolClassResponseApiDto> findAllSchoolClasses(Pageable Pageable);
+    PageDto<SchoolClassResponseApiDto> findAllSchoolClasses(Pageable Pageable);
     SchoolClassResponseApiDto updateSchoolClass(final Long id, final SchoolClassRequestApiDto dto);
-    Page<SchoolClassResponseApiDto> findSchoolClassesBySchoolId(Pageable pageable,Long schoolId);
+    PageDto<SchoolClassResponseApiDto> findSchoolClassesBySchoolId(Pageable pageable,Long schoolId);
 }

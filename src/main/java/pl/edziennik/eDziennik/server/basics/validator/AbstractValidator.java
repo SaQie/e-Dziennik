@@ -1,6 +1,6 @@
 package pl.edziennik.eDziennik.server.basics.validator;
 
-import pl.edziennik.eDziennik.server.basics.dto.ApiErrorDto;
+import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 
 import java.util.Optional;
 import java.util.Set;
@@ -28,7 +28,7 @@ public interface AbstractValidator<INPUT> {
                 + clazz.getSimpleName().substring(1);
     }
 
-    Optional<ApiErrorDto> validate(INPUT e);
+    Optional<ApiValidationResult> validate(INPUT e);
 
 
 }

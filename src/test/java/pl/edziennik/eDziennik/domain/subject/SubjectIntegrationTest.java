@@ -14,6 +14,7 @@ import pl.edziennik.eDziennik.domain.subject.dto.SubjectResponseApiDto;
 import pl.edziennik.eDziennik.domain.subject.services.validator.SubjectValidators;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
+import pl.edziennik.eDziennik.server.basics.page.PageDto;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 
@@ -131,7 +132,7 @@ public class SubjectIntegrationTest extends BaseTest {
         assertNotNull(secondSubjectId);
 
         // when
-        Page<SubjectResponseApiDto> actual = subjectService.findAllSubjects(PageRequest.of(0, 20));
+        PageDto<SubjectResponseApiDto> actual = subjectService.findAllSubjects(PageRequest.of(0, 20));
 
         // then
         assertEquals(2, actual.getContent().size());
