@@ -7,7 +7,6 @@ import lombok.Setter;
 import pl.edziennik.eDziennik.domain.address.domain.Address;
 import pl.edziennik.eDziennik.domain.parent.domain.Parent;
 import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
-import pl.edziennik.eDziennik.server.basics.entity.AbstractEntity;
 import pl.edziennik.eDziennik.domain.school.domain.School;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.domain.user.domain.User;
@@ -20,7 +19,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @EqualsAndHashCode
-public class Student extends AbstractEntity implements Serializable {
+public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_id_seq")
@@ -50,10 +49,6 @@ public class Student extends AbstractEntity implements Serializable {
     @OneToOne(fetch = FetchType.LAZY,cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Parent parent;
 
-    @Override
-    public boolean isNew() {
-        return (id == null);
-    }
 
     public Student(PersonInformation personInformation, Address address) {
         this.personInformation = personInformation;

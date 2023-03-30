@@ -48,7 +48,7 @@ public class TeacherIntegrationTest extends BaseTest {
         // given
         TeacherRequestApiDto dto = teacherUtil.prepareTeacherRequestDto();
         Long id = teacherService.register(dto).getId();
-        TeacherRequestApiDto expected = teacherUtil.prepareTeacherRequestDto("AfterEdit", "AfterEdit2", "5555551",
+        TeacherRequestApiDto expected = teacherUtil.prepareTeacherRequestDto("AfterEdit", "AfterEdit2", "55555251",
                 "test2" + "@example.com");
 
         // when

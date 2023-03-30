@@ -78,10 +78,13 @@ class AdminServiceImpl extends BaseService implements AdminService {
     public AdminResponseApiDto updateAdmin(AdminRequestApiDto dto, Long id) {
         Optional<Admin> optionalStudent = repository.findById(id);
         if (optionalStudent.isPresent()) {
-//            validatorService.valid(requestApiDto);
+            validator.valid(dto);
             Admin admin = optionalStudent.get();
-            admin.getUser().setUsername(dto.getUsername());
-            admin.getUser().setEmail(dto.getEmail());
+
+            // update user data
+            User user = admin.getUser();
+            userService.updateUser(user.getId(), UserMapper.toDto(dto));
+
             return AdminMapper.mapToDto(admin);
         }
         return createNewAdminAccount(dto);

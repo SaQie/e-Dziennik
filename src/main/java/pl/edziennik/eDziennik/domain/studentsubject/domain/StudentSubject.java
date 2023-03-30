@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.edziennik.eDziennik.server.basics.entity.AbstractEntity;
 import pl.edziennik.eDziennik.domain.grade.domain.Grade;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.subject.domain.Subject;
@@ -18,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class StudentSubject extends AbstractEntity {
+public class StudentSubject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_subject_id_seq")
@@ -33,11 +32,6 @@ public class StudentSubject extends AbstractEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Subject subject;
-
-    @Override
-    public boolean isNew() {
-        return (id == null);
-    }
 
 
     public void addGrade(Grade grade){

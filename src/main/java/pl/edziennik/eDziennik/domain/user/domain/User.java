@@ -4,9 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.edziennik.eDziennik.domain.address.domain.Address;
-import pl.edziennik.eDziennik.server.basics.entity.AbstractEntity;
-import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
 import pl.edziennik.eDziennik.domain.role.domain.Role;
 
 import javax.persistence.*;
@@ -19,7 +16,7 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "users")
-public class User extends AbstractEntity {
+public class User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
@@ -42,10 +39,6 @@ public class User extends AbstractEntity {
         this.email = email;
     }
 
-    @Override
-    public boolean isNew() {
-        return (id == null);
-    }
 
     @PrePersist
     protected void onCreate() {

@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.edziennik.eDziennik.server.basics.entity.AbstractEntity;
 
 import javax.persistence.*;
 
@@ -13,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Setter
 @Getter
-public class PersonInformation extends AbstractEntity {
+public class PersonInformation{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_information_id_seq")
@@ -26,12 +25,9 @@ public class PersonInformation extends AbstractEntity {
     private String phoneNumber;
     private String pesel;
 
-    @Override
-    public boolean isNew() {
-        return (id == null);
-    }
 
     @PrePersist
+    @PreUpdate
     public void setFullName() {
         this.fullName = firstName + " " + lastName;
     }

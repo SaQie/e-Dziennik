@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.edziennik.eDziennik.domain.address.domain.Address;
-import pl.edziennik.eDziennik.server.basics.entity.AbstractEntity;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.domain.schoollevel.domain.SchoolLevel;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
@@ -12,14 +11,13 @@ import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
-public class School extends AbstractEntity {
+public class School{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "school_id_seq")
@@ -45,11 +43,6 @@ public class School extends AbstractEntity {
 
     @OneToMany(mappedBy = "school", orphanRemoval = true)
     private List<Teacher> teachers = new ArrayList<>();
-
-    @Override
-    public boolean isNew() {
-        return (id == null);
-    }
 
     public School(String name, String nip, String regon, String phoneNumber, Address address) {
         this.name = name;

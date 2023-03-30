@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.edziennik.eDziennik.domain.address.domain.Address;
 import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
-import pl.edziennik.eDziennik.server.basics.entity.AbstractEntity;
 import pl.edziennik.eDziennik.domain.school.domain.School;
 import pl.edziennik.eDziennik.domain.user.domain.User;
 
@@ -15,7 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Teacher extends AbstractEntity {
+public class Teacher{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teacher_id_seq")
@@ -37,10 +36,6 @@ public class Teacher extends AbstractEntity {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
-    @Override
-    public boolean isNew() {
-        return (id == null);
-    }
 
 
     public Teacher(PersonInformation personInformation, Address address) {

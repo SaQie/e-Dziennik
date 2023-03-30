@@ -12,7 +12,10 @@ public interface ParentService {
 
     ParentResponseApiDto findById(Long id);
 
+    ParentResponseApiDto update(Long id, ParentRequestApiDto dto);
+
     void deleteById(Long id);
 
     PageDto<ParentResponseApiDto> findAll(Pageable pageable);
+
 }

@@ -31,10 +31,16 @@ public abstract class BaseService {
         return resourceCreator.of(messageKey, objects);
     }
 
+    /**
+     * Method used in lambda expression to throw exception when entity was not found
+     */
     protected Supplier<EntityNotFoundException> notFoundException(Long id, Class clazz) {
         return () -> new EntityNotFoundException(getMessage("not.found.message", id, clazz.getSimpleName()));
     }
 
+    /**
+     * Method used in lambda expression to throw exception when entity was not found
+     */
     protected Runnable notFoundException(Class clazz, Long id) {
         return () -> {
             throw new EntityNotFoundException(getMessage("not.found.message", id, clazz.getSimpleName()));

@@ -3,8 +3,6 @@ package pl.edziennik.eDziennik.domain.settings.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Check;
-import pl.edziennik.eDziennik.server.basics.entity.AbstractEntity;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 
 import javax.persistence.*;
@@ -14,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "app_settings")
-public class Settings extends AbstractEntity {
+public class Settings{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "configuration_id_seq")
@@ -26,10 +24,6 @@ public class Settings extends AbstractEntity {
     private String stringValue;
     private Long longValue;
 
-    @Override
-    public boolean isNew() {
-        return (id == null);
-    }
 
     @PrePersist
     @PreUpdate

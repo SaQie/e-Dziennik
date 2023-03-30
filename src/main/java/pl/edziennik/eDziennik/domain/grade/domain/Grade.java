@@ -3,10 +3,9 @@ package pl.edziennik.eDziennik.domain.grade.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
-import pl.edziennik.eDziennik.server.basics.entity.AbstractEntity;
 import pl.edziennik.eDziennik.domain.studentsubject.domain.StudentSubject;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
+import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Grade extends AbstractEntity {
+public class Grade{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "grade_id_seq")
@@ -34,11 +33,6 @@ public class Grade extends AbstractEntity {
     private Teacher teacher;
 
     private LocalDateTime createdDate;
-
-    @Override
-    public boolean isNew() {
-        return (id == null);
-    }
 
 
     public Grade(GradeConst grade, int weight, String description) {

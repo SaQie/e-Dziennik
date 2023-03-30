@@ -14,6 +14,7 @@ import pl.edziennik.eDziennik.domain.user.services.validator.UserValidators;
 import pl.edziennik.eDziennik.server.basics.validator.ServiceValidator;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -28,12 +29,28 @@ class UserServiceImpl extends ServiceValidator<UserValidators, UserRequestDto> i
     public User createUser(UserRequestDto dto) {
         runValidators(dto);
         User user = UserMapper.toEntity(dto);
-        Role role = roleRepository.findByName(dto.getRole()).orElse(roleRepository.getReferenceById(Role.RoleConst.ROLE_STUDENT.getId()));
+        Role role = roleRepository.findByName(dto.getRole())
+                .orElse(roleRepository.getReferenceById(Role.RoleConst.ROLE_STUDENT.getId()));
         user.setRole(role);
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         return repository.save(user);
     }
 
+    @Override
+    @Transactional
+    public void updateUser(Long id, UserRequestDto dto) {
+        Optional<User> userOptional = repository.findById(id);
+        if (userOptional.isPresent()) {
+            runValidators(dto);
+            User user = userOptional.get();
+            user.setUsername(dto.getUsername());
+            user.setEmail(dto.getEmail());
+            user.setPassword(passwordEncoder.encode(dto.getPassword()));
+            Role role = roleRepository.findByName(dto.getRole())
+                    .orElse(roleRepository.getReferenceById(Role.RoleConst.ROLE_STUDENT.getId()));
+            user.setRole(role);
+        }
+    }
 
     @Override
     public void updateUserLastLoginDate(String username) {

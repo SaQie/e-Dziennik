@@ -6,8 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.domain.address.dto.mapper.AddressMapper;
-import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
+import pl.edziennik.eDziennik.domain.address.services.AddressService;
 import pl.edziennik.eDziennik.domain.personinformation.dto.mapper.PersonInformationMapper;
+import pl.edziennik.eDziennik.domain.personinformation.services.PersonInformationService;
 import pl.edziennik.eDziennik.domain.school.domain.School;
 import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
@@ -41,6 +42,8 @@ class StudentServiceImpl extends BaseService implements StudentService {
     private final UserService userService;
     private final SettingsService settingsService;
     private final StudentSubjectRepository studentSubjectRepository;
+    private final PersonInformationService personInformationService;
+    private final AddressService addressService;
 
 
     @Override
@@ -86,18 +89,34 @@ class StudentServiceImpl extends BaseService implements StudentService {
 
     @Override
     @Transactional
-    public StudentResponseApiDto updateStudent(Long id, StudentRequestApiDto requestApiDto) {
+    public StudentResponseApiDto updateStudent(Long id, StudentRequestApiDto dto) {
         Optional<Student> optionalStudent = repository.findById(id);
         if (optionalStudent.isPresent()) {
-//            validatorService.valid(requestApiDto);
+            validatorService.valid(dto);
+
+            // update student data
             Student student = optionalStudent.get();
-            PersonInformation personInformation = PersonInformationMapper.mapToPersonInformation(requestApiDto);
-            student.setAddress(AddressMapper.mapToAddress(requestApiDto));
-            student.getUser().setUsername(requestApiDto.getUsername());
-            student.setPersonInformation(personInformation);
+            schoolRepository.findById(dto.getIdSchool())
+                    .ifPresentOrElse(student::setSchool,notFoundException(School.class, dto.getIdSchool()));
+            schoolClassRepository.findById(dto.getIdSchoolClass())
+                    .ifPresentOrElse(student::setSchoolClass, notFoundException(SchoolClass.class, dto.getIdSchoolClass()));
+
+            // update person information student data
+            Long idPersonInformation = student.getPersonInformation().getId();
+            personInformationService.update(idPersonInformation,
+                    PersonInformationMapper.mapToPersonInformation(dto));
+
+            // update address student data
+            Long idAddress = student.getAddress().getId();
+            addressService.update(idAddress, AddressMapper.mapToAddress(dto));
+
+            // update user student data
+            User user = student.getUser();
+            userService.updateUser(user.getId(), UserMapper.toDto(dto));
+
             return StudentMapper.toDto(student);
         }
-        return register(requestApiDto);
+        return register(dto);
     }
 
 

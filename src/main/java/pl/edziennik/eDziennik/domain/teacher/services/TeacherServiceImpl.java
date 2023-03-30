@@ -6,8 +6,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.domain.address.dto.mapper.AddressMapper;
+import pl.edziennik.eDziennik.domain.address.services.AddressService;
 import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
 import pl.edziennik.eDziennik.domain.personinformation.dto.mapper.PersonInformationMapper;
+import pl.edziennik.eDziennik.domain.personinformation.services.PersonInformationService;
 import pl.edziennik.eDziennik.domain.school.domain.School;
 import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
 import pl.edziennik.eDziennik.domain.subject.domain.Subject;
@@ -22,6 +24,7 @@ import pl.edziennik.eDziennik.domain.user.services.UserService;
 import pl.edziennik.eDziennik.server.basics.page.PageDto;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,6 +36,9 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
 
     private final TeacherValidatorService validatorService;
     private final UserService userService;
+
+    private final PersonInformationService personInformationService;
+    private final AddressService addressService;
 
     @Override
     @Transactional
@@ -68,17 +74,31 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
 
     @Override
     @Transactional
-    public TeacherResponseApiDto updateTeacher(Long id, TeacherRequestApiDto requestApiDto) {
+    public TeacherResponseApiDto updateTeacher(Long id, TeacherRequestApiDto dto) {
         Optional<Teacher> optionalTeacher = repository.findById(id);
         if (optionalTeacher.isPresent()) {
-//            validatorService.valid(requestApiDto);
+            validatorService.validate(dto);
+            // update teacher data
             Teacher teacher = optionalTeacher.get();
-            teacher.setAddress(AddressMapper.mapToAddress(requestApiDto));
-            PersonInformation personInformation = PersonInformationMapper.mapToPersonInformation(requestApiDto);
-            teacher.setPersonInformation(personInformation);
+            schoolRepository.findById(dto.getIdSchool())
+                    .ifPresentOrElse(teacher::setSchool, notFoundException(School.class,dto.getIdSchool()));
+
+            // update person information teacher data
+            Long idPersonInformation = teacher.getPersonInformation().getId();
+            personInformationService.update(idPersonInformation,
+                    PersonInformationMapper.mapToPersonInformation(dto));
+
+            // update address teacher data
+            Long idAddress = teacher.getAddress().getId();
+            addressService.update(idAddress, AddressMapper.mapToAddress(dto));
+
+            // update user teacher data
+            User user = teacher.getUser();
+            userService.updateUser(user.getId(), UserMapper.toDto(dto));
+
             return TeacherMapper.toDto(teacher);
         }
-        return register(requestApiDto);
+        return register(dto);
     }
 
     @Override

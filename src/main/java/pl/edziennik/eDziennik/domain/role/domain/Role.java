@@ -2,14 +2,13 @@ package pl.edziennik.eDziennik.domain.role.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import pl.edziennik.eDziennik.server.basics.entity.AbstractEntity;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
 @Getter
-public class Role extends AbstractEntity {
+public class Role{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_id_seq")
@@ -23,10 +22,6 @@ public class Role extends AbstractEntity {
         this.name = name;
     }
 
-    @Override
-    public boolean isNew() {
-        return (id == null);
-    }
 
     public Role(String name) {
         this.name = name;

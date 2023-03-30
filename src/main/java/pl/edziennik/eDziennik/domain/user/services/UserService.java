@@ -9,4 +9,5 @@ public interface UserService {
 
     void updateUserLastLoginDate(String username);
 
+    void updateUser(Long id, UserRequestDto dto);
 }

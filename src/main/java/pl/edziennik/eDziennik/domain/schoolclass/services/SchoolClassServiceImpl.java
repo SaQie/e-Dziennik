@@ -60,22 +60,25 @@ class SchoolClassServiceImpl extends BaseService implements SchoolClassService {
     @Override
     @Transactional
     public SchoolClassResponseApiDto updateSchoolClass(Long id, SchoolClassRequestApiDto dto) {
-        // TODO -> Walidacja
         Optional<SchoolClass> schoolClassOptional = repository.findById(id);
-
         if (schoolClassOptional.isPresent()) {
+            validatorService.valid(dto);
+            // update school class data
             SchoolClass schoolClass = schoolClassOptional.get();
+
             schoolRepository.findById(dto.getIdSchool())
                     .ifPresentOrElse(schoolClass::setSchool, notFoundException(School.class, dto.getIdSchool()));
 
-            teacherRepository.findById(dto.getIdClassTeacher())
-                    .ifPresentOrElse(schoolClass::setTeacher, notFoundException(Teacher.class, dto.getIdClassTeacher()));
+            if (dto.getIdClassTeacher() != null) {
+                teacherRepository.findById(dto.getIdClassTeacher())
+                        .ifPresentOrElse(schoolClass::setTeacher, notFoundException(Teacher.class, dto.getIdClassTeacher()));
+            }
+
             schoolClass.setClassName(dto.getClassName());
             return SchoolClassMapper.toDto(schoolClass);
         }
 
-        SchoolClass schoolClass = repository.save(SchoolClassMapper.toEntity(dto));
-        return SchoolClassMapper.toDto(schoolClass);
+        return createSchoolClass(dto);
 
     }
 

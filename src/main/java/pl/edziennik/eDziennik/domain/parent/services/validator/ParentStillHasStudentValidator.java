@@ -32,6 +32,7 @@ public class ParentStillHasStudentValidator extends BaseService implements Abstr
     public Optional<ApiValidationResult> validate(Long id) {
         Parent parent = repository.findById(id)
                 .orElseThrow(notFoundException(id, Parent.class));
+
         if (parent.getStudent() != null) {
 
             String message = resourceCreator.of(EXCEPTON_MESSAGE_PARENT_STILL_HAS_STUDENT, parent.getStudent().getPersonInformation().getFullName());

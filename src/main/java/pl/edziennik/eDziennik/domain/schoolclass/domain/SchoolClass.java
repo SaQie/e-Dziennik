@@ -3,7 +3,6 @@ package pl.edziennik.eDziennik.domain.schoolclass.domain;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import pl.edziennik.eDziennik.server.basics.entity.AbstractEntity;
 import pl.edziennik.eDziennik.domain.school.domain.School;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.subject.domain.Subject;
@@ -18,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @EqualsAndHashCode
-public class SchoolClass extends AbstractEntity {
+public class SchoolClass{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "school_class_id_seq")
@@ -41,10 +40,6 @@ public class SchoolClass extends AbstractEntity {
 
     private LocalDate createdDate;
 
-    @Override
-    public boolean isNew() {
-        return (id == null);
-    }
 
     public SchoolClass(String className) {
         this.className = className;

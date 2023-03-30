@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.edziennik.eDziennik.server.basics.entity.AbstractEntity;
 
 import javax.persistence.*;
 
@@ -13,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Address extends AbstractEntity {
+public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_id_seq")
@@ -24,9 +23,5 @@ public class Address extends AbstractEntity {
     private String city;
     private String postalCode;
 
-    @Override
-    public boolean isNew() {
-        return (id == null);
-    }
 
 }

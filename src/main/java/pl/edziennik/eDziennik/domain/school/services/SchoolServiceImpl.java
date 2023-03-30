@@ -59,22 +59,26 @@ class SchoolServiceImpl extends BaseService implements SchoolService {
     @Override
     @Transactional
     public SchoolResponseApiDto updateSchool(Long id, SchoolRequestApiDto dto) {
-        // TODO -> Walidacja
         Optional<School> optionalSchool = schoolRepository.findById(id);
         if (optionalSchool.isPresent()) {
+            validatorService.valid(dto);
+
+            // update school data
             School school = optionalSchool.get();
             school.setName(dto.getName());
             school.setNip(dto.getNip());
             school.setRegon(dto.getRegon());
             school.setPhoneNumber(dto.getPhoneNumber());
-            Address address = AddressMapper.mapToAddress(dto);
-            school.setAddress(address);
+
+            // update address data
+            Address address = school.getAddress();
+            address.setAddress(dto.getAddress());
+            address.setPostalCode(dto.getPostalCode());
+            address.setCity(dto.getCity());
+
             return SchoolMapper.toDto(school);
         }
-        School school = SchoolMapper.toEntity(dto);
-        schoolLevelRepository.findById(dto.getIdSchoolLevel())
-                .ifPresentOrElse(school::setSchoolLevel, notFoundException(SchoolLevel.class, dto.getIdSchoolLevel()));
-        return SchoolMapper.toDto(schoolRepository.save(school));
+        return createNewSchool(dto);
     }
 
     private School mapToEntity(SchoolRequestApiDto dto) {

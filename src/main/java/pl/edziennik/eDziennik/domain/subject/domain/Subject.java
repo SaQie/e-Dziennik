@@ -3,7 +3,6 @@ package pl.edziennik.eDziennik.domain.subject.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.edziennik.eDziennik.server.basics.entity.AbstractEntity;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 
@@ -13,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Subject extends AbstractEntity {
+public class Subject{
 
 
     @Id
@@ -29,11 +28,6 @@ public class Subject extends AbstractEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private SchoolClass schoolClass;
-
-    @Override
-    public boolean isNew() {
-        return (id == null);
-    }
 
 
     public Subject(String name, String description) {

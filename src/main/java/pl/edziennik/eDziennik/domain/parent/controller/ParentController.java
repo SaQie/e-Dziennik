@@ -41,7 +41,7 @@ class ParentController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get parents list",
             description = "Returns list of all parents")
-    public ApiResponse<PageDto<ParentResponseApiDto>> findAllParents(Pageable pageable) {
+    public ApiResponse<?> findAllParents(Pageable pageable) {
         PageDto<ParentResponseApiDto> responseApiDtos = service.findAll(pageable);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
@@ -60,10 +60,20 @@ class ParentController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Delete parent")
-    public ApiResponse<?> deleteSchoolById(@PathVariable Long id) {
+    public ApiResponse<?> deleteParentById(@PathVariable Long id) {
         service.deleteById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.DELETE, HttpStatus.OK, "Parent deleted successfully", uri);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Update parent",
+            description = "This method will update specific parent or create new if not exists")
+    public ApiResponse<?> updateParentById(@PathVariable Long id, @RequestBody ParentRequestApiDto dto){
+        ParentResponseApiDto responseApiDto = service.update(id, dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+        return ApiResponseCreator.buildApiResponse(HttpMethod.PUT, HttpStatus.OK, responseApiDto, uri);
     }
 
 

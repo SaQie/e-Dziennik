@@ -60,16 +60,16 @@ class SubjectServiceImpl extends BaseService implements SubjectService {
 
     @Override
     @Transactional
-    public SubjectResponseApiDto updateSubject(Long id, SubjectRequestApiDto requestApiDto) {
+    public SubjectResponseApiDto updateSubject(Long id, SubjectRequestApiDto dto) {
         Optional<Subject> optionalSubject = repository.findById(id);
         if (optionalSubject.isPresent()) {
+            validatorService.valid(dto);
             Subject subject = optionalSubject.get();
-            subject.setName(requestApiDto.getName());
-            subject.setDescription(requestApiDto.getDescription());
+            subject.setName(dto.getName());
+            subject.setDescription(dto.getDescription());
             return SubjectMapper.toDto(subject);
         }
-        Subject subject = repository.save(SubjectMapper.toEntity(requestApiDto));
-        return SubjectMapper.toDto(subject);
+        return createNewSubject(dto);
     }
 
     private Subject mapToEntity(SubjectRequestApiDto dto) {

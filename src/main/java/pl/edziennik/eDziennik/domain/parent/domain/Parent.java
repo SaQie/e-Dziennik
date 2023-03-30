@@ -7,7 +7,6 @@ import pl.edziennik.eDziennik.domain.address.domain.Address;
 import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.user.domain.User;
-import pl.edziennik.eDziennik.server.basics.entity.AbstractEntity;
 
 import javax.persistence.*;
 
@@ -15,7 +14,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Parent extends AbstractEntity {
+public class Parent{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "parent_id_seq")
@@ -58,8 +57,4 @@ public class Parent extends AbstractEntity {
         this.address = address;
     }
 
-    @Override
-    public boolean isNew() {
-        return (id == null);
-    }
 }

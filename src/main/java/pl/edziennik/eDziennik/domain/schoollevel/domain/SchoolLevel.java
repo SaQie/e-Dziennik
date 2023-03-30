@@ -2,7 +2,6 @@ package pl.edziennik.eDziennik.domain.schoollevel.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import pl.edziennik.eDziennik.server.basics.entity.AbstractEntity;
 import pl.edziennik.eDziennik.domain.school.domain.School;
 
 import javax.persistence.*;
@@ -12,7 +11,7 @@ import java.util.Collection;
 @Entity
 @NoArgsConstructor
 @Getter
-public class SchoolLevel extends AbstractEntity {
+public class SchoolLevel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "school_level_id_seq")
@@ -27,11 +26,6 @@ public class SchoolLevel extends AbstractEntity {
     public SchoolLevel(Long id, String name) {
         this.id = id;
         this.name = name;
-    }
-
-    @Override
-    public boolean isNew() {
-        return (id == null);
     }
 
     public void addSchool(School school){

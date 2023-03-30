@@ -5,11 +5,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.edziennik.eDziennik.domain.address.domain.Address;
 import pl.edziennik.eDziennik.domain.parent.domain.Parent;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentResponseApiDto;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.mapper.ParentMapper;
 import pl.edziennik.eDziennik.domain.parent.repository.ParentRepository;
+import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
+import pl.edziennik.eDziennik.domain.personinformation.dto.mapper.PersonInformationMapper;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
 import pl.edziennik.eDziennik.domain.user.domain.User;
@@ -17,6 +20,8 @@ import pl.edziennik.eDziennik.domain.user.dto.mapper.UserMapper;
 import pl.edziennik.eDziennik.domain.user.services.UserService;
 import pl.edziennik.eDziennik.server.basics.page.PageDto;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
+
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -44,6 +49,37 @@ class ParentServiceImpl extends BaseService implements ParentService {
     }
 
     @Override
+    @Transactional
+    public ParentResponseApiDto update(Long id, ParentRequestApiDto dto) {
+        Optional<Parent> parentOptional = repository.findById(id);
+        if (parentOptional.isPresent()) {
+            validatorService.valid(dto);
+            // update parent data
+            Parent parent = parentOptional.get();
+
+            // update user data
+            userService.updateUser(parent.getUser().getId(), UserMapper.toDto(dto));
+
+            // update person information parent data
+            PersonInformation personInformation = parent.getPersonInformation();
+            personInformation.setFirstName(dto.getFirstName());
+            personInformation.setLastName(dto.getLastName());
+            personInformation.setPhoneNumber(dto.getPhoneNumber());
+            personInformation.setPesel(dto.getPesel());
+
+            // update parent address data
+            Address address = parent.getAddress();
+            address.setPostalCode(dto.getPostalCode());
+            address.setCity(dto.getCity());
+            address.setAddress(dto.getAddress());
+
+            return ParentMapper.toDto(parent);
+        }
+        // register new parent if not exists
+        return register(dto);
+    }
+
+    @Override
     public void deleteById(Long id) {
         validatorService.checkParentHasStudent(id);
         repository.findById(id).ifPresent(repository::delete);
@@ -59,7 +95,8 @@ class ParentServiceImpl extends BaseService implements ParentService {
     private Parent mapToEntity(ParentRequestApiDto dto) {
         Parent parent = ParentMapper.toEntity(dto);
         User user = userService.createUser(UserMapper.toDto(dto));
-        Student student = studentRepository.findById(dto.getIdStudent()).orElseThrow(notFoundException(dto.getIdStudent(), Student.class));
+        Student student = studentRepository.findById(dto.getIdStudent())
+                .orElseThrow(notFoundException(dto.getIdStudent(), Student.class));
         parent.setStudent(student);
         parent.setUser(user);
         return parent;
