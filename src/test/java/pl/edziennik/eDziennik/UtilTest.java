@@ -45,4 +45,21 @@ public class UtilTest extends BaseTest {
         assertEquals(expectedFullNameAfterSave, personInformation.getFullName());
     }
 
+    @Test
+    public void shouldAutomaticallyUpdatePersonFullNameWhenUpdate(){
+        StudentRequestApiDto studentRequestApiDto = studentUtil.prepareStudentRequestDto();
+        Long id = studentService.register(studentRequestApiDto).getId();
+        String expectedFullNameAfterUpdate = "Dawid" + " " + "Nowak";
+        studentRequestApiDto = studentUtil.prepareStudentRequestDto("Test","Dawid", "Nowak","q","qwe");
+
+        // when
+        studentService.updateStudent(id,studentRequestApiDto);
+
+        // then
+        assertNotNull(id);
+        Student student = find(Student.class, id);
+        PersonInformation personInformation = student.getPersonInformation();
+        assertEquals(expectedFullNameAfterUpdate, personInformation.getFullName());
+    }
+
 }

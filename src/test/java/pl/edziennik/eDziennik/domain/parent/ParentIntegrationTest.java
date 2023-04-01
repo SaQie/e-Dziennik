@@ -10,7 +10,10 @@ import pl.edziennik.eDziennik.domain.parent.domain.Parent;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentResponseApiDto;
 import pl.edziennik.eDziennik.domain.parent.services.validator.ParentValidators;
+import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
+import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
+import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
@@ -95,6 +98,57 @@ public class ParentIntegrationTest extends BaseTest {
 
         // then
         assertEquals(2, allParents.size());
+    }
+
+    @Test
+    public void shouldUpdateParent(){
+        // TODO -> Przemyslec czy mozna zmieniac studenta rodzicowi ?
+
+        // given
+//        Long idStudent = createBaseStudent();
+//        ParentRequestApiDto dto = parentUtil.prepareParentRequestApiDto();
+//        Long id = parentService.register(dto).getId();
+//        ParentRequestApiDto expected = parentUtil.prepareParentRequestApiDto("Tomasz", "Nowakowy", idStudent, "asdasd", "ifeife@o2.pl");
+
+        // when
+//        ParentResponseApiDto updated = parentService.update(id, expected);
+
+        // then
+//        assertNotNull(updated);
+//        assertEquals(expected.getFirstName(), updated.getFirstName());
+//        assertEquals(expected.getLastName(), updated.getLastName());
+//        assertEquals(expected.getEmail(), updated.getEmail());
+//        assertEquals(expected.getUsername(), updated.getUsername());
+
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenUpdateAndStudentNotExists(){
+        Long idParent = createBaseParent();
+        ParentRequestApiDto expected = parentUtil.prepareParentRequestApiDto("Tomasz", "Nowakowy", 999L, "asdasd", "ifeife@o2.pl");
+        // when
+
+        // then
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> parentService.update(idParent, expected));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", expected.getIdStudent(), Student.class.getSimpleName()));
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenDeleteAndParentStillHasStudent(){
+        // given
+        Long idParent = createBaseParent();
+        Student student = em.find(Parent.class, idParent).getStudent();
+
+        // when
+        BusinessException exception = assertThrows(BusinessException.class, () -> parentService.deleteById(idParent));
+
+        // then
+        assertEquals(1, exception.getErrors().size());
+        assertEquals(ParentValidators.PARENT_STILL_HAS_STUDENT_VALIDATOR, exception.getErrors().get(0).getErrorThrownedBy());
+        assertEquals(ParentRequestApiDto.ID_STUDENT, exception.getErrors().get(0).getField());
+        String expectedExceptionMessage = resourceCreator.of(ParentValidators.EXCEPTON_MESSAGE_PARENT_STILL_HAS_STUDENT, getStudentFullName(student.getId()));
+        assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
+
     }
 
     @Test

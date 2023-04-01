@@ -54,10 +54,10 @@ public class TeacherIntegrationTestUtil {
                 "Lubavia",
                 "20-200",
                 "Warszawa",
-                "123123",
-                "test@example.com",
+                "12312344",
+                "test@examp2le.com",
                 null,
-                "123123123",
+                "1231231123",
                 "asdasd",
                 idSchool
         );

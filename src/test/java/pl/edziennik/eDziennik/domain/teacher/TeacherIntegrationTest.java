@@ -8,6 +8,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTest;
 import pl.edziennik.eDziennik.domain.school.domain.School;
+import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherResponseApiDto;
@@ -66,6 +67,20 @@ public class TeacherIntegrationTest extends BaseTest {
         assertEquals(expected.getCity(), actual.getAddress().getCity());
         assertEquals(teacherUtil.defaultRole, actual.getUser().getRole().getName());
 
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenUpdateAndSchoolNotExists(){
+        // given
+        TeacherRequestApiDto dto = teacherUtil.prepareTeacherRequestDto();
+        Long id = teacherService.register(dto).getId();
+        TeacherRequestApiDto expected = teacherUtil.prepareTeacherRequestDto(999999L);
+
+        // when
+
+        // then
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> teacherService.updateTeacher(id, expected));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", expected.getIdSchool(), School.class.getSimpleName()));
     }
 
     @Test

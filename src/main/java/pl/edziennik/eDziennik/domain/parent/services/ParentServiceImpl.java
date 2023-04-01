@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.domain.address.domain.Address;
+import pl.edziennik.eDziennik.domain.address.dto.mapper.AddressMapper;
+import pl.edziennik.eDziennik.domain.address.services.AddressService;
 import pl.edziennik.eDziennik.domain.parent.domain.Parent;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentResponseApiDto;
@@ -13,6 +15,7 @@ import pl.edziennik.eDziennik.domain.parent.domain.dto.mapper.ParentMapper;
 import pl.edziennik.eDziennik.domain.parent.repository.ParentRepository;
 import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
 import pl.edziennik.eDziennik.domain.personinformation.dto.mapper.PersonInformationMapper;
+import pl.edziennik.eDziennik.domain.personinformation.services.PersonInformationService;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
 import pl.edziennik.eDziennik.domain.user.domain.User;
@@ -31,6 +34,8 @@ class ParentServiceImpl extends BaseService implements ParentService {
     private final ParentRepository repository;
     private final StudentRepository studentRepository;
     private final ParentValidatorService validatorService;
+    private final PersonInformationService personInformationService;
+    private final AddressService addressService;
 
 
     @Override
@@ -56,22 +61,20 @@ class ParentServiceImpl extends BaseService implements ParentService {
             validatorService.valid(dto);
             // update parent data
             Parent parent = parentOptional.get();
+            Student student = studentRepository.getReferenceById(dto.getIdStudent());
+            parent.setStudent(student);
 
             // update user data
             userService.updateUser(parent.getUser().getId(), UserMapper.toDto(dto));
 
             // update person information parent data
-            PersonInformation personInformation = parent.getPersonInformation();
-            personInformation.setFirstName(dto.getFirstName());
-            personInformation.setLastName(dto.getLastName());
-            personInformation.setPhoneNumber(dto.getPhoneNumber());
-            personInformation.setPesel(dto.getPesel());
+            Long idPersonInformation = student.getPersonInformation().getId();
+            personInformationService.update(idPersonInformation,
+                    PersonInformationMapper.mapToPersonInformation(dto));
 
-            // update parent address data
-            Address address = parent.getAddress();
-            address.setPostalCode(dto.getPostalCode());
-            address.setCity(dto.getCity());
-            address.setAddress(dto.getAddress());
+            // update address parent data
+            Long idAddress = student.getAddress().getId();
+            addressService.update(idAddress, AddressMapper.mapToAddress(dto));
 
             return ParentMapper.toDto(parent);
         }

@@ -1,11 +1,13 @@
 package pl.edziennik.eDziennik;
 
 import liquibase.repackaged.org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.domain.admin.AdminIntegrationTestUtil;
 import pl.edziennik.eDziennik.domain.admin.services.AdminService;
@@ -45,8 +47,8 @@ import java.math.BigInteger;
 /**
  * Basics class for test
  */
-@Transactional
 @SpringBootTest
+@Transactional
 public class BaseTest {
 
     @Autowired

@@ -71,4 +71,21 @@ public class ParentIntegrationTestUtil {
                 idStudent
         );
     }
+
+
+    public ParentRequestApiDto prepareParentRequestApiDto(String firstName, String lastName,Long idStudent, String username, String email) {
+        return new ParentRequestApiDto(
+                "test",
+                username,
+                firstName,
+                lastName,
+                "Washington",
+                "11-111",
+                "IdontKnow",
+                "81818181818",
+                email,
+                "123123",
+                idStudent
+        );
+    }
 }

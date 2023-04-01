@@ -18,7 +18,7 @@ import static pl.edziennik.eDziennik.domain.parent.services.validator.ParentVali
 
 @Component
 @AllArgsConstructor
-public class ParentStillHasStudentValidator extends BaseService implements AbstractValidator<Long> {
+class ParentStillHasStudentValidator extends BaseService implements AbstractValidator<Long> {
 
     private final ParentRepository repository;
     private final ResourceCreator resourceCreator;

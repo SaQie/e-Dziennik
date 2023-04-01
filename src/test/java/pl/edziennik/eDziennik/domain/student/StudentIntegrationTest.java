@@ -67,12 +67,6 @@ public class StudentIntegrationTest extends BaseTest {
         this.teacherUtil = new TeacherIntegrationTestUtil();
     }
 
-    @BeforeEach
-    public void prepareDb() {
-        clearDb();
-        fillDbWithData();
-    }
-
     @Test
     public void shouldSaveNewStudent() {
         // given
@@ -113,6 +107,34 @@ public class StudentIntegrationTest extends BaseTest {
         assertEquals(expected.getCity(), actual.getAddress().getCity());
         assertEquals(expected.getUsername(), actual.getUser().getUsername());
 
+    }
+
+    @Test
+    public void shouldThrowsExceptionWhenUpdateAndSchoolNotExists(){
+        // given
+        StudentRequestApiDto dto = util.prepareStudentRequestDto();
+        Long id = service.register(dto).getId();
+        StudentRequestApiDto expected = util.prepareStudentRequestDto(9999L, 999L);
+
+        // when
+
+        // then
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> service.updateStudent(id, expected));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", expected.getIdSchool(), School.class.getSimpleName()));
+    }
+
+    @Test
+    public void shouldThrowsExceptionWhenUpdateAndSchoolClassNotExists(){
+        // given
+        StudentRequestApiDto dto = util.prepareStudentRequestDto();
+        Long id = service.register(dto).getId();
+        StudentRequestApiDto expected = util.prepareStudentRequestDto(100L, 999L);
+
+        // when
+
+        // then
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> service.updateStudent(id, expected));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", expected.getIdSchoolClass(), SchoolClass.class.getSimpleName()));
     }
 
     @Test

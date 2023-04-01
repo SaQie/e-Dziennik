@@ -62,7 +62,7 @@ public class StudentIntegrationTestUtil {
         );
     }
 
-    protected StudentRequestApiDto prepareStudentRequestDto(String username, String firstName, String lastName, String pesel, String email) {
+    public StudentRequestApiDto prepareStudentRequestDto(String username, String firstName, String lastName, String pesel, String email) {
         return new StudentRequestApiDto(
                 "Testt",
                 username,
