@@ -54,7 +54,7 @@ public class ParentValidatorUnitTest extends BaseUnitTest {
         student.setParent(parent);
         student.setPersonInformation(personInformation);
 
-        when(studentRepository.findById(parentRequestApiDto.getIdStudent())).thenReturn(Optional.of(student));
+        when(studentRepository.findById(parentRequestApiDto.idStudent())).thenReturn(Optional.of(student));
 
         lenient().when(resourceCreator.of(ParentValidators.EXCEPTION_MESSAGE_STUDENT_ALREADY_HAS_PARENT_VALIDATOR, null))
                 .thenReturn(ParentValidators.EXCEPTION_MESSAGE_STUDENT_ALREADY_HAS_PARENT_VALIDATOR);
@@ -79,7 +79,7 @@ public class ParentValidatorUnitTest extends BaseUnitTest {
         PersonInformation personInformation = new PersonInformation();
         student.setPersonInformation(personInformation);
 
-        when(studentRepository.findById(parentRequestApiDto.getIdStudent())).thenReturn(Optional.of(student));
+        when(studentRepository.findById(parentRequestApiDto.idStudent())).thenReturn(Optional.of(student));
         lenient().when(resourceCreator.of(ParentValidators.EXCEPTION_MESSAGE_STUDENT_ALREADY_HAS_PARENT_VALIDATOR, null))
                 .thenReturn(ParentValidators.EXCEPTION_MESSAGE_STUDENT_ALREADY_HAS_PARENT_VALIDATOR);
 
@@ -131,8 +131,8 @@ public class ParentValidatorUnitTest extends BaseUnitTest {
         // given
         ParentRequestApiDto parentRequestApiDto = parentUtil.prepareParentRequestApiDto(1L);
 
-        when(repository.existsByPesel(parentRequestApiDto.getPesel(), Role.RoleConst.ROLE_PARENT.getId())).thenReturn(true);
-        lenient().when(resourceCreator.of(ParentValidators.EXCEPTION_MESSAGE_PARENT_PESEL_ALREADY_EXISTS, parentRequestApiDto.getPesel()))
+        when(repository.existsByPesel(parentRequestApiDto.pesel(), Role.RoleConst.ROLE_PARENT.getId())).thenReturn(true);
+        lenient().when(resourceCreator.of(ParentValidators.EXCEPTION_MESSAGE_PARENT_PESEL_ALREADY_EXISTS, parentRequestApiDto.pesel()))
                 .thenReturn(ParentValidators.EXCEPTION_MESSAGE_PARENT_PESEL_ALREADY_EXISTS);
 
         // when
@@ -151,8 +151,8 @@ public class ParentValidatorUnitTest extends BaseUnitTest {
         // given
         ParentRequestApiDto parentRequestApiDto = parentUtil.prepareParentRequestApiDto(1L);
 
-        when(repository.existsByPesel(parentRequestApiDto.getPesel(), Role.RoleConst.ROLE_PARENT.getId())).thenReturn(false);
-        lenient().when(resourceCreator.of(ParentValidators.EXCEPTION_MESSAGE_PARENT_PESEL_ALREADY_EXISTS, parentRequestApiDto.getPesel()))
+        when(repository.existsByPesel(parentRequestApiDto.pesel(), Role.RoleConst.ROLE_PARENT.getId())).thenReturn(false);
+        lenient().when(resourceCreator.of(ParentValidators.EXCEPTION_MESSAGE_PARENT_PESEL_ALREADY_EXISTS, parentRequestApiDto.pesel()))
                 .thenReturn(ParentValidators.EXCEPTION_MESSAGE_PARENT_PESEL_ALREADY_EXISTS);
 
         // when

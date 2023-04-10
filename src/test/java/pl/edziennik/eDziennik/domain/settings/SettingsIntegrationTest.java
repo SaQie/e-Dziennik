@@ -1,18 +1,15 @@
 package pl.edziennik.eDziennik.domain.settings;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-import pl.edziennik.eDziennik.BaseTest;
+import pl.edziennik.eDziennik.BaseTesting;
 import pl.edziennik.eDziennik.domain.settings.dto.SettingsDto;
 import pl.edziennik.eDziennik.domain.settings.dto.SettingsValue;
 import pl.edziennik.eDziennik.domain.settings.services.SettingsService;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 @SpringBootTest
 @Rollback
-public class SettingsIntegrationTest extends BaseTest {
+public class SettingsIntegrationTest extends BaseTesting {
 
 
     @Test
@@ -40,11 +37,11 @@ public class SettingsIntegrationTest extends BaseTest {
 
         settingsService.refreshCache();
         // when
-        settingsService.updateSettings(id, new SettingsValue(true));
+        settingsService.updateSettings(id, new SettingsValue(true, null, null));
 
         // then
         SettingsDto settingsDto = settingsService.getSettingsDataByName(SettingsService.AUTOMATICALLY_INSERT_STUDENT_SUBJECTS_WHEN_ADD);
-        assertTrue(settingsDto.getBooleanValue());
+        assertTrue(settingsDto.booleanValue());
     }
 
     @Test
@@ -55,11 +52,11 @@ public class SettingsIntegrationTest extends BaseTest {
 
         settingsService.refreshCache();
         // when
-        settingsService.updateSettings(id, new SettingsValue(expectedSettingValue));
+        settingsService.updateSettings(id, new SettingsValue(null,expectedSettingValue, null));
 
         // then
         SettingsDto settingsDto = settingsService.getSettingsDataByName(SettingsService.AUTOMATICALLY_INSERT_STUDENT_SUBJECTS_WHEN_ADD);
-        assertEquals(expectedSettingValue, settingsDto.getStringValue());
+        assertEquals(expectedSettingValue, settingsDto.stringValue());
     }
 
     @Test
@@ -70,11 +67,11 @@ public class SettingsIntegrationTest extends BaseTest {
 
         settingsService.refreshCache();
         // when
-        settingsService.updateSettings(id, new SettingsValue(expectedLongValue));
+        settingsService.updateSettings(id, new SettingsValue(null,null,expectedLongValue));
 
         // then
         SettingsDto settingsDto = settingsService.getSettingsDataByName(SettingsService.AUTOMATICALLY_INSERT_STUDENT_SUBJECTS_WHEN_ADD);
-        assertEquals(expectedLongValue, settingsDto.getLongValue());
+        assertEquals(expectedLongValue, settingsDto.longValue());
     }
 
     @Test
@@ -85,13 +82,13 @@ public class SettingsIntegrationTest extends BaseTest {
 
         settingsService.refreshCache();
         // when
-        settingsService.updateSettings(id, new SettingsValue(expectedLongValue));
+        settingsService.updateSettings(id, new SettingsValue(null,null,expectedLongValue));
 
         // then
         SettingsDto settingsDto = settingsService.getSettingsDataByName(SettingsService.AUTOMATICALLY_INSERT_STUDENT_SUBJECTS_WHEN_ADD);
-        assertEquals(expectedLongValue, settingsDto.getLongValue());
-        assertNull(settingsDto.getBooleanValue());
-        assertNull(settingsDto.getStringValue());
+        assertEquals(expectedLongValue, settingsDto.longValue());
+        assertNull(settingsDto.booleanValue());
+        assertNull(settingsDto.stringValue());
     }
 
     @Test
@@ -101,7 +98,7 @@ public class SettingsIntegrationTest extends BaseTest {
 
         settingsService.refreshCache();
         // when
-        BusinessException exception = assertThrows(BusinessException.class, () -> settingsService.updateSettings(id, new SettingsValue((Long) null)));
+        BusinessException exception = assertThrows(BusinessException.class, () -> settingsService.updateSettings(id, new SettingsValue(null,null,(Long) null)));
 
 
         // then
@@ -120,8 +117,8 @@ public class SettingsIntegrationTest extends BaseTest {
         SettingsDto settingsDto = settingsService.getSettingsDataByName(settingName);
 
         // then
-        assertEquals(settingsDto.getId(), 1L);
-        assertEquals(settingsDto.getBooleanValue(), false);
+        assertEquals(settingsDto.id(), 1L);
+        assertEquals(settingsDto.booleanValue(), false);
     }
 
 }

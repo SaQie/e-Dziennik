@@ -1,25 +1,22 @@
 package pl.edziennik.eDziennik.domain.grade;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-import pl.edziennik.eDziennik.BaseTest;
-import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
+import pl.edziennik.eDziennik.BaseTesting;
 import pl.edziennik.eDziennik.domain.grade.domain.Grade;
 import pl.edziennik.eDziennik.domain.grade.dto.GradeRequestApiDto;
-import pl.edziennik.eDziennik.domain.grade.service.GradeService;
+import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @SpringBootTest
 @Rollback
-public class GradeIntegrationTest extends BaseTest {
+public class GradeIntegrationTest extends BaseTesting {
 
     @ParameterizedTest
     @ValueSource(ints = {1,2,3,4,5,6})
@@ -28,7 +25,7 @@ public class GradeIntegrationTest extends BaseTest {
         GradeRequestApiDto expected = gradeUtil.prepareRequestApi(grade, 1);
 
         // when
-        Long id = gradeService.addNewGrade(expected).getId();
+        Long id = gradeService.addNewGrade(expected).id();
 
         // then
         Grade actual = find(Grade.class, id);
@@ -55,11 +52,11 @@ public class GradeIntegrationTest extends BaseTest {
     public void shouldFindGradeWithGivenId(){
         // given
         GradeRequestApiDto expected = gradeUtil.prepareRequestApi(1, 1);
-        Long gradeId = gradeService.addNewGrade(expected).getId();
+        Long gradeId = gradeService.addNewGrade(expected).id();
         assertNotNull(gradeId);
 
         // when
-        Long id = gradeService.findGradeById(gradeId).getId();
+        Long id = gradeService.findGradeById(gradeId).id();
 
         // then
         assertNotNull(id);
@@ -74,11 +71,11 @@ public class GradeIntegrationTest extends BaseTest {
     public void shouldUpdateGrade(){
         // given
         GradeRequestApiDto dto = gradeUtil.prepareRequestApi(1, 1);
-        Long gradeId = gradeService.addNewGrade(dto).getId();
+        Long gradeId = gradeService.addNewGrade(dto).id();
         GradeRequestApiDto expected = gradeUtil.prepareRequestApi(2, 2);
 
         // when
-        Long updated = gradeService.updateGrade(gradeId, expected).getId();
+        Long updated = gradeService.updateGrade(gradeId, expected).id();
 
         // then
         assertNotNull(updated);

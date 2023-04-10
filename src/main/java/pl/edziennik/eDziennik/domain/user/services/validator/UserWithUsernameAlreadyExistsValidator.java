@@ -28,9 +28,9 @@ class UserWithUsernameAlreadyExistsValidator implements UserValidators {
 
     @Override
     public Optional<ApiValidationResult> validate(UserRequestDto dto) {
-        if (repository.existsByUsername(dto.getUsername())) {
+        if (repository.existsByUsername(dto.username())) {
 
-            String message = resourceCreator.of(EXCEPTION_MESSAGE_USER_ALREADY_EXISTS, dto.getUsername());
+            String message = resourceCreator.of(EXCEPTION_MESSAGE_USER_ALREADY_EXISTS, dto.username());
 
             ApiValidationResult apiValidationResult = ApiValidationResult.builder()
                     .field(UserRequestDto.USERNAME)

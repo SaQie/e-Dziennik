@@ -24,15 +24,15 @@ public class SchoolLevelMapper {
 
     public static SchoolLevel toEntity(SchoolLevelResponseApiDto dto) {
         return new SchoolLevel(
-                dto.getId(),
-                dto.getName()
+                dto.id(),
+                dto.name()
         );
     }
 
     public static SchoolLevel toEntity(SchoolLevelRequestApiDto dto) {
         return new SchoolLevel(
-                dto.getId(),
-                dto.getName()
+                dto.id(),
+                dto.name()
         );
     }
 }

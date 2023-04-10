@@ -6,9 +6,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-import pl.edziennik.eDziennik.BaseTest;
+import pl.edziennik.eDziennik.BaseTesting;
 import pl.edziennik.eDziennik.domain.school.domain.School;
-import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherResponseApiDto;
@@ -21,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 @SpringBootTest
 @Rollback
-public class TeacherIntegrationTest extends BaseTest {
+public class TeacherIntegrationTest extends BaseTesting {
 
     @Test
     public void shouldSaveNewTeacher() {
@@ -29,18 +28,18 @@ public class TeacherIntegrationTest extends BaseTest {
         TeacherRequestApiDto expected = teacherUtil.prepareTeacherRequestDto();
 
         // when
-        Long id = teacherService.register(expected).getId();
+        Long id = teacherService.register(expected).id();
 
         // then
         assertNotNull(id);
         Teacher actual = find(Teacher.class, id);
 
-        assertEquals(expected.getFirstName(), actual.getPersonInformation().getFirstName());
-        assertEquals(expected.getLastName(), actual.getPersonInformation().getLastName());
-        assertEquals(expected.getAddress(), actual.getAddress().getAddress());
-        assertEquals(expected.getPesel(), actual.getPersonInformation().getPesel());
-        assertEquals(expected.getCity(), actual.getAddress().getCity());
-        assertEquals(expected.getUsername(), actual.getUser().getUsername());
+        assertEquals(expected.firstName(), actual.getPersonInformation().getFirstName());
+        assertEquals(expected.lastName(), actual.getPersonInformation().getLastName());
+        assertEquals(expected.address(), actual.getAddress().getAddress());
+        assertEquals(expected.pesel(), actual.getPersonInformation().getPesel());
+        assertEquals(expected.city(), actual.getAddress().getCity());
+        assertEquals(expected.username(), actual.getUser().getUsername());
         assertEquals(teacherUtil.defaultRole, actual.getUser().getRole().getName());
     }
 
@@ -48,23 +47,23 @@ public class TeacherIntegrationTest extends BaseTest {
     public void shouldUpdateTeacher() {
         // given
         TeacherRequestApiDto dto = teacherUtil.prepareTeacherRequestDto();
-        Long id = teacherService.register(dto).getId();
+        Long id = teacherService.register(dto).id();
         TeacherRequestApiDto expected = teacherUtil.prepareTeacherRequestDto("AfterEdit", "AfterEdit2", "55555251",
                 "test2" + "@example.com");
 
         // when
-        Long updated = teacherService.updateTeacher(id, expected).getId();
+        Long updated = teacherService.updateTeacher(id, expected).id();
 
         // then
         assertNotNull(updated);
         assertEquals(updated, id);
         Teacher actual = find(Teacher.class, updated);
 
-        assertEquals(expected.getFirstName(), actual.getPersonInformation().getFirstName());
-        assertEquals(expected.getLastName(), actual.getPersonInformation().getLastName());
-        assertEquals(expected.getAddress(), actual.getAddress().getAddress());
-        assertEquals(expected.getPesel(), actual.getPersonInformation().getPesel());
-        assertEquals(expected.getCity(), actual.getAddress().getCity());
+        assertEquals(expected.firstName(), actual.getPersonInformation().getFirstName());
+        assertEquals(expected.lastName(), actual.getPersonInformation().getLastName());
+        assertEquals(expected.address(), actual.getAddress().getAddress());
+        assertEquals(expected.pesel(), actual.getPersonInformation().getPesel());
+        assertEquals(expected.city(), actual.getAddress().getCity());
         assertEquals(teacherUtil.defaultRole, actual.getUser().getRole().getName());
 
     }
@@ -73,21 +72,21 @@ public class TeacherIntegrationTest extends BaseTest {
     public void shouldThrowExceptionWhenUpdateAndSchoolNotExists(){
         // given
         TeacherRequestApiDto dto = teacherUtil.prepareTeacherRequestDto();
-        Long id = teacherService.register(dto).getId();
+        Long id = teacherService.register(dto).id();
         TeacherRequestApiDto expected = teacherUtil.prepareTeacherRequestDto(999999L);
 
         // when
 
         // then
         Exception exception = assertThrows(EntityNotFoundException.class, () -> teacherService.updateTeacher(id, expected));
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", expected.getIdSchool(), School.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", expected.idSchool(), School.class.getSimpleName()));
     }
 
     @Test
     public void shouldDeleteTeacher() {
         // given
         TeacherRequestApiDto dto = teacherUtil.prepareTeacherRequestDto();
-        Long id = teacherService.register(dto).getId();
+        Long id = teacherService.register(dto).id();
         assertNotNull(id);
 
         // when
@@ -105,8 +104,8 @@ public class TeacherIntegrationTest extends BaseTest {
         TeacherRequestApiDto firstTeacher = teacherUtil.prepareTeacherRequestDto();
         TeacherRequestApiDto secondTeacher = teacherUtil.prepareTeacherRequestDto("TEST1", "TESTOWY2", "12356", "test2" +
                 "@example.com");
-        Long firstTeacherId = teacherService.register(firstTeacher).getId();
-        Long secondTeacherId = teacherService.register(secondTeacher).getId();
+        Long firstTeacherId = teacherService.register(firstTeacher).id();
+        Long secondTeacherId = teacherService.register(secondTeacher).id();
         assertNotNull(firstTeacherId);
         assertNotNull(secondTeacherId);
 
@@ -123,7 +122,7 @@ public class TeacherIntegrationTest extends BaseTest {
     public void shouldFindTeacherWithGivenId() {
         // given
         TeacherRequestApiDto expected = teacherUtil.prepareTeacherRequestDto();
-        Long id = teacherService.register(expected).getId();
+        Long id = teacherService.register(expected).id();
         assertNotNull(id);
 
         // when
@@ -131,22 +130,22 @@ public class TeacherIntegrationTest extends BaseTest {
 
         // then
         assertNotNull(actual);
-        assertEquals(expected.getFirstName(), actual.getFirstName());
-        assertEquals(expected.getLastName(), actual.getLastName());
-        assertEquals(expected.getAddress(), actual.getAddress());
-        assertEquals(expected.getPesel(), actual.getPesel());
-        assertEquals(expected.getCity(), actual.getCity());
-        assertEquals(ROLE_TEACHER_TEXT, actual.getRole());
+        assertEquals(expected.firstName(), actual.firstName());
+        assertEquals(expected.lastName(), actual.lastName());
+        assertEquals(expected.address(), actual.address());
+        assertEquals(expected.pesel(), actual.pesel());
+        assertEquals(expected.city(), actual.city());
+        assertEquals(ROLE_TEACHER_TEXT, actual.role());
     }
 
     @Test
     public void shouldAssignDefaultRoleIfRoleIsEmpty() {
         // given
         TeacherRequestApiDto dto = teacherUtil.prepareTeacherRequestDto();
-        assertNull(dto.getRole());
+        assertNull(dto.role());
 
         // when
-        String actualRole = teacherService.register(dto).getRole();
+        String actualRole = teacherService.register(dto).role();
 
         // then
         assertEquals(ROLE_TEACHER_TEXT, actualRole);
@@ -183,7 +182,7 @@ public class TeacherIntegrationTest extends BaseTest {
                 exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(TeacherRequestApiDto.PESEL, exception.getErrors().get(0).getField());
         String expectedExceptionMessage = resourceCreator.of(TeacherValidators.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE,
-                dto.getPesel());
+                dto.pesel());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 

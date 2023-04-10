@@ -41,7 +41,7 @@ public class SubjectValidatorUnitTest extends BaseUnitTest {
         SubjectRequestApiDto dto = subjectUtil.prepareSubjectRequestDto("Przyroda", null, 1L);
         when(repository.existsByNameAndSchoolClassId("Przyroda", 1L)).thenReturn(true);
         when(schoolClassRepository.findById(1L)).thenReturn(Optional.of(new SchoolClass()));
-        lenient().when(resourceCreator.of(SubjectValidators.EXCEPTION_MESSAGE_SUBJECT_ALREADY_EXIST, dto.getName(), null))
+        lenient().when(resourceCreator.of(SubjectValidators.EXCEPTION_MESSAGE_SUBJECT_ALREADY_EXIST, dto.name(), null))
                 .thenReturn(SubjectValidators.EXCEPTION_MESSAGE_SUBJECT_ALREADY_EXIST);
 
         // when

@@ -31,11 +31,11 @@ class SubjectAlreadyExistValidator extends BaseService implements SubjectValidat
 
     @Override
     public Optional<ApiValidationResult> validate(SubjectRequestApiDto dto) {
-        if (repository.existsByNameAndSchoolClassId(dto.getName(), dto.getIdSchoolClass())) {
-            SchoolClass schoolClass = schoolClassRepository.findById(dto.getIdSchoolClass())
-                    .orElseThrow(notFoundException(dto.getIdSchoolClass(), SchoolClass.class));
+        if (repository.existsByNameAndSchoolClassId(dto.name(), dto.idSchoolClass())) {
+            SchoolClass schoolClass = schoolClassRepository.findById(dto.idSchoolClass())
+                    .orElseThrow(notFoundException(dto.idSchoolClass(), SchoolClass.class));
 
-            String message = resourceCreator.of(EXCEPTION_MESSAGE_SUBJECT_ALREADY_EXIST, dto.getName(), schoolClass.getClassName());
+            String message = resourceCreator.of(EXCEPTION_MESSAGE_SUBJECT_ALREADY_EXIST, dto.name(), schoolClass.getClassName());
 
             ApiValidationResult apiValidationResult = ApiValidationResult.builder()
                     .field(SubjectRequestApiDto.NAME)

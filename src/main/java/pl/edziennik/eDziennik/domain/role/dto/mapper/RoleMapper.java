@@ -21,7 +21,7 @@ public class RoleMapper {
 
     public static Role toEntity(RoleResponseApiDto dto) {
         return new Role(
-                dto.getId(),
-                dto.getName());
+                dto.id(),
+                dto.name());
     }
 }

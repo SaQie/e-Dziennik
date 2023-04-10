@@ -1,13 +1,10 @@
 package pl.edziennik.eDziennik;
 
-import liquibase.repackaged.org.apache.commons.lang3.RandomStringUtils;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.domain.admin.AdminIntegrationTestUtil;
 import pl.edziennik.eDziennik.domain.admin.services.AdminService;
@@ -49,7 +46,7 @@ import java.math.BigInteger;
  */
 @SpringBootTest
 @Transactional
-public class BaseTest {
+public class BaseTesting {
 
     @Autowired
     private DataSource dataSource;
@@ -116,7 +113,7 @@ public class BaseTest {
     protected UserIntegrationTestUtil userUtil;
     protected StudentSubjectIntegrationTestUtil studentSubjectUtil;
 
-    public BaseTest() {
+    public BaseTesting() {
         this.parentUtil = new ParentIntegrationTestUtil();
         this.studentUtil = new StudentIntegrationTestUtil();
         this.teacherUtil = new TeacherIntegrationTestUtil();
@@ -156,14 +153,14 @@ public class BaseTest {
     protected Long createBaseStudent() {
         StudentRequestApiDto studentRequestApiDto = studentUtil.prepareStudentRequestDto();
         StudentResponseApiDto response = studentService.register(studentRequestApiDto);
-        return response.getId();
+        return response.id();
     }
 
     protected Long createBaseParent() {
         Long idStudent = createBaseStudent();
         ParentRequestApiDto parentRequestApiDto = parentUtil.prepareParentRequestApiDto(idStudent);
         ParentResponseApiDto response = parentService.register(parentRequestApiDto);
-        return response.getId();
+        return response.id();
     }
 
     protected String getStudentFullName(Long idStudent) {

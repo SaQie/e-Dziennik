@@ -29,9 +29,9 @@ class ParentPeselNotUniqueValidator implements ParentValidators {
 
     @Override
     public Optional<ApiValidationResult> validate(ParentRequestApiDto dto) {
-        if (repository.existsByPesel(dto.getPesel(), Role.RoleConst.ROLE_PARENT.getId())) {
+        if (repository.existsByPesel(dto.pesel(), Role.RoleConst.ROLE_PARENT.getId())) {
 
-            String message = resourceCreator.of(EXCEPTION_MESSAGE_PARENT_PESEL_ALREADY_EXISTS, dto.getPesel());
+            String message = resourceCreator.of(EXCEPTION_MESSAGE_PARENT_PESEL_ALREADY_EXISTS, dto.pesel());
 
             ApiValidationResult apiValidationResult = ApiValidationResult.builder()
                     .field(ParentRequestApiDto.PESEL)

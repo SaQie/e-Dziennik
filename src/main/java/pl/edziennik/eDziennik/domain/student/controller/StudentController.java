@@ -31,7 +31,7 @@ public class StudentController {
         StudentResponseApiDto responseApiDto = service.register(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(responseApiDto.getId())
+                .buildAndExpand(responseApiDto.id())
                 .toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.CREATED, responseApiDto, uri);
     }
@@ -74,9 +74,9 @@ public class StudentController {
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/students")
                 .path("/{id}")
-                .buildAndExpand(responseApiDto.getId())
+                .buildAndExpand(responseApiDto.id())
                 .toUri();
-        if (responseApiDto.getId().equals(id)) {
+        if (responseApiDto.id().equals(id)) {
             ApiResponseCreator.buildApiResponse(HttpMethod.PUT, HttpStatus.OK, responseApiDto, uri);
         }
         return ApiResponseCreator.buildApiResponse(HttpMethod.PUT, HttpStatus.OK, responseApiDto, uri);

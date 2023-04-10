@@ -1,71 +1,67 @@
 package pl.edziennik.eDziennik.domain.school;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-import pl.edziennik.eDziennik.BaseTest;
-import pl.edziennik.eDziennik.server.exceptions.BusinessException;
-import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
+import pl.edziennik.eDziennik.BaseTesting;
 import pl.edziennik.eDziennik.domain.school.domain.School;
 import pl.edziennik.eDziennik.domain.school.dto.SchoolRequestApiDto;
 import pl.edziennik.eDziennik.domain.school.dto.SchoolResponseApiDto;
-import pl.edziennik.eDziennik.domain.school.services.SchoolService;
 import pl.edziennik.eDziennik.domain.school.services.validator.SchoolValidators;
 import pl.edziennik.eDziennik.domain.schoollevel.domain.SchoolLevel;
+import pl.edziennik.eDziennik.server.exceptions.BusinessException;
+import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @SpringBootTest
 @Rollback
-public class SchoolIntegrationTest extends BaseTest {
+public class SchoolIntegrationTest extends BaseTesting {
     @Test
     public void shouldSaveNewSchool() {
         // given
         SchoolRequestApiDto expected = schoolUtil.prepareSchoolRequestApi();
 
         // when
-        Long id = schoolService.createNewSchool(expected).getId();
+        Long id = schoolService.createNewSchool(expected).id();
 
         // then
         assertNotNull(id);
         School actual = find(School.class, id);
 
-        assertEquals(expected.getName(), actual.getName());
-        assertEquals(expected.getAddress(), actual.getAddress().getAddress());
-        assertEquals(expected.getNip(), actual.getNip());
-        assertEquals(expected.getCity(), actual.getAddress().getCity());
-        assertEquals(expected.getPostalCode(), actual.getAddress().getPostalCode());
-        assertEquals(expected.getRegon(), actual.getRegon());
-        assertEquals(expected.getIdSchoolLevel(), actual.getSchoolLevel().getId());
+        assertEquals(expected.name(), actual.getName());
+        assertEquals(expected.address(), actual.getAddress().getAddress());
+        assertEquals(expected.nip(), actual.getNip());
+        assertEquals(expected.city(), actual.getAddress().getCity());
+        assertEquals(expected.postalCode(), actual.getAddress().getPostalCode());
+        assertEquals(expected.regon(), actual.getRegon());
+        assertEquals(expected.idSchoolLevel(), actual.getSchoolLevel().getId());
     }
 
     @Test
     public void shouldUpdateSchool() {
         // given
         SchoolRequestApiDto dto = schoolUtil.prepareSchoolRequestApi();
-        Long id = schoolService.createNewSchool(dto).getId();
+        Long id = schoolService.createNewSchool(dto).id();
         SchoolRequestApiDto expected = schoolUtil.prepareSchoolRequestApi("afterEdit", "555555", "555555");
 
         // when
-        Long updated = schoolService.updateSchool(id, expected).getId();
+        Long updated = schoolService.updateSchool(id, expected).id();
 
         // then
         assertNotNull(updated);
         assertEquals(updated, id);
         School actual = find(School.class, updated);
         assertNotNull(actual);
-        assertEquals(expected.getName(), actual.getName());
-        assertEquals(expected.getAddress(), actual.getAddress().getAddress());
-        assertEquals(expected.getNip(), actual.getNip());
-        assertEquals(expected.getCity(), actual.getAddress().getCity());
-        assertEquals(expected.getPostalCode(), actual.getAddress().getPostalCode());
-        assertEquals(expected.getRegon(), actual.getRegon());
-        assertEquals(expected.getIdSchoolLevel(), actual.getSchoolLevel().getId());
+        assertEquals(expected.name(), actual.getName());
+        assertEquals(expected.address(), actual.getAddress().getAddress());
+        assertEquals(expected.nip(), actual.getNip());
+        assertEquals(expected.city(), actual.getAddress().getCity());
+        assertEquals(expected.postalCode(), actual.getAddress().getPostalCode());
+        assertEquals(expected.regon(), actual.getRegon());
+        assertEquals(expected.idSchoolLevel(), actual.getSchoolLevel().getId());
 
     }
 
@@ -86,19 +82,19 @@ public class SchoolIntegrationTest extends BaseTest {
     public void shouldReturnSchoolWithGivenId() {
         // given
         SchoolRequestApiDto expected = schoolUtil.prepareSchoolRequestApi();
-        Long id = schoolService.createNewSchool(expected).getId();
+        Long id = schoolService.createNewSchool(expected).id();
 
         // when
         SchoolResponseApiDto actual = schoolService.findSchoolById(id);
 
         // then
-        assertEquals(expected.getName(), actual.getName());
-        assertEquals(expected.getAddress(), actual.getAddress());
-        assertEquals(expected.getNip(), actual.getNip());
-        assertEquals(expected.getCity(), actual.getCity());
-        assertEquals(expected.getPostalCode(), actual.getPostalCode());
-        assertEquals(expected.getRegon(), actual.getRegon());
-        assertEquals(expected.getIdSchoolLevel(), actual.getSchoolLevel().getId());
+        assertEquals(expected.name(), actual.name());
+        assertEquals(expected.address(), actual.address());
+        assertEquals(expected.nip(), actual.nip());
+        assertEquals(expected.city(), actual.city());
+        assertEquals(expected.postalCode(), actual.postalCode());
+        assertEquals(expected.regon(), actual.regon());
+        assertEquals(expected.idSchoolLevel(), actual.schoolLevel().id());
     }
 
     @Test
@@ -129,7 +125,7 @@ public class SchoolIntegrationTest extends BaseTest {
         assertEquals(1, exception.getErrors().size());
         assertEquals(SchoolValidators.SCHOOL_ALREADY_EXISTS_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(SchoolRequestApiDto.NAME, exception.getErrors().get(0).getField());
-        String expectedExceptionMessage = resourceCreator.of(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_ALREADY_EXIST, dto2.getName());
+        String expectedExceptionMessage = resourceCreator.of(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_ALREADY_EXIST, dto2.name());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
 
 
@@ -152,7 +148,7 @@ public class SchoolIntegrationTest extends BaseTest {
         assertEquals(1, exception.getErrors().size());
         assertEquals(SchoolValidators.SCHOOL_REGON_ALREADY_EXISTS_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(SchoolRequestApiDto.REGON, exception.getErrors().get(0).getField());
-        String expectedExceptionMessage = resourceCreator.of(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_WITH_REGON_ALREADY_EXIST, dto2.getRegon());
+        String expectedExceptionMessage = resourceCreator.of(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_WITH_REGON_ALREADY_EXIST, dto2.regon());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 
@@ -172,7 +168,7 @@ public class SchoolIntegrationTest extends BaseTest {
         assertEquals(1, exception.getErrors().size());
         assertEquals(SchoolValidators.SCHOOL_NIP_ALREADY_EXISTS_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(SchoolRequestApiDto.NIP, exception.getErrors().get(0).getField());
-        String expectedExceptionMessage = resourceCreator.of(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_WITH_NIP_ALREADY_EXIST, dto2.getNip());
+        String expectedExceptionMessage = resourceCreator.of(SchoolValidators.EXCEPTION_MESSAGE_SCHOOL_WITH_NIP_ALREADY_EXIST, dto2.nip());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 

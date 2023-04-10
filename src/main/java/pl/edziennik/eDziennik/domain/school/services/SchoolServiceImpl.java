@@ -65,16 +65,16 @@ class SchoolServiceImpl extends BaseService implements SchoolService {
 
             // update school data
             School school = optionalSchool.get();
-            school.setName(dto.getName());
-            school.setNip(dto.getNip());
-            school.setRegon(dto.getRegon());
-            school.setPhoneNumber(dto.getPhoneNumber());
+            school.setName(dto.name());
+            school.setNip(dto.nip());
+            school.setRegon(dto.regon());
+            school.setPhoneNumber(dto.phoneNumber());
 
             // update address data
             Address address = school.getAddress();
-            address.setAddress(dto.getAddress());
-            address.setPostalCode(dto.getPostalCode());
-            address.setCity(dto.getCity());
+            address.setAddress(dto.address());
+            address.setPostalCode(dto.postalCode());
+            address.setCity(dto.city());
 
             return SchoolMapper.toDto(school);
         }
@@ -83,8 +83,8 @@ class SchoolServiceImpl extends BaseService implements SchoolService {
 
     private School mapToEntity(SchoolRequestApiDto dto) {
         School school = SchoolMapper.toEntity(dto);
-        schoolLevelRepository.findById(dto.getIdSchoolLevel())
-                .ifPresentOrElse(school::setSchoolLevel, notFoundException(SchoolLevel.class, dto.getIdSchoolLevel()));
+        schoolLevelRepository.findById(dto.idSchoolLevel())
+                .ifPresentOrElse(school::setSchoolLevel, notFoundException(SchoolLevel.class, dto.idSchoolLevel()));
         return school;
     }
 }

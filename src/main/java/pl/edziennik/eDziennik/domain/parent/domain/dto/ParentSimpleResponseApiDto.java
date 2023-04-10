@@ -1,15 +1,12 @@
 package pl.edziennik.eDziennik.domain.parent.domain.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 
-@Getter
-public class ParentSimpleResponseApiDto {
+@Builder
+public record ParentSimpleResponseApiDto(
+        Long id,
+        String fullName
+) {
 
-    private final Long id;
-    private final String fullName;
-
-    public ParentSimpleResponseApiDto(Long id, String fullName) {
-        this.id = id;
-        this.fullName = fullName;
-    }
 }

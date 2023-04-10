@@ -53,7 +53,7 @@ class StudentServiceImpl extends BaseService implements StudentService {
         Student student = mapToEntity(dto);
         User user = userService.createUser(UserMapper.toDto(dto));
         student.setUser(user);
-        assignAllSchoolClassSubjectsToStudentIfNeeded(student, dto.getIdSchoolClass());
+        assignAllSchoolClassSubjectsToStudentIfNeeded(student, dto.idSchoolClass());
         return StudentMapper.toDto(repository.save(student));
     }
 
@@ -96,10 +96,10 @@ class StudentServiceImpl extends BaseService implements StudentService {
 
             // update student data
             Student student = optionalStudent.get();
-            schoolRepository.findById(dto.getIdSchool())
-                    .ifPresentOrElse(student::setSchool,notFoundException(School.class, dto.getIdSchool()));
-            schoolClassRepository.findById(dto.getIdSchoolClass())
-                    .ifPresentOrElse(student::setSchoolClass, notFoundException(SchoolClass.class, dto.getIdSchoolClass()));
+            schoolRepository.findById(dto.idSchool())
+                    .ifPresentOrElse(student::setSchool,notFoundException(School.class, dto.idSchool()));
+            schoolClassRepository.findById(dto.idSchoolClass())
+                    .ifPresentOrElse(student::setSchoolClass, notFoundException(SchoolClass.class, dto.idSchoolClass()));
 
             // update person information student data
             Long idPersonInformation = student.getPersonInformation().getId();
@@ -122,10 +122,10 @@ class StudentServiceImpl extends BaseService implements StudentService {
 
     private Student mapToEntity(StudentRequestApiDto dto) {
         Student student = StudentMapper.toEntity(dto);
-        School school = schoolRepository.findById(dto.getIdSchool())
-                .orElseThrow(notFoundException(dto.getIdSchool(), School.class));
-        SchoolClass schoolClass = schoolClassRepository.findById(dto.getIdSchool())
-                .orElseThrow(notFoundException(dto.getIdSchool(), SchoolClass.class));
+        School school = schoolRepository.findById(dto.idSchool())
+                .orElseThrow(notFoundException(dto.idSchool(), School.class));
+        SchoolClass schoolClass = schoolClassRepository.findById(dto.idSchool())
+                .orElseThrow(notFoundException(dto.idSchool(), SchoolClass.class));
         student.setSchool(school);
         student.setSchoolClass(schoolClass);
         return student;
@@ -133,7 +133,7 @@ class StudentServiceImpl extends BaseService implements StudentService {
 
     private void assignAllSchoolClassSubjectsToStudentIfNeeded(Student student, Long idSchoolClass) {
         // This method will assign automatically all subjects assigned to school class to selected student if configuration is enabled
-        if (settingsService.getSettingsDataByName(SettingsService.AUTOMATICALLY_INSERT_STUDENT_SUBJECTS_WHEN_ADD).getBooleanValue()) {
+        if (settingsService.getSettingsDataByName(SettingsService.AUTOMATICALLY_INSERT_STUDENT_SUBJECTS_WHEN_ADD).booleanValue()) {
             SchoolClass schoolClass = schoolClassRepository.findById(idSchoolClass)
                     .orElseThrow(notFoundException(idSchoolClass, SchoolClass.class));
             if (!schoolClass.getSubjects().isEmpty()) {

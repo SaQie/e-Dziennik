@@ -1,36 +1,25 @@
 package pl.edziennik.eDziennik.domain.studentsubject;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-import pl.edziennik.eDziennik.BaseTest;
-import pl.edziennik.eDziennik.server.exceptions.BusinessException;
-import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
-import pl.edziennik.eDziennik.domain.grade.GradeIntegrationTestUtil;
+import pl.edziennik.eDziennik.BaseTesting;
 import pl.edziennik.eDziennik.domain.grade.dto.GradeRequestApiDto;
-import pl.edziennik.eDziennik.domain.grade.service.managment.GradeManagmentService;
+import pl.edziennik.eDziennik.domain.student.domain.Student;
+import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.request.StudentSubjectRequestDto;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentGradesInSubjectDto;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentSubjectsResponseDto;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.response.SubjectGradesResponseDto;
-import pl.edziennik.eDziennik.domain.studentsubject.services.StudentSubjectService;
 import pl.edziennik.eDziennik.domain.studentsubject.services.validator.StudentSubjectValidators;
-import pl.edziennik.eDziennik.domain.student.domain.Student;
-import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
-import pl.edziennik.eDziennik.domain.student.services.StudentService;
 import pl.edziennik.eDziennik.domain.subject.domain.Subject;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectResponseApiDto;
-import pl.edziennik.eDziennik.domain.subject.services.SubjectService;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
-import pl.edziennik.eDziennik.domain.teacher.services.TeacherService;
-import pl.edziennik.eDziennik.domain.student.StudentIntegrationTestUtil;
-import pl.edziennik.eDziennik.domain.subject.SubjectIntegrationTestUtil;
-import pl.edziennik.eDziennik.domain.teacher.TeacherIntegrationTestUtil;
+import pl.edziennik.eDziennik.server.exceptions.BusinessException;
+import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
@@ -39,18 +28,18 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 @SpringBootTest
 @Rollback
-public class StudentSubjectIntegrationTest extends BaseTest {
+public class StudentSubjectIntegrationTest extends BaseTesting {
     @Test
     public void shouldAssignStudentToSubject() {
         // given
         TeacherRequestApiDto teacherDto = teacherUtil.prepareTeacherRequestDto();
-        Long teacherId = teacherService.register(teacherDto).getId();
+        Long teacherId = teacherService.register(teacherDto).id();
 
         StudentRequestApiDto studentDto = studentUtil.prepareStudentRequestDto("Test333", "test5@example.com");
-        Long studentId = studentService.register(studentDto).getId();
+        Long studentId = studentService.register(studentDto).id();
 
         SubjectRequestApiDto subjectDto = studentSubjectUtil.prepareSubject(teacherId);
-        Long subjectId = subjectService.createNewSubject(subjectDto).getId();
+        Long subjectId = subjectService.createNewSubject(subjectDto).id();
 
         StudentSubjectRequestDto requestDto = studentSubjectUtil.prepareStudentSubjectRequestDto(subjectId, studentId);
 
@@ -69,9 +58,9 @@ public class StudentSubjectIntegrationTest extends BaseTest {
         assertEquals(expectedStudent.getId(), studentSubject.getId());
 
         SubjectResponseApiDto actualSubject = studentSubject.getSubjects().get(0);
-        assertEquals(expectedSubject.getName(), actualSubject.getName());
-        assertEquals(expectedSubject.getDescription(), actualSubject.getDescription());
-        assertEquals(expectedSubject.getTeacher().getId(), actualSubject.getTeacher().getId());
+        assertEquals(expectedSubject.getName(), actualSubject.name());
+        assertEquals(expectedSubject.getDescription(), actualSubject.description());
+        assertEquals(expectedSubject.getTeacher().getId(), actualSubject.teacher().id());
     }
 
     @Test
@@ -80,10 +69,10 @@ public class StudentSubjectIntegrationTest extends BaseTest {
         Long studentId = 999L;
 
         TeacherRequestApiDto teacherDto = teacherUtil.prepareTeacherRequestDto();
-        Long teacherId = teacherService.register(teacherDto).getId();
+        Long teacherId = teacherService.register(teacherDto).id();
 
         SubjectRequestApiDto subjectDto = studentSubjectUtil.prepareSubject(teacherId);
-        Long subjectId = subjectService.createNewSubject(subjectDto).getId();
+        Long subjectId = subjectService.createNewSubject(subjectDto).id();
 
         StudentSubjectRequestDto requestDto = studentSubjectUtil.prepareStudentSubjectRequestDto(subjectId, studentId);
 
@@ -98,10 +87,10 @@ public class StudentSubjectIntegrationTest extends BaseTest {
     public void shouldThrowsExceptionWhenTryingAssignStudentToSubjectAndSubjectNotExist() {
         // given
         StudentRequestApiDto studentDto = studentUtil.prepareStudentRequestDto();
-        Long studentId = studentService.register(studentDto).getId();
+        Long studentId = studentService.register(studentDto).id();
 
         StudentSubjectRequestDto requestDto = studentSubjectUtil.prepareStudentSubjectRequestDto(999L, studentId);
-        Long subjectId = requestDto.getIdSubject();
+        Long subjectId = requestDto.idSubject();
 
         // when
         Exception exception = assertThrows(EntityNotFoundException.class, () -> studentSubjectService.assignStudentToSubject(requestDto));
@@ -114,13 +103,13 @@ public class StudentSubjectIntegrationTest extends BaseTest {
     public void shouldAssignGradeToStudentSubject() {
         // given
         TeacherRequestApiDto teacherDto = teacherUtil.prepareTeacherRequestDto();
-        Long teacherId = teacherService.register(teacherDto).getId();
+        Long teacherId = teacherService.register(teacherDto).id();
 
         StudentRequestApiDto studentDto = studentUtil.prepareStudentRequestDto("Test22221", "Test5@example.com");
-        Long studentId = studentService.register(studentDto).getId();
+        Long studentId = studentService.register(studentDto).id();
 
         SubjectRequestApiDto expectedSubject = studentSubjectUtil.prepareSubject(teacherId);
-        Long subjectId = subjectService.createNewSubject(expectedSubject).getId();
+        Long subjectId = subjectService.createNewSubject(expectedSubject).id();
 
         GradeRequestApiDto expectedGrade = gradeUtil.prepareRequestApi(5, 5);
         expectedGrade.setTeacherName(find(Teacher.class, teacherId).getUser().getUsername());
@@ -135,7 +124,7 @@ public class StudentSubjectIntegrationTest extends BaseTest {
         StudentGradesInSubjectDto studentSubjectGrades = studentSubjectService.getStudentSubjectGrades(studentId, subjectId);
 
         SubjectGradesResponseDto actualSubject = studentSubjectGrades.getSubject();
-        assertEquals(expectedSubject.getName(), actualSubject.getName());
+        assertEquals(expectedSubject.name(), actualSubject.getName());
         assertEquals(subjectId, actualSubject.getId());
 
         List<SubjectGradesResponseDto.GradesDto> actualGrades = studentSubjectGrades.getSubject().getGrades();
@@ -155,8 +144,8 @@ public class StudentSubjectIntegrationTest extends BaseTest {
         // given
         StudentRequestApiDto studentDto = studentUtil.prepareStudentRequestDto();
         SubjectRequestApiDto subjectDto = subjectUtil.prepareSubjectRequestDto("Przyroda", null);
-        Long studentId = studentService.register(studentDto).getId();
-        Long subjectId = subjectService.createNewSubject(subjectDto).getId();
+        Long studentId = studentService.register(studentDto).id();
+        Long subjectId = subjectService.createNewSubject(subjectDto).id();
 
         StudentSubjectRequestDto requestDto = studentSubjectUtil.prepareStudentSubjectRequestDto(subjectId, studentId);
 
@@ -170,8 +159,8 @@ public class StudentSubjectIntegrationTest extends BaseTest {
         assertEquals(StudentSubjectValidators.STUDENT_SUBJECT_ALREADY_EXIST_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(StudentSubjectRequestDto.ID_SUBJECT, exception.getErrors().get(0).getField());
         String expectedExceptionMessage = resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST, find(Student.class,
-                requestDto.getIdStudent()).getPersonInformation().getFirstName() + " " + find(Student.class,
-                requestDto.getIdStudent()).getPersonInformation().getLastName(), find(Subject.class, requestDto.getIdSubject()).getName());
+                requestDto.idStudent()).getPersonInformation().getFirstName() + " " + find(Student.class,
+                requestDto.idStudent()).getPersonInformation().getLastName(), find(Subject.class, requestDto.idSubject()).getName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 
@@ -180,11 +169,11 @@ public class StudentSubjectIntegrationTest extends BaseTest {
         // given
         StudentRequestApiDto studentRequestApiDto = studentUtil.prepareStudentRequestDto();
         // school class - 100L
-        Long idStudent = studentService.register(studentRequestApiDto).getId();
+        Long idStudent = studentService.register(studentRequestApiDto).id();
         assertNotNull(idStudent);
         // school class - 101L
         SubjectRequestApiDto subjectRequestApiDto = subjectUtil.prepareSubjectRequestDto("Chemia", null, 101L);
-        Long idSubject = subjectService.createNewSubject(subjectRequestApiDto).getId();
+        Long idSubject = subjectService.createNewSubject(subjectRequestApiDto).id();
 
         StudentSubjectRequestDto studentSubjectRequestDto = studentSubjectUtil.prepareStudentSubjectRequestDto(idStudent, idSubject);
 
@@ -196,8 +185,8 @@ public class StudentSubjectIntegrationTest extends BaseTest {
         assertEquals(StudentSubjectValidators.STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FRON_DIFFERENT_CLASS_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(StudentSubjectRequestDto.ID_SUBJECT, exception.getErrors().get(0).getField());
         String expectedExceptionMessage = resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS, find(Student.class,
-                studentSubjectRequestDto.getIdStudent()).getPersonInformation().getFirstName() + " " + find(Student.class,
-                studentSubjectRequestDto.getIdStudent()).getPersonInformation().getLastName(), find(Subject.class, studentSubjectRequestDto.getIdSubject()).getName());
+                studentSubjectRequestDto.idStudent()).getPersonInformation().getFirstName() + " " + find(Student.class,
+                studentSubjectRequestDto.idStudent()).getPersonInformation().getLastName(), find(Subject.class, studentSubjectRequestDto.idSubject()).getName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 

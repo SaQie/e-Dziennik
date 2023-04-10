@@ -35,15 +35,15 @@ class TeacherNotBelongsToSchoolValidator extends BaseService implements SchoolCl
 
     @Override
     public Optional<ApiValidationResult> validate(SchoolClassRequestApiDto dto) {
-        if (dto.getIdClassTeacher() != null) {
-            if (!repository.existsByTeacherIdAndSchoolId(dto.getIdClassTeacher(), dto.getIdSchool())) {
-                Teacher teacher = teacherRepository.findById(dto.getIdClassTeacher())
-                        .orElseThrow(notFoundException(dto.getIdClassTeacher(), Teacher.class));
+        if (dto.idClassTeacher() != null) {
+            if (!repository.existsByTeacherIdAndSchoolId(dto.idClassTeacher(), dto.idSchool())) {
+                Teacher teacher = teacherRepository.findById(dto.idClassTeacher())
+                        .orElseThrow(notFoundException(dto.idClassTeacher(), Teacher.class));
 
                 String teacherName = teacher.getPersonInformation().getFullName();
 
-                String schoolName = schoolRepository.findById(dto.getIdSchool())
-                        .orElseThrow(notFoundException(dto.getIdSchool(), School.class)).getName();
+                String schoolName = schoolRepository.findById(dto.idSchool())
+                        .orElseThrow(notFoundException(dto.idSchool(), School.class)).getName();
 
                 String message = resourceCreator.of(EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL, teacherName, schoolName);
 

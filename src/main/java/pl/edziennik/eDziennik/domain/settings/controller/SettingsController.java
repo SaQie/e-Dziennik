@@ -2,6 +2,7 @@ package pl.edziennik.eDziennik.domain.settings.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +43,15 @@ public class SettingsController {
         service.updateSettings(id, value);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.PATCH, HttpStatus.OK, resourceCreator.of("settings.updated.successfully"), uri);
+    }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get specific setting")
+    public ApiResponse<?> findSettingById(@PathVariable Long id){
+        SettingsDto setting = service.findSettingById(id);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+        return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, setting, uri);
     }
 
 }

@@ -65,8 +65,8 @@ class SubjectServiceImpl extends BaseService implements SubjectService {
         if (optionalSubject.isPresent()) {
             validatorService.valid(dto);
             Subject subject = optionalSubject.get();
-            subject.setName(dto.getName());
-            subject.setDescription(dto.getDescription());
+            subject.setName(dto.name());
+            subject.setDescription(dto.description());
             return SubjectMapper.toDto(subject);
         }
         return createNewSubject(dto);
@@ -74,12 +74,12 @@ class SubjectServiceImpl extends BaseService implements SubjectService {
 
     private Subject mapToEntity(SubjectRequestApiDto dto) {
         Subject subject = SubjectMapper.toEntity(dto);
-        if (dto.getIdTeacher() != null) {
-            teacherRepository.findById(dto.getIdTeacher()).ifPresentOrElse(subject::setTeacher,notFoundException(Teacher.class, dto.getIdTeacher()));
+        if (dto.idTeacher() != null) {
+            teacherRepository.findById(dto.idTeacher()).ifPresentOrElse(subject::setTeacher,notFoundException(Teacher.class, dto.idTeacher()));
 
         }
-        SchoolClass schoolClass = schoolClassRepository.findById(dto.getIdSchoolClass())
-                .orElseThrow(notFoundException(dto.getIdSchoolClass(), SchoolClass.class));
+        SchoolClass schoolClass = schoolClassRepository.findById(dto.idSchoolClass())
+                .orElseThrow(notFoundException(dto.idSchoolClass(), SchoolClass.class));
         schoolClass.addSubject(subject);
         return subject;
     }

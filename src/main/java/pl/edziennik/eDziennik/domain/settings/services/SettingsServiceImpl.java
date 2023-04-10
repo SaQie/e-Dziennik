@@ -6,6 +6,7 @@ import pl.edziennik.eDziennik.domain.schoollevel.domain.SchoolLevel;
 import pl.edziennik.eDziennik.domain.settings.domain.Settings;
 import pl.edziennik.eDziennik.domain.settings.dto.SettingsDto;
 import pl.edziennik.eDziennik.domain.settings.dto.SettingsValue;
+import pl.edziennik.eDziennik.domain.settings.dto.mapper.SettingsMapper;
 import pl.edziennik.eDziennik.domain.settings.repository.SettingsRepostory;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
@@ -42,17 +43,13 @@ class SettingsServiceImpl extends BaseService implements SettingsService {
     }
 
     private void addCorrectValue(SettingsDto settingsDto, List<SettingsDto> translatedSettingsData) {
-        if (settingsDto.getBooleanValue() != null) {
-            translatedSettingsData.add(new SettingsDto(settingsDto.getId(), resourceCreator.of(settingsDto.getName()), settingsDto.getBooleanValue()));
-            return;
-        }
-        if (settingsDto.getStringValue() != null) {
-            translatedSettingsData.add(new SettingsDto(settingsDto.getId(), resourceCreator.of(settingsDto.getName()), settingsDto.getStringValue()));
-            return;
-        }
-        if (settingsDto.getLongValue() != null) {
-            translatedSettingsData.add(new SettingsDto(settingsDto.getId(), resourceCreator.of(settingsDto.getName()), settingsDto.getLongValue()));
-        }
+        SettingsDto.SettingsDtoBuilder settingsDtoBuilder = SettingsDto.builder()
+                .name(resourceCreator.of(settingsDto.name()))
+                .booleanValue(settingsDto.booleanValue())
+                .stringValue(settingsDto.stringValue())
+                .longValue(settingsDto.longValue());
+        translatedSettingsData.add(settingsDtoBuilder.build());
+
     }
 
     @Override
@@ -64,6 +61,11 @@ class SettingsServiceImpl extends BaseService implements SettingsService {
         refreshCache();
     }
 
+    @Override
+    public SettingsDto findSettingById(Long id) {
+        refreshCache();
+        return getSettingsDataFromCacheById(id);
+    }
 
     @Override
     public void updateSettings(Long id, SettingsValue value) {
@@ -78,16 +80,16 @@ class SettingsServiceImpl extends BaseService implements SettingsService {
         settings.setLongValue(null);
         settings.setBooleanValue(null);
         settings.setStringValue(null);
-        if (value.getBooleanValue() != null) {
-            settings.setBooleanValue(value.getBooleanValue());
+        if (value.booleanValue() != null) {
+            settings.setBooleanValue(value.booleanValue());
             return;
         }
-        if (value.getStringValue() != null) {
-            settings.setStringValue(value.getStringValue());
+        if (value.stringValue() != null) {
+            settings.setStringValue(value.stringValue());
             return;
         }
-        if (value.getLongValue() != null) {
-            settings.setLongValue(value.getLongValue());
+        if (value.longValue() != null) {
+            settings.setLongValue(value.longValue());
         }
     }
 
@@ -109,7 +111,7 @@ class SettingsServiceImpl extends BaseService implements SettingsService {
     private SettingsDto getSettingsDataFromCacheByName(String name) {
         List<SettingsDto> translatedSettingsData = new ArrayList<>(cacheSettingsList);
         SettingsDto settingsDto = translatedSettingsData.stream()
-                .filter(data -> data.getName().equalsIgnoreCase(name))
+                .filter(data -> data.name().equalsIgnoreCase(name))
                 .findFirst()
                 .orElse(null);
         if (settingsDto == null) {
@@ -118,19 +120,32 @@ class SettingsServiceImpl extends BaseService implements SettingsService {
         return returnCorrectSettingsDto(settingsDto);
     }
 
+    private SettingsDto getSettingsDataFromCacheById(Long id) {
+        List<SettingsDto> translatedSettingsData = new ArrayList<>(cacheSettingsList);
+        SettingsDto settingsDto = translatedSettingsData.stream()
+                .filter(data -> data.id().equals(id))
+                .findFirst()
+                .orElse(null);
+        if (settingsDto == null) {
+            throw new BusinessException("Setting with id " + id + " Not found !");
+        }
+        return returnCorrectSettingsDto(settingsDto);
+    }
+
     private SettingsDto returnCorrectSettingsDto(SettingsDto settingsDto) {
-        Long settingId = settingsDto.getId();
-        String translatedName = resourceCreator.of(settingsDto.getName());
-        if (settingsDto.getBooleanValue() != null) {
-            return new SettingsDto(settingId, translatedName, settingsDto.getBooleanValue());
+        Long settingId = settingsDto.id();
+        String translatedName = resourceCreator.of(settingsDto.name());
+        if (settingsDto.booleanValue() == null && settingsDto.stringValue() == null && settingsDto.longValue() == null) {
+            throw new BusinessException(resourceCreator.of("setting.value.not.set", settingsDto.name()));
         }
-        if (settingsDto.getStringValue() != null) {
-            return new SettingsDto(settingId, translatedName, settingsDto.getStringValue());
-        }
-        if (settingsDto.getLongValue() != null) {
-            return new SettingsDto(settingId, translatedName, settingsDto.getLongValue());
-        }
-        throw new BusinessException(resourceCreator.of("setting.value.not.set", settingsDto.getName()));
+        return SettingsDto.builder()
+                .id(settingId)
+                .name(translatedName)
+                .booleanValue(settingsDto.booleanValue())
+                .stringValue(settingsDto.stringValue())
+                .longValue(settingsDto.longValue())
+                .build();
+
     }
 
 }

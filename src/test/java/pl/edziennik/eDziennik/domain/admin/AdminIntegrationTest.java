@@ -1,24 +1,21 @@
 package pl.edziennik.eDziennik.domain.admin;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-import pl.edziennik.eDziennik.BaseTest;
-import pl.edziennik.eDziennik.server.exceptions.BusinessException;
+import pl.edziennik.eDziennik.BaseTesting;
 import pl.edziennik.eDziennik.domain.admin.domain.Admin;
 import pl.edziennik.eDziennik.domain.admin.dto.AdminRequestApiDto;
-import pl.edziennik.eDziennik.domain.admin.services.AdminService;
 import pl.edziennik.eDziennik.domain.admin.services.validator.AdminValidators;
+import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @SpringBootTest
 @Rollback
-public class AdminIntegrationTest extends BaseTest {
+public class AdminIntegrationTest extends BaseTesting {
 
     @Test
     public void shouldAddNewAdministratorAccount() {
@@ -26,14 +23,14 @@ public class AdminIntegrationTest extends BaseTest {
         AdminRequestApiDto expected = adminUtil.prepareAdminRequest();
 
         // when
-        Long id = adminService.createNewAdminAccount(expected).getId();
+        Long id = adminService.createNewAdminAccount(expected).id();
 
         // then
         assertNotNull(id);
         Admin actual = find(Admin.class, id);
 
-        assertEquals(expected.getUsername(), actual.getUser().getUsername());
-        assertEquals(expected.getEmail(), actual.getUser().getEmail());
+        assertEquals(expected.username(), actual.getUser().getUsername());
+        assertEquals(expected.email(), actual.getUser().getEmail());
 
     }
 
@@ -42,7 +39,7 @@ public class AdminIntegrationTest extends BaseTest {
         // given
         String expectedValidatorName = "AdminAlreadyExistValidator";
         AdminRequestApiDto firstAdminAccount = adminUtil.prepareAdminRequest();
-        Long id = adminService.createNewAdminAccount(firstAdminAccount).getId();
+        Long id = adminService.createNewAdminAccount(firstAdminAccount).id();
         assertNotNull(id);
 
         AdminRequestApiDto secondAdminAccount = adminUtil.prepareAdminRequest();

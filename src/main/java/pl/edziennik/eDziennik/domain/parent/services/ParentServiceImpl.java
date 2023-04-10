@@ -61,7 +61,7 @@ class ParentServiceImpl extends BaseService implements ParentService {
             validatorService.valid(dto);
             // update parent data
             Parent parent = parentOptional.get();
-            Student student = studentRepository.getReferenceById(dto.getIdStudent());
+            Student student = studentRepository.getReferenceById(dto.idStudent());
             parent.setStudent(student);
 
             // update user data
@@ -98,8 +98,8 @@ class ParentServiceImpl extends BaseService implements ParentService {
     private Parent mapToEntity(ParentRequestApiDto dto) {
         Parent parent = ParentMapper.toEntity(dto);
         User user = userService.createUser(UserMapper.toDto(dto));
-        Student student = studentRepository.findById(dto.getIdStudent())
-                .orElseThrow(notFoundException(dto.getIdStudent(), Student.class));
+        Student student = studentRepository.findById(dto.idStudent())
+                .orElseThrow(notFoundException(dto.idStudent(), Student.class));
         parent.setStudent(student);
         parent.setUser(user);
         return parent;

@@ -50,8 +50,8 @@ public class StudentValidatorUnitTest extends BaseUnitTest {
     public void shouldReturnApiErrorWhenStudentPeselNotUnique() {
         // given
         StudentRequestApiDto request = studentUtil.prepareStudentRequestDto();
-        when(studentRepository.isStudentExistsByPesel(request.getPesel(), Role.RoleConst.ROLE_STUDENT.getId())).thenReturn(true);
-        lenient().when(resourceCreator.of(StudentValidators.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, request.getPesel()))
+        when(studentRepository.isStudentExistsByPesel(request.pesel(), Role.RoleConst.ROLE_STUDENT.getId())).thenReturn(true);
+        lenient().when(resourceCreator.of(StudentValidators.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, request.pesel()))
                 .thenReturn(StudentValidators.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE);
 
         // when
@@ -69,7 +69,7 @@ public class StudentValidatorUnitTest extends BaseUnitTest {
     public void shouldNotReturnApiErrorWhenStudentPeselIsUnique() {
         // given
         StudentRequestApiDto request = studentUtil.prepareStudentRequestDto();
-        when(studentRepository.isStudentExistsByPesel(request.getPesel(), Role.RoleConst.ROLE_STUDENT.getId())).thenReturn(false);
+        when(studentRepository.isStudentExistsByPesel(request.pesel(), Role.RoleConst.ROLE_STUDENT.getId())).thenReturn(false);
 
         // when
         Optional<ApiValidationResult> validationResult = peselNotUniqueValidator.validate(request);
@@ -86,8 +86,8 @@ public class StudentValidatorUnitTest extends BaseUnitTest {
         School school = new School();
         school.setSchoolClasses(Collections.emptyList());
 
-        when(schoolRepository.findById(request.getIdSchool())).thenReturn(Optional.of(school));
-        when(schoolClassRepository.findById(request.getIdSchoolClass())).thenReturn(Optional.of(schoolClass));
+        when(schoolRepository.findById(request.idSchool())).thenReturn(Optional.of(school));
+        when(schoolClassRepository.findById(request.idSchoolClass())).thenReturn(Optional.of(schoolClass));
         lenient().when(resourceCreator.of(StudentValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_NOT_BELONG_TO_SCHOOL, null, null))
                 .thenReturn(StudentValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_NOT_BELONG_TO_SCHOOL);
 
@@ -109,8 +109,8 @@ public class StudentValidatorUnitTest extends BaseUnitTest {
         School school = new School();
         school.setSchoolClasses(List.of(schoolClass));
 
-        when(schoolRepository.findById(request.getIdSchool())).thenReturn(Optional.of(school));
-        when(schoolClassRepository.findById(request.getIdSchoolClass())).thenReturn(Optional.of(schoolClass));
+        when(schoolRepository.findById(request.idSchool())).thenReturn(Optional.of(school));
+        when(schoolClassRepository.findById(request.idSchoolClass())).thenReturn(Optional.of(schoolClass));
 
         // when
         Optional<ApiValidationResult> validationResult = belongsToSchoolValidator.validate(request);

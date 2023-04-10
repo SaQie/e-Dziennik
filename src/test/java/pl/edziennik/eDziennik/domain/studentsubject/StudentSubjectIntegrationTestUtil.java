@@ -14,7 +14,7 @@ import pl.edziennik.eDziennik.domain.user.domain.User;
  */
 public class StudentSubjectIntegrationTestUtil {
 
-    private SubjectIntegrationTestUtil subjectUtil;
+    private final SubjectIntegrationTestUtil subjectUtil;
 
     public StudentSubjectIntegrationTestUtil() {
         this.subjectUtil = new SubjectIntegrationTestUtil();

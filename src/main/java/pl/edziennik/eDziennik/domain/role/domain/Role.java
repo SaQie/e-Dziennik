@@ -33,7 +33,7 @@ public class Role{
         ROLE_STUDENT(3L),
         ROLE_PARENT(4L);
 
-        private Long id;
+        private final Long id;
 
         RoleConst(Long id) {
             this.id = id;

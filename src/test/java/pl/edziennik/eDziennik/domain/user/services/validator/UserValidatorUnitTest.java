@@ -37,7 +37,7 @@ public class UserValidatorUnitTest extends BaseUnitTest {
         // given
         UserRequestDto dto = userUtil.prepareRequestDto("Kamil", "test@example.com");
         when(userRepository.existsByEmail("test@example.com")).thenReturn(true);
-        lenient().when(resourceCreator.of(UserValidators.EXCEPTION_MESSAGE_USER_ALREADY_EXISTS_BY_EMAIL, dto.getEmail()))
+        lenient().when(resourceCreator.of(UserValidators.EXCEPTION_MESSAGE_USER_ALREADY_EXISTS_BY_EMAIL, dto.email()))
                 .thenReturn(UserValidators.EXCEPTION_MESSAGE_USER_ALREADY_EXISTS_BY_EMAIL);
 
         // when
@@ -56,7 +56,7 @@ public class UserValidatorUnitTest extends BaseUnitTest {
         // given
         UserRequestDto dto = userUtil.prepareRequestDto("Kamil", "test@example.com");
         when(userRepository.existsByUsername("Kamil")).thenReturn(true);
-        lenient().when(resourceCreator.of(UserValidators.EXCEPTION_MESSAGE_USER_ALREADY_EXISTS, dto.getUsername()))
+        lenient().when(resourceCreator.of(UserValidators.EXCEPTION_MESSAGE_USER_ALREADY_EXISTS, dto.username()))
                 .thenReturn(UserValidators.EXCEPTION_MESSAGE_USER_ALREADY_EXISTS);
 
         // when

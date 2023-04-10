@@ -1,15 +1,12 @@
 package pl.edziennik.eDziennik.domain.student.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 
-@Getter
-public class StudentSimpleResponseApiDto {
+@Builder
+public record StudentSimpleResponseApiDto(
+        Long id,
+        String fullName
+) {
 
-    private Long id;
-    private String fullName;
-
-    public StudentSimpleResponseApiDto(Long id, String fullName) {
-        this.id = id;
-        this.fullName = fullName;
-    }
 }

@@ -27,9 +27,9 @@ class UserWithEmailAlreadyExistsValidator implements UserValidators {
 
     @Override
     public Optional<ApiValidationResult> validate(UserRequestDto dto) {
-        if (repository.existsByEmail(dto.getEmail())) {
+        if (repository.existsByEmail(dto.email())) {
 
-            String message = resourceCreator.of(EXCEPTION_MESSAGE_USER_ALREADY_EXISTS_BY_EMAIL, dto.getEmail());
+            String message = resourceCreator.of(EXCEPTION_MESSAGE_USER_ALREADY_EXISTS_BY_EMAIL, dto.email());
 
             ApiValidationResult apiValidationResult = ApiValidationResult.builder()
                     .field(UserRequestDto.EMAIL)

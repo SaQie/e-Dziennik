@@ -27,7 +27,7 @@ public class GradeController {
         GradeResponseApiDto responseApiDto = service.addNewGrade(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(responseApiDto.getId())
+                .buildAndExpand(responseApiDto.id())
                 .toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.CREATED, responseApiDto, uri);
     }
@@ -64,7 +64,7 @@ public class GradeController {
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/grades")
                 .path("/{id}")
-                .buildAndExpand(responseApiDto.getId())
+                .buildAndExpand(responseApiDto.id())
                 .toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.PUT, HttpStatus.OK, responseApiDto, uri);
     }

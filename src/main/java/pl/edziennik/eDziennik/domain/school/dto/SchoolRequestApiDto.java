@@ -11,10 +11,32 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-public class SchoolRequestApiDto {
+public record SchoolRequestApiDto(
+        @NotEmpty(message = "{name.empty}")
+        String name,
+
+        @NotEmpty(message = "{address.empty}")
+        String address,
+
+        @NotEmpty(message = "{postalCode.empty}")
+        @Size(min = 6, max = 6, message = "{postalCode.size}")
+        String postalCode,
+
+        @NotEmpty(message = "{city.empty}")
+        String city,
+
+        @org.hibernate.validator.constraints.pl.NIP(message = "{nip.invalid}")
+        String nip,
+
+        @org.hibernate.validator.constraints.pl.REGON(message = "{regon.invalid}")
+        String regon,
+
+        @Pattern(regexp = "[\\d]{9}", message = "{phone.invalid}")
+        String phoneNumber,
+
+        @NotNull(message = "{schoolLevel.empty}")
+        Long idSchoolLevel
+) {
 
     public static final String NAME = "name";
     public static final String ADDRESS = "address";
@@ -25,29 +47,5 @@ public class SchoolRequestApiDto {
     public static final String PHONE_NUMBER = "phoneNumber";
     public static final String ID_SCHOOL_LEVEL = "idSchoolLevel";
 
-    @NotEmpty(message = "{name.empty}")
-    private String name;
-
-    @NotEmpty(message = "{address.empty}")
-    private String address;
-
-    @NotEmpty(message = "{postalCode.empty}")
-    @Size(min = 6, max = 6, message = "{postalCode.size}")
-    private String postalCode;
-
-    @NotEmpty(message = "{city.empty}")
-    private String city;
-
-    @org.hibernate.validator.constraints.pl.NIP(message = "{nip.invalid}")
-    private String nip;
-
-    @org.hibernate.validator.constraints.pl.REGON(message = "{regon.invalid}")
-    private String regon;
-
-    @Pattern(regexp = "[\\d]{9}", message = "{phone.invalid}")
-    private String phoneNumber;
-
-    @NotNull(message = "{schoolLevel.empty}")
-    private Long idSchoolLevel;
 
 }

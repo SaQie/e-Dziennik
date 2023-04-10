@@ -4,22 +4,23 @@ import lombok.Builder;
 import lombok.Getter;
 import pl.edziennik.eDziennik.domain.student.dto.StudentSimpleResponseApiDto;
 
-@Getter
 @Builder
-public class ParentResponseApiDto {
+public record ParentResponseApiDto(
+        Long id,
+        String username,
+        String firstName,
+        String lastName,
+        String fullName,
+        String address,
+        String postalCode,
+        String city,
+        String pesel,
+        String email,
+        String phoneNumber,
+        String role,
+        StudentSimpleResponseApiDto student
+) {
 
-    private final Long id;
-    private final String username;
-    private final String firstName;
-    private final String lastName;
-    private final String fullName;
-    private final String address;
-    private final String postalCode;
-    private final String city;
-    private final String pesel;
-    private final String email;
-    private final String phoneNumber;
-    private final String role;
-    private final StudentSimpleResponseApiDto student;
+
 
 }

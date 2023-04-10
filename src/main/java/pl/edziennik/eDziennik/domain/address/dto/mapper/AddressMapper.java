@@ -13,33 +13,33 @@ public class AddressMapper {
 
     public static Address mapToAddress(TeacherRequestApiDto dto) {
         Address addressEntity = new Address();
-        addressEntity.setAddress(dto.getAddress());
-        addressEntity.setCity(dto.getCity());
-        addressEntity.setPostalCode(dto.getPostalCode());
+        addressEntity.setAddress(dto.address());
+        addressEntity.setCity(dto.city());
+        addressEntity.setPostalCode(dto.postalCode());
         return addressEntity;
     }
 
     public static Address mapToAddress(StudentRequestApiDto dto) {
         Address addressEntity = new Address();
-        addressEntity.setAddress(dto.getAddress());
-        addressEntity.setCity(dto.getCity());
-        addressEntity.setPostalCode(dto.getPostalCode());
+        addressEntity.setAddress(dto.address());
+        addressEntity.setCity(dto.city());
+        addressEntity.setPostalCode(dto.postalCode());
         return addressEntity;
     }
 
     public static Address mapToAddress(SchoolRequestApiDto dto) {
         Address addressEntity = new Address();
-        addressEntity.setAddress(dto.getAddress());
-        addressEntity.setCity(dto.getCity());
-        addressEntity.setPostalCode(dto.getPostalCode());
+        addressEntity.setAddress(dto.address());
+        addressEntity.setCity(dto.city());
+        addressEntity.setPostalCode(dto.postalCode());
         return addressEntity;
     }
 
     public static Address mapToAddress(ParentRequestApiDto dto) {
         Address addressEntity = new Address();
-        addressEntity.setAddress(dto.getAddress());
-        addressEntity.setCity(dto.getCity());
-        addressEntity.setPostalCode(dto.getPostalCode());
+        addressEntity.setAddress(dto.address());
+        addressEntity.setCity(dto.city());
+        addressEntity.setPostalCode(dto.postalCode());
         return addressEntity;
     }
 }

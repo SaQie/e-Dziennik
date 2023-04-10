@@ -27,10 +27,10 @@ public class SchoolClass{
     private String className;
 
     @OneToMany(mappedBy = "schoolClass")
-    private List<Student> students = new ArrayList<>();
+    private final List<Student> students = new ArrayList<>();
 
     @OneToMany(mappedBy = "schoolClass")
-    private List<Subject> subjects = new ArrayList<>();
+    private final List<Subject> subjects = new ArrayList<>();
     
     @OneToOne(fetch = FetchType.LAZY)
     private Teacher teacher;

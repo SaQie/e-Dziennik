@@ -1,15 +1,11 @@
 package pl.edziennik.eDziennik.domain.role.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 
-@Getter
-public class RoleResponseApiDto{
+@Builder
+public record RoleResponseApiDto(
+        Long id,
+        String name) {
 
-    private final Long id;
-    private final String name;
-
-    public RoleResponseApiDto(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 }

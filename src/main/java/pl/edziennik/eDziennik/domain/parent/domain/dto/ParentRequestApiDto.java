@@ -1,16 +1,48 @@
 package pl.edziennik.eDziennik.domain.parent.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
 
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
-public class ParentRequestApiDto {
+public record ParentRequestApiDto(
+        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+        @NotEmpty(message = "{password.empty}")
+        @Size(min = 5, message = "{password.size}")
+        String password,
+
+        @NotEmpty(message = "{username.empty}")
+        @Size(min = 4, message = "{username.size}")
+        String username,
+
+        @NotEmpty(message = "{firstName.empty}")
+        String firstName,
+
+        @NotEmpty(message = "{lastName.empty}")
+        String lastName,
+
+        @NotEmpty(message = "{address.empty}")
+        String address,
+
+        @NotEmpty(message = "{postalCode.empty}")
+        @Size(min = 6, max = 6, message = "{postalCode.size}")
+        String postalCode,
+
+        @NotEmpty(message = "{city.empty}")
+        String city,
+
+        @org.hibernate.validator.constraints.pl.PESEL(message = "{pesel.invalid}")
+        String pesel,
+
+        @Email(message = "{email.is.not.valid}")
+        @NotEmpty(message = "{email.empty}")
+        String email,
+
+        @Pattern(regexp = "[\\d]{9}", message = "{phone.invalid}")
+        String phoneNumber,
+
+        @NotNull(message = "{student.empty}")
+        Long idStudent
+) {
 
     public static final String USERNAME = "username";
     public static final String FIRST_NAME = "firstName";
@@ -23,44 +55,5 @@ public class ParentRequestApiDto {
     public static final String EMAIL = "email";
     public static final String PHONE_NUMBER = "phoneNumber";
     public static final String ID_STUDENT = "idStudent";
-
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @NotEmpty(message = "{password.empty}")
-    @Size(min = 5, message = "{password.size}")
-    private String password;
-
-    @NotEmpty(message = "{username.empty}")
-    @Size(min = 4, message = "{username.size}")
-    private String username;
-
-    @NotEmpty(message = "{firstName.empty}")
-    private String firstName;
-
-    @NotEmpty(message = "{lastName.empty}")
-    private String lastName;
-
-    @NotEmpty(message = "{address.empty}")
-    private String address;
-
-    @NotEmpty(message = "{postalCode.empty}")
-    @Size(min = 6, max = 6, message = "{postalCode.size}")
-    private String postalCode;
-
-    @NotEmpty(message = "{city.empty}")
-    private String city;
-
-    @org.hibernate.validator.constraints.pl.PESEL(message = "{pesel.invalid}")
-    private String pesel;
-
-    @Email(message = "{email.is.not.valid}")
-    @NotEmpty(message = "{email.empty}")
-    private String email;
-
-    @Pattern(regexp = "[\\d]{9}", message = "{phone.invalid}")
-    private String phoneNumber;
-
-    @NotNull(message = "{student.empty}")
-    private Long idStudent;
 
 }

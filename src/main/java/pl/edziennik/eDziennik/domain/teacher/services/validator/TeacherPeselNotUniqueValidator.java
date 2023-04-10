@@ -28,8 +28,8 @@ class TeacherPeselNotUniqueValidator implements TeacherValidators {
 
     @Override
     public Optional<ApiValidationResult> validate(TeacherRequestApiDto dto) {
-        if (repository.isTeacherExistsByPesel(dto.getPesel(), Role.RoleConst.ROLE_TEACHER.getId())) {
-            String message = resourceCreator.of(EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, dto.getPesel());
+        if (repository.isTeacherExistsByPesel(dto.pesel(), Role.RoleConst.ROLE_TEACHER.getId())) {
+            String message = resourceCreator.of(EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, dto.pesel());
 
             ApiValidationResult apiValidationResult = ApiValidationResult.builder()
                     .field(TeacherRequestApiDto.PESEL)

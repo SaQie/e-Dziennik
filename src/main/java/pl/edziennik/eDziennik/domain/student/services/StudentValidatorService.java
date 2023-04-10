@@ -21,7 +21,9 @@ class StudentValidatorService extends ServiceValidator<StudentValidators, Studen
 
     protected void valid(StudentRequestApiDto dto) {
         runValidators(dto, ValidatePurpose.CREATE);
-        schoolClassRepository.findById(dto.getIdSchoolClass()).orElseThrow(notFoundException(dto.getIdSchoolClass(), SchoolClass.class));
-        schoolRepository.findById(dto.getIdSchool()).orElseThrow(notFoundException(dto.getIdSchool(), School.class));
+        schoolClassRepository.findById(dto.idSchoolClass())
+                .orElseThrow(notFoundException(dto.idSchoolClass(), SchoolClass.class));
+        schoolRepository.findById(dto.idSchool())
+                .orElseThrow(notFoundException(dto.idSchool(), School.class));
     }
 }

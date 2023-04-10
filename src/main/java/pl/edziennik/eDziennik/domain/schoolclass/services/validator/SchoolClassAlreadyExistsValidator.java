@@ -32,11 +32,11 @@ class SchoolClassAlreadyExistsValidator extends BaseService implements SchoolCla
 
     @Override
     public Optional<ApiValidationResult> validate(SchoolClassRequestApiDto dto) {
-        if (repository.existsByClassNameAndSchoolId(dto.getClassName(), dto.getIdSchool())) {
-            String schoolName = schoolRepository.findById(dto.getIdSchool())
-                    .orElseThrow(notFoundException(dto.getIdSchool(), School.class)).getName();
+        if (repository.existsByClassNameAndSchoolId(dto.className(), dto.idSchool())) {
+            String schoolName = schoolRepository.findById(dto.idSchool())
+                    .orElseThrow(notFoundException(dto.idSchool(), School.class)).getName();
 
-            String message = resourceCreator.of(EXCEPTION_MESSAGE_SCHOOL_CLASS_ALREADY_EXIST, dto.getClassName(), schoolName);
+            String message = resourceCreator.of(EXCEPTION_MESSAGE_SCHOOL_CLASS_ALREADY_EXIST, dto.className(), schoolName);
 
             ApiValidationResult apiValidationResult = ApiValidationResult.builder()
                     .field(SchoolClassRequestApiDto.CLASS_NAME)

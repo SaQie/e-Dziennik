@@ -27,9 +27,9 @@ class SchoolAlreadyExistsValidator implements SchoolValidators {
 
     @Override
     public Optional<ApiValidationResult> validate(SchoolRequestApiDto dto) {
-        if (repository.existsByName(dto.getName())) {
+        if (repository.existsByName(dto.name())) {
 
-            String message = resourceCreator.of(EXCEPTION_MESSAGE_SCHOOL_ALREADY_EXIST, dto.getName());
+            String message = resourceCreator.of(EXCEPTION_MESSAGE_SCHOOL_ALREADY_EXIST, dto.name());
 
             ApiValidationResult apiValidationResult = ApiValidationResult.builder()
                     .field(SchoolRequestApiDto.NAME)

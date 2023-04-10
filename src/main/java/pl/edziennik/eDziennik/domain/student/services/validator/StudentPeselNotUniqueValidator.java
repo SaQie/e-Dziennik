@@ -29,8 +29,8 @@ class StudentPeselNotUniqueValidator implements StudentValidators {
 
     @Override
     public Optional<ApiValidationResult> validate(StudentRequestApiDto dto) {
-        if (repository.isStudentExistsByPesel(dto.getPesel(), Role.RoleConst.ROLE_STUDENT.getId())) {
-            String message = resourceCreator.of(EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, dto.getPesel());
+        if (repository.isStudentExistsByPesel(dto.pesel(), Role.RoleConst.ROLE_STUDENT.getId())) {
+            String message = resourceCreator.of(EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, dto.pesel());
 
             ApiValidationResult apiValidationResult = ApiValidationResult.builder()
                     .field(StudentRequestApiDto.PESEL)

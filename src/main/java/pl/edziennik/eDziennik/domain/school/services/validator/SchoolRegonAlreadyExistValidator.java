@@ -28,9 +28,9 @@ class SchoolRegonAlreadyExistValidator implements SchoolValidators {
 
     @Override
     public Optional<ApiValidationResult> validate(SchoolRequestApiDto dto) {
-        if (repository.existsByRegon(dto.getRegon())) {
+        if (repository.existsByRegon(dto.regon())) {
 
-            String message = resourceCreator.of(EXCEPTION_MESSAGE_SCHOOL_WITH_REGON_ALREADY_EXIST, dto.getRegon());
+            String message = resourceCreator.of(EXCEPTION_MESSAGE_SCHOOL_WITH_REGON_ALREADY_EXIST, dto.regon());
 
             ApiValidationResult apiValidationResult = ApiValidationResult.builder()
                     .field(SchoolRequestApiDto.REGON)

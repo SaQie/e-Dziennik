@@ -18,5 +18,7 @@ public interface SettingsService {
 
     void updateSettings(Long id, SettingsValue value);
 
+    SettingsDto findSettingById(Long id);
+
     void refreshCache();
 }

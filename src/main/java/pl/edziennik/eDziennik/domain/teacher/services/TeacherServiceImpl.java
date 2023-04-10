@@ -80,8 +80,8 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
             validatorService.validate(dto);
             // update teacher data
             Teacher teacher = optionalTeacher.get();
-            schoolRepository.findById(dto.getIdSchool())
-                    .ifPresentOrElse(teacher::setSchool, notFoundException(School.class,dto.getIdSchool()));
+            schoolRepository.findById(dto.idSchool())
+                    .ifPresentOrElse(teacher::setSchool, notFoundException(School.class,dto.idSchool()));
 
             // update person information teacher data
             Long idPersonInformation = teacher.getPersonInformation().getId();
@@ -109,8 +109,8 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
 
     private Teacher mapToEntity(TeacherRequestApiDto dto) {
         Teacher teacher = TeacherMapper.toEntity(dto);
-        if (dto.getIdSchool() != null) {
-            schoolRepository.findById(dto.getIdSchool()).ifPresent(teacher::setSchool);
+        if (dto.idSchool() != null) {
+            schoolRepository.findById(dto.idSchool()).ifPresent(teacher::setSchool);
         }
         return teacher;
     }

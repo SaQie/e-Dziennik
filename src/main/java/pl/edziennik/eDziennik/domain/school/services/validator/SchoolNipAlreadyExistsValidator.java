@@ -27,9 +27,9 @@ class SchoolNipAlreadyExistsValidator implements SchoolValidators {
 
     @Override
     public Optional<ApiValidationResult> validate(SchoolRequestApiDto dto) {
-        if (repository.existsByNip(dto.getNip())) {
+        if (repository.existsByNip(dto.nip())) {
 
-            String message = resourceCreator.of(EXCEPTION_MESSAGE_SCHOOL_WITH_NIP_ALREADY_EXIST, dto.getNip());
+            String message = resourceCreator.of(EXCEPTION_MESSAGE_SCHOOL_WITH_NIP_ALREADY_EXIST, dto.nip());
 
             ApiValidationResult apiValidationResult = ApiValidationResult.builder()
                     .field(SchoolRequestApiDto.NIP)

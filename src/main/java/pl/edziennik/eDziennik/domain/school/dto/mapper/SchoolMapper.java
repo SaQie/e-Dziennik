@@ -34,10 +34,10 @@ public class SchoolMapper {
 
     public static School toEntity(SchoolRequestApiDto dto) {
         return new School(
-                dto.getName(),
-                dto.getNip(),
-                dto.getRegon(),
-                dto.getPhoneNumber(),
+                dto.name(),
+                dto.nip(),
+                dto.regon(),
+                dto.phoneNumber(),
                 AddressMapper.mapToAddress(dto)
         );
     }

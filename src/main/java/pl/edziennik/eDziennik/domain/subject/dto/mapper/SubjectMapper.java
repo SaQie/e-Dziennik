@@ -20,15 +20,16 @@ public class SubjectMapper {
                     entity.getId(),
                     entity.getName(),
                     entity.getDescription(),
-                    TeacherMapper.toSimpleDto(entity.getTeacher()),
-                    SchoolClassMapper.toSimpleDto(entity.getSchoolClass())
+                    SchoolClassMapper.toSimpleDto(entity.getSchoolClass()),
+                    TeacherMapper.toSimpleDto(entity.getTeacher())
             );
         } else {
             return new SubjectResponseApiDto(
                     entity.getId(),
                     entity.getName(),
                     entity.getDescription(),
-                    SchoolClassMapper.toSimpleDto(entity.getSchoolClass())
+                    SchoolClassMapper.toSimpleDto(entity.getSchoolClass()),
+                    null
             );
         }
     }
@@ -39,8 +40,8 @@ public class SubjectMapper {
 
     public static Subject toEntity(SubjectRequestApiDto dto) {
         return new Subject(
-                dto.getName(),
-                dto.getDescription()
+                dto.name(),
+                dto.description()
         );
     }
 }

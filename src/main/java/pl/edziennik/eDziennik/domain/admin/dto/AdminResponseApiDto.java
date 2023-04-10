@@ -4,15 +4,15 @@ import lombok.Builder;
 import lombok.Getter;
 import pl.edziennik.eDziennik.domain.role.domain.Role;
 
-@Getter
 @Builder
-public class AdminResponseApiDto {
+public record AdminResponseApiDto(
+        Long id,
+        Long userId,
+        String username,
+        String email,
+        String role
+) {
 
-    private final Long id;
-    private final Long userId;
 
-    private final String username;
-    private final String email;
-    private final String role;
 
 }

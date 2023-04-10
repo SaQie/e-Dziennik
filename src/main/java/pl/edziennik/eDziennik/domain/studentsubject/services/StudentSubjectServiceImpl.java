@@ -33,7 +33,7 @@ class StudentSubjectServiceImpl extends BaseService implements StudentSubjectSer
     @Transactional
     public StudentSubjectResponseDto assignStudentToSubject(StudentSubjectRequestDto dto) {
         validatorService.valid(dto);
-        StudentSubject studentSubject = mapToEntity(dto.getIdStudent(), dto.getIdSubject());
+        StudentSubject studentSubject = mapToEntity(dto.idStudent(), dto.idSubject());
         StudentSubject savedSubjectStudent = repository.save(studentSubject);
         return StudentSubjectMapper.toStudentSubjectResponseDto(savedSubjectStudent);
     }

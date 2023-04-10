@@ -21,7 +21,7 @@ public class SchoolLevel {
     private String name;
 
     @OneToMany(mappedBy = "schoolLevel", orphanRemoval = true)
-    private Collection<School> schools = new ArrayList<>();
+    private final Collection<School> schools = new ArrayList<>();
 
     public SchoolLevel(Long id, String name) {
         this.id = id;
@@ -40,8 +40,8 @@ public class SchoolLevel {
         HIGH_SCHOOL("Szkoła średnia", 2L),
         UNIVERSITY("Studia", 3L);
 
-        private Long id;
-        private String name;
+        private final Long id;
+        private final String name;
 
         SchoolLevelConst(String name, Long id) {
             this.id = id;

@@ -5,12 +5,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-import pl.edziennik.eDziennik.BaseTest;
+import pl.edziennik.eDziennik.BaseTesting;
 import pl.edziennik.eDziennik.domain.parent.domain.Parent;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentResponseApiDto;
 import pl.edziennik.eDziennik.domain.parent.services.validator.ParentValidators;
-import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
@@ -22,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 @SpringBootTest
 @Rollback
-public class ParentIntegrationTest extends BaseTest {
+public class ParentIntegrationTest extends BaseTesting {
 
 
     @Test
@@ -34,19 +33,19 @@ public class ParentIntegrationTest extends BaseTest {
         ParentRequestApiDto expected = parentUtil.prepareParentRequestApiDto(idStudent);
 
         // when
-        Long id = parentService.register(expected).getId();
+        Long id = parentService.register(expected).id();
 
         // then
         assertNotNull(id);
         Parent actual = find(Parent.class, id);
-        assertEquals(expected.getFirstName(), actual.getPersonInformation().getFirstName());
-        assertEquals(expected.getLastName(), actual.getPersonInformation().getLastName());
-        assertEquals(expected.getCity(), actual.getAddress().getCity());
-        assertEquals(expected.getPostalCode(), actual.getAddress().getPostalCode());
-        assertEquals(expected.getEmail(), actual.getUser().getEmail());
-        assertEquals(expected.getUsername(), actual.getUser().getUsername());
+        assertEquals(expected.firstName(), actual.getPersonInformation().getFirstName());
+        assertEquals(expected.lastName(), actual.getPersonInformation().getLastName());
+        assertEquals(expected.city(), actual.getAddress().getCity());
+        assertEquals(expected.postalCode(), actual.getAddress().getPostalCode());
+        assertEquals(expected.email(), actual.getUser().getEmail());
+        assertEquals(expected.username(), actual.getUser().getUsername());
         assertEquals(ROLE_PARENT_TEXT, actual.getUser().getRole().getName());
-        assertEquals(expected.getIdStudent(), actual.getStudent().getId());
+        assertEquals(expected.idStudent(), actual.getStudent().getId());
     }
 
     @Test
@@ -76,13 +75,13 @@ public class ParentIntegrationTest extends BaseTest {
 
         // then
         assertNotNull(actual);
-        assertEquals(expected.getPersonInformation().getFirstName(), actual.getFirstName());
-        assertEquals(expected.getPersonInformation().getLastName(), actual.getLastName());
-        assertEquals(expected.getAddress().getCity(), actual.getCity());
-        assertEquals(expected.getAddress().getPostalCode(), actual.getPostalCode());
-        assertEquals(expected.getUser().getEmail(), actual.getEmail());
-        assertEquals(expected.getUser().getUsername(), actual.getUsername());
-        assertEquals(expected.getStudent().getId(), actual.getStudent().getId());
+        assertEquals(expected.getPersonInformation().getFirstName(), actual.firstName());
+        assertEquals(expected.getPersonInformation().getLastName(), actual.lastName());
+        assertEquals(expected.getAddress().getCity(), actual.city());
+        assertEquals(expected.getAddress().getPostalCode(), actual.postalCode());
+        assertEquals(expected.getUser().getEmail(), actual.email());
+        assertEquals(expected.getUser().getUsername(), actual.username());
+        assertEquals(expected.getStudent().getId(), actual.student().id());
     }
 
     @Test
@@ -130,7 +129,7 @@ public class ParentIntegrationTest extends BaseTest {
 
         // then
         Exception exception = assertThrows(EntityNotFoundException.class, () -> parentService.update(idParent, expected));
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", expected.getIdStudent(), Student.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", expected.idStudent(), Student.class.getSimpleName()));
     }
 
     @Test
@@ -186,7 +185,7 @@ public class ParentIntegrationTest extends BaseTest {
         assertEquals(1, exception.getErrors().size());
         assertEquals(ParentValidators.PARENT_PESEL_NOT_UNIQUE_VALIDATOR, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(ParentRequestApiDto.PESEL, exception.getErrors().get(0).getField());
-        String expectedExceptionMessage = resourceCreator.of(ParentValidators.EXCEPTION_MESSAGE_PARENT_PESEL_ALREADY_EXISTS, dto.getPesel());
+        String expectedExceptionMessage = resourceCreator.of(ParentValidators.EXCEPTION_MESSAGE_PARENT_PESEL_ALREADY_EXISTS, dto.pesel());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 

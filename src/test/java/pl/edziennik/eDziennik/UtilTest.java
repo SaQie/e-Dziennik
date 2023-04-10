@@ -2,23 +2,18 @@ package pl.edziennik.eDziennik;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
-import pl.edziennik.eDziennik.domain.student.services.StudentService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ActiveProfiles("test")
 @SpringBootTest
-public class UtilTest extends BaseTest {
-
-    @Autowired
-    private StudentService studentService;
+public class UtilTest extends BaseTesting {
 
 
     @BeforeEach
@@ -33,10 +28,10 @@ public class UtilTest extends BaseTest {
         // first name - Kamil
         // last name - Nowak
         StudentRequestApiDto studentRequestApiDto = studentUtil.prepareStudentRequestDto();
-        String expectedFullNameAfterSave = studentRequestApiDto.getFirstName() + " " + studentRequestApiDto.getLastName();
+        String expectedFullNameAfterSave = studentRequestApiDto.firstName() + " " + studentRequestApiDto.lastName();
 
         // when
-        Long id = studentService.register(studentRequestApiDto).getId();
+        Long id = studentService.register(studentRequestApiDto).id();
 
         // then
         assertNotNull(id);
@@ -46,14 +41,14 @@ public class UtilTest extends BaseTest {
     }
 
     @Test
-    public void shouldAutomaticallyUpdatePersonFullNameWhenUpdate(){
+    public void shouldAutomaticallyUpdatePersonFullNameWhenUpdate() {
         StudentRequestApiDto studentRequestApiDto = studentUtil.prepareStudentRequestDto();
-        Long id = studentService.register(studentRequestApiDto).getId();
+        Long id = studentService.register(studentRequestApiDto).id();
         String expectedFullNameAfterUpdate = "Dawid" + " " + "Nowak";
-        studentRequestApiDto = studentUtil.prepareStudentRequestDto("Test","Dawid", "Nowak","q","qwe");
+        studentRequestApiDto = studentUtil.prepareStudentRequestDto("Test", "Dawid", "Nowak", "q", "qwe");
 
         // when
-        studentService.updateStudent(id,studentRequestApiDto);
+        studentService.updateStudent(id, studentRequestApiDto);
 
         // then
         assertNotNull(id);

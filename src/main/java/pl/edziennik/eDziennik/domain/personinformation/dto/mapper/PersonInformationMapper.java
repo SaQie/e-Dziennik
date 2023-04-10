@@ -13,28 +13,28 @@ public class PersonInformationMapper {
 
     public static PersonInformation mapToPersonInformation(TeacherRequestApiDto dto) {
         PersonInformation personInformation = new PersonInformation();
-        personInformation.setPesel(dto.getPesel());
-        personInformation.setFirstName(dto.getFirstName());
-        personInformation.setLastName(dto.getLastName());
-        personInformation.setPhoneNumber(dto.getPhoneNumber());
+        personInformation.setPesel(dto.pesel());
+        personInformation.setFirstName(dto.firstName());
+        personInformation.setLastName(dto.lastName());
+        personInformation.setPhoneNumber(dto.phoneNumber());
         return personInformation;
     }
 
     public static PersonInformation mapToPersonInformation(StudentRequestApiDto dto) {
         PersonInformation personInformation = new PersonInformation();
-        personInformation.setPesel(dto.getPesel());
-        personInformation.setFirstName(dto.getFirstName());
-        personInformation.setLastName(dto.getLastName());
-        personInformation.setPhoneNumber(dto.getPhoneNumber());
+        personInformation.setPesel(dto.pesel());
+        personInformation.setFirstName(dto.firstName());
+        personInformation.setLastName(dto.lastName());
+        personInformation.setPhoneNumber(dto.phoneNumber());
         return personInformation;
     }
 
     public static PersonInformation mapToPersonInformation(ParentRequestApiDto dto) {
         PersonInformation personInformation = new PersonInformation();
-        personInformation.setPesel(dto.getPesel());
-        personInformation.setFirstName(dto.getFirstName());
-        personInformation.setLastName(dto.getLastName());
-        personInformation.setPhoneNumber(dto.getPhoneNumber());
+        personInformation.setPesel(dto.pesel());
+        personInformation.setFirstName(dto.firstName());
+        personInformation.setLastName(dto.lastName());
+        personInformation.setPhoneNumber(dto.phoneNumber());
         return personInformation;
     }
 

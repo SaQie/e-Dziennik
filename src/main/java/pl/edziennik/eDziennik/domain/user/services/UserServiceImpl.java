@@ -29,10 +29,10 @@ class UserServiceImpl extends ServiceValidator<UserValidators, UserRequestDto> i
     public User createUser(UserRequestDto dto) {
         runValidators(dto);
         User user = UserMapper.toEntity(dto);
-        Role role = roleRepository.findByName(dto.getRole())
+        Role role = roleRepository.findByName(dto.role())
                 .orElse(roleRepository.getReferenceById(Role.RoleConst.ROLE_STUDENT.getId()));
         user.setRole(role);
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setPassword(passwordEncoder.encode(dto.password()));
         return repository.save(user);
     }
 
@@ -43,10 +43,10 @@ class UserServiceImpl extends ServiceValidator<UserValidators, UserRequestDto> i
         if (userOptional.isPresent()) {
             runValidators(dto);
             User user = userOptional.get();
-            user.setUsername(dto.getUsername());
-            user.setEmail(dto.getEmail());
-            user.setPassword(passwordEncoder.encode(dto.getPassword()));
-            Role role = roleRepository.findByName(dto.getRole())
+            user.setUsername(dto.username());
+            user.setEmail(dto.email());
+            user.setPassword(passwordEncoder.encode(dto.password()));
+            Role role = roleRepository.findByName(dto.role())
                     .orElse(roleRepository.getReferenceById(Role.RoleConst.ROLE_STUDENT.getId()));
             user.setRole(role);
         }

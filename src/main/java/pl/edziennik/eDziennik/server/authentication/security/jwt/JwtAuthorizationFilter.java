@@ -20,7 +20,7 @@ import java.util.Collection;
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     private final UserDetailsService userDetailsService;
-    private JwtUtils jwtUtils;
+    private final JwtUtils jwtUtils;
 
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserDetailsService userDetailsService, JwtUtils jwtUtils) {
         super(authenticationManager);

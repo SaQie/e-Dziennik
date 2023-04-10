@@ -68,7 +68,7 @@ class GradeManagmentServiceImpl extends BaseService implements GradeManagmentSer
 
     private Grade insertNewGrade(GradeRequestApiDto dto, StudentSubject studentSubject) {
         Teacher teacher = teacherRepository.getByUserUsername(dto.getTeacherName());
-        Long idGrade = gradeService.addNewGrade(dto).getId();
+        Long idGrade = gradeService.addNewGrade(dto).id();
         Grade grade = repository.findById(idGrade)
                 .orElseThrow(notFoundException(idGrade, Grade.class));
         grade.setStudentSubject(studentSubject);

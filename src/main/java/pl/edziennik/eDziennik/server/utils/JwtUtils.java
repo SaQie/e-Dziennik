@@ -90,10 +90,7 @@ public class JwtUtils {
     }
 
     public boolean isTokenNotExist(String token) {
-        if (token == null || !token.startsWith(tokenPrefix)) {
-            return true;
-        }
-        return false;
+        return token == null || !token.startsWith(tokenPrefix);
     }
 
     public Collection<SimpleGrantedAuthority> getRolesFromTokenIfNeeded(String token) {
@@ -111,10 +108,9 @@ public class JwtUtils {
     }
 
     public String getUsernameFromToken(String token) {
-        String login = JWT.require(Algorithm.HMAC256(secretKey))
+        return JWT.require(Algorithm.HMAC256(secretKey))
                 .build()
                 .verify(token.replace(tokenPrefix + " ", ""))
                 .getSubject();
-        return login;
     }
 }

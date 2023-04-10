@@ -48,7 +48,7 @@ public class StudentSubjectMapper {
         Student student = entity.getStudent();
         Subject subject = entity.getSubject();
         TeacherSimpleResponseApiDto teacherDto = subject.getTeacher() != null ? TeacherMapper.toSimpleDto(subject.getTeacher()) : null;
-        List<SubjectResponseApiDto> subjects = List.of(new SubjectResponseApiDto(subject.getId(), subject.getName(), subject.getDescription(), teacherDto, SchoolClassMapper.toSimpleDto(subject.getSchoolClass())));
+        List<SubjectResponseApiDto> subjects = List.of(new SubjectResponseApiDto(subject.getId(), subject.getName(), subject.getDescription(),SchoolClassMapper.toSimpleDto(subject.getSchoolClass()), teacherDto));
         return new StudentSubjectResponseDto(student.getId(), student.getPersonInformation().getFirstName(), student.getPersonInformation().getLastName(), subjects);
     }
 
@@ -58,7 +58,7 @@ public class StudentSubjectMapper {
         for (StudentSubject entity : entites) {
             Subject subject = entity.getSubject();
             TeacherSimpleResponseApiDto teacherDto = subject.getTeacher() != null ? TeacherMapper.toSimpleDto(subject.getTeacher()) : null;
-            SubjectResponseApiDto subjectDto = new SubjectResponseApiDto(subject.getId(), subject.getName(), subject.getDescription(), teacherDto, SchoolClassMapper.toSimpleDto(subject.getSchoolClass()));
+            SubjectResponseApiDto subjectDto = new SubjectResponseApiDto(subject.getId(), subject.getName(), subject.getDescription(), SchoolClassMapper.toSimpleDto(subject.getSchoolClass()), teacherDto);
             subjects.add(subjectDto);
         }
 

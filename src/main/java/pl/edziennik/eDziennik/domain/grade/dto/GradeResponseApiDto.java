@@ -1,20 +1,13 @@
 package pl.edziennik.eDziennik.domain.grade.dto;
 
-import lombok.Getter;
+import lombok.Builder;
 
-@Getter
-public class GradeResponseApiDto {
-
-    private final Long id;
-
-    private final int grade;
-    private final int weight;
-    private final String description;
-
-    public GradeResponseApiDto(Long id, int grade, int weight, String description) {
-        this.id = id;
-        this.grade = grade;
-        this.weight = weight;
-        this.description = description;
-    }
+@Builder
+public record GradeResponseApiDto(
+    Long id,
+    Integer grade,
+    Integer weight,
+    String description
+    )
+{
 }

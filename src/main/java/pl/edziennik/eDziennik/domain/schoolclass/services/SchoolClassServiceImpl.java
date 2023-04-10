@@ -66,15 +66,15 @@ class SchoolClassServiceImpl extends BaseService implements SchoolClassService {
             // update school class data
             SchoolClass schoolClass = schoolClassOptional.get();
 
-            schoolRepository.findById(dto.getIdSchool())
-                    .ifPresentOrElse(schoolClass::setSchool, notFoundException(School.class, dto.getIdSchool()));
+            schoolRepository.findById(dto.idSchool())
+                    .ifPresentOrElse(schoolClass::setSchool, notFoundException(School.class, dto.idSchool()));
 
-            if (dto.getIdClassTeacher() != null) {
-                teacherRepository.findById(dto.getIdClassTeacher())
-                        .ifPresentOrElse(schoolClass::setTeacher, notFoundException(Teacher.class, dto.getIdClassTeacher()));
+            if (dto.idClassTeacher() != null) {
+                teacherRepository.findById(dto.idClassTeacher())
+                        .ifPresentOrElse(schoolClass::setTeacher, notFoundException(Teacher.class, dto.idClassTeacher()));
             }
 
-            schoolClass.setClassName(dto.getClassName());
+            schoolClass.setClassName(dto.className());
             return SchoolClassMapper.toDto(schoolClass);
         }
 
@@ -90,12 +90,12 @@ class SchoolClassServiceImpl extends BaseService implements SchoolClassService {
 
     private SchoolClass mapToEntity(SchoolClassRequestApiDto dto) {
         SchoolClass schoolClass = SchoolClassMapper.toEntity(dto);
-        schoolRepository.findById(dto.getIdSchool())
-                .ifPresentOrElse(schoolClass::setSchool, notFoundException(School.class, dto.getIdSchool()));
+        schoolRepository.findById(dto.idSchool())
+                .ifPresentOrElse(schoolClass::setSchool, notFoundException(School.class, dto.idSchool()));
 
-        if (dto.getIdClassTeacher() != null) {
-            teacherRepository.findById(dto.getIdClassTeacher())
-                    .ifPresentOrElse(schoolClass::setTeacher, notFoundException(Teacher.class, dto.getIdClassTeacher()));
+        if (dto.idClassTeacher() != null) {
+            teacherRepository.findById(dto.idClassTeacher())
+                    .ifPresentOrElse(schoolClass::setTeacher, notFoundException(Teacher.class, dto.idClassTeacher()));
         }
         return schoolClass;
     }

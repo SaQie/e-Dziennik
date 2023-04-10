@@ -35,7 +35,7 @@ public class TeacherValidatorUnitTest extends BaseUnitTest {
         // given
         TeacherRequestApiDto dto = teacherUtil.prepareTeacherRequestDto();
         when(teacherRepository.isTeacherExistsByPesel("123123", Role.RoleConst.ROLE_TEACHER.getId())).thenReturn(true);
-        lenient().when(resourceCreator.of(TeacherPeselNotUniqueValidator.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, dto.getPesel()))
+        lenient().when(resourceCreator.of(TeacherPeselNotUniqueValidator.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, dto.pesel()))
                 .thenReturn(TeacherPeselNotUniqueValidator.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE);
 
         // when

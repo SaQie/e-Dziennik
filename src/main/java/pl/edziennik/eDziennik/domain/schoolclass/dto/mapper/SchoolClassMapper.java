@@ -38,7 +38,7 @@ public class SchoolClassMapper {
 
     public static SchoolClass toEntity(SchoolClassRequestApiDto dto) {
         return new SchoolClass(
-                dto.getClassName()
+                dto.className()
         );
     }
 

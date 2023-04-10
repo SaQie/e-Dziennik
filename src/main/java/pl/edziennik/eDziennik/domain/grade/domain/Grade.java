@@ -62,7 +62,7 @@ public class Grade{
         FIVE(5),
         SIX(6);
 
-        public int grade;
+        public final int grade;
 
         GradeConst(int grade) {
             this.grade = grade;
