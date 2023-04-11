@@ -1,9 +1,11 @@
 package pl.edziennik.eDziennik.domain.parent.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.edziennik.eDziennik.domain.address.domain.Address;
+import pl.edziennik.eDziennik.domain.parent.domain.wrapper.ParentId;
 import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.user.domain.User;
@@ -19,6 +21,7 @@ public class Parent{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "parent_id_seq")
     @SequenceGenerator(name = "parent_id_seq", sequenceName = "parent_id_seq", allocationSize = 1)
+    @Getter(AccessLevel.NONE)
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -48,8 +51,8 @@ public class Parent{
         this.student = null;
     }
 
-    public void setUser(User user){
-        this.user = user;
+    public ParentId getParentId(){
+        return ParentId.wrap(id);
     }
 
     public Parent(PersonInformation personInformation, Address address) {

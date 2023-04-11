@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
+import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.PersonInformationId;
 import pl.edziennik.eDziennik.domain.personinformation.repository.PersonInformationRepository;
 
 import java.util.Optional;
@@ -16,8 +17,8 @@ class PersonInformationServiceImpl implements PersonInformationService {
 
     @Override
     @Transactional
-    public void update(Long id, PersonInformation personInformationSource) {
-        Optional<PersonInformation> personInformationOptional = repository.findById(id);
+    public void update(final PersonInformationId personInformationId,final PersonInformation personInformationSource) {
+        Optional<PersonInformation> personInformationOptional = repository.findById(personInformationId.id());
         if (personInformationOptional.isPresent()) {
             PersonInformation personInformationToEdit = personInformationOptional.get();
             personInformationToEdit.setFirstName(personInformationSource.getFirstName());

@@ -7,6 +7,7 @@ import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTesting;
 import pl.edziennik.eDziennik.domain.school.domain.School;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
+import pl.edziennik.eDziennik.domain.schoolclass.domain.wrapper.SchoolClassId;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassRequestApiDto;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassResponseApiDto;
 import pl.edziennik.eDziennik.domain.schoolclass.services.validator.SchoolClassValidators;
@@ -34,7 +35,7 @@ public class SchoolClassIntegrationTest extends BaseTesting {
         // then
         assertNotNull(id);
         SchoolClass actual = find(SchoolClass.class, id);
-        assertEquals(expected.idSchool(), actual.getSchool().getId());
+        assertEquals(expected.idSchool(), actual.getSchool().getSchoolId().id());
         assertNull(actual.getTeacher());
         assertEquals(expected.className(), actual.getClassName());
     }
@@ -49,15 +50,15 @@ public class SchoolClassIntegrationTest extends BaseTesting {
         SchoolClassRequestApiDto expected = schoolClassUtil.prepareSchoolClassRequest("5B", teacherId);
 
         // when
-        Long updated = schoolClassService.updateSchoolClass(id, expected).id();
+        Long updated = schoolClassService.updateSchoolClass(SchoolClassId.wrap(id), expected).id();
 
         // then
         assertNotNull(updated);
         assertEquals(id, updated);
 
         SchoolClass actual = find(SchoolClass.class, updated);
-        assertEquals(expected.idSchool(), actual.getSchool().getId());
-        assertEquals(expected.idClassTeacher(), actual.getTeacher().getId());
+        assertEquals(expected.idSchool(), actual.getSchool().getSchoolId().id());
+        assertEquals(expected.idClassTeacher(), actual.getTeacher().getTeacherId().id());
         assertEquals(expected.className(), actual.getClassName());
 
     }
@@ -70,7 +71,7 @@ public class SchoolClassIntegrationTest extends BaseTesting {
         assertNotNull(id);
 
         // when
-        schoolClassService.deleteSchoolClassById(id);
+        schoolClassService.deleteSchoolClassById(SchoolClassId.wrap(id));
 
         // then
         SchoolClass schoolClass = find(SchoolClass.class, id);
@@ -85,7 +86,7 @@ public class SchoolClassIntegrationTest extends BaseTesting {
         assertNotNull(id);
 
         // when
-        SchoolClassResponseApiDto actual = schoolClassService.findSchoolClassById(id);
+        SchoolClassResponseApiDto actual = schoolClassService.findSchoolClassById(SchoolClassId.wrap(id));
 
         // then
         assertNotNull(actual);

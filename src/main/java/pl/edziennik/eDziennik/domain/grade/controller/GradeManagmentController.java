@@ -5,14 +5,17 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
+import pl.edziennik.eDziennik.domain.grade.domain.wrapper.GradeId;
 import pl.edziennik.eDziennik.domain.grade.dto.GradeRequestApiDto;
 import pl.edziennik.eDziennik.domain.grade.service.managment.GradeManagmentService;
+import pl.edziennik.eDziennik.domain.student.domain.wrapper.StudentId;
+import pl.edziennik.eDziennik.domain.studentsubject.domain.wrapper.StudentSubjectSeparateId;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentGradesInSubjectDto;
+import pl.edziennik.eDziennik.domain.subject.domain.wrapper.SubjectId;
+import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
+import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 
 import java.net.URI;
-import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/v1/grade-managment")
@@ -21,38 +24,48 @@ public class GradeManagmentController {
 
     private final GradeManagmentService service;
 
-    @PostMapping("/students/{idStudent}/subjects/{idSubject}/grades")
+    @PostMapping("/students/{studentId}/subjects/{subjectId}/grades")
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<?> assignGradeToStudentSubject(@PathVariable Long idStudent, @PathVariable Long idSubject, @RequestBody GradeRequestApiDto requestApiDto, Principal teacher) {
-        requestApiDto.setTeacherName(teacher.getName());
-        StudentGradesInSubjectDto responseApiDto = service.assignGradeToStudentSubject(idStudent, idSubject, requestApiDto);
+    public ApiResponse<?> assignGradeToStudentSubject(@RequestBody GradeRequestApiDto requestApiDto,
+                                                      @ModelAttribute(name = "studentSubjectId") StudentSubjectSeparateId studentSubjectId) {
+        StudentGradesInSubjectDto responseApiDto = service.assignGradeToStudentSubject(studentSubjectId, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/students/{idStudent}/subjects/{idSubject}/grades")
-                .buildAndExpand(idStudent, idSubject)
+                .buildAndExpand(studentSubjectId.idStudent().id(), studentSubjectId.idSubject().id())
                 .toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.CREATED, responseApiDto, uri);
     }
 
-    @DeleteMapping("/students/{idStudent}/subjects/{idSubject}/grades/{idGrade}")
+    @DeleteMapping("/students/{studentId}/subjects/{subjectId}/grades/{gradeId}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<?> deleteGradeFromStudentSubject(@PathVariable Long idStudent, @PathVariable Long idSubject, @PathVariable Long idGrade) {
-        service.deleteGradeFromStudentSubject(idStudent, idSubject, idGrade);
+    public ApiResponse<?> deleteGradeFromStudentSubject(@ModelAttribute(name = "studentSubjectId") StudentSubjectSeparateId studentSubjectId,
+                                                        @PathVariable GradeId gradeId) {
+        service.deleteGradeFromStudentSubject(studentSubjectId, gradeId);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/students/{idStudent}/subjects/{idSubject}/grades")
-                .buildAndExpand(idStudent, idSubject)
+                .buildAndExpand(studentSubjectId.idStudent().id(), studentSubjectId.idSubject().id())
                 .toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.DELETE, HttpStatus.OK, "Grade deleted successfully !", uri);
     }
 
-    @PutMapping("/students/{idStudent}/subjects/{idSubject}/grades/{idGrade}")
+    @PutMapping("/students/{studentId}/subjects/{subjectId}/grades/{gradeId}")
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<?> updateStudentSubjectGrade(@PathVariable Long idStudent, @PathVariable Long idSubject, @PathVariable Long idGrade, @RequestBody GradeRequestApiDto requestApiDto, Principal teacher) {
-        requestApiDto.setTeacherName(teacher.getName());
-        StudentGradesInSubjectDto responseApiDto = service.updateStudentSubjectGrade(idStudent, idSubject, idGrade, requestApiDto);
+    public ApiResponse<?> updateStudentSubjectGrade(@ModelAttribute(name = "studentSubjectId") StudentSubjectSeparateId studentSubjectId,
+                                                    @PathVariable GradeId gradeId,
+                                                    @RequestBody GradeRequestApiDto requestApiDto) {
+        // Wywalic to przypisywanie a dodac w serwisie cos co pobierze aktualnego usera i tam doda nazwe nauczyciela a nie tutaj
+        StudentGradesInSubjectDto responseApiDto = service.updateStudentSubjectGrade(studentSubjectId, gradeId, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/students/{idStudent}/subjects/{idSubject}/grades")
-                .buildAndExpand(idStudent, idSubject)
+                .buildAndExpand(studentSubjectId.idStudent().id(), studentSubjectId.idSubject().id())
                 .toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.PUT, HttpStatus.OK, responseApiDto, uri);
     }
+
+    @ModelAttribute("studentSubjectId")
+    private StudentSubjectSeparateId getStudentSubjectId(@PathVariable StudentId studentId, @PathVariable SubjectId subjectId){
+        return StudentSubjectSeparateId.wrap(studentId,subjectId);
+    }
+
+
 }

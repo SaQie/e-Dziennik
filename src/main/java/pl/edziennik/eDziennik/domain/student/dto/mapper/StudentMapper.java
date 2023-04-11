@@ -3,7 +3,6 @@ package pl.edziennik.eDziennik.domain.student.dto.mapper;
 import pl.edziennik.eDziennik.domain.address.dto.mapper.AddressMapper;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.mapper.ParentMapper;
 import pl.edziennik.eDziennik.domain.personinformation.dto.mapper.PersonInformationMapper;
-import pl.edziennik.eDziennik.domain.school.dto.SchoolSimpleResponseApiDto;
 import pl.edziennik.eDziennik.domain.school.dto.mapper.SchoolMapper;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.mapper.SchoolClassMapper;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
@@ -21,8 +20,8 @@ public class StudentMapper {
 
     public static StudentResponseApiDto toDto(Student entity) {
         return StudentResponseApiDto.builder()
-                .id(entity.getId())
-                .userId(entity.getUser().getId())
+                .id(entity.getStudentId().id())
+                .userId(entity.getUser().getUserId().id())
                 .username(entity.getUser().getUsername())
                 .firstName(entity.getPersonInformation().getFirstName())
                 .lastName(entity.getPersonInformation().getLastName())
@@ -56,14 +55,14 @@ public class StudentMapper {
                 .pesel(entity.getPersonInformation().getPesel())
                 .email(entity.getUser().getEmail())
                 .phoneNumber(entity.getPersonInformation().getPhoneNumber())
-                .idSchool(entity.getSchool().getId())
-                .idSchoolClass(entity.getSchoolClass().getId())
+                .idSchool(entity.getSchool().getSchoolId().id())
+                .idSchoolClass(entity.getSchoolClass().getSchoolClassId().id())
                 .build();
     }
 
     public static StudentSimpleResponseApiDto toSimpleDto(Student student) {
         if (student != null) {
-            return new StudentSimpleResponseApiDto(student.getId(), student.getPersonInformation().getFullName());
+            return new StudentSimpleResponseApiDto(student.getStudentId().id(), student.getPersonInformation().getFullName());
         }
         return null;
     }

@@ -7,16 +7,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
+import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 
 import javax.persistence.NoResultException;
 import javax.servlet.http.HttpServletRequest;
@@ -56,15 +54,6 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
         BindingResult bindingResult = exception.getBindingResult();
         List<ApiValidationResult> errors = getErrors(bindingResult);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponseCreator.buildApiResponse(HttpMethod.valueOf(httpRequest.getMethod()), HttpStatus.BAD_REQUEST, httpRequest.getRequestURL().toString(), errors));
-    }
-
-
-    @InitBinder
-    protected void loggerWithParam(WebDataBinder binder, WebRequest webRequest) {
-        HttpServletRequest request = ((ServletWebRequest) webRequest).getRequest();
-        String method = request.getMethod().toLowerCase();
-        String URI = request.getRequestURI();
-        log.info("CALLED | " + URI + " | METHOD USED: | " + method + " | WITH OBJECT | " + binder.getObjectName() + " |");
     }
 
 

@@ -6,8 +6,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.domain.school.domain.School;
+import pl.edziennik.eDziennik.domain.school.domain.wrapper.SchoolId;
 import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
+import pl.edziennik.eDziennik.domain.schoolclass.domain.wrapper.SchoolClassId;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassRequestApiDto;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassResponseApiDto;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.mapper.SchoolClassMapper;
@@ -30,7 +32,7 @@ class SchoolClassServiceImpl extends BaseService implements SchoolClassService {
 
     @Override
     @Transactional
-    public SchoolClassResponseApiDto createSchoolClass(SchoolClassRequestApiDto dto) {
+    public SchoolClassResponseApiDto createSchoolClass(final SchoolClassRequestApiDto dto) {
         validatorService.valid(dto);
         SchoolClass schoolClass = mapToEntity(dto);
         SchoolClass savedSchoolClass = repository.save(schoolClass);
@@ -38,29 +40,29 @@ class SchoolClassServiceImpl extends BaseService implements SchoolClassService {
     }
 
     @Override
-    public SchoolClassResponseApiDto findSchoolClassById(Long id) {
-        SchoolClass schoolClass = repository.findById(id)
-                .orElseThrow(notFoundException(id, SchoolClass.class));
+    public SchoolClassResponseApiDto findSchoolClassById(final SchoolClassId schoolClassId) {
+        SchoolClass schoolClass = repository.findById(schoolClassId.id())
+                .orElseThrow(notFoundException(schoolClassId.id(), SchoolClass.class));
         return SchoolClassMapper.toDto(schoolClass);
     }
 
     @Override
-    public void deleteSchoolClassById(Long id) {
-        SchoolClass schoolClass = repository.findById(id)
-                .orElseThrow(notFoundException(id, SchoolClass.class));
+    public void deleteSchoolClassById(final SchoolClassId schoolClassId) {
+        SchoolClass schoolClass = repository.findById(schoolClassId.id())
+                .orElseThrow(notFoundException(schoolClassId.id(), SchoolClass.class));
         repository.delete(schoolClass);
     }
 
     @Override
-    public PageDto<SchoolClassResponseApiDto> findAllSchoolClasses(Pageable pageable) {
+    public PageDto<SchoolClassResponseApiDto> findAllSchoolClasses(final Pageable pageable) {
         Page<SchoolClassResponseApiDto> page = repository.findAll(pageable).map(SchoolClassMapper::toDto);
         return PageDto.fromPage(page);
     }
 
     @Override
     @Transactional
-    public SchoolClassResponseApiDto updateSchoolClass(Long id, SchoolClassRequestApiDto dto) {
-        Optional<SchoolClass> schoolClassOptional = repository.findById(id);
+    public SchoolClassResponseApiDto updateSchoolClass(final SchoolClassId schoolClassId,final SchoolClassRequestApiDto dto) {
+        Optional<SchoolClass> schoolClassOptional = repository.findById(schoolClassId.id());
         if (schoolClassOptional.isPresent()) {
             validatorService.valid(dto);
             // update school class data
@@ -83,12 +85,12 @@ class SchoolClassServiceImpl extends BaseService implements SchoolClassService {
     }
 
     @Override
-    public PageDto<SchoolClassResponseApiDto> findSchoolClassesBySchoolId(Pageable pageable, Long idSchool) {
-        Page<SchoolClassResponseApiDto> page = repository.findSchoolClassesBySchoolId(pageable, idSchool).map(SchoolClassMapper::toDto);
+    public PageDto<SchoolClassResponseApiDto> findSchoolClassesBySchoolId(final Pageable pageable, final SchoolId schoolId) {
+        Page<SchoolClassResponseApiDto> page = repository.findSchoolClassesBySchoolId(pageable, schoolId.id()).map(SchoolClassMapper::toDto);
         return PageDto.fromPage(page);
     }
 
-    private SchoolClass mapToEntity(SchoolClassRequestApiDto dto) {
+    private SchoolClass mapToEntity(final SchoolClassRequestApiDto dto) {
         SchoolClass schoolClass = SchoolClassMapper.toEntity(dto);
         schoolRepository.findById(dto.idSchool())
                 .ifPresentOrElse(schoolClass::setSchool, notFoundException(School.class, dto.idSchool()));

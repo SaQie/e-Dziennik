@@ -1,8 +1,10 @@
 package pl.edziennik.eDziennik.domain.schoollevel.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.edziennik.eDziennik.domain.school.domain.School;
+import pl.edziennik.eDziennik.domain.schoollevel.domain.wrapper.SchoolLevelId;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ public class SchoolLevel {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "school_level_id_seq")
     @SequenceGenerator(name = "school_level_id_seq", sequenceName = "school_level_id_seq", allocationSize = 1)
+    @Getter(AccessLevel.NONE)
     private Long id;
 
     private String name;
@@ -31,6 +34,10 @@ public class SchoolLevel {
     public void addSchool(School school){
         schools.add(school);
         school.setSchoolLevel(this);
+    }
+
+    public SchoolLevelId getSchoolLevelId(){
+        return SchoolLevelId.wrap(id);
     }
 
 

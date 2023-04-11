@@ -1,9 +1,11 @@
 package pl.edziennik.eDziennik.domain.school.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.edziennik.eDziennik.domain.address.domain.Address;
+import pl.edziennik.eDziennik.domain.school.domain.wrapper.SchoolId;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.domain.schoollevel.domain.SchoolLevel;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
@@ -22,6 +24,7 @@ public class School{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "school_id_seq")
     @SequenceGenerator(name = "school_id_seq", sequenceName = "school_id_seq", allocationSize = 1)
+    @Getter(AccessLevel.NONE)
     private Long id;
 
     private String name;
@@ -62,9 +65,8 @@ public class School{
         student.setSchool(this);
     }
 
-    public void setSchoolLevel(SchoolLevel schoolLevel) {
-        this.schoolLevel = schoolLevel;
+    public SchoolId getSchoolId(){
+        return SchoolId.wrap(id);
     }
-
 
 }

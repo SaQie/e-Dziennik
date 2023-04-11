@@ -27,7 +27,7 @@ public class UserIntegrationTest extends BaseTesting {
         User user = userService.createUser(dto);
 
         // then
-        User actual = find(User.class, user.getId());
+        User actual = find(User.class, user.getUserId().id());
         assertEquals(actual.getUsername(), dto.username());
         assertEquals(actual.getRole().getName(), dto.role());
         assertEquals(actual.getEmail(), dto.email());

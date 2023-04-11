@@ -12,14 +12,14 @@ public class SchoolLevelMapper {
 
     public static SchoolLevelResponseApiDto toDto(SchoolLevel entity) {
         return new SchoolLevelResponseApiDto(
-                entity.getId(),
+                entity.getSchoolLevelId().id(),
                 entity.getName()
         );
     }
 
     public static List<SchoolLevelResponseApiDto> toDto(List<SchoolLevel> entities) {
         return entities.stream().map(schoolLevel ->
-                new SchoolLevelResponseApiDto(schoolLevel.getId(), schoolLevel.getName())).toList();
+                new SchoolLevelResponseApiDto(schoolLevel.getSchoolLevelId().id(), schoolLevel.getName())).toList();
     }
 
     public static SchoolLevel toEntity(SchoolLevelResponseApiDto dto) {

@@ -15,7 +15,7 @@ class TeacherValidatorService extends ServiceValidator<TeacherValidators, Teache
     private final SchoolRepository schoolRepository;
 
     
-    protected void validate(TeacherRequestApiDto dto) {
+    protected void validate(final TeacherRequestApiDto dto) {
         runValidators(dto);
         schoolRepository.findById(dto.idSchool())
                 .orElseThrow(notFoundException(dto.idSchool(), School.class));

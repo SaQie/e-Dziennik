@@ -1,24 +1,27 @@
 package pl.edziennik.eDziennik.domain.teacher.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.edziennik.eDziennik.domain.address.domain.Address;
 import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
 import pl.edziennik.eDziennik.domain.school.domain.School;
+import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
 import pl.edziennik.eDziennik.domain.user.domain.User;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
-@Getter
 @Setter
+@Getter
 public class Teacher{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teacher_id_seq")
     @SequenceGenerator(name = "teacher_id_seq", sequenceName = "teacher_id_seq", allocationSize = 1)
+    @Getter(AccessLevel.NONE)
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -43,9 +46,8 @@ public class Teacher{
         this.address = address;
     }
 
-    public void setSchool(School school) {
-        this.school = school;
+    public TeacherId getTeacherId(){
+        return TeacherId.wrap(id);
     }
-
 
 }

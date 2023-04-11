@@ -5,15 +5,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.edziennik.eDziennik.domain.address.domain.Address;
+import pl.edziennik.eDziennik.domain.address.domain.wrapper.AddressId;
 import pl.edziennik.eDziennik.domain.address.dto.mapper.AddressMapper;
 import pl.edziennik.eDziennik.domain.address.services.AddressService;
 import pl.edziennik.eDziennik.domain.parent.domain.Parent;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentResponseApiDto;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.mapper.ParentMapper;
+import pl.edziennik.eDziennik.domain.parent.domain.wrapper.ParentId;
 import pl.edziennik.eDziennik.domain.parent.repository.ParentRepository;
-import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
+import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.PersonInformationId;
 import pl.edziennik.eDziennik.domain.personinformation.dto.mapper.PersonInformationMapper;
 import pl.edziennik.eDziennik.domain.personinformation.services.PersonInformationService;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
@@ -47,16 +48,16 @@ class ParentServiceImpl extends BaseService implements ParentService {
     }
 
     @Override
-    public ParentResponseApiDto findById(Long id) {
-        Parent parent = repository.findById(id)
-                .orElseThrow(notFoundException(id, Parent.class));
+    public ParentResponseApiDto findById(final ParentId parentId) {
+        Parent parent = repository.findById(parentId.id())
+                .orElseThrow(notFoundException(parentId.id(), Parent.class));
         return ParentMapper.toDto(parent);
     }
 
     @Override
     @Transactional
-    public ParentResponseApiDto update(Long id, ParentRequestApiDto dto) {
-        Optional<Parent> parentOptional = repository.findById(id);
+    public ParentResponseApiDto update(final ParentId parentId, final ParentRequestApiDto dto) {
+        Optional<Parent> parentOptional = repository.findById(parentId.id());
         if (parentOptional.isPresent()) {
             validatorService.valid(dto);
             // update parent data
@@ -65,16 +66,16 @@ class ParentServiceImpl extends BaseService implements ParentService {
             parent.setStudent(student);
 
             // update user data
-            userService.updateUser(parent.getUser().getId(), UserMapper.toDto(dto));
+            userService.updateUser(parent.getUser().getUserId(), UserMapper.toDto(dto));
 
             // update person information parent data
-            Long idPersonInformation = student.getPersonInformation().getId();
-            personInformationService.update(idPersonInformation,
+            PersonInformationId personInformationId = student.getPersonInformation().getPersonInformationId();
+            personInformationService.update(personInformationId,
                     PersonInformationMapper.mapToPersonInformation(dto));
 
             // update address parent data
-            Long idAddress = student.getAddress().getId();
-            addressService.update(idAddress, AddressMapper.mapToAddress(dto));
+            AddressId addressId = student.getAddress().getAddressId();
+            addressService.update(addressId, AddressMapper.mapToAddress(dto));
 
             return ParentMapper.toDto(parent);
         }
@@ -83,19 +84,19 @@ class ParentServiceImpl extends BaseService implements ParentService {
     }
 
     @Override
-    public void deleteById(Long id) {
-        validatorService.checkParentHasStudent(id);
-        repository.findById(id).ifPresent(repository::delete);
+    public void deleteById(final ParentId parentId) {
+        validatorService.checkParentHasStudent(parentId);
+        repository.findById(parentId.id()).ifPresent(repository::delete);
     }
 
     @Override
-    public PageDto<ParentResponseApiDto> findAll(Pageable pageable) {
+    public PageDto<ParentResponseApiDto> findAll(final Pageable pageable) {
         Page<ParentResponseApiDto> page = repository.findAll(pageable)
                 .map(ParentMapper::toDto);
         return PageDto.fromPage(page);
     }
 
-    private Parent mapToEntity(ParentRequestApiDto dto) {
+    private Parent mapToEntity(final ParentRequestApiDto dto) {
         Parent parent = ParentMapper.toEntity(dto);
         User user = userService.createUser(UserMapper.toDto(dto));
         Student student = studentRepository.findById(dto.idStudent())

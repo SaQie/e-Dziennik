@@ -14,7 +14,7 @@ public class GradeMapper {
 
     public static GradeResponseApiDto toDto(Grade grade) {
         return new GradeResponseApiDto(
-                grade.getId(),
+                grade.getGradeId().id(),
                 grade.getGrade().grade,
                 grade.getWeight(),
                 grade.getDescription()
@@ -23,7 +23,7 @@ public class GradeMapper {
 
     public static List<GradeResponseApiDto> toDto(List<Grade> grades) {
         return grades.stream().map(rating -> new GradeResponseApiDto(
-                rating.getId(),
+                rating.getGradeId().id(),
                 rating.getGrade().grade,
                 rating.getWeight(),
                 rating.getDescription()

@@ -17,7 +17,7 @@ public class SubjectMapper {
     public static SubjectResponseApiDto toDto(Subject entity) {
         if (entity.getTeacher() != null) {
             return new SubjectResponseApiDto(
-                    entity.getId(),
+                    entity.getSubjectId().id(),
                     entity.getName(),
                     entity.getDescription(),
                     SchoolClassMapper.toSimpleDto(entity.getSchoolClass()),
@@ -25,7 +25,7 @@ public class SubjectMapper {
             );
         } else {
             return new SubjectResponseApiDto(
-                    entity.getId(),
+                    entity.getSubjectId().id(),
                     entity.getName(),
                     entity.getDescription(),
                     SchoolClassMapper.toSimpleDto(entity.getSchoolClass()),

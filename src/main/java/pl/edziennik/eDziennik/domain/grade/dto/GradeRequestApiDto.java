@@ -18,10 +18,10 @@ public class GradeRequestApiDto {
     public static final String TEACHER_NAME = "teacherName";
 
     @NotNull(message = "{grade.empty}")
-    private int grade;
+    private Integer grade;
 
     @NotNull(message = "{weight.empty}")
-    private int weight;
+    private Integer weight;
 
     private String description;
 

@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.domain.role.domain.Role;
 import pl.edziennik.eDziennik.domain.role.repository.RoleRepository;
 import pl.edziennik.eDziennik.domain.user.domain.User;
+import pl.edziennik.eDziennik.domain.user.domain.wrapper.UserId;
 import pl.edziennik.eDziennik.domain.user.dto.UserRequestDto;
 import pl.edziennik.eDziennik.domain.user.dto.mapper.UserMapper;
 import pl.edziennik.eDziennik.domain.user.repository.UserRepository;
@@ -26,7 +27,7 @@ class UserServiceImpl extends ServiceValidator<UserValidators, UserRequestDto> i
 
     @Override
     @Transactional
-    public User createUser(UserRequestDto dto) {
+    public User createUser(final UserRequestDto dto) {
         runValidators(dto);
         User user = UserMapper.toEntity(dto);
         Role role = roleRepository.findByName(dto.role())
@@ -38,8 +39,8 @@ class UserServiceImpl extends ServiceValidator<UserValidators, UserRequestDto> i
 
     @Override
     @Transactional
-    public void updateUser(Long id, UserRequestDto dto) {
-        Optional<User> userOptional = repository.findById(id);
+    public void updateUser(final UserId userId, final UserRequestDto dto) {
+        Optional<User> userOptional = repository.findById(userId.id());
         if (userOptional.isPresent()) {
             runValidators(dto);
             User user = userOptional.get();
@@ -53,7 +54,7 @@ class UserServiceImpl extends ServiceValidator<UserValidators, UserRequestDto> i
     }
 
     @Override
-    public void updateUserLastLoginDate(String username) {
+    public void updateUserLastLoginDate(final String username) {
         User user = repository.getByUsername(username);
         if (user != null) {
             user.setLastLoginDate(LocalDateTime.now());

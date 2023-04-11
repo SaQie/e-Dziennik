@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pl.edziennik.eDziennik.domain.school.domain.wrapper.SchoolId;
 import pl.edziennik.eDziennik.domain.school.dto.SchoolRequestApiDto;
 import pl.edziennik.eDziennik.domain.school.dto.SchoolResponseApiDto;
 import pl.edziennik.eDziennik.domain.school.services.SchoolService;
@@ -47,31 +48,31 @@ class SchoolController {
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{schoolId}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get specific school",
             description = "Returns information about specific school")
-    public ApiResponse findSchoolById(@PathVariable Long id) {
-        SchoolResponseApiDto responseApiDto = service.findSchoolById(id);
+    public ApiResponse findSchoolById(@PathVariable SchoolId schoolId) {
+        SchoolResponseApiDto responseApiDto = service.findSchoolById(schoolId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{schoolId}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Delete school")
-    public ApiResponse deleteSchoolById(@PathVariable Long id) {
-        service.deleteSchoolById(id);
+    public ApiResponse deleteSchoolById(@PathVariable SchoolId schoolId) {
+        service.deleteSchoolById(schoolId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.DELETE, HttpStatus.OK, "School deleted successfully", uri);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{schoolId}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Update school",
             description = "This method will update specific school or create new if not exists")
-    public ApiResponse updateSchool(@PathVariable Long id, @RequestBody SchoolRequestApiDto requestApiDto) {
-        SchoolResponseApiDto responseApiDto = service.updateSchool(id, requestApiDto);
+    public ApiResponse updateSchool(@PathVariable SchoolId schoolId, @RequestBody SchoolRequestApiDto requestApiDto) {
+        SchoolResponseApiDto responseApiDto = service.updateSchool(schoolId, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/schools")
                 .path("/{id}")

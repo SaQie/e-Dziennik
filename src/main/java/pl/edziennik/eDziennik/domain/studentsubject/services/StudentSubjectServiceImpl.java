@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
+import pl.edziennik.eDziennik.domain.student.domain.wrapper.StudentId;
 import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
 import pl.edziennik.eDziennik.domain.studentsubject.domain.StudentSubject;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.mapper.StudentSubjectMapper;
@@ -14,6 +15,7 @@ import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentSubjectR
 import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentSubjectsResponseDto;
 import pl.edziennik.eDziennik.domain.studentsubject.repository.StudentSubjectRepository;
 import pl.edziennik.eDziennik.domain.subject.domain.Subject;
+import pl.edziennik.eDziennik.domain.subject.domain.wrapper.SubjectId;
 import pl.edziennik.eDziennik.domain.subject.repository.SubjectRepository;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 
@@ -40,34 +42,34 @@ class StudentSubjectServiceImpl extends BaseService implements StudentSubjectSer
 
 
     @Override
-    public StudentGradesInSubjectDto getStudentSubjectGrades(Long idStudent, Long idSubject) {
-        StudentSubject studentSubject = repository.findByStudentIdAndSubjectId(idStudent, idSubject)
-                .orElseThrow(notFoundException(idStudent, Student.class));;
+    public StudentGradesInSubjectDto getStudentSubjectGrades(final StudentId studentId, final SubjectId subjectId) {
+        StudentSubject studentSubject = repository.findByStudentIdAndSubjectId(studentId.id(), subjectId.id())
+                .orElseThrow(notFoundException(studentId.id(), Student.class));;
         return StudentSubjectMapper.toStudentSubjectRatingsDto(studentSubject);
     }
 
     @Override
-    public AllStudentsGradesInSubjectsDto getStudentAllSubjectsGrades(Long idStudent) {
-        List<StudentSubject> entities = repository.findStudentSubjectsByStudentId(idStudent);
-        Student student = studentRepository.findById(idStudent)
-                .orElseThrow(notFoundException(idStudent, Student.class));
+    public AllStudentsGradesInSubjectsDto getStudentAllSubjectsGrades(final StudentId studentId) {
+        List<StudentSubject> entities = repository.findStudentSubjectsByStudentId(studentId.id());
+        Student student = studentRepository.findById(studentId.id())
+                .orElseThrow(notFoundException(studentId.id(), Student.class));
         return StudentSubjectMapper.toAllStudentSubjectRatingDto(entities, student);
     }
 
     @Override
-    public StudentSubjectsResponseDto getStudentSubjects(Long idStudent) {
-        List<StudentSubject> entities = repository.findStudentSubjectsByStudentId(idStudent);
-        Student student = studentRepository.findById(idStudent)
-                .orElseThrow(notFoundException(idStudent, Student.class));
+    public StudentSubjectsResponseDto getStudentSubjects(final StudentId studentId) {
+        List<StudentSubject> entities = repository.findStudentSubjectsByStudentId(studentId.id());
+        Student student = studentRepository.findById(studentId.id())
+                .orElseThrow(notFoundException(studentId.id(), Student.class));
         return StudentSubjectMapper.toStudentSubjectsResponseDto(entities, student);
     }
 
 
-    private StudentSubject mapToEntity(Long idStudent, Long idSubject) {
-        Student student = studentRepository.findById(idStudent)
-                .orElseThrow(notFoundException(idStudent, Student.class));
-        Subject subject = subjectRepository.findById(idSubject)
-                .orElseThrow(notFoundException(idSubject, Subject.class));
+    private StudentSubject mapToEntity(final Long studentId, final Long subjectId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(notFoundException(studentId, Student.class));
+        Subject subject = subjectRepository.findById(subjectId)
+                .orElseThrow(notFoundException(subjectId, Subject.class));
         StudentSubject studentSubject = new StudentSubject();
         studentSubject.setStudent(student);
         studentSubject.setSubject(subject);

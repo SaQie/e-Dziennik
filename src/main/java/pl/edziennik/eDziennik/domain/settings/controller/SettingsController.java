@@ -2,11 +2,11 @@ package pl.edziennik.eDziennik.domain.settings.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pl.edziennik.eDziennik.domain.settings.domain.wrapper.SettingsId;
 import pl.edziennik.eDziennik.domain.settings.dto.SettingsDto;
 import pl.edziennik.eDziennik.domain.settings.dto.SettingsValue;
 import pl.edziennik.eDziennik.domain.settings.services.SettingsService;
@@ -35,21 +35,21 @@ public class SettingsController {
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, settings, uri);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{settingsId}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Update setting",
             description = "This method will update specific setting")
-    public ApiResponse<?> updateSettings(@PathVariable Long id, @RequestBody SettingsValue value) {
-        service.updateSettings(id, value);
+    public ApiResponse<?> updateSettings(@PathVariable SettingsId settingsId, @RequestBody SettingsValue value) {
+        service.updateSettings(settingsId, value);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.PATCH, HttpStatus.OK, resourceCreator.of("settings.updated.successfully"), uri);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{settingsId}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get specific setting")
-    public ApiResponse<?> findSettingById(@PathVariable Long id){
-        SettingsDto setting = service.findSettingById(id);
+    public ApiResponse<?> findSettingById(@PathVariable SettingsId settingsId){
+        SettingsDto setting = service.findSettingById(settingsId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, setting, uri);
     }

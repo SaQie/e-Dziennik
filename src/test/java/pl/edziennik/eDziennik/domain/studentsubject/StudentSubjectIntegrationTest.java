@@ -7,13 +7,16 @@ import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTesting;
 import pl.edziennik.eDziennik.domain.grade.dto.GradeRequestApiDto;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
+import pl.edziennik.eDziennik.domain.student.domain.wrapper.StudentId;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
+import pl.edziennik.eDziennik.domain.studentsubject.domain.wrapper.StudentSubjectSeparateId;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.request.StudentSubjectRequestDto;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentGradesInSubjectDto;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentSubjectsResponseDto;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.response.SubjectGradesResponseDto;
 import pl.edziennik.eDziennik.domain.studentsubject.services.validator.StudentSubjectValidators;
 import pl.edziennik.eDziennik.domain.subject.domain.Subject;
+import pl.edziennik.eDziennik.domain.subject.domain.wrapper.SubjectId;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectResponseApiDto;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
@@ -47,7 +50,7 @@ public class StudentSubjectIntegrationTest extends BaseTesting {
         studentSubjectService.assignStudentToSubject(requestDto);
 
         // then
-        StudentSubjectsResponseDto studentSubject = studentSubjectService.getStudentSubjects(studentId);
+        StudentSubjectsResponseDto studentSubject = studentSubjectService.getStudentSubjects(StudentId.wrap(studentId));
 
         Subject expectedSubject = find(Subject.class, subjectId);
         Student expectedStudent = find(Student.class, studentId);
@@ -55,12 +58,12 @@ public class StudentSubjectIntegrationTest extends BaseTesting {
         assertEquals(1, studentSubject.getSubjects().size());
         assertEquals(expectedStudent.getPersonInformation().getFirstName(), studentSubject.getFirstName());
         assertEquals(expectedStudent.getPersonInformation().getLastName(), studentSubject.getLastName());
-        assertEquals(expectedStudent.getId(), studentSubject.getId());
+        assertEquals(expectedStudent.getStudentId().id(), studentSubject.getId());
 
         SubjectResponseApiDto actualSubject = studentSubject.getSubjects().get(0);
         assertEquals(expectedSubject.getName(), actualSubject.name());
         assertEquals(expectedSubject.getDescription(), actualSubject.description());
-        assertEquals(expectedSubject.getTeacher().getId(), actualSubject.teacher().id());
+        assertEquals(expectedSubject.getTeacher().getTeacherId().id(), actualSubject.teacher().id());
     }
 
     @Test
@@ -116,12 +119,13 @@ public class StudentSubjectIntegrationTest extends BaseTesting {
 
         StudentSubjectRequestDto studentSubjectRequestDto = studentSubjectUtil.prepareStudentSubjectRequestDto(subjectId, studentId);
         studentSubjectService.assignStudentToSubject(studentSubjectRequestDto);
+        StudentSubjectSeparateId studentSubjectSeparateId = StudentSubjectSeparateId.wrap(StudentId.wrap(studentId), SubjectId.wrap(subjectId));
 
         // when
-        gradeManagmentService.assignGradeToStudentSubject(studentId, subjectId, expectedGrade);
+        gradeManagmentService.assignGradeToStudentSubject(studentSubjectSeparateId, expectedGrade);
 
         // then
-        StudentGradesInSubjectDto studentSubjectGrades = studentSubjectService.getStudentSubjectGrades(studentId, subjectId);
+        StudentGradesInSubjectDto studentSubjectGrades = studentSubjectService.getStudentSubjectGrades(StudentId.wrap(studentId), SubjectId.wrap(subjectId));
 
         SubjectGradesResponseDto actualSubject = studentSubjectGrades.getSubject();
         assertEquals(expectedSubject.name(), actualSubject.getName());

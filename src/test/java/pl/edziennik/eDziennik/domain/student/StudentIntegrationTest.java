@@ -12,6 +12,7 @@ import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassRequestApiDto;
 import pl.edziennik.eDziennik.domain.settings.dto.SettingsValue;
 import pl.edziennik.eDziennik.domain.settings.services.SettingsService;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
+import pl.edziennik.eDziennik.domain.student.domain.wrapper.StudentId;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.domain.student.dto.StudentResponseApiDto;
 import pl.edziennik.eDziennik.domain.student.services.validator.StudentValidators;
@@ -58,7 +59,7 @@ public class StudentIntegrationTest extends BaseTesting {
         StudentRequestApiDto expected = studentUtil.prepareStudentRequestDto("AfterEdit", "AfterEdit1", "AfterEdit2", "999999", "test2@example.com");
 
         // when
-        Long updated = studentService.updateStudent(id, expected).id();
+        Long updated = studentService.updateStudent(StudentId.wrap(id), expected).id();
 
         // then
         assertNotNull(updated);
@@ -83,7 +84,7 @@ public class StudentIntegrationTest extends BaseTesting {
         // when
 
         // then
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> studentService.updateStudent(id, expected));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> studentService.updateStudent(StudentId.wrap(id), expected));
         assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", expected.idSchool(), School.class.getSimpleName()));
     }
 
@@ -97,7 +98,7 @@ public class StudentIntegrationTest extends BaseTesting {
         // when
 
         // then
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> studentService.updateStudent(id, expected));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> studentService.updateStudent(StudentId.wrap(id), expected));
         assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", expected.idSchoolClass(), SchoolClass.class.getSimpleName()));
     }
 
@@ -109,10 +110,10 @@ public class StudentIntegrationTest extends BaseTesting {
         assertNotNull(idStudent);
 
         // when
-        studentService.deleteStudentById(idStudent);
+        studentService.deleteStudentById(StudentId.wrap(idStudent));
 
         // then
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> studentService.findStudentById(idStudent));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> studentService.findStudentById(StudentId.wrap(idStudent)));
         assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent, Student.class.getSimpleName()));
     }
 
@@ -140,7 +141,7 @@ public class StudentIntegrationTest extends BaseTesting {
         Long id = studentService.register(expected).id();
 
         // when
-        StudentResponseApiDto actual = studentService.findStudentById(id);
+        StudentResponseApiDto actual = studentService.findStudentById(StudentId.wrap(id));
 
         // then
         assertNotNull(actual);
@@ -154,25 +155,25 @@ public class StudentIntegrationTest extends BaseTesting {
     @Test
     public void shouldThrowsExceptionWhenStudentDoesNotExist() {
         // given
-        Long idStudent = 1L;
+        StudentId studentId = StudentId.wrap(1L);
 
         // when
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> studentService.findStudentById(idStudent));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> studentService.findStudentById(studentId));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent, Student.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", studentId.id(), Student.class.getSimpleName()));
     }
 
     @Test
     public void shouldThrowsExceptionWhenTryingToDeleteNotExistingStudent() {
         // given
-        Long idStudent = 1L;
+        StudentId studentId = StudentId.wrap(1L);
 
         // when
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> studentService.deleteStudentById(idStudent));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> studentService.deleteStudentById(studentId));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent, Student.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", studentId.id(), Student.class.getSimpleName()));
     }
 
     @Test

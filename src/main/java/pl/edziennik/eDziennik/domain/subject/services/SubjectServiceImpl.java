@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.domain.schoolclass.repository.SchoolClassRepository;
 import pl.edziennik.eDziennik.domain.subject.domain.Subject;
+import pl.edziennik.eDziennik.domain.subject.domain.wrapper.SubjectId;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectResponseApiDto;
 import pl.edziennik.eDziennik.domain.subject.dto.mapper.SubjectMapper;
@@ -30,7 +31,7 @@ class SubjectServiceImpl extends BaseService implements SubjectService {
 
     @Override
     @Transactional
-    public SubjectResponseApiDto createNewSubject(SubjectRequestApiDto dto) {
+    public SubjectResponseApiDto createNewSubject(final SubjectRequestApiDto dto) {
         validatorService.valid(dto);
         Subject subject = mapToEntity(dto);
         Subject savedSubject = repository.save(subject);
@@ -39,29 +40,29 @@ class SubjectServiceImpl extends BaseService implements SubjectService {
 
 
     @Override
-    public SubjectResponseApiDto findSubjectById(Long id) {
-        Subject subject = repository.findById(id)
-                .orElseThrow(notFoundException(id, Subject.class));
+    public SubjectResponseApiDto findSubjectById(final SubjectId subjectId) {
+        Subject subject = repository.findById(subjectId.id())
+                .orElseThrow(notFoundException(subjectId.id(), Subject.class));
         return SubjectMapper.toDto(subject);
     }
 
     @Override
-    public void deleteSubjectById(Long id) {
-        Subject subject = repository.findById(id)
-                .orElseThrow(notFoundException(id, Subject.class));
+    public void deleteSubjectById(final SubjectId subjectId) {
+        Subject subject = repository.findById(subjectId.id())
+                .orElseThrow(notFoundException(subjectId.id(), Subject.class));
         repository.delete(subject);
     }
 
     @Override
-    public PageDto<SubjectResponseApiDto> findAllSubjects(Pageable pageable) {
+    public PageDto<SubjectResponseApiDto> findAllSubjects(final Pageable pageable) {
         Page<SubjectResponseApiDto> page = repository.findAll(pageable).map(SubjectMapper::toDto);
         return PageDto.fromPage(page);
     }
 
     @Override
     @Transactional
-    public SubjectResponseApiDto updateSubject(Long id, SubjectRequestApiDto dto) {
-        Optional<Subject> optionalSubject = repository.findById(id);
+    public SubjectResponseApiDto updateSubject(final SubjectId subjectId, final SubjectRequestApiDto dto) {
+        Optional<Subject> optionalSubject = repository.findById(subjectId.id());
         if (optionalSubject.isPresent()) {
             validatorService.valid(dto);
             Subject subject = optionalSubject.get();

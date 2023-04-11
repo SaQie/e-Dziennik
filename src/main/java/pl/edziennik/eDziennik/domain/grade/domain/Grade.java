@@ -1,8 +1,10 @@
 package pl.edziennik.eDziennik.domain.grade.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.edziennik.eDziennik.domain.grade.domain.wrapper.GradeId;
 import pl.edziennik.eDziennik.domain.studentsubject.domain.StudentSubject;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
@@ -19,11 +21,12 @@ public class Grade{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "grade_id_seq")
     @SequenceGenerator(name = "grade_id_seq", sequenceName = "grade_id_seq", allocationSize = 1)
+    @Getter(AccessLevel.NONE)
     private Long id;
 
     @Enumerated
     private GradeConst grade;
-    private int weight;
+    private Integer weight;
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,10 +38,14 @@ public class Grade{
     private LocalDateTime createdDate;
 
 
-    public Grade(GradeConst grade, int weight, String description) {
+    public Grade(GradeConst grade, Integer weight, String description) {
         this.grade = grade;
         this.weight = weight;
         this.description = description;
+    }
+
+    public GradeId getGradeId(){
+        return GradeId.wrap(id);
     }
 
     @PrePersist

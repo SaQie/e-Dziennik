@@ -9,6 +9,7 @@ import pl.edziennik.eDziennik.BaseTesting;
 import pl.edziennik.eDziennik.domain.parent.domain.Parent;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentResponseApiDto;
+import pl.edziennik.eDziennik.domain.parent.domain.wrapper.ParentId;
 import pl.edziennik.eDziennik.domain.parent.services.validator.ParentValidators;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
@@ -45,7 +46,7 @@ public class ParentIntegrationTest extends BaseTesting {
         assertEquals(expected.email(), actual.getUser().getEmail());
         assertEquals(expected.username(), actual.getUser().getUsername());
         assertEquals(ROLE_PARENT_TEXT, actual.getUser().getRole().getName());
-        assertEquals(expected.idStudent(), actual.getStudent().getId());
+        assertEquals(expected.idStudent(), actual.getStudent().getStudentId().id());
     }
 
     @Test
@@ -54,10 +55,10 @@ public class ParentIntegrationTest extends BaseTesting {
         Long idParent = createBaseParent();
         Parent parent = find(Parent.class, idParent);
         // firstly i need to delete student
-        studentService.deleteStudentById(parent.getStudent().getId());
+        studentService.deleteStudentById(parent.getStudent().getStudentId());
 
         // when
-        parentService.deleteById(idParent);
+        parentService.deleteById(ParentId.wrap(idParent));
 
         // then
         Parent actual = find(Parent.class, idParent);
@@ -71,7 +72,7 @@ public class ParentIntegrationTest extends BaseTesting {
         Parent expected = find(Parent.class, idParent);
 
         // when
-        ParentResponseApiDto actual = parentService.findById(idParent);
+        ParentResponseApiDto actual = parentService.findById(ParentId.wrap(idParent));
 
         // then
         assertNotNull(actual);
@@ -81,7 +82,7 @@ public class ParentIntegrationTest extends BaseTesting {
         assertEquals(expected.getAddress().getPostalCode(), actual.postalCode());
         assertEquals(expected.getUser().getEmail(), actual.email());
         assertEquals(expected.getUser().getUsername(), actual.username());
-        assertEquals(expected.getStudent().getId(), actual.student().id());
+        assertEquals(expected.getStudent().getStudentId().id(), actual.student().id());
     }
 
     @Test
@@ -128,7 +129,7 @@ public class ParentIntegrationTest extends BaseTesting {
         // when
 
         // then
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> parentService.update(idParent, expected));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> parentService.update(ParentId.wrap(idParent), expected));
         assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", expected.idStudent(), Student.class.getSimpleName()));
     }
 
@@ -139,13 +140,13 @@ public class ParentIntegrationTest extends BaseTesting {
         Student student = em.find(Parent.class, idParent).getStudent();
 
         // when
-        BusinessException exception = assertThrows(BusinessException.class, () -> parentService.deleteById(idParent));
+        BusinessException exception = assertThrows(BusinessException.class, () -> parentService.deleteById(ParentId.wrap(idParent)));
 
         // then
         assertEquals(1, exception.getErrors().size());
         assertEquals(ParentValidators.PARENT_STILL_HAS_STUDENT_VALIDATOR, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(ParentRequestApiDto.ID_STUDENT, exception.getErrors().get(0).getField());
-        String expectedExceptionMessage = resourceCreator.of(ParentValidators.EXCEPTON_MESSAGE_PARENT_STILL_HAS_STUDENT, getStudentFullName(student.getId()));
+        String expectedExceptionMessage = resourceCreator.of(ParentValidators.EXCEPTON_MESSAGE_PARENT_STILL_HAS_STUDENT, getStudentFullName(student.getStudentId().id()));
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
 
     }

@@ -2,12 +2,12 @@ package pl.edziennik.eDziennik.domain.teacher.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherResponseApiDto;
 import pl.edziennik.eDziennik.domain.teacher.services.TeacherService;
@@ -43,12 +43,12 @@ class TeacherController {
         return ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.CREATED, responseApiDto, uri);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{teacherId}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get specific teacher",
             description = "Returns specific information about admin")
-    public ApiResponse<?> findTeacher(@PathVariable Long id) {
-        TeacherResponseApiDto responseApiDto = service.findTeacherById(id);
+    public ApiResponse<?> findTeacher(@PathVariable TeacherId teacherId) {
+        TeacherResponseApiDto responseApiDto = service.findTeacherById(teacherId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
     }
@@ -63,22 +63,22 @@ class TeacherController {
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{teacherId}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Delete teacher")
-    public ApiResponse<?> deleteTeacher(@PathVariable Long id) {
-        service.deleteTeacherById(id);
+    public ApiResponse<?> deleteTeacher(@PathVariable TeacherId teacherId) {
+        service.deleteTeacherById(teacherId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.DELETE, HttpStatus.OK, "Teacher deleted successfully",
                 uri);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{teacherId}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Update teacher",
             description = "This method will update specific teacher or create new if not exists")
-    public ApiResponse<?> updateTeacher(@PathVariable Long id, TeacherRequestApiDto requestApiDto) {
-        TeacherResponseApiDto responseApiDto = service.updateTeacher(id, requestApiDto);
+    public ApiResponse<?> updateTeacher(@PathVariable TeacherId teacherId, TeacherRequestApiDto requestApiDto) {
+        TeacherResponseApiDto responseApiDto = service.updateTeacher(teacherId, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/teachers")
                 .path("/{id}")

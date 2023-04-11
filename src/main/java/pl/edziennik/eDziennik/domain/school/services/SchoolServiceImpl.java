@@ -6,8 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.domain.address.domain.Address;
-import pl.edziennik.eDziennik.domain.address.dto.mapper.AddressMapper;
 import pl.edziennik.eDziennik.domain.school.domain.School;
+import pl.edziennik.eDziennik.domain.school.domain.wrapper.SchoolId;
 import pl.edziennik.eDziennik.domain.school.dto.SchoolRequestApiDto;
 import pl.edziennik.eDziennik.domain.school.dto.SchoolResponseApiDto;
 import pl.edziennik.eDziennik.domain.school.dto.mapper.SchoolMapper;
@@ -29,7 +29,7 @@ class SchoolServiceImpl extends BaseService implements SchoolService {
 
     @Override
     @Transactional
-    public SchoolResponseApiDto createNewSchool(SchoolRequestApiDto dto) {
+    public SchoolResponseApiDto createNewSchool(final SchoolRequestApiDto dto) {
         validatorService.valid(dto);
         School school = mapToEntity(dto);
         School schoolAfterSave = schoolRepository.save(school);
@@ -37,29 +37,29 @@ class SchoolServiceImpl extends BaseService implements SchoolService {
     }
 
     @Override
-    public SchoolResponseApiDto findSchoolById(Long id) {
-        School school = schoolRepository.findById(id)
-                .orElseThrow(notFoundException(id, School.class));
+    public SchoolResponseApiDto findSchoolById(final SchoolId schoolId) {
+        School school = schoolRepository.findById(schoolId.id())
+                .orElseThrow(notFoundException(schoolId.id(), School.class));
         return SchoolMapper.toDto(school);
     }
 
     @Override
-    public void deleteSchoolById(Long id) {
-        School school = schoolRepository.findById(id)
-                .orElseThrow(notFoundException(id, School.class));
+    public void deleteSchoolById(final SchoolId schoolId) {
+        School school = schoolRepository.findById(schoolId.id())
+                .orElseThrow(notFoundException(schoolId.id(), School.class));
         schoolRepository.delete(school);
     }
 
     @Override
-    public PageDto<SchoolResponseApiDto> findAllSchools(Pageable pageable) {
+    public PageDto<SchoolResponseApiDto> findAllSchools(final Pageable pageable) {
         Page<SchoolResponseApiDto> page = schoolRepository.findAll(pageable).map(SchoolMapper::toDto);
         return PageDto.fromPage(page);
     }
 
     @Override
     @Transactional
-    public SchoolResponseApiDto updateSchool(Long id, SchoolRequestApiDto dto) {
-        Optional<School> optionalSchool = schoolRepository.findById(id);
+    public SchoolResponseApiDto updateSchool(final SchoolId schoolId, final SchoolRequestApiDto dto) {
+        Optional<School> optionalSchool = schoolRepository.findById(schoolId.id());
         if (optionalSchool.isPresent()) {
             validatorService.valid(dto);
 
@@ -81,7 +81,7 @@ class SchoolServiceImpl extends BaseService implements SchoolService {
         return createNewSchool(dto);
     }
 
-    private School mapToEntity(SchoolRequestApiDto dto) {
+    private School mapToEntity(final SchoolRequestApiDto dto) {
         School school = SchoolMapper.toEntity(dto);
         schoolLevelRepository.findById(dto.idSchoolLevel())
                 .ifPresentOrElse(school::setSchoolLevel, notFoundException(SchoolLevel.class, dto.idSchoolLevel()));

@@ -2,23 +2,20 @@ package pl.edziennik.eDziennik.domain.parent.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.scripting.ScriptSource;
-import org.springframework.scripting.groovy.GroovyScriptEvaluator;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentResponseApiDto;
+import pl.edziennik.eDziennik.domain.parent.domain.wrapper.ParentId;
 import pl.edziennik.eDziennik.domain.parent.services.ParentService;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 import pl.edziennik.eDziennik.server.basics.page.PageDto;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.net.URI;
 
 @RestController
@@ -50,31 +47,31 @@ class ParentController {
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{parentId}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get specific parent",
             description = "Returns information about specific parent")
-    public ApiResponse<?> findParentById(@PathVariable Long id) {
-        ParentResponseApiDto responseApiDto = service.findById(id);
+    public ApiResponse<?> findParentById(@PathVariable ParentId parentId) {
+        ParentResponseApiDto responseApiDto = service.findById(parentId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{parentId}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Delete parent")
-    public ApiResponse<?> deleteParentById(@PathVariable Long id) {
-        service.deleteById(id);
+    public ApiResponse<?> deleteParentById(@PathVariable ParentId parentId) {
+        service.deleteById(parentId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.DELETE, HttpStatus.OK, "Parent deleted successfully", uri);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{parentId}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Update parent",
             description = "This method will update specific parent or create new if not exists")
-    public ApiResponse<?> updateParentById(@PathVariable Long id, @RequestBody ParentRequestApiDto dto){
-        ParentResponseApiDto responseApiDto = service.update(id, dto);
+    public ApiResponse<?> updateParentById(@PathVariable ParentId parentId, @RequestBody ParentRequestApiDto dto){
+        ParentResponseApiDto responseApiDto = service.update(parentId, dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.PUT, HttpStatus.OK, responseApiDto, uri);
     }

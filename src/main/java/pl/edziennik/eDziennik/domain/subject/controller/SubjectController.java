@@ -2,12 +2,12 @@ package pl.edziennik.eDziennik.domain.subject.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pl.edziennik.eDziennik.domain.subject.domain.wrapper.SubjectId;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectResponseApiDto;
 import pl.edziennik.eDziennik.domain.subject.services.SubjectService;
@@ -47,31 +47,31 @@ public class SubjectController {
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{subjectId}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get specific subject",
             description = "Returns specific subject information")
-    public ApiResponse<?> findSubjectById(@PathVariable Long id) {
-        SubjectResponseApiDto responseApiDto = service.findSubjectById(id);
+    public ApiResponse<?> findSubjectById(@PathVariable SubjectId subjectId) {
+        SubjectResponseApiDto responseApiDto = service.findSubjectById(subjectId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{subjectId}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Delete subject")
-    public ApiResponse<?> deleteSubjectById(@PathVariable Long id) {
-        service.deleteSubjectById(id);
+    public ApiResponse<?> deleteSubjectById(@PathVariable SubjectId subjectId) {
+        service.deleteSubjectById(subjectId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.DELETE, HttpStatus.OK, "Subject deleted successfully", uri);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{subjectId}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Update subject",
             description = "This method will update specific subject or create new if not exists")
-    public ApiResponse<?> updateSubject(@PathVariable Long id, SubjectRequestApiDto requestApiDto) {
-        SubjectResponseApiDto responseApiDto = service.updateSubject(id, requestApiDto);
+    public ApiResponse<?> updateSubject(@PathVariable SubjectId subjectId, SubjectRequestApiDto requestApiDto) {
+        SubjectResponseApiDto responseApiDto = service.updateSubject(subjectId, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/subjects")
                 .path("/{id}")

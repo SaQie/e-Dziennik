@@ -1,9 +1,11 @@
 package pl.edziennik.eDziennik.domain.subject.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
+import pl.edziennik.eDziennik.domain.subject.domain.wrapper.SubjectId;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 
 import javax.persistence.*;
@@ -18,6 +20,7 @@ public class Subject{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subject_id_seq")
     @SequenceGenerator(name = "subject_id_seq", sequenceName = "subject_id_seq", allocationSize = 1)
+    @Getter(AccessLevel.NONE)
     private Long id;
 
     private String description;
@@ -35,7 +38,9 @@ public class Subject{
         this.name = name;
     }
 
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
+    public SubjectId getSubjectId(){
+        return SubjectId.wrap(id);
     }
+
+
 }

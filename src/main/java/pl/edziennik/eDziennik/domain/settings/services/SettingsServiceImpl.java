@@ -2,11 +2,10 @@ package pl.edziennik.eDziennik.domain.settings.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.edziennik.eDziennik.domain.schoollevel.domain.SchoolLevel;
 import pl.edziennik.eDziennik.domain.settings.domain.Settings;
+import pl.edziennik.eDziennik.domain.settings.domain.wrapper.SettingsId;
 import pl.edziennik.eDziennik.domain.settings.dto.SettingsDto;
 import pl.edziennik.eDziennik.domain.settings.dto.SettingsValue;
-import pl.edziennik.eDziennik.domain.settings.dto.mapper.SettingsMapper;
 import pl.edziennik.eDziennik.domain.settings.repository.SettingsRepostory;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
@@ -42,7 +41,7 @@ class SettingsServiceImpl extends BaseService implements SettingsService {
         return translatedSettingsData;
     }
 
-    private void addCorrectValue(SettingsDto settingsDto, List<SettingsDto> translatedSettingsData) {
+    private void addCorrectValue(final SettingsDto settingsDto, final List<SettingsDto> translatedSettingsData) {
         SettingsDto.SettingsDtoBuilder settingsDtoBuilder = SettingsDto.builder()
                 .name(resourceCreator.of(settingsDto.name()))
                 .booleanValue(settingsDto.booleanValue())
@@ -53,7 +52,7 @@ class SettingsServiceImpl extends BaseService implements SettingsService {
     }
 
     @Override
-    public void updateSetting(String name, SettingsValue value) {
+    public void updateSetting(final String name, final SettingsValue value) {
         Settings settings = settingsRepostory.findByName(name)
                 .orElseThrow(() -> new BusinessException("Setting with name " + name + " not exists"));
         setCorrectValue(settings, value);
@@ -62,21 +61,21 @@ class SettingsServiceImpl extends BaseService implements SettingsService {
     }
 
     @Override
-    public SettingsDto findSettingById(Long id) {
+    public SettingsDto findSettingById(SettingsId settingsId) {
         refreshCache();
-        return getSettingsDataFromCacheById(id);
+        return getSettingsDataFromCacheById(settingsId.id());
     }
 
     @Override
-    public void updateSettings(Long id, SettingsValue value) {
-        Settings settings = settingsRepostory.findById(id)
-                .orElseThrow(notFoundException(id, SchoolLevel.class));
+    public void updateSettings(final SettingsId settingsId, final SettingsValue value) {
+        Settings settings = settingsRepostory.findById(settingsId.id())
+                .orElseThrow(notFoundException(settingsId.id(), Settings.class));
         setCorrectValue(settings, value);
         settingsRepostory.save(settings);
         refreshCache();
     }
 
-    private void setCorrectValue(Settings settings, SettingsValue value) {
+    private void setCorrectValue(final Settings settings, final SettingsValue value) {
         settings.setLongValue(null);
         settings.setBooleanValue(null);
         settings.setStringValue(null);
@@ -108,7 +107,7 @@ class SettingsServiceImpl extends BaseService implements SettingsService {
     }
 
 
-    private SettingsDto getSettingsDataFromCacheByName(String name) {
+    private SettingsDto getSettingsDataFromCacheByName(final String name) {
         List<SettingsDto> translatedSettingsData = new ArrayList<>(cacheSettingsList);
         SettingsDto settingsDto = translatedSettingsData.stream()
                 .filter(data -> data.name().equalsIgnoreCase(name))
@@ -120,7 +119,7 @@ class SettingsServiceImpl extends BaseService implements SettingsService {
         return returnCorrectSettingsDto(settingsDto);
     }
 
-    private SettingsDto getSettingsDataFromCacheById(Long id) {
+    private SettingsDto getSettingsDataFromCacheById(final Long id) {
         List<SettingsDto> translatedSettingsData = new ArrayList<>(cacheSettingsList);
         SettingsDto settingsDto = translatedSettingsData.stream()
                 .filter(data -> data.id().equals(id))
@@ -132,7 +131,7 @@ class SettingsServiceImpl extends BaseService implements SettingsService {
         return returnCorrectSettingsDto(settingsDto);
     }
 
-    private SettingsDto returnCorrectSettingsDto(SettingsDto settingsDto) {
+    private SettingsDto returnCorrectSettingsDto(final SettingsDto settingsDto) {
         Long settingId = settingsDto.id();
         String translatedName = resourceCreator.of(settingsDto.name());
         if (settingsDto.booleanValue() == null && settingsDto.stringValue() == null && settingsDto.longValue() == null) {

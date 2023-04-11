@@ -11,7 +11,7 @@ import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassRequestApiDto;
 class SchoolClassValidatorService extends ServiceValidator<SchoolClassValidators, SchoolClassRequestApiDto> {
 
 
-    protected void valid(SchoolClassRequestApiDto dto) {
+    protected void valid(final SchoolClassRequestApiDto dto) {
         runValidators(dto);
     }
 }

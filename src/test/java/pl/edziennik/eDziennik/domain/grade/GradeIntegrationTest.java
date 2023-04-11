@@ -8,6 +8,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTesting;
 import pl.edziennik.eDziennik.domain.grade.domain.Grade;
+import pl.edziennik.eDziennik.domain.grade.domain.wrapper.GradeId;
 import pl.edziennik.eDziennik.domain.grade.dto.GradeRequestApiDto;
 import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 
@@ -56,7 +57,7 @@ public class GradeIntegrationTest extends BaseTesting {
         assertNotNull(gradeId);
 
         // when
-        Long id = gradeService.findGradeById(gradeId).id();
+        Long id = gradeService.findGradeById(GradeId.wrap(gradeId)).id();
 
         // then
         assertNotNull(id);
@@ -75,7 +76,7 @@ public class GradeIntegrationTest extends BaseTesting {
         GradeRequestApiDto expected = gradeUtil.prepareRequestApi(2, 2);
 
         // when
-        Long updated = gradeService.updateGrade(gradeId, expected).id();
+        Long updated = gradeService.updateGrade(GradeId.wrap(gradeId), expected).id();
 
         // then
         assertNotNull(updated);

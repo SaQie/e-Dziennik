@@ -6,6 +6,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTesting;
 import pl.edziennik.eDziennik.domain.school.domain.School;
+import pl.edziennik.eDziennik.domain.school.domain.wrapper.SchoolId;
 import pl.edziennik.eDziennik.domain.school.dto.SchoolRequestApiDto;
 import pl.edziennik.eDziennik.domain.school.dto.SchoolResponseApiDto;
 import pl.edziennik.eDziennik.domain.school.services.validator.SchoolValidators;
@@ -37,7 +38,7 @@ public class SchoolIntegrationTest extends BaseTesting {
         assertEquals(expected.city(), actual.getAddress().getCity());
         assertEquals(expected.postalCode(), actual.getAddress().getPostalCode());
         assertEquals(expected.regon(), actual.getRegon());
-        assertEquals(expected.idSchoolLevel(), actual.getSchoolLevel().getId());
+        assertEquals(expected.idSchoolLevel(), actual.getSchoolLevel().getSchoolLevelId().id());
     }
 
     @Test
@@ -48,7 +49,7 @@ public class SchoolIntegrationTest extends BaseTesting {
         SchoolRequestApiDto expected = schoolUtil.prepareSchoolRequestApi("afterEdit", "555555", "555555");
 
         // when
-        Long updated = schoolService.updateSchool(id, expected).id();
+        Long updated = schoolService.updateSchool(SchoolId.wrap(id), expected).id();
 
         // then
         assertNotNull(updated);
@@ -61,7 +62,7 @@ public class SchoolIntegrationTest extends BaseTesting {
         assertEquals(expected.city(), actual.getAddress().getCity());
         assertEquals(expected.postalCode(), actual.getAddress().getPostalCode());
         assertEquals(expected.regon(), actual.getRegon());
-        assertEquals(expected.idSchoolLevel(), actual.getSchoolLevel().getId());
+        assertEquals(expected.idSchoolLevel(), actual.getSchoolLevel().getSchoolLevelId().id());
 
     }
 
@@ -85,7 +86,7 @@ public class SchoolIntegrationTest extends BaseTesting {
         Long id = schoolService.createNewSchool(expected).id();
 
         // when
-        SchoolResponseApiDto actual = schoolService.findSchoolById(id);
+        SchoolResponseApiDto actual = schoolService.findSchoolById(SchoolId.wrap(id));
 
         // then
         assertEquals(expected.name(), actual.name());
@@ -102,7 +103,7 @@ public class SchoolIntegrationTest extends BaseTesting {
         // given
         Long idSchool = 99L;
         // when
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> schoolService.deleteSchoolById(idSchool));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> schoolService.deleteSchoolById(SchoolId.wrap(idSchool)));
 
         // then
         assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchool, School.class.getSimpleName()));

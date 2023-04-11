@@ -5,15 +5,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.edziennik.eDziennik.domain.address.domain.wrapper.AddressId;
 import pl.edziennik.eDziennik.domain.address.dto.mapper.AddressMapper;
 import pl.edziennik.eDziennik.domain.address.services.AddressService;
-import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
 import pl.edziennik.eDziennik.domain.personinformation.dto.mapper.PersonInformationMapper;
 import pl.edziennik.eDziennik.domain.personinformation.services.PersonInformationService;
 import pl.edziennik.eDziennik.domain.school.domain.School;
 import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
-import pl.edziennik.eDziennik.domain.subject.domain.Subject;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
+import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherResponseApiDto;
 import pl.edziennik.eDziennik.domain.teacher.dto.mapper.TeacherMapper;
@@ -24,7 +24,6 @@ import pl.edziennik.eDziennik.domain.user.services.UserService;
 import pl.edziennik.eDziennik.server.basics.page.PageDto;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -52,21 +51,21 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
 
 
     @Override
-    public TeacherResponseApiDto findTeacherById(Long id) {
-        Teacher teacher = repository.findById(id)
-                .orElseThrow(notFoundException(id, Teacher.class));
+    public TeacherResponseApiDto findTeacherById(final TeacherId teacherId) {
+        Teacher teacher = repository.findById(teacherId.id())
+                .orElseThrow(notFoundException(teacherId.id(), Teacher.class));
         return TeacherMapper.toDto(teacher);
     }
 
     @Override
-    public void deleteTeacherById(Long id) {
-        Teacher teacher = repository.findById(id)
-                .orElseThrow(notFoundException(id, Teacher.class));
+    public void deleteTeacherById(final TeacherId teacherId) {
+        Teacher teacher = repository.findById(teacherId.id())
+                .orElseThrow(notFoundException(teacherId.id(), Teacher.class));
         repository.delete(teacher);
     }
 
     @Override
-    public PageDto<TeacherResponseApiDto> findAllTeachers(Pageable pageable) {
+    public PageDto<TeacherResponseApiDto> findAllTeachers(final Pageable pageable) {
         Page<TeacherResponseApiDto> page = repository.findAll(pageable).map(TeacherMapper::toDto);
         return PageDto.fromPage(page);
     }
@@ -74,8 +73,8 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
 
     @Override
     @Transactional
-    public TeacherResponseApiDto updateTeacher(Long id, TeacherRequestApiDto dto) {
-        Optional<Teacher> optionalTeacher = repository.findById(id);
+    public TeacherResponseApiDto updateTeacher(final TeacherId teacherId, final TeacherRequestApiDto dto) {
+        Optional<Teacher> optionalTeacher = repository.findById(teacherId.id());
         if (optionalTeacher.isPresent()) {
             validatorService.validate(dto);
             // update teacher data
@@ -84,17 +83,16 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
                     .ifPresentOrElse(teacher::setSchool, notFoundException(School.class,dto.idSchool()));
 
             // update person information teacher data
-            Long idPersonInformation = teacher.getPersonInformation().getId();
-            personInformationService.update(idPersonInformation,
+            personInformationService.update(teacher.getPersonInformation().getPersonInformationId(),
                     PersonInformationMapper.mapToPersonInformation(dto));
 
             // update address teacher data
-            Long idAddress = teacher.getAddress().getId();
-            addressService.update(idAddress, AddressMapper.mapToAddress(dto));
+            AddressId addressId = teacher.getAddress().getAddressId();
+            addressService.update(addressId, AddressMapper.mapToAddress(dto));
 
             // update user teacher data
             User user = teacher.getUser();
-            userService.updateUser(user.getId(), UserMapper.toDto(dto));
+            userService.updateUser(user.getUserId(), UserMapper.toDto(dto));
 
             return TeacherMapper.toDto(teacher);
         }

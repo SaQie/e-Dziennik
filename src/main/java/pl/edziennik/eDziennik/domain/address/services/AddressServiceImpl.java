@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.domain.address.domain.Address;
+import pl.edziennik.eDziennik.domain.address.domain.wrapper.AddressId;
 import pl.edziennik.eDziennik.domain.address.repository.AddressRepository;
 
 import java.util.Optional;
@@ -17,8 +18,8 @@ class AddressServiceImpl implements AddressService{
 
     @Override
     @Transactional
-    public void update(Long id, Address addressSource) {
-        Optional<Address> addressOptional = repository.findById(id);
+    public void update(final AddressId addressId, final Address addressSource) {
+        Optional<Address> addressOptional = repository.findById(addressId.id());
         if (addressOptional.isPresent()){
             Address addressToEdit = addressOptional.get();
             addressToEdit.setAddress(addressSource.getAddress());

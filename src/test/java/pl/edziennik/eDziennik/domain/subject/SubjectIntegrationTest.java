@@ -8,6 +8,7 @@ import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTesting;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.domain.subject.domain.Subject;
+import pl.edziennik.eDziennik.domain.subject.domain.wrapper.SubjectId;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectResponseApiDto;
 import pl.edziennik.eDziennik.domain.subject.services.validator.SubjectValidators;
@@ -43,7 +44,7 @@ public class SubjectIntegrationTest extends BaseTesting {
 
         assertEquals(expected.name(), actual.getName());
         assertEquals(expected.description(), actual.getDescription());
-        assertEquals(expected.idTeacher(), actual.getTeacher().getId());
+        assertEquals(expected.idTeacher(), actual.getTeacher().getTeacherId().id());
     }
 
     @Test
@@ -58,7 +59,7 @@ public class SubjectIntegrationTest extends BaseTesting {
         SubjectRequestApiDto expected = subjectUtil.prepareSubjectRequestDto("Chemia", teacherId);
 
         // when
-        Long updated = subjectService.updateSubject(subjectId, expected).id();
+        Long updated = subjectService.updateSubject(SubjectId.wrap(subjectId), expected).id();
 
         // then
         assertNotNull(updated);
@@ -68,7 +69,7 @@ public class SubjectIntegrationTest extends BaseTesting {
 
         assertEquals(expected.name(), actual.getName());
         assertEquals(expected.description(), actual.getDescription());
-        assertEquals(expected.idTeacher(), actual.getTeacher().getId());
+        assertEquals(expected.idTeacher(), actual.getTeacher().getTeacherId().id());
     }
 
     @Test
@@ -110,7 +111,7 @@ public class SubjectIntegrationTest extends BaseTesting {
         assertNotNull(idSubject);
 
         // when
-        SubjectResponseApiDto actual = subjectService.findSubjectById(idSubject);
+        SubjectResponseApiDto actual = subjectService.findSubjectById(SubjectId.wrap(idSubject));
 
         // then
         assertNotNull(actual);

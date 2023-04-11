@@ -1,10 +1,8 @@
 package pl.edziennik.eDziennik.domain.user.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pl.edziennik.eDziennik.domain.role.domain.Role;
+import pl.edziennik.eDziennik.domain.user.domain.wrapper.UserId;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -21,6 +19,7 @@ public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
     @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq", allocationSize = 1)
+    @Getter(AccessLevel.NONE)
     private Long id;
 
     private String username;
@@ -37,6 +36,10 @@ public class User{
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+
+    public UserId getUserId(){
+        return UserId.wrap(id);
     }
 
 

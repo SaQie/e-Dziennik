@@ -9,12 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 import pl.edziennik.eDziennik.domain.schoollevel.dto.SchoolLevelResponseApiDto;
 import pl.edziennik.eDziennik.domain.schoollevel.service.SchoolLevelService;
-import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
-import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
+import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
+import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 
 import java.net.URI;
 import java.util.List;
@@ -32,14 +30,7 @@ public class SchoolLevelController {
     public ApiResponse<?> getSchoolLevelList() {
         List<SchoolLevelResponseApiDto> responseApiDtos = service.getSchoolLevelList();
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        ApiValidationResult build = ApiValidationResult.builder()
-                .cause("ASD")
-                .field("QWE")
-                .thrownImmediately(false)
-                .exceptionType(ExceptionType.BUSINESS)
-                .build();
-        List<ApiValidationResult> build1 = List.of(build);
-        return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, build1, uri);
+        return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDtos, uri);
     }
 
 }

@@ -19,8 +19,8 @@ public class TeacherMapper {
     public static TeacherResponseApiDto toDto(Teacher entity) {
         if (entity.getSchool() != null) {
             return TeacherResponseApiDto.builder()
-                    .id(entity.getId())
-                    .userId(entity.getUser().getId())
+                    .id(entity.getTeacherId().id())
+                    .userId(entity.getUser().getUserId().id())
                     .username(entity.getUser().getUsername())
                     .firstName(entity.getPersonInformation().getFirstName())
                     .lastName(entity.getPersonInformation().getLastName())
@@ -36,8 +36,8 @@ public class TeacherMapper {
                     .build();
         }
         return TeacherResponseApiDto.builder()
-                .id(entity.getId())
-                .userId(entity.getUser().getId())
+                .id(entity.getTeacherId().id())
+                .userId(entity.getUser().getUserId().id())
                 .username(entity.getUser().getUsername())
                 .firstName(entity.getPersonInformation().getFirstName())
                 .lastName(entity.getPersonInformation().getLastName())
@@ -65,6 +65,6 @@ public class TeacherMapper {
 
     public static TeacherSimpleResponseApiDto toSimpleDto(Teacher teacher) {
         String fullName = teacher.getPersonInformation().getFirstName() + " " + teacher.getPersonInformation().getLastName();
-        return new TeacherSimpleResponseApiDto(teacher.getId(), fullName);
+        return new TeacherSimpleResponseApiDto(teacher.getTeacherId().id(), fullName);
     }
 }

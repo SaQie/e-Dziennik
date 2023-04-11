@@ -9,6 +9,7 @@ import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTesting;
 import pl.edziennik.eDziennik.domain.school.domain.School;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
+import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherResponseApiDto;
 import pl.edziennik.eDziennik.domain.teacher.services.validator.TeacherValidators;
@@ -52,7 +53,7 @@ public class TeacherIntegrationTest extends BaseTesting {
                 "test2" + "@example.com");
 
         // when
-        Long updated = teacherService.updateTeacher(id, expected).id();
+        Long updated = teacherService.updateTeacher(TeacherId.wrap(id), expected).id();
 
         // then
         assertNotNull(updated);
@@ -78,7 +79,7 @@ public class TeacherIntegrationTest extends BaseTesting {
         // when
 
         // then
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> teacherService.updateTeacher(id, expected));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> teacherService.updateTeacher(TeacherId.wrap(id), expected));
         assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", expected.idSchool(), School.class.getSimpleName()));
     }
 
@@ -90,10 +91,10 @@ public class TeacherIntegrationTest extends BaseTesting {
         assertNotNull(id);
 
         // when
-        teacherService.deleteTeacherById(id);
+        teacherService.deleteTeacherById(TeacherId.wrap(id));
 
         // then
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> teacherService.findTeacherById(id));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> teacherService.findTeacherById(TeacherId.wrap(id)));
         assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", id,
                 Teacher.class.getSimpleName()));
     }
@@ -126,7 +127,7 @@ public class TeacherIntegrationTest extends BaseTesting {
         assertNotNull(id);
 
         // when
-        TeacherResponseApiDto actual = teacherService.findTeacherById(id);
+        TeacherResponseApiDto actual = teacherService.findTeacherById(TeacherId.wrap(id));
 
         // then
         assertNotNull(actual);

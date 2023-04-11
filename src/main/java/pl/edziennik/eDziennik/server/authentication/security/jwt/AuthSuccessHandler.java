@@ -50,8 +50,8 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         UserDetails principal = jwtUtils.getPrincipal(authentication);
         User user = repository.getByUsername(principal.getUsername());
-        String token = jwtUtils.generateJwtToken(principal, user.getId());
-        String refreshToken = jwtUtils.generateRefreshToken(principal, user.getId());
+        String token = jwtUtils.generateJwtToken(principal, user.getUserId().id());
+        String refreshToken = jwtUtils.generateRefreshToken(principal, user.getUserId().id());
         AuthResponseDto authResponseDto = new AuthResponseDto();
         authResponseDto.setUsername(user.getUsername());
         authResponseDto.setToken(token);

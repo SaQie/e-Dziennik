@@ -22,11 +22,11 @@ spring:
     change-log: classpath:liquibase-changeLog.xml
 
 
-#logging:
-#  level:
-#    org:
-#      springframework:
-#        web: DEBUG
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
 
 
 jwt:

@@ -1,21 +1,18 @@
 package pl.edziennik.eDziennik.domain.grade.service;
 
+import pl.edziennik.eDziennik.domain.grade.domain.wrapper.GradeId;
 import pl.edziennik.eDziennik.domain.grade.dto.GradeRequestApiDto;
 import pl.edziennik.eDziennik.domain.grade.dto.GradeResponseApiDto;
-
-import java.util.List;
 
 public interface GradeService {
 
 
     GradeResponseApiDto addNewGrade(final GradeRequestApiDto dto);
 
-    GradeResponseApiDto updateGrade(final Long id, final GradeRequestApiDto dto);
+    GradeResponseApiDto updateGrade(final GradeId gradeId, final GradeRequestApiDto dto);
 
-    GradeResponseApiDto findGradeById(final Long id);
+    GradeResponseApiDto findGradeById(final GradeId gradeId);
 
-    void deleteGradeById(final Long id);
-
-    List<GradeResponseApiDto> findAllGrades();
+    void deleteGradeById(final GradeId gradeId);
 
 }

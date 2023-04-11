@@ -11,7 +11,7 @@ import pl.edziennik.eDziennik.server.basics.validator.ServiceValidator;
 class StudentSubjectValidatorService extends ServiceValidator<StudentSubjectValidators, StudentSubjectRequestDto> {
 
 
-    protected void valid(StudentSubjectRequestDto dto) {
+    protected void valid(final StudentSubjectRequestDto dto) {
         runValidators(dto);
     }
 

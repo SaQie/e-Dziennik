@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.edziennik.eDziennik.domain.address.domain.wrapper.AddressId;
 import pl.edziennik.eDziennik.domain.address.dto.mapper.AddressMapper;
 import pl.edziennik.eDziennik.domain.address.services.AddressService;
 import pl.edziennik.eDziennik.domain.personinformation.dto.mapper.PersonInformationMapper;
@@ -15,6 +16,7 @@ import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.domain.schoolclass.repository.SchoolClassRepository;
 import pl.edziennik.eDziennik.domain.settings.services.SettingsService;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
+import pl.edziennik.eDziennik.domain.student.domain.wrapper.StudentId;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.domain.student.dto.StudentResponseApiDto;
 import pl.edziennik.eDziennik.domain.student.dto.mapper.StudentMapper;
@@ -48,7 +50,7 @@ class StudentServiceImpl extends BaseService implements StudentService {
 
     @Override
     @Transactional
-    public StudentResponseApiDto register(StudentRequestApiDto dto) {
+    public StudentResponseApiDto register(final StudentRequestApiDto dto) {
         validatorService.valid(dto);
         Student student = mapToEntity(dto);
         User user = userService.createUser(UserMapper.toDto(dto));
@@ -58,16 +60,16 @@ class StudentServiceImpl extends BaseService implements StudentService {
     }
 
     @Override
-    public StudentResponseApiDto findStudentById(Long id) {
-        Student student = repository.findById(id)
-                .orElseThrow(notFoundException(id, Student.class));
+    public StudentResponseApiDto findStudentById(final StudentId studentId) {
+        Student student = repository.findById(studentId.id())
+                .orElseThrow(notFoundException(studentId.id(), Student.class));
         return StudentMapper.toDto(student);
     }
 
     @Override
-    public void deleteStudentById(Long id) {
-        Student student = repository.findById(id)
-                .orElseThrow(notFoundException(id, Student.class));
+    public void deleteStudentById(final StudentId studentId) {
+        Student student = repository.findById(studentId.id())
+                .orElseThrow(notFoundException(studentId.id(), Student.class));
         if (student.getParent() != null) {
             student.getParent().clearStudent();
         }
@@ -75,13 +77,13 @@ class StudentServiceImpl extends BaseService implements StudentService {
     }
 
     @Override
-    public PageDto<StudentResponseApiDto> findAllStudents(Pageable pageable) {
+    public PageDto<StudentResponseApiDto> findAllStudents(final Pageable pageable) {
         Page<StudentResponseApiDto> page = repository.findAll(pageable).map(StudentMapper::toDto);
         return PageDto.fromPage(page);
     }
 
     @Override
-    public StudentResponseApiDto getStudentByUsername(String username) {
+    public StudentResponseApiDto getStudentByUsername(final String username) {
         Student student = repository.getByUserUsername(username);
         return student == null ? null : StudentMapper.toDto(student);
     }
@@ -89,30 +91,29 @@ class StudentServiceImpl extends BaseService implements StudentService {
 
     @Override
     @Transactional
-    public StudentResponseApiDto updateStudent(Long id, StudentRequestApiDto dto) {
-        Optional<Student> optionalStudent = repository.findById(id);
+    public StudentResponseApiDto updateStudent(final StudentId studentId, StudentRequestApiDto dto) {
+        Optional<Student> optionalStudent = repository.findById(studentId.id());
         if (optionalStudent.isPresent()) {
             validatorService.valid(dto);
 
             // update student data
             Student student = optionalStudent.get();
             schoolRepository.findById(dto.idSchool())
-                    .ifPresentOrElse(student::setSchool,notFoundException(School.class, dto.idSchool()));
+                    .ifPresentOrElse(student::setSchool, notFoundException(School.class, dto.idSchool()));
             schoolClassRepository.findById(dto.idSchoolClass())
                     .ifPresentOrElse(student::setSchoolClass, notFoundException(SchoolClass.class, dto.idSchoolClass()));
 
             // update person information student data
-            Long idPersonInformation = student.getPersonInformation().getId();
-            personInformationService.update(idPersonInformation,
+            personInformationService.update(student.getPersonInformation().getPersonInformationId(),
                     PersonInformationMapper.mapToPersonInformation(dto));
 
             // update address student data
-            Long idAddress = student.getAddress().getId();
-            addressService.update(idAddress, AddressMapper.mapToAddress(dto));
+            AddressId addressId = student.getAddress().getAddressId();
+            addressService.update(addressId, AddressMapper.mapToAddress(dto));
 
             // update user student data
             User user = student.getUser();
-            userService.updateUser(user.getId(), UserMapper.toDto(dto));
+            userService.updateUser(user.getUserId(), UserMapper.toDto(dto));
 
             return StudentMapper.toDto(student);
         }
@@ -120,7 +121,7 @@ class StudentServiceImpl extends BaseService implements StudentService {
     }
 
 
-    private Student mapToEntity(StudentRequestApiDto dto) {
+    private Student mapToEntity(final StudentRequestApiDto dto) {
         Student student = StudentMapper.toEntity(dto);
         School school = schoolRepository.findById(dto.idSchool())
                 .orElseThrow(notFoundException(dto.idSchool(), School.class));

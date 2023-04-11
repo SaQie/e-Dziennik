@@ -1,7 +1,6 @@
 package pl.edziennik.eDziennik.domain.user.dto;
 
 import lombok.Builder;
-import lombok.Getter;
 
 @Builder
 public record UserRequestDto(
@@ -15,7 +14,5 @@ public record UserRequestDto(
     public static final String PASSWORD = "password";
     public static final String EMAIL = "email";
     public static final String ROLE = "role";
-
-
 
 }

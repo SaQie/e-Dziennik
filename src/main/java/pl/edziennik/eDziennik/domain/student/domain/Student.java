@@ -1,18 +1,15 @@
 package pl.edziennik.eDziennik.domain.student.domain;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pl.edziennik.eDziennik.domain.address.domain.Address;
 import pl.edziennik.eDziennik.domain.parent.domain.Parent;
 import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
 import pl.edziennik.eDziennik.domain.school.domain.School;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
+import pl.edziennik.eDziennik.domain.student.domain.wrapper.StudentId;
 import pl.edziennik.eDziennik.domain.user.domain.User;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @NoArgsConstructor
@@ -24,6 +21,7 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_id_seq")
     @SequenceGenerator(name = "student_id_seq", sequenceName = "student_id_seq", allocationSize = 1)
+    @Getter(AccessLevel.NONE)
     private Long id;
 
     private boolean hasParentAccount;
@@ -49,18 +47,14 @@ public class Student {
     @OneToOne(fetch = FetchType.LAZY,cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Parent parent;
 
+    public StudentId getStudentId(){
+        return StudentId.wrap(id);
+    }
 
     public Student(PersonInformation personInformation, Address address) {
         this.personInformation = personInformation;
         this.address = address;
     }
 
-    public void setSchoolClass(SchoolClass schoolClass) {
-        this.schoolClass = schoolClass;
-    }
-
-    public void setSchool(School school) {
-        this.school = school;
-    }
 
 }

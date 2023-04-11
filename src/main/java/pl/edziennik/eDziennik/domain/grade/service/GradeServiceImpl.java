@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.domain.grade.domain.Grade;
+import pl.edziennik.eDziennik.domain.grade.domain.wrapper.GradeId;
 import pl.edziennik.eDziennik.domain.grade.dto.GradeRequestApiDto;
 import pl.edziennik.eDziennik.domain.grade.dto.GradeResponseApiDto;
 import pl.edziennik.eDziennik.domain.grade.dto.mapper.GradeMapper;
@@ -11,9 +12,7 @@ import pl.edziennik.eDziennik.domain.grade.repository.GradeRepository;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
 import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -30,22 +29,21 @@ class GradeServiceImpl extends BaseService implements GradeService {
     }
 
     @Override
-    public GradeResponseApiDto findGradeById(Long id) {
-        Grade grade = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(getMessage("not.found.message", id, Grade.class.getSimpleName())));
+    public GradeResponseApiDto findGradeById(final GradeId gradeId) {
+        Grade grade = repository.findById(gradeId.id())
+                .orElseThrow(() -> new EntityNotFoundException(getMessage("not.found.message", gradeId, Grade.class.getSimpleName())));
         return GradeMapper.toDto(grade);
     }
 
     @Override
-    public void deleteGradeById(Long id) {
-        repository.findById(id).ifPresent(repository::delete);
+    public void deleteGradeById(final GradeId gradeId) {
+        repository.findById(gradeId.id()).ifPresent(repository::delete);
     }
 
     @Override
     @Transactional
-    public GradeResponseApiDto updateGrade(Long id, GradeRequestApiDto dto) {
-        // TODO -> Walidacja
-        Optional<Grade> optionalGrade = repository.findById(id);
+    public GradeResponseApiDto updateGrade(final GradeId gradeId, GradeRequestApiDto dto) {
+        Optional<Grade> optionalGrade = repository.findById(gradeId.id());
 
         if (optionalGrade.isPresent()) {
             Grade grade = optionalGrade.get();
@@ -58,13 +56,5 @@ class GradeServiceImpl extends BaseService implements GradeService {
         Grade grade = repository.save(GradeMapper.toEntity(dto));
         return GradeMapper.toDto(grade);
 
-    }
-
-    @Override
-    public List<GradeResponseApiDto> findAllGrades() {
-        return repository.findAll()
-                .stream()
-                .map(GradeMapper::toDto)
-                .collect(Collectors.toList());
     }
 }

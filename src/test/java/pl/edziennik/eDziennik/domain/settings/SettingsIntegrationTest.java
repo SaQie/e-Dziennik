@@ -5,6 +5,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTesting;
+import pl.edziennik.eDziennik.domain.settings.domain.wrapper.SettingsId;
 import pl.edziennik.eDziennik.domain.settings.dto.SettingsDto;
 import pl.edziennik.eDziennik.domain.settings.dto.SettingsValue;
 import pl.edziennik.eDziennik.domain.settings.services.SettingsService;
@@ -33,11 +34,11 @@ public class SettingsIntegrationTest extends BaseTesting {
     @Test
     public void shouldUpdateBooleanSettingValueById() {
         // given
-        Long id = 1L;
+        SettingsId settingsId = SettingsId.wrap(1L);
 
         settingsService.refreshCache();
         // when
-        settingsService.updateSettings(id, new SettingsValue(true, null, null));
+        settingsService.updateSettings(settingsId, new SettingsValue(true, null, null));
 
         // then
         SettingsDto settingsDto = settingsService.getSettingsDataByName(SettingsService.AUTOMATICALLY_INSERT_STUDENT_SUBJECTS_WHEN_ADD);
@@ -48,11 +49,11 @@ public class SettingsIntegrationTest extends BaseTesting {
     public void shouldUpdateStringSettingValueById() {
         // given
         String expectedSettingValue = "Test";
-        Long id = 1L;
+        SettingsId settingsId = SettingsId.wrap(1L);
 
         settingsService.refreshCache();
         // when
-        settingsService.updateSettings(id, new SettingsValue(null,expectedSettingValue, null));
+        settingsService.updateSettings(settingsId, new SettingsValue(null,expectedSettingValue, null));
 
         // then
         SettingsDto settingsDto = settingsService.getSettingsDataByName(SettingsService.AUTOMATICALLY_INSERT_STUDENT_SUBJECTS_WHEN_ADD);
@@ -63,11 +64,11 @@ public class SettingsIntegrationTest extends BaseTesting {
     public void shouldUpdateLongSettingValueById() {
         // given
         Long expectedLongValue = 999L;
-        Long id = 1L;
+        SettingsId settingsId = SettingsId.wrap(1L);
 
         settingsService.refreshCache();
         // when
-        settingsService.updateSettings(id, new SettingsValue(null,null,expectedLongValue));
+        settingsService.updateSettings(settingsId, new SettingsValue(null,null,expectedLongValue));
 
         // then
         SettingsDto settingsDto = settingsService.getSettingsDataByName(SettingsService.AUTOMATICALLY_INSERT_STUDENT_SUBJECTS_WHEN_ADD);
@@ -78,11 +79,11 @@ public class SettingsIntegrationTest extends BaseTesting {
     public void shouldNullAllOtherSettingValuesWhenUpdate() {
         // given
         Long expectedLongValue = 999L;
-        Long id = 1L;
+        SettingsId settingsId = SettingsId.wrap(1L);
 
         settingsService.refreshCache();
         // when
-        settingsService.updateSettings(id, new SettingsValue(null,null,expectedLongValue));
+        settingsService.updateSettings(settingsId, new SettingsValue(null,null,expectedLongValue));
 
         // then
         SettingsDto settingsDto = settingsService.getSettingsDataByName(SettingsService.AUTOMATICALLY_INSERT_STUDENT_SUBJECTS_WHEN_ADD);
@@ -94,11 +95,11 @@ public class SettingsIntegrationTest extends BaseTesting {
     @Test
     public void shouldThrowsExceptionWhenAllSettingsValuesAreNull() {
         // given
-        Long id = 1L;
+        SettingsId settingsId = SettingsId.wrap(1L);
 
         settingsService.refreshCache();
         // when
-        BusinessException exception = assertThrows(BusinessException.class, () -> settingsService.updateSettings(id, new SettingsValue(null,null,(Long) null)));
+        BusinessException exception = assertThrows(BusinessException.class, () -> settingsService.updateSettings(settingsId, new SettingsValue(null,null,(Long) null)));
 
 
         // then

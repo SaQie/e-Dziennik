@@ -1,7 +1,9 @@
 package pl.edziennik.eDziennik.domain.role.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pl.edziennik.eDziennik.domain.role.domain.wrapper.RoleId;
 
 import javax.persistence.*;
 
@@ -13,6 +15,7 @@ public class Role{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_id_seq")
     @SequenceGenerator(name = "role_id_seq", sequenceName = "role_id_seq", allocationSize = 1)
+    @Getter(AccessLevel.NONE)
     private Long id;
 
     private String name;
@@ -25,6 +28,10 @@ public class Role{
 
     public Role(String name) {
         this.name = name;
+    }
+
+    public RoleId getRoleId(){
+        return RoleId.wrap(id);
     }
 
     public enum RoleConst {

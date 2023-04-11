@@ -2,12 +2,12 @@ package pl.edziennik.eDziennik.domain.admin.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pl.edziennik.eDziennik.domain.admin.domain.wrapper.AdminId;
 import pl.edziennik.eDziennik.domain.admin.dto.AdminRequestApiDto;
 import pl.edziennik.eDziennik.domain.admin.dto.AdminResponseApiDto;
 import pl.edziennik.eDziennik.domain.admin.services.AdminService;
@@ -48,31 +48,31 @@ public class AdminController {
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{adminId}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get specific admin",
             description = "Returns information about specific admin")
-    public ApiResponse<AdminResponseApiDto> getAdmin(@PathVariable Long id) {
-        AdminResponseApiDto responseApiDto = service.getAdminById(id);
+    public ApiResponse<AdminResponseApiDto> getAdmin(@PathVariable AdminId adminId) {
+        AdminResponseApiDto responseApiDto = service.getAdminById(adminId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{adminId}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Delete admin")
-    public ApiResponse<?> deleteAdminById(@PathVariable Long id) {
-        service.deleteAdminById(id);
+    public ApiResponse<?> deleteAdminById(@PathVariable AdminId adminId) {
+        service.deleteAdminById(adminId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.DELETE, HttpStatus.OK, "Admin deleted successfully", uri);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{adminId}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Update admin",
             description = "This method will update specific Admin or create new if not exists")
-    public ApiResponse<AdminResponseApiDto> updateAdmin(@RequestBody @Valid AdminRequestApiDto dto, @PathVariable Long id) {
-        AdminResponseApiDto responseApiDto = service.updateAdmin(dto, id);
+    public ApiResponse<AdminResponseApiDto> updateAdmin(@RequestBody @Valid AdminRequestApiDto dto, @PathVariable AdminId adminId) {
+        AdminResponseApiDto responseApiDto = service.updateAdmin(dto, adminId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.PUT, HttpStatus.OK, responseApiDto, uri);
     }

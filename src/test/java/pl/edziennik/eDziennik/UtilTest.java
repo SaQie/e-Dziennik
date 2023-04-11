@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
+import pl.edziennik.eDziennik.domain.student.domain.wrapper.StudentId;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,7 +49,7 @@ public class UtilTest extends BaseTesting {
         studentRequestApiDto = studentUtil.prepareStudentRequestDto("Test", "Dawid", "Nowak", "q", "qwe");
 
         // when
-        studentService.updateStudent(id, studentRequestApiDto);
+        studentService.updateStudent(StudentId.wrap(id), studentRequestApiDto);
 
         // then
         assertNotNull(id);
