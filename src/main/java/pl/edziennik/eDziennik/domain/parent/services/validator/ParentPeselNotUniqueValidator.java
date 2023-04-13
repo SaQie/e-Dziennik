@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.parent.repository.ParentRepository;
+import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.Pesel;
 import pl.edziennik.eDziennik.domain.role.domain.Role;
 import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
@@ -29,7 +30,7 @@ class ParentPeselNotUniqueValidator implements ParentValidators {
 
     @Override
     public Optional<ApiValidationResult> validate(ParentRequestApiDto dto) {
-        if (repository.existsByPesel(dto.pesel(), Role.RoleConst.ROLE_PARENT.getId())) {
+        if (repository.existsByPesel(Pesel.of(dto.pesel()), Role.RoleConst.ROLE_PARENT.getId())) {
 
             String message = resourceCreator.of(EXCEPTION_MESSAGE_PARENT_PESEL_ALREADY_EXISTS, dto.pesel());
 

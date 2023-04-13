@@ -56,8 +56,8 @@ public class StudentSubjectIntegrationTest extends BaseTesting {
         Student expectedStudent = find(Student.class, studentId);
 
         assertEquals(1, studentSubject.getSubjects().size());
-        assertEquals(expectedStudent.getPersonInformation().getFirstName(), studentSubject.getFirstName());
-        assertEquals(expectedStudent.getPersonInformation().getLastName(), studentSubject.getLastName());
+        assertEquals(expectedStudent.getPersonInformation().firstName(), studentSubject.getFirstName());
+        assertEquals(expectedStudent.getPersonInformation().lastName(), studentSubject.getLastName());
         assertEquals(expectedStudent.getStudentId().id(), studentSubject.getId());
 
         SubjectResponseApiDto actualSubject = studentSubject.getSubjects().get(0);
@@ -163,8 +163,8 @@ public class StudentSubjectIntegrationTest extends BaseTesting {
         assertEquals(StudentSubjectValidators.STUDENT_SUBJECT_ALREADY_EXIST_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(StudentSubjectRequestDto.ID_SUBJECT, exception.getErrors().get(0).getField());
         String expectedExceptionMessage = resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST, find(Student.class,
-                requestDto.idStudent()).getPersonInformation().getFirstName() + " " + find(Student.class,
-                requestDto.idStudent()).getPersonInformation().getLastName(), find(Subject.class, requestDto.idSubject()).getName());
+                requestDto.idStudent()).getPersonInformation().firstName() + " " + find(Student.class,
+                requestDto.idStudent()).getPersonInformation().lastName(), find(Subject.class, requestDto.idSubject()).getName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 
@@ -189,8 +189,8 @@ public class StudentSubjectIntegrationTest extends BaseTesting {
         assertEquals(StudentSubjectValidators.STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FRON_DIFFERENT_CLASS_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(StudentSubjectRequestDto.ID_SUBJECT, exception.getErrors().get(0).getField());
         String expectedExceptionMessage = resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS, find(Student.class,
-                studentSubjectRequestDto.idStudent()).getPersonInformation().getFirstName() + " " + find(Student.class,
-                studentSubjectRequestDto.idStudent()).getPersonInformation().getLastName(), find(Subject.class, studentSubjectRequestDto.idSubject()).getName());
+                studentSubjectRequestDto.idStudent()).getPersonInformation().firstName() + " " + find(Student.class,
+                studentSubjectRequestDto.idStudent()).getPersonInformation().lastName(), find(Subject.class, studentSubjectRequestDto.idSubject()).getName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 

@@ -2,6 +2,7 @@ package pl.edziennik.eDziennik.domain.teacher.services.validator;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.Pesel;
 import pl.edziennik.eDziennik.domain.role.domain.Role;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.domain.teacher.repository.TeacherRepository;
@@ -28,7 +29,7 @@ class TeacherPeselNotUniqueValidator implements TeacherValidators {
 
     @Override
     public Optional<ApiValidationResult> validate(TeacherRequestApiDto dto) {
-        if (repository.isTeacherExistsByPesel(dto.pesel(), Role.RoleConst.ROLE_TEACHER.getId())) {
+        if (repository.isTeacherExistsByPesel(Pesel.of(dto.pesel()), Role.RoleConst.ROLE_TEACHER.getId())) {
             String message = resourceCreator.of(EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, dto.pesel());
 
             ApiValidationResult apiValidationResult = ApiValidationResult.builder()

@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.edziennik.eDziennik.BaseUnitTest;
+import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.Pesel;
 import pl.edziennik.eDziennik.domain.role.domain.Role;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.domain.teacher.repository.TeacherRepository;
@@ -34,7 +35,7 @@ public class TeacherValidatorUnitTest extends BaseUnitTest {
     public void shouldReturnApiErrorWhenTeacherWithPeselAlreadyExists() {
         // given
         TeacherRequestApiDto dto = teacherUtil.prepareTeacherRequestDto();
-        when(teacherRepository.isTeacherExistsByPesel("123123", Role.RoleConst.ROLE_TEACHER.getId())).thenReturn(true);
+        when(teacherRepository.isTeacherExistsByPesel(Pesel.of("123123"), Role.RoleConst.ROLE_TEACHER.getId())).thenReturn(true);
         lenient().when(resourceCreator.of(TeacherPeselNotUniqueValidator.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, dto.pesel()))
                 .thenReturn(TeacherPeselNotUniqueValidator.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE);
 
@@ -53,7 +54,7 @@ public class TeacherValidatorUnitTest extends BaseUnitTest {
     public void shouldNotReturnApiErrorWhenTeacherWithPeselNotExists(){
         // given
         TeacherRequestApiDto dto = teacherUtil.prepareTeacherRequestDto();
-        when(teacherRepository.isTeacherExistsByPesel("123123", Role.RoleConst.ROLE_TEACHER.getId())).thenReturn(false);
+        when(teacherRepository.isTeacherExistsByPesel(Pesel.of("123123"), Role.RoleConst.ROLE_TEACHER.getId())).thenReturn(false);
 
         // when
         Optional<ApiValidationResult> validationResult = validator.validate(dto);

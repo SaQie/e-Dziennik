@@ -24,6 +24,7 @@ public record PersonInformation(
 
 ) {
 
+
     public static PersonInformation of(String firstName, String lastName, PhoneNumber phoneNumber, Pesel pesel) {
         String fullName = firstName + " " + lastName;
         return new PersonInformation(firstName, lastName, fullName, phoneNumber, pesel);

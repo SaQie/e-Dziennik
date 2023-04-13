@@ -10,6 +10,7 @@ import pl.edziennik.eDziennik.domain.parent.domain.Parent;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.parent.repository.ParentRepository;
 import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
+import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.Pesel;
 import pl.edziennik.eDziennik.domain.role.domain.Role;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
@@ -131,7 +132,7 @@ public class ParentValidatorUnitTest extends BaseUnitTest {
         // given
         ParentRequestApiDto parentRequestApiDto = parentUtil.prepareParentRequestApiDto(1L);
 
-        when(repository.existsByPesel(parentRequestApiDto.pesel(), Role.RoleConst.ROLE_PARENT.getId())).thenReturn(true);
+        when(repository.existsByPesel(Pesel.of(parentRequestApiDto.pesel()), Role.RoleConst.ROLE_PARENT.getId())).thenReturn(true);
         lenient().when(resourceCreator.of(ParentValidators.EXCEPTION_MESSAGE_PARENT_PESEL_ALREADY_EXISTS, parentRequestApiDto.pesel()))
                 .thenReturn(ParentValidators.EXCEPTION_MESSAGE_PARENT_PESEL_ALREADY_EXISTS);
 
@@ -151,7 +152,7 @@ public class ParentValidatorUnitTest extends BaseUnitTest {
         // given
         ParentRequestApiDto parentRequestApiDto = parentUtil.prepareParentRequestApiDto(1L);
 
-        when(repository.existsByPesel(parentRequestApiDto.pesel(), Role.RoleConst.ROLE_PARENT.getId())).thenReturn(false);
+        when(repository.existsByPesel(Pesel.of(parentRequestApiDto.pesel()), Role.RoleConst.ROLE_PARENT.getId())).thenReturn(false);
         lenient().when(resourceCreator.of(ParentValidators.EXCEPTION_MESSAGE_PARENT_PESEL_ALREADY_EXISTS, parentRequestApiDto.pesel()))
                 .thenReturn(ParentValidators.EXCEPTION_MESSAGE_PARENT_PESEL_ALREADY_EXISTS);
 

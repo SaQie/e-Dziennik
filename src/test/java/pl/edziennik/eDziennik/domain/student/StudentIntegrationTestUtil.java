@@ -1,6 +1,6 @@
 package pl.edziennik.eDziennik.domain.student;
 
-import liquibase.repackaged.org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 
 import java.util.ArrayList;

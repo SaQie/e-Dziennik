@@ -1,5 +1,7 @@
 package pl.edziennik.eDziennik;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,10 +37,7 @@ import pl.edziennik.eDziennik.domain.user.UserIntegrationTestUtil;
 import pl.edziennik.eDziennik.domain.user.services.UserService;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
-import java.math.BigInteger;
 
 
 /**
@@ -93,13 +92,13 @@ public class BaseTesting {
     @Autowired
     protected GradeManagmentService gradeManagmentService;
 
-    protected BigInteger expectedNumberOfSettings;
+    protected Long expectedNumberOfSettings;
 
     @BeforeEach
     public void prepareDb() {
         clearDb();
         fillDbWithData();
-        expectedNumberOfSettings = (BigInteger) em.createNativeQuery("select count(*) from app_settings").getSingleResult();
+        expectedNumberOfSettings = (Long) em.createNativeQuery("select count(*) from app_settings").getSingleResult();
     }
 
     protected ParentIntegrationTestUtil parentUtil;
@@ -165,7 +164,7 @@ public class BaseTesting {
 
     protected String getStudentFullName(Long idStudent) {
         Student student = find(Student.class, idStudent);
-        return student.getPersonInformation().getFullName();
+        return student.getPersonInformation().fullName();
     }
 
     protected final Long ROLE_ADMIN = 1L;

@@ -8,6 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.domain.address.domain.wrapper.AddressId;
 import pl.edziennik.eDziennik.domain.address.dto.mapper.AddressMapper;
 import pl.edziennik.eDziennik.domain.address.services.AddressService;
+import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
+import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.Pesel;
+import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.PhoneNumber;
 import pl.edziennik.eDziennik.domain.personinformation.services.PersonInformationService;
 import pl.edziennik.eDziennik.domain.school.domain.School;
 import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
@@ -82,8 +85,8 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
                     .ifPresentOrElse(teacher::setSchool, notFoundException(School.class,dto.idSchool()));
 
             // update person information teacher data
-//            personInformationService.update(teacher.getPersonInformation().getPersonInformationId(),
-//                    PersonInformationMapper.mapToPersonInformation(dto));
+            teacher.setPersonInformation(PersonInformation.of(dto.firstName(),
+                    dto.lastName(), PhoneNumber.of(dto.phoneNumber()), Pesel.of(dto.pesel())));
 
             // update address teacher data
             AddressId addressId = teacher.getAddress().getAddressId();

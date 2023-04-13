@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.domain.student;
 
+import jakarta.persistence.Query;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +22,6 @@ import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 
-import javax.persistence.Query;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,10 +43,10 @@ public class StudentIntegrationTest extends BaseTesting {
         // then
         assertNotNull(id);
         Student actual = find(Student.class, id);
-        assertEquals(expected.firstName(), actual.getPersonInformation().getFirstName());
-        assertEquals(expected.lastName(), actual.getPersonInformation().getLastName());
+        assertEquals(expected.firstName(), actual.getPersonInformation().firstName());
+        assertEquals(expected.lastName(), actual.getPersonInformation().lastName());
         assertEquals(expected.address(), actual.getAddress().getAddress());
-        assertEquals(expected.pesel(), actual.getPersonInformation().getPesel());
+        assertEquals(expected.pesel(), actual.getPersonInformation().pesel().value());
         assertEquals(expected.city(), actual.getAddress().getCity());
         assertEquals(expected.username(), actual.getUser().getUsername());
     }
@@ -65,10 +65,10 @@ public class StudentIntegrationTest extends BaseTesting {
         assertNotNull(updated);
         assertEquals(updated, id);
         Student actual = find(Student.class, updated);
-        assertEquals(expected.firstName(), actual.getPersonInformation().getFirstName());
-        assertEquals(expected.lastName(), actual.getPersonInformation().getLastName());
+        assertEquals(expected.firstName(), actual.getPersonInformation().firstName());
+        assertEquals(expected.lastName(), actual.getPersonInformation().lastName());
         assertEquals(expected.address(), actual.getAddress().getAddress());
-        assertEquals(expected.pesel(), actual.getPersonInformation().getPesel());
+        assertEquals(expected.pesel(), actual.getPersonInformation().pesel().value());
         assertEquals(expected.city(), actual.getAddress().getCity());
         assertEquals(expected.username(), actual.getUser().getUsername());
 

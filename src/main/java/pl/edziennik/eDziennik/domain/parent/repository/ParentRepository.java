@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import pl.edziennik.eDziennik.domain.parent.domain.Parent;
-import pl.edziennik.eDziennik.domain.student.domain.Student;
+import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.Pesel;
 
 @Repository
 public interface ParentRepository extends JpaRepository<Parent, Long> {
@@ -17,7 +17,7 @@ public interface ParentRepository extends JpaRepository<Parent, Long> {
             "JOIN p.user u " +
             "WHERE pi.pesel = :pesel " +
             "AND u.role.id = :idRole")
-    boolean existsByPesel(String pesel, Long idRole);
+    boolean existsByPesel(Pesel pesel, Long idRole);
 
     @EntityGraph(
             type = EntityGraph.EntityGraphType.FETCH,

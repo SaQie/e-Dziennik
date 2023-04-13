@@ -35,10 +35,10 @@ public class TeacherIntegrationTest extends BaseTesting {
         assertNotNull(id);
         Teacher actual = find(Teacher.class, id);
 
-        assertEquals(expected.firstName(), actual.getPersonInformation().getFirstName());
-        assertEquals(expected.lastName(), actual.getPersonInformation().getLastName());
+        assertEquals(expected.firstName(), actual.getPersonInformation().firstName());
+        assertEquals(expected.lastName(), actual.getPersonInformation().lastName());
         assertEquals(expected.address(), actual.getAddress().getAddress());
-        assertEquals(expected.pesel(), actual.getPersonInformation().getPesel());
+        assertEquals(expected.pesel(), actual.getPersonInformation().pesel().value());
         assertEquals(expected.city(), actual.getAddress().getCity());
         assertEquals(expected.username(), actual.getUser().getUsername());
         assertEquals(teacherUtil.defaultRole, actual.getUser().getRole().getName());
@@ -60,10 +60,10 @@ public class TeacherIntegrationTest extends BaseTesting {
         assertEquals(updated, id);
         Teacher actual = find(Teacher.class, updated);
 
-        assertEquals(expected.firstName(), actual.getPersonInformation().getFirstName());
-        assertEquals(expected.lastName(), actual.getPersonInformation().getLastName());
+        assertEquals(expected.firstName(), actual.getPersonInformation().firstName());
+        assertEquals(expected.lastName(), actual.getPersonInformation().lastName());
         assertEquals(expected.address(), actual.getAddress().getAddress());
-        assertEquals(expected.pesel(), actual.getPersonInformation().getPesel());
+        assertEquals(expected.pesel(), actual.getPersonInformation().pesel().value());
         assertEquals(expected.city(), actual.getAddress().getCity());
         assertEquals(teacherUtil.defaultRole, actual.getUser().getRole().getName());
 

@@ -38,7 +38,7 @@ public class UtilTest extends BaseTesting {
         assertNotNull(id);
         Student student = find(Student.class, id);
         PersonInformation personInformation = student.getPersonInformation();
-        assertEquals(expectedFullNameAfterSave, personInformation.getFullName());
+        assertEquals(expectedFullNameAfterSave, personInformation.fullName());
     }
 
     @Test
@@ -55,7 +55,7 @@ public class UtilTest extends BaseTesting {
         assertNotNull(id);
         Student student = find(Student.class, id);
         PersonInformation personInformation = student.getPersonInformation();
-        assertEquals(expectedFullNameAfterUpdate, personInformation.getFullName());
+        assertEquals(expectedFullNameAfterUpdate, personInformation.fullName());
     }
 
 }

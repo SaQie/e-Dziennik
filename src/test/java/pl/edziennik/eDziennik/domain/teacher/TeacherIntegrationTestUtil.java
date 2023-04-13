@@ -13,7 +13,7 @@ public class TeacherIntegrationTestUtil {
     public TeacherRequestApiDto prepareTeacherRequestDto(){
         return new TeacherRequestApiDto(
                 "Kamil",
-                "Nowak",
+                "Kamil",
                 "Nowak",
                 "Lubavia",
                 "20-200",

@@ -10,7 +10,7 @@ public class PersonInformationInstantiator implements EmbeddableInstantiator {
     @Override
     public Object instantiate(ValueAccess valueAccess, SessionFactoryImplementor sessionFactoryImplementor) {
         final String firstName = valueAccess.getValue(0, String.class);
-        final String lastName = valueAccess.getValue(1, String.class);
+        final String lastName = valueAccess.getValue(2, String.class);
         final String fullName = firstName + " " + lastName;
         final Pesel pesel = valueAccess.getValue(3, Pesel.class);
         final PhoneNumber phoneNumber =valueAccess.getValue(4, PhoneNumber.class);

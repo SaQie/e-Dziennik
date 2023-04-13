@@ -39,8 +39,8 @@ public class ParentIntegrationTest extends BaseTesting {
         // then
         assertNotNull(id);
         Parent actual = find(Parent.class, id);
-        assertEquals(expected.firstName(), actual.getPersonInformation().getFirstName());
-        assertEquals(expected.lastName(), actual.getPersonInformation().getLastName());
+        assertEquals(expected.firstName(), actual.getPersonInformation().firstName());
+        assertEquals(expected.lastName(), actual.getPersonInformation().lastName());
         assertEquals(expected.city(), actual.getAddress().getCity());
         assertEquals(expected.postalCode(), actual.getAddress().getPostalCode());
         assertEquals(expected.email(), actual.getUser().getEmail());
@@ -76,8 +76,8 @@ public class ParentIntegrationTest extends BaseTesting {
 
         // then
         assertNotNull(actual);
-        assertEquals(expected.getPersonInformation().getFirstName(), actual.firstName());
-        assertEquals(expected.getPersonInformation().getLastName(), actual.lastName());
+        assertEquals(expected.getPersonInformation().firstName(), actual.firstName());
+        assertEquals(expected.getPersonInformation().lastName(), actual.lastName());
         assertEquals(expected.getAddress().getCity(), actual.city());
         assertEquals(expected.getAddress().getPostalCode(), actual.postalCode());
         assertEquals(expected.getUser().getEmail(), actual.email());

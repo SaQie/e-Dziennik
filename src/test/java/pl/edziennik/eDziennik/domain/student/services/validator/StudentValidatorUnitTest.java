@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.edziennik.eDziennik.BaseUnitTest;
+import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.Pesel;
 import pl.edziennik.eDziennik.domain.role.domain.Role;
 import pl.edziennik.eDziennik.domain.school.domain.School;
 import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
@@ -50,7 +51,7 @@ public class StudentValidatorUnitTest extends BaseUnitTest {
     public void shouldReturnApiErrorWhenStudentPeselNotUnique() {
         // given
         StudentRequestApiDto request = studentUtil.prepareStudentRequestDto();
-        when(studentRepository.isStudentExistsByPesel(request.pesel(), Role.RoleConst.ROLE_STUDENT.getId())).thenReturn(true);
+        when(studentRepository.isStudentExistsByPesel(Pesel.of(request.pesel()), Role.RoleConst.ROLE_STUDENT.getId())).thenReturn(true);
         lenient().when(resourceCreator.of(StudentValidators.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE, request.pesel()))
                 .thenReturn(StudentValidators.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE);
 
@@ -69,7 +70,7 @@ public class StudentValidatorUnitTest extends BaseUnitTest {
     public void shouldNotReturnApiErrorWhenStudentPeselIsUnique() {
         // given
         StudentRequestApiDto request = studentUtil.prepareStudentRequestDto();
-        when(studentRepository.isStudentExistsByPesel(request.pesel(), Role.RoleConst.ROLE_STUDENT.getId())).thenReturn(false);
+        when(studentRepository.isStudentExistsByPesel(Pesel.of(request.pesel()), Role.RoleConst.ROLE_STUDENT.getId())).thenReturn(false);
 
         // when
         Optional<ApiValidationResult> validationResult = peselNotUniqueValidator.validate(request);

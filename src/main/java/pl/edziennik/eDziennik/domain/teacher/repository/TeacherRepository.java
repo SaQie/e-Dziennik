@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
+import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.Pesel;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 
 @Repository
@@ -18,7 +18,7 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
             "JOIN t.user u " +
             "WHERE pi.pesel = :pesel " +
             "AND u.role.id = :idRole")
-    boolean isTeacherExistsByPesel(String pesel, Long idRole);
+    boolean isTeacherExistsByPesel(Pesel pesel, Long idRole);
 
     boolean existsByUserUsername(String username);
 
