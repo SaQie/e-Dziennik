@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.domain.teacher.domain;
 
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,8 +10,6 @@ import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
 import pl.edziennik.eDziennik.domain.school.domain.School;
 import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
 import pl.edziennik.eDziennik.domain.user.domain.User;
-
-import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
@@ -31,8 +30,7 @@ public class Teacher{
     @ManyToOne(fetch = FetchType.LAZY)
     private School school;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
-    @JoinColumn(name = "person_information_id", referencedColumnName = "id")
+    @Embedded
     private PersonInformation personInformation;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})

@@ -43,7 +43,7 @@ class StudentSubjectAlreadyExistValidator extends BaseService implements Student
             Subject subject = subjectRepository.findById(dto.idSubject())
                     .orElseThrow(notFoundException(dto.idSubject(), Subject.class));
 
-            String studentName = student.getPersonInformation().getFullName();
+            String studentName = student.getPersonInformation().fullName();
             String subjectName = subject.getName();
 
             String message = resourceCreator.of(EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST, studentName, subjectName);

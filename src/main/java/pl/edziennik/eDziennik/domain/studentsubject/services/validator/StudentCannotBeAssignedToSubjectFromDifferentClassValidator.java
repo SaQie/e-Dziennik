@@ -43,7 +43,7 @@ class StudentCannotBeAssignedToSubjectFromDifferentClassValidator extends BaseSe
                 .orElseThrow(notFoundException(dto.idSubject(), Subject.class));
 
         if (!student.getSchoolClass().equals(subject.getSchoolClass())) {
-            String studentName = student.getPersonInformation().getFullName();
+            String studentName = student.getPersonInformation().fullName();
             String subjectName = subject.getName();
 
             String message = resourceCreator.of(EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS, studentName, subjectName);

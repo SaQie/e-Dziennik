@@ -1,6 +1,5 @@
 package pl.edziennik.eDziennik.domain.settings.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -27,8 +26,8 @@ public class SettingsController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get settings list",
-            description = "Returns list of all configurations with values")
+//    @Operation(summary = "Get settings list",
+//            description = "Returns list of all configurations with values")
     public ApiResponse<?> findAllSettings() {
         List<SettingsDto> settings = service.getAllSettings();
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -37,8 +36,8 @@ public class SettingsController {
 
     @PatchMapping("/{settingsId}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Update setting",
-            description = "This method will update specific setting")
+//    @Operation(summary = "Update setting",
+//            description = "This method will update specific setting")
     public ApiResponse<?> updateSettings(@PathVariable SettingsId settingsId, @RequestBody SettingsValue value) {
         service.updateSettings(settingsId, value);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -47,7 +46,7 @@ public class SettingsController {
 
     @GetMapping("/{settingsId}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get specific setting")
+//    @Operation(summary = "Get specific setting")
     public ApiResponse<?> findSettingById(@PathVariable SettingsId settingsId){
         SettingsDto setting = service.findSettingById(settingsId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();

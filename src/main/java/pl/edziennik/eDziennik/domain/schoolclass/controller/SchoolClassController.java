@@ -1,6 +1,6 @@
 package pl.edziennik.eDziennik.domain.schoolclass.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
@@ -16,7 +16,6 @@ import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 import pl.edziennik.eDziennik.server.basics.page.PageDto;
 
-import javax.validation.Valid;
 import java.net.URI;
 
 @AllArgsConstructor
@@ -29,7 +28,7 @@ public class SchoolClassController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Add new school class")
+//    @Operation(summary = "Add new school class")
     public ApiResponse<?> createSchoolClass(@RequestBody @Valid SchoolClassRequestApiDto requestApiDto) {
         SchoolClassResponseApiDto responseApiDto = service.createSchoolClass(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -41,8 +40,8 @@ public class SchoolClassController {
 
     @GetMapping("/{schoolClassId}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get specific school class",
-            description = "Returns information about speceific school class")
+//    @Operation(summary = "Get specific school class",
+//            description = "Returns information about speceific school class")
     public ApiResponse<?> findSchoolClassById(@PathVariable SchoolClassId schoolClassId) {
         SchoolClassResponseApiDto responseApiDto = service.findSchoolClassById(schoolClassId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -51,8 +50,8 @@ public class SchoolClassController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get school class list",
-            description = "Returns list of all school classes")
+//    @Operation(summary = "Get school class list",
+//            description = "Returns list of all school classes")
     public ApiResponse<?> findAllSchoolClasses(@RequestParam(required = false) SchoolId schoolId, Pageable pageable) {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         PageDto<SchoolClassResponseApiDto> responseApiDtos;
@@ -66,7 +65,7 @@ public class SchoolClassController {
 
     @DeleteMapping("/{schoolClassId}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Delete school class")
+//    @Operation(summary = "Delete school class")
     public ApiResponse<?> deleteSchoolClassById(@PathVariable SchoolClassId schoolClassId) {
         service.deleteSchoolClassById(schoolClassId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -75,8 +74,8 @@ public class SchoolClassController {
 
     @PutMapping("/{schoolClassId}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Update school class",
-            description = "This method will update specific school class or create new if not exists")
+//    @Operation(summary = "Update school class",
+//            description = "This method will update specific school class or create new if not exists")
     public ApiResponse<?> updateSchoolClass(@PathVariable SchoolClassId schoolClassId, @RequestBody SchoolClassRequestApiDto dto) {
         SchoolClassResponseApiDto responseApiDto = service.updateSchoolClass(schoolClassId, dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()

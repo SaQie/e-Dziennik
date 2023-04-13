@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.domain.address.domain.wrapper.AddressId;
 import pl.edziennik.eDziennik.domain.address.dto.mapper.AddressMapper;
 import pl.edziennik.eDziennik.domain.address.services.AddressService;
-import pl.edziennik.eDziennik.domain.personinformation.dto.mapper.PersonInformationMapper;
 import pl.edziennik.eDziennik.domain.personinformation.services.PersonInformationService;
 import pl.edziennik.eDziennik.domain.school.domain.School;
 import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
@@ -104,8 +103,8 @@ class StudentServiceImpl extends BaseService implements StudentService {
                     .ifPresentOrElse(student::setSchoolClass, notFoundException(SchoolClass.class, dto.idSchoolClass()));
 
             // update person information student data
-            personInformationService.update(student.getPersonInformation().getPersonInformationId(),
-                    PersonInformationMapper.mapToPersonInformation(dto));
+//            personInformationService.update(student.getPersonInformation().getPersonInformationId(),
+//                    PersonInformationMapper.mapToPersonInformation(dto));
 
             // update address student data
             AddressId addressId = student.getAddress().getAddressId();

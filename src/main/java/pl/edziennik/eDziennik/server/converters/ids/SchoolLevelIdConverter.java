@@ -1,4 +1,4 @@
-package pl.edziennik.eDziennik.server.converters;
+package pl.edziennik.eDziennik.server.converters.ids;
 
 import org.springframework.core.convert.converter.Converter;
 import pl.edziennik.eDziennik.domain.schoollevel.domain.wrapper.SchoolLevelId;

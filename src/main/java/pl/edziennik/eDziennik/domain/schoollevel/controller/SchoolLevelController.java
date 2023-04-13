@@ -1,6 +1,5 @@
 package pl.edziennik.eDziennik.domain.schoollevel.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -26,7 +25,7 @@ public class SchoolLevelController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get list of available school levels")
+//    @Operation(summary = "Get list of available school levels")
     public ApiResponse<?> getSchoolLevelList() {
         List<SchoolLevelResponseApiDto> responseApiDtos = service.getSchoolLevelList();
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();

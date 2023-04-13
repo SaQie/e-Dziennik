@@ -1,9 +1,9 @@
 package pl.edziennik.eDziennik.domain.address.domain;
 
+import jakarta.persistence.*;
 import lombok.*;
 import pl.edziennik.eDziennik.domain.address.domain.wrapper.AddressId;
 
-import javax.persistence.*;
 
 @Entity
 @AllArgsConstructor

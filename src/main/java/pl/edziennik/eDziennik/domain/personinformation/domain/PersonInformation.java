@@ -1,38 +1,35 @@
 package pl.edziennik.eDziennik.domain.personinformation.domain;
 
-import lombok.*;
-import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.PersonInformationId;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Embeddable;
+import org.hibernate.annotations.EmbeddableInstantiator;
+import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.Pesel;
+import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.PhoneNumber;
+import pl.edziennik.eDziennik.server.converters.attributes.PeselAttributeConverter;
+import pl.edziennik.eDziennik.server.converters.attributes.PhoneNumberAttributeConverter;
 
-import javax.persistence.*;
 
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Setter
-@Getter
-public class PersonInformation{
+@Embeddable
+@EmbeddableInstantiator(PersonInformationInstantiator.class)
+public record PersonInformation(
+        String firstName,
+        String lastName,
+        String fullName,
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_information_id_seq")
-    @SequenceGenerator(name = "person_information_id_seq", sequenceName = "person_information_id_seq", allocationSize = 1)
-    @Getter(AccessLevel.NONE)
-    private Long id;
+        @Convert(converter = PhoneNumberAttributeConverter.class)
+        PhoneNumber phoneNumber,
 
-    private String firstName;
-    private String lastName;
-    private String fullName;
-    private String phoneNumber;
-    private String pesel;
+        @Convert(converter = PeselAttributeConverter.class)
+        Pesel pesel
 
-    public PersonInformationId getPersonInformationId(){
-        return PersonInformationId.wrap(id);
+) {
+
+    public static PersonInformation of(String firstName, String lastName, PhoneNumber phoneNumber, Pesel pesel) {
+        String fullName = firstName + " " + lastName;
+        return new PersonInformation(firstName, lastName, fullName, phoneNumber, pesel);
     }
 
-
-    @PrePersist
-    @PreUpdate
-    public void setFullName() {
-        this.fullName = firstName + " " + lastName;
+    public PersonInformation() {
+        this(null, null, null, null, null);
     }
-
 }

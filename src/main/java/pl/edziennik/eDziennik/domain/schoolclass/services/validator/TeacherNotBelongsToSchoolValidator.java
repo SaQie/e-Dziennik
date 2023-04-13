@@ -40,7 +40,7 @@ class TeacherNotBelongsToSchoolValidator extends BaseService implements SchoolCl
                 Teacher teacher = teacherRepository.findById(dto.idClassTeacher())
                         .orElseThrow(notFoundException(dto.idClassTeacher(), Teacher.class));
 
-                String teacherName = teacher.getPersonInformation().getFullName();
+                String teacherName = teacher.getPersonInformation().fullName();
 
                 String schoolName = schoolRepository.findById(dto.idSchool())
                         .orElseThrow(notFoundException(dto.idSchool(), School.class)).getName();

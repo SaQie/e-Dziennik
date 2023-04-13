@@ -1,6 +1,6 @@
 package pl.edziennik.eDziennik.domain.subject.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
@@ -15,7 +15,6 @@ import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 import pl.edziennik.eDziennik.server.basics.page.PageDto;
 
-import javax.validation.Valid;
 import java.net.URI;
 
 @AllArgsConstructor
@@ -27,7 +26,7 @@ public class SubjectController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Add new subject")
+//    @Operation(summary = "Add new subject")
     public ApiResponse<?> createSubject(@RequestBody @Valid SubjectRequestApiDto requestApiDto) {
         SubjectResponseApiDto responseApiDto = service.createNewSubject(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -39,8 +38,8 @@ public class SubjectController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get list of subjects",
-            description = "Returns list of all subjects")
+//    @Operation(summary = "Get list of subjects",
+//            description = "Returns list of all subjects")
     public ApiResponse<?> findAllSubjects(Pageable pageable) {
         PageDto<SubjectResponseApiDto> responseApiDtos = service.findAllSubjects(pageable);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -49,8 +48,8 @@ public class SubjectController {
 
     @GetMapping("/{subjectId}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get specific subject",
-            description = "Returns specific subject information")
+//    @Operation(summary = "Get specific subject",
+//            description = "Returns specific subject information")
     public ApiResponse<?> findSubjectById(@PathVariable SubjectId subjectId) {
         SubjectResponseApiDto responseApiDto = service.findSubjectById(subjectId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -59,7 +58,7 @@ public class SubjectController {
 
     @DeleteMapping("/{subjectId}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Delete subject")
+//    @Operation(summary = "Delete subject")
     public ApiResponse<?> deleteSubjectById(@PathVariable SubjectId subjectId) {
         service.deleteSubjectById(subjectId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -68,8 +67,8 @@ public class SubjectController {
 
     @PutMapping("/{subjectId}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Update subject",
-            description = "This method will update specific subject or create new if not exists")
+//    @Operation(summary = "Update subject",
+//            description = "This method will update specific subject or create new if not exists")
     public ApiResponse<?> updateSubject(@PathVariable SubjectId subjectId, SubjectRequestApiDto requestApiDto) {
         SubjectResponseApiDto responseApiDto = service.updateSubject(subjectId, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()

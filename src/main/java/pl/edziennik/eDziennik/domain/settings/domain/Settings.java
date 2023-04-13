@@ -1,13 +1,12 @@
 package pl.edziennik.eDziennik.domain.settings.domain;
 
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.edziennik.eDziennik.domain.settings.domain.wrapper.SettingsId;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
-
-import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor

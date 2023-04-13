@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.domain.grade.domain;
 
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,6 @@ import pl.edziennik.eDziennik.domain.studentsubject.domain.StudentSubject;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity

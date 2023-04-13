@@ -1,10 +1,9 @@
 package pl.edziennik.eDziennik.server.exceptions;
 
+import jakarta.persistence.NoResultException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,8 +15,6 @@ import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 
-import javax.persistence.NoResultException;
-import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -47,9 +44,8 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
         );
     }
 
-
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         HttpServletRequest httpRequest = ((ServletWebRequest) request).getRequest();
         BindingResult bindingResult = exception.getBindingResult();
         List<ApiValidationResult> errors = getErrors(bindingResult);

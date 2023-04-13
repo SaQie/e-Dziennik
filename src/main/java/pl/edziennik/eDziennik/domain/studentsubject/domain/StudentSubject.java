@@ -1,12 +1,12 @@
 package pl.edziennik.eDziennik.domain.studentsubject.domain;
 
+import jakarta.persistence.*;
 import lombok.*;
 import pl.edziennik.eDziennik.domain.grade.domain.Grade;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.studentsubject.domain.wrapper.StudentSubjectId;
 import pl.edziennik.eDziennik.domain.subject.domain.Subject;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 

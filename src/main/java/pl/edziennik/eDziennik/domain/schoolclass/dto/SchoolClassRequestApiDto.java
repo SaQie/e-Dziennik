@@ -1,8 +1,8 @@
 package pl.edziennik.eDziennik.domain.schoolclass.dto;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 public record SchoolClassRequestApiDto(
         @NotEmpty(message = "{className.empty}")

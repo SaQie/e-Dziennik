@@ -1,11 +1,10 @@
 package pl.edziennik.eDziennik.domain.role.domain;
 
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.edziennik.eDziennik.domain.role.domain.wrapper.RoleId;
-
-import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor

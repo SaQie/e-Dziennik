@@ -1,6 +1,6 @@
 package pl.edziennik.eDziennik.domain.teacher.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
@@ -16,7 +16,6 @@ import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
 import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 import pl.edziennik.eDziennik.server.basics.page.PageDto;
 
-import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
@@ -33,7 +32,7 @@ class TeacherController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Add new teacher")
+//    @Operation(summary = "Add new teacher")
     public ApiResponse<?> register(@RequestBody @Valid TeacherRequestApiDto requestApiDto) {
         TeacherResponseApiDto responseApiDto = service.register(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -45,8 +44,8 @@ class TeacherController {
 
     @GetMapping("/{teacherId}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get specific teacher",
-            description = "Returns specific information about admin")
+//    @Operation(summary = "Get specific teacher",
+//            description = "Returns specific information about admin")
     public ApiResponse<?> findTeacher(@PathVariable TeacherId teacherId) {
         TeacherResponseApiDto responseApiDto = service.findTeacherById(teacherId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -55,8 +54,8 @@ class TeacherController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get teacher list",
-            description = "Returns list of all teachers")
+//    @Operation(summary = "Get teacher list",
+//            description = "Returns list of all teachers")
     public ApiResponse<PageDto<TeacherResponseApiDto>> findAllTeachers(Pageable pageable) {
         PageDto<TeacherResponseApiDto> responseApiDtos = service.findAllTeachers(pageable);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -65,7 +64,7 @@ class TeacherController {
 
     @DeleteMapping("/{teacherId}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Delete teacher")
+//    @Operation(summary = "Delete teacher")
     public ApiResponse<?> deleteTeacher(@PathVariable TeacherId teacherId) {
         service.deleteTeacherById(teacherId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -75,8 +74,8 @@ class TeacherController {
 
     @PutMapping("/{teacherId}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Update teacher",
-            description = "This method will update specific teacher or create new if not exists")
+//    @Operation(summary = "Update teacher",
+//            description = "This method will update specific teacher or create new if not exists")
     public ApiResponse<?> updateTeacher(@PathVariable TeacherId teacherId, TeacherRequestApiDto requestApiDto) {
         TeacherResponseApiDto responseApiDto = service.updateTeacher(teacherId, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()

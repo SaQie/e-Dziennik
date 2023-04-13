@@ -39,7 +39,7 @@ class TeacherIsAlreadySupervisingTeacherValidator extends BaseService implements
                         .orElseThrow(notFoundException(dto.idClassTeacher(), Teacher.class));
                 String actualTeacherSchoolClassName = repository.getSchoolClassNameBySupervisingTeacherId(dto.idClassTeacher());
 
-                String teacherName = teacher.getPersonInformation().getFullName();
+                String teacherName = teacher.getPersonInformation().fullName();
                 String message = resourceCreator.of(EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER, teacherName, actualTeacherSchoolClassName);
 
                 ApiValidationResult apiValidationResult = ApiValidationResult.builder()

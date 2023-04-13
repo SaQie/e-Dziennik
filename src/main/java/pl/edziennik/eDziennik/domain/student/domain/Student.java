@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.domain.student.domain;
 
+import jakarta.persistence.*;
 import lombok.*;
 import pl.edziennik.eDziennik.domain.address.domain.Address;
 import pl.edziennik.eDziennik.domain.parent.domain.Parent;
@@ -9,7 +10,6 @@ import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.domain.student.domain.wrapper.StudentId;
 import pl.edziennik.eDziennik.domain.user.domain.User;
 
-import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
@@ -36,18 +36,17 @@ public class Student {
     @ManyToOne(fetch = FetchType.LAZY)
     private School school;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
-    @JoinColumn(name = "person_information_id", referencedColumnName = "id")
+    @Embedded
     private PersonInformation personInformation;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
-    @OneToOne(fetch = FetchType.LAZY,cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Parent parent;
 
-    public StudentId getStudentId(){
+    public StudentId getStudentId() {
         return StudentId.wrap(id);
     }
 

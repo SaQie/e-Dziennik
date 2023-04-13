@@ -1,8 +1,8 @@
 package pl.edziennik.eDziennik.domain.parent.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.*;
 
-import javax.validation.constraints.*;
 
 public record ParentRequestApiDto(
         @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

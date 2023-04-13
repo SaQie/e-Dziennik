@@ -1,13 +1,12 @@
 package pl.edziennik.eDziennik.domain.admin.domain;
 
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.edziennik.eDziennik.domain.admin.domain.wrapper.AdminId;
 import pl.edziennik.eDziennik.domain.user.domain.User;
-
-import javax.persistence.*;
 
 @Entity
 @Getter

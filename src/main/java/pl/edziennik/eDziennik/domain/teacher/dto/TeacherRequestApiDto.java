@@ -1,12 +1,12 @@
 package pl.edziennik.eDziennik.domain.teacher.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.*;
 
 @Builder
 public record TeacherRequestApiDto(

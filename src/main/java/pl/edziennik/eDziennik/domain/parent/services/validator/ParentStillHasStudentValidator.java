@@ -35,7 +35,7 @@ class ParentStillHasStudentValidator extends BaseService implements AbstractVali
 
         if (parent.getStudent() != null) {
 
-            String message = resourceCreator.of(EXCEPTON_MESSAGE_PARENT_STILL_HAS_STUDENT, parent.getStudent().getPersonInformation().getFullName());
+            String message = resourceCreator.of(EXCEPTON_MESSAGE_PARENT_STILL_HAS_STUDENT, parent.getStudent().getPersonInformation().fullName());
 
             ApiValidationResult apiValidationResult = ApiValidationResult.builder()
                     .field(ParentRequestApiDto.ID_STUDENT)

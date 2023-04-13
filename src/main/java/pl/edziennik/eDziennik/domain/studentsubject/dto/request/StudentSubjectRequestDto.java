@@ -1,9 +1,9 @@
 package pl.edziennik.eDziennik.domain.studentsubject.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
-import javax.validation.constraints.NotNull;
 
 @Builder
 public record StudentSubjectRequestDto(

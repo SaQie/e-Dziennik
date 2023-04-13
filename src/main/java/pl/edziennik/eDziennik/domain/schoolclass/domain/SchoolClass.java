@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.domain.schoolclass.domain;
 
+import jakarta.persistence.*;
 import lombok.*;
 import pl.edziennik.eDziennik.domain.school.domain.School;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.wrapper.SchoolClassId;
@@ -7,7 +8,6 @@ import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.subject.domain.Subject;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

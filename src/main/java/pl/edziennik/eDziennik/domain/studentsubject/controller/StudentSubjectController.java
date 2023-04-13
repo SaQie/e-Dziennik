@@ -1,6 +1,5 @@
 package pl.edziennik.eDziennik.domain.studentsubject.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -30,8 +29,8 @@ public class StudentSubjectController {
 
     @PostMapping("/{studentId}/subjects")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Assign student to subject",
-            description = "This method assigns subject to specific student")
+//    @Operation(summary = "Assign student to subject",
+//            description = "This method assigns subject to specific student")
     public ApiResponse<?> assignStudentToSubject(@RequestBody StudentSubjectRequestDto requestApiDto, @PathVariable StudentId studentId) {
         requestApiDto = new StudentSubjectRequestDto(requestApiDto.idSubject(), studentId.id());
         StudentSubjectResponseDto responseApiDto = service.assignStudentToSubject(requestApiDto);
@@ -41,8 +40,8 @@ public class StudentSubjectController {
 
     @GetMapping("/{studentId}/subjects")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get specific student subjects",
-            description = "This method returns list of subjects for specific student")
+//    @Operation(summary = "Get specific student subjects",
+//            description = "This method returns list of subjects for specific student")
     public ApiResponse<?> getStudentSubjects(@PathVariable StudentId studentId) {
         StudentSubjectsResponseDto responseApiDto = service.getStudentSubjects(studentId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -51,8 +50,8 @@ public class StudentSubjectController {
 
     @GetMapping("/{studentId}/subjects/{subjectId}/grades")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get specific student subject grades",
-            description = "This method returns list of grades for specific student subject")
+//    @Operation(summary = "Get specific student subject grades",
+//            description = "This method returns list of grades for specific student subject")
     public ApiResponse<?> getStudentSubjectRatings(@ModelAttribute(name = "studentSubjectId") StudentSubjectSeparateId studentSubjectId) {
         StudentGradesInSubjectDto responseApiDto = service.getStudentSubjectGrades(studentSubjectId.idStudent(), studentSubjectId.idSubject());
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -61,8 +60,8 @@ public class StudentSubjectController {
 
     @GetMapping("/{studentId}/subjects/grades")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get list of all student grades",
-            description = "This method returns list of all specific student grades for all subjects")
+//    @Operation(summary = "Get list of all student grades",
+//            description = "This method returns list of all specific student grades for all subjects")
     public ApiResponse<?> getStudentAllSubjectsRatings(@PathVariable StudentId studentId) {
         AllStudentsGradesInSubjectsDto responseApiDto = service.getStudentAllSubjectsGrades(studentId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();

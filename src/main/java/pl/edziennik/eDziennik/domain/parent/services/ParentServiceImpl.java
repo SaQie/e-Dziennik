@@ -14,8 +14,6 @@ import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentResponseApiDto;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.mapper.ParentMapper;
 import pl.edziennik.eDziennik.domain.parent.domain.wrapper.ParentId;
 import pl.edziennik.eDziennik.domain.parent.repository.ParentRepository;
-import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.PersonInformationId;
-import pl.edziennik.eDziennik.domain.personinformation.dto.mapper.PersonInformationMapper;
 import pl.edziennik.eDziennik.domain.personinformation.services.PersonInformationService;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
@@ -69,9 +67,9 @@ class ParentServiceImpl extends BaseService implements ParentService {
             userService.updateUser(parent.getUser().getUserId(), UserMapper.toDto(dto));
 
             // update person information parent data
-            PersonInformationId personInformationId = student.getPersonInformation().getPersonInformationId();
-            personInformationService.update(personInformationId,
-                    PersonInformationMapper.mapToPersonInformation(dto));
+//            PersonInformationId personInformationId = student.getPersonInformation().getPersonInformationId();
+//            personInformationService.update(personInformationId,
+//                    PersonInformationMapper.mapToPersonInformation(dto));
 
             // update address parent data
             AddressId addressId = student.getAddress().getAddressId();

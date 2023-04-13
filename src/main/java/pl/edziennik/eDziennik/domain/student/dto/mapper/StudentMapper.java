@@ -23,15 +23,15 @@ public class StudentMapper {
                 .id(entity.getStudentId().id())
                 .userId(entity.getUser().getUserId().id())
                 .username(entity.getUser().getUsername())
-                .firstName(entity.getPersonInformation().getFirstName())
-                .lastName(entity.getPersonInformation().getLastName())
+                .firstName(entity.getPersonInformation().firstName())
+                .lastName(entity.getPersonInformation().lastName())
                 .address(entity.getAddress().getAddress())
                 .postalCode(entity.getAddress().getPostalCode())
                 .city(entity.getAddress().getCity())
-                .pesel(entity.getPersonInformation().getPesel())
-                .fullName(entity.getPersonInformation().getFullName())
+                .pesel(entity.getPersonInformation().pesel().value())
+                .fullName(entity.getPersonInformation().fullName())
                 .email(entity.getUser().getEmail())
-                .phoneNumber(entity.getPersonInformation().getPhoneNumber())
+                .phoneNumber(entity.getPersonInformation().phoneNumber().value())
                 .parent(ParentMapper.toSimpleDto(entity.getParent()))
                 .school(SchoolMapper.toSimpleDto(entity.getSchool()))
                 .schoolClass(SchoolClassMapper.toSimpleDto(entity.getSchoolClass()))
@@ -47,14 +47,14 @@ public class StudentMapper {
     public static StudentRequestApiDto toRequestDto(Student entity) {
         return StudentRequestApiDto.builder()
                 .username(entity.getUser().getUsername())
-                .firstName(entity.getPersonInformation().getFirstName())
-                .lastName(entity.getPersonInformation().getLastName())
+                .firstName(entity.getPersonInformation().firstName())
+                .lastName(entity.getPersonInformation().lastName())
                 .address(entity.getAddress().getAddress())
                 .postalCode(entity.getAddress().getPostalCode())
                 .city(entity.getAddress().getCity())
-                .pesel(entity.getPersonInformation().getPesel())
+                .pesel(entity.getPersonInformation().pesel().value())
                 .email(entity.getUser().getEmail())
-                .phoneNumber(entity.getPersonInformation().getPhoneNumber())
+                .phoneNumber(entity.getPersonInformation().phoneNumber().value())
                 .idSchool(entity.getSchool().getSchoolId().id())
                 .idSchoolClass(entity.getSchoolClass().getSchoolClassId().id())
                 .build();
@@ -62,7 +62,7 @@ public class StudentMapper {
 
     public static StudentSimpleResponseApiDto toSimpleDto(Student student) {
         if (student != null) {
-            return new StudentSimpleResponseApiDto(student.getStudentId().id(), student.getPersonInformation().getFullName());
+            return new StudentSimpleResponseApiDto(student.getStudentId().id(), student.getPersonInformation().fullName());
         }
         return null;
     }

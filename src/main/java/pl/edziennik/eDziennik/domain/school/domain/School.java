@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.domain.school.domain;
 
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,6 @@ import pl.edziennik.eDziennik.domain.schoollevel.domain.SchoolLevel;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 

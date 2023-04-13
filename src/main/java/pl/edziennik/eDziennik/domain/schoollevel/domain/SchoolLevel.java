@@ -1,12 +1,12 @@
 package pl.edziennik.eDziennik.domain.schoollevel.domain;
 
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.edziennik.eDziennik.domain.school.domain.School;
 import pl.edziennik.eDziennik.domain.schoollevel.domain.wrapper.SchoolLevelId;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 

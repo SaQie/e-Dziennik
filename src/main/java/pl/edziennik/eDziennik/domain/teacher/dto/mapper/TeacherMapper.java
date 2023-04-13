@@ -3,8 +3,8 @@ package pl.edziennik.eDziennik.domain.teacher.dto.mapper;
 import pl.edziennik.eDziennik.domain.address.dto.mapper.AddressMapper;
 import pl.edziennik.eDziennik.domain.personinformation.dto.mapper.PersonInformationMapper;
 import pl.edziennik.eDziennik.domain.school.dto.mapper.SchoolMapper;
-import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
+import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherResponseApiDto;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherSimpleResponseApiDto;
 
@@ -22,14 +22,14 @@ public class TeacherMapper {
                     .id(entity.getTeacherId().id())
                     .userId(entity.getUser().getUserId().id())
                     .username(entity.getUser().getUsername())
-                    .firstName(entity.getPersonInformation().getFirstName())
-                    .lastName(entity.getPersonInformation().getLastName())
+                    .firstName(entity.getPersonInformation().firstName())
+                    .lastName(entity.getPersonInformation().lastName())
                     .address(entity.getAddress().getAddress())
                     .postalCode(entity.getAddress().getPostalCode())
                     .city(entity.getAddress().getCity())
-                    .fullName(entity.getPersonInformation().getFullName())
-                    .pesel(entity.getPersonInformation().getPesel())
-                    .phoneNumber(entity.getPersonInformation().getPhoneNumber())
+                    .fullName(entity.getPersonInformation().fullName())
+                    .pesel(entity.getPersonInformation().pesel().value())
+                    .phoneNumber(entity.getPersonInformation().phoneNumber().value())
                     .school(SchoolMapper.toSimpleDto(entity.getSchool()))
                     .email(entity.getUser().getEmail())
                     .role(entity.getUser().getRole().getName())
@@ -39,15 +39,15 @@ public class TeacherMapper {
                 .id(entity.getTeacherId().id())
                 .userId(entity.getUser().getUserId().id())
                 .username(entity.getUser().getUsername())
-                .firstName(entity.getPersonInformation().getFirstName())
-                .lastName(entity.getPersonInformation().getLastName())
-                .fullName(entity.getPersonInformation().getFullName())
+                .firstName(entity.getPersonInformation().firstName())
+                .lastName(entity.getPersonInformation().lastName())
+                .fullName(entity.getPersonInformation().fullName())
                 .address(entity.getAddress().getAddress())
                 .postalCode(entity.getAddress().getPostalCode())
                 .email(entity.getUser().getEmail())
                 .city(entity.getAddress().getCity())
-                .pesel(entity.getPersonInformation().getPesel())
-                .phoneNumber(entity.getPersonInformation().getPhoneNumber())
+                .pesel(entity.getPersonInformation().pesel().value())
+                .phoneNumber(entity.getPersonInformation().phoneNumber().value())
                 .role(entity.getUser().getRole().getName())
                 .build();
     }
@@ -64,7 +64,7 @@ public class TeacherMapper {
     }
 
     public static TeacherSimpleResponseApiDto toSimpleDto(Teacher teacher) {
-        String fullName = teacher.getPersonInformation().getFirstName() + " " + teacher.getPersonInformation().getLastName();
+        String fullName = teacher.getPersonInformation().firstName() + " " + teacher.getPersonInformation().lastName();
         return new TeacherSimpleResponseApiDto(teacher.getTeacherId().id(), fullName);
     }
 }

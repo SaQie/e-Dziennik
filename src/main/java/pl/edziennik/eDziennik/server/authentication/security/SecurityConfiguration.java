@@ -1,6 +1,8 @@
 package pl.edziennik.eDziennik.server.authentication.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -21,8 +23,6 @@ import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 import pl.edziennik.eDziennik.server.utils.JwtUtils;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -67,16 +67,16 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests((auth) -> {
                     try {
                         auth
-                                .antMatchers("/api/teachers/*").hasRole("ADMIN")
-                                .antMatchers("/api/schools").permitAll()
-                                .antMatchers("/api/students").permitAll()
-                                .antMatchers("/api/schoolclasses").permitAll()
-                                .antMatchers("/api/**").permitAll()
-                                .antMatchers("/jwt/**").permitAll()
-                                .antMatchers("/register").permitAll()
-                                .antMatchers("/teacher/moderator").hasRole("MODERATOR")
-                                .antMatchers("/teacher/teacher").hasRole("TEACHER")
-                                .antMatchers("/teacher/admin").hasRole("ADMIN")
+                                .requestMatchers("/api/teachers/*").hasRole("ADMIN")
+                                .requestMatchers("/api/schools").permitAll()
+                                .requestMatchers("/api/students").permitAll()
+                                .requestMatchers("/api/schoolclasses").permitAll()
+                                .requestMatchers("/api/**").permitAll()
+                                .requestMatchers("/jwt/**").permitAll()
+                                .requestMatchers("/register").permitAll()
+                                .requestMatchers("/teacher/moderator").hasRole("MODERATOR")
+                                .requestMatchers("/teacher/teacher").hasRole("TEACHER")
+                                .requestMatchers("/teacher/admin").hasRole("ADMIN")
                                 .anyRequest()
                                 .permitAll()
                                 .and()

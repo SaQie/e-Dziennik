@@ -1,9 +1,9 @@
 package pl.edziennik.eDziennik.domain.student.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.*;
 import lombok.Builder;
 
-import javax.validation.constraints.*;
 
 
 @Builder

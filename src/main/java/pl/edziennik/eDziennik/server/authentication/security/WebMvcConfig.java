@@ -5,7 +5,7 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import pl.edziennik.eDziennik.server.converters.*;
+import pl.edziennik.eDziennik.server.converters.ids.*;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {

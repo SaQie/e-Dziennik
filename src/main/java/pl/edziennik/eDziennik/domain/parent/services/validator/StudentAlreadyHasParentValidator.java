@@ -2,7 +2,6 @@ package pl.edziennik.eDziennik.domain.parent.services.validator;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.eDziennik.domain.parent.domain.Parent;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
@@ -35,7 +34,7 @@ class StudentAlreadyHasParentValidator extends BaseService implements ParentVali
                 .orElseThrow(notFoundException(dto.idStudent(), Student.class));
         if (student.getParent() != null) {
 
-            String studentFullName = student.getPersonInformation().getFullName();
+            String studentFullName = student.getPersonInformation().fullName();
 
             String message = resourceCreator.of(EXCEPTION_MESSAGE_STUDENT_ALREADY_HAS_PARENT_VALIDATOR, studentFullName);
 

@@ -27,17 +27,17 @@ public class ParentMapper {
     public static ParentResponseApiDto toDto(Parent entity) {
         return ParentResponseApiDto.builder()
                 .id(entity.getParentId().id())
-                .pesel(entity.getPersonInformation().getPesel())
+                .pesel(entity.getPersonInformation().pesel().value())
                 .email(entity.getUser().getEmail())
                 .address(entity.getAddress().getAddress())
                 .city(entity.getAddress().getCity())
                 .username(entity.getUser().getUsername())
-                .firstName(entity.getPersonInformation().getFirstName())
-                .lastName(entity.getPersonInformation().getLastName())
-                .phoneNumber(entity.getPersonInformation().getPhoneNumber())
-                .pesel(entity.getPersonInformation().getPesel())
+                .firstName(entity.getPersonInformation().firstName())
+                .lastName(entity.getPersonInformation().lastName())
+                .phoneNumber(entity.getPersonInformation().phoneNumber().value())
+                .pesel(entity.getPersonInformation().pesel().value())
                 .postalCode(entity.getAddress().getPostalCode())
-                .fullName(entity.getPersonInformation().getFullName())
+                .fullName(entity.getPersonInformation().fullName())
                 .student(StudentMapper.toSimpleDto(entity.getStudent()))
                 .role(Role.RoleConst.ROLE_PARENT.name())
                 .build();
@@ -49,7 +49,7 @@ public class ParentMapper {
 
     public static ParentSimpleResponseApiDto toSimpleDto(Parent parent) {
         if (parent != null) {
-            return new ParentSimpleResponseApiDto(parent.getParentId().id(), parent.getPersonInformation().getFullName());
+            return new ParentSimpleResponseApiDto(parent.getParentId().id(), parent.getPersonInformation().fullName());
         }
         return null;
     }

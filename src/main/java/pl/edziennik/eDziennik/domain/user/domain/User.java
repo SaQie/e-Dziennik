@@ -1,10 +1,10 @@
 package pl.edziennik.eDziennik.domain.user.domain;
 
+import jakarta.persistence.*;
 import lombok.*;
 import pl.edziennik.eDziennik.domain.role.domain.Role;
 import pl.edziennik.eDziennik.domain.user.domain.wrapper.UserId;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
