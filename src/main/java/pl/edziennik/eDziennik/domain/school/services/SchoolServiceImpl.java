@@ -38,14 +38,14 @@ class SchoolServiceImpl extends BaseService implements SchoolService {
 
     @Override
     public SchoolResponseApiDto findSchoolById(final SchoolId schoolId) {
-        School school = schoolRepository.findById(schoolId.id())
+        School school = schoolRepository.findById(schoolId)
                 .orElseThrow(notFoundException(schoolId.id(), School.class));
         return SchoolMapper.toDto(school);
     }
 
     @Override
     public void deleteSchoolById(final SchoolId schoolId) {
-        School school = schoolRepository.findById(schoolId.id())
+        School school = schoolRepository.findById(schoolId)
                 .orElseThrow(notFoundException(schoolId.id(), School.class));
         schoolRepository.delete(school);
     }
@@ -59,7 +59,7 @@ class SchoolServiceImpl extends BaseService implements SchoolService {
     @Override
     @Transactional
     public SchoolResponseApiDto updateSchool(final SchoolId schoolId, final SchoolRequestApiDto dto) {
-        Optional<School> optionalSchool = schoolRepository.findById(schoolId.id());
+        Optional<School> optionalSchool = schoolRepository.findById(schoolId);
         if (optionalSchool.isPresent()) {
             validatorService.valid(dto);
 
@@ -83,8 +83,8 @@ class SchoolServiceImpl extends BaseService implements SchoolService {
 
     private School mapToEntity(final SchoolRequestApiDto dto) {
         School school = SchoolMapper.toEntity(dto);
-        schoolLevelRepository.findById(dto.idSchoolLevel())
-                .ifPresentOrElse(school::setSchoolLevel, notFoundException(SchoolLevel.class, dto.idSchoolLevel()));
+        schoolLevelRepository.findById(dto.schoolLevelId())
+                .ifPresentOrElse(school::setSchoolLevel, notFoundException(SchoolLevel.class, dto.schoolLevelId().id()));
         return school;
     }
 }

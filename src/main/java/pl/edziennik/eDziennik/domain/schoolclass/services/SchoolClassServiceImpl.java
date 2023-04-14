@@ -41,14 +41,14 @@ class SchoolClassServiceImpl extends BaseService implements SchoolClassService {
 
     @Override
     public SchoolClassResponseApiDto findSchoolClassById(final SchoolClassId schoolClassId) {
-        SchoolClass schoolClass = repository.findById(schoolClassId.id())
+        SchoolClass schoolClass = repository.findById(schoolClassId)
                 .orElseThrow(notFoundException(schoolClassId.id(), SchoolClass.class));
         return SchoolClassMapper.toDto(schoolClass);
     }
 
     @Override
     public void deleteSchoolClassById(final SchoolClassId schoolClassId) {
-        SchoolClass schoolClass = repository.findById(schoolClassId.id())
+        SchoolClass schoolClass = repository.findById(schoolClassId)
                 .orElseThrow(notFoundException(schoolClassId.id(), SchoolClass.class));
         repository.delete(schoolClass);
     }
@@ -61,19 +61,19 @@ class SchoolClassServiceImpl extends BaseService implements SchoolClassService {
 
     @Override
     @Transactional
-    public SchoolClassResponseApiDto updateSchoolClass(final SchoolClassId schoolClassId,final SchoolClassRequestApiDto dto) {
-        Optional<SchoolClass> schoolClassOptional = repository.findById(schoolClassId.id());
+    public SchoolClassResponseApiDto updateSchoolClass(final SchoolClassId schoolClassId, final SchoolClassRequestApiDto dto) {
+        Optional<SchoolClass> schoolClassOptional = repository.findById(schoolClassId);
         if (schoolClassOptional.isPresent()) {
             validatorService.valid(dto);
             // update school class data
             SchoolClass schoolClass = schoolClassOptional.get();
 
-            schoolRepository.findById(dto.idSchool())
-                    .ifPresentOrElse(schoolClass::setSchool, notFoundException(School.class, dto.idSchool()));
+            schoolRepository.findById(dto.schoolId())
+                    .ifPresentOrElse(schoolClass::setSchool, notFoundException(School.class, dto.schoolId().id()));
 
             if (dto.idClassTeacher() != null) {
                 teacherRepository.findById(dto.idClassTeacher())
-                        .ifPresentOrElse(schoolClass::setTeacher, notFoundException(Teacher.class, dto.idClassTeacher()));
+                        .ifPresentOrElse(schoolClass::setTeacher, notFoundException(Teacher.class, dto.idClassTeacher().id()));
             }
 
             schoolClass.setClassName(dto.className());
@@ -92,12 +92,12 @@ class SchoolClassServiceImpl extends BaseService implements SchoolClassService {
 
     private SchoolClass mapToEntity(final SchoolClassRequestApiDto dto) {
         SchoolClass schoolClass = SchoolClassMapper.toEntity(dto);
-        schoolRepository.findById(dto.idSchool())
-                .ifPresentOrElse(schoolClass::setSchool, notFoundException(School.class, dto.idSchool()));
+        schoolRepository.findById(dto.schoolId())
+                .ifPresentOrElse(schoolClass::setSchool, notFoundException(School.class, dto.schoolId().id()));
 
         if (dto.idClassTeacher() != null) {
             teacherRepository.findById(dto.idClassTeacher())
-                    .ifPresentOrElse(schoolClass::setTeacher, notFoundException(Teacher.class, dto.idClassTeacher()));
+                    .ifPresentOrElse(schoolClass::setTeacher, notFoundException(Teacher.class, dto.idClassTeacher().id()));
         }
         return schoolClass;
     }

@@ -35,7 +35,7 @@ public class SchoolClassIntegrationTest extends BaseTesting {
         // then
         assertNotNull(id);
         SchoolClass actual = find(SchoolClass.class, id);
-        assertEquals(expected.idSchool(), actual.getSchool().getSchoolId().id());
+        assertEquals(expected.idSchool(), actual.getSchool().getSchoolId().value());
         assertNull(actual.getTeacher());
         assertEquals(expected.className(), actual.getClassName());
     }
@@ -57,8 +57,8 @@ public class SchoolClassIntegrationTest extends BaseTesting {
         assertEquals(id, updated);
 
         SchoolClass actual = find(SchoolClass.class, updated);
-        assertEquals(expected.idSchool(), actual.getSchool().getSchoolId().id());
-        assertEquals(expected.idClassTeacher(), actual.getTeacher().getTeacherId().id());
+        assertEquals(expected.idSchool(), actual.getSchool().getSchoolId().value());
+        assertEquals(expected.idClassTeacher(), actual.getTeacher().getTeacherId().value());
         assertEquals(expected.className(), actual.getClassName());
 
     }

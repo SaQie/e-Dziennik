@@ -6,9 +6,9 @@ import pl.edziennik.eDziennik.domain.school.domain.School;
 import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.domain.schoolclass.repository.SchoolClassRepository;
-import pl.edziennik.eDziennik.server.basics.validator.ServiceValidator;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.domain.student.services.validator.StudentValidators;
+import pl.edziennik.eDziennik.server.basics.validator.ServiceValidator;
 import pl.edziennik.eDziennik.server.basics.validator.ValidatePurpose;
 
 @Service
@@ -21,9 +21,9 @@ class StudentValidatorService extends ServiceValidator<StudentValidators, Studen
 
     protected void valid(final StudentRequestApiDto dto) {
         runValidators(dto, ValidatePurpose.CREATE);
-        schoolClassRepository.findById(dto.idSchoolClass())
-                .orElseThrow(notFoundException(dto.idSchoolClass(), SchoolClass.class));
-        schoolRepository.findById(dto.idSchool())
-                .orElseThrow(notFoundException(dto.idSchool(), School.class));
+        schoolClassRepository.findById(dto.schoolClassId())
+                .orElseThrow(notFoundException(dto.schoolClassId().id(), SchoolClass.class));
+        schoolRepository.findById(dto.schoolId())
+                .orElseThrow(notFoundException(dto.schoolId().id(), School.class));
     }
 }

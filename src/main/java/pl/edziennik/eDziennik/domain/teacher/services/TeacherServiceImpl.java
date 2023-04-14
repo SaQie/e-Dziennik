@@ -11,7 +11,6 @@ import pl.edziennik.eDziennik.domain.address.services.AddressService;
 import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
 import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.Pesel;
 import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.PhoneNumber;
-import pl.edziennik.eDziennik.domain.personinformation.services.PersonInformationService;
 import pl.edziennik.eDziennik.domain.school.domain.School;
 import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
@@ -38,7 +37,6 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
     private final TeacherValidatorService validatorService;
     private final UserService userService;
 
-    private final PersonInformationService personInformationService;
     private final AddressService addressService;
 
     @Override
@@ -54,14 +52,14 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
 
     @Override
     public TeacherResponseApiDto findTeacherById(final TeacherId teacherId) {
-        Teacher teacher = repository.findById(teacherId.id())
+        Teacher teacher = repository.findById(teacherId)
                 .orElseThrow(notFoundException(teacherId.id(), Teacher.class));
         return TeacherMapper.toDto(teacher);
     }
 
     @Override
     public void deleteTeacherById(final TeacherId teacherId) {
-        Teacher teacher = repository.findById(teacherId.id())
+        Teacher teacher = repository.findById(teacherId)
                 .orElseThrow(notFoundException(teacherId.id(), Teacher.class));
         repository.delete(teacher);
     }
@@ -76,13 +74,13 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
     @Override
     @Transactional
     public TeacherResponseApiDto updateTeacher(final TeacherId teacherId, final TeacherRequestApiDto dto) {
-        Optional<Teacher> optionalTeacher = repository.findById(teacherId.id());
+        Optional<Teacher> optionalTeacher = repository.findById(teacherId);
         if (optionalTeacher.isPresent()) {
             validatorService.validate(dto);
             // update teacher data
             Teacher teacher = optionalTeacher.get();
-            schoolRepository.findById(dto.idSchool())
-                    .ifPresentOrElse(teacher::setSchool, notFoundException(School.class,dto.idSchool()));
+            schoolRepository.findById(dto.schoolId())
+                    .ifPresentOrElse(teacher::setSchool, notFoundException(School.class,dto.schoolId().id()));
 
             // update person information teacher data
             teacher.setPersonInformation(PersonInformation.of(dto.firstName(),
@@ -109,8 +107,8 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
 
     private Teacher mapToEntity(TeacherRequestApiDto dto) {
         Teacher teacher = TeacherMapper.toEntity(dto);
-        if (dto.idSchool() != null) {
-            schoolRepository.findById(dto.idSchool()).ifPresent(teacher::setSchool);
+        if (dto.schoolId() != null) {
+            schoolRepository.findById(dto.schoolId()).ifPresent(teacher::setSchool);
         }
         return teacher;
     }

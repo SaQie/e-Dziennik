@@ -14,7 +14,9 @@ import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentResponseApiDto;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.mapper.ParentMapper;
 import pl.edziennik.eDziennik.domain.parent.domain.wrapper.ParentId;
 import pl.edziennik.eDziennik.domain.parent.repository.ParentRepository;
-import pl.edziennik.eDziennik.domain.personinformation.services.PersonInformationService;
+import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
+import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.Pesel;
+import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.PhoneNumber;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
 import pl.edziennik.eDziennik.domain.user.domain.User;
@@ -33,7 +35,6 @@ class ParentServiceImpl extends BaseService implements ParentService {
     private final ParentRepository repository;
     private final StudentRepository studentRepository;
     private final ParentValidatorService validatorService;
-    private final PersonInformationService personInformationService;
     private final AddressService addressService;
 
 
@@ -47,7 +48,7 @@ class ParentServiceImpl extends BaseService implements ParentService {
 
     @Override
     public ParentResponseApiDto findById(final ParentId parentId) {
-        Parent parent = repository.findById(parentId.id())
+        Parent parent = repository.findById(parentId)
                 .orElseThrow(notFoundException(parentId.id(), Parent.class));
         return ParentMapper.toDto(parent);
     }
@@ -55,21 +56,22 @@ class ParentServiceImpl extends BaseService implements ParentService {
     @Override
     @Transactional
     public ParentResponseApiDto update(final ParentId parentId, final ParentRequestApiDto dto) {
-        Optional<Parent> parentOptional = repository.findById(parentId.id());
+        Optional<Parent> parentOptional = repository.findById(parentId);
         if (parentOptional.isPresent()) {
             validatorService.valid(dto);
             // update parent data
             Parent parent = parentOptional.get();
-            Student student = studentRepository.getReferenceById(dto.idStudent());
+            Student student = studentRepository.getReferenceById(dto.studentId());
             parent.setStudent(student);
 
             // update user data
             userService.updateUser(parent.getUser().getUserId(), UserMapper.toDto(dto));
 
             // update person information parent data
-//            PersonInformationId personInformationId = student.getPersonInformation().getPersonInformationId();
-//            personInformationService.update(personInformationId,
-//                    PersonInformationMapper.mapToPersonInformation(dto));
+            student.setPersonInformation(PersonInformation.of(dto.firstName(),
+                    dto.lastName(),
+                    PhoneNumber.of(dto.phoneNumber()),
+                    Pesel.of(dto.pesel())));
 
             // update address parent data
             AddressId addressId = student.getAddress().getAddressId();
@@ -84,7 +86,7 @@ class ParentServiceImpl extends BaseService implements ParentService {
     @Override
     public void deleteById(final ParentId parentId) {
         validatorService.checkParentHasStudent(parentId);
-        repository.findById(parentId.id()).ifPresent(repository::delete);
+        repository.findById(parentId).ifPresent(repository::delete);
     }
 
     @Override
@@ -97,8 +99,8 @@ class ParentServiceImpl extends BaseService implements ParentService {
     private Parent mapToEntity(final ParentRequestApiDto dto) {
         Parent parent = ParentMapper.toEntity(dto);
         User user = userService.createUser(UserMapper.toDto(dto));
-        Student student = studentRepository.findById(dto.idStudent())
-                .orElseThrow(notFoundException(dto.idStudent(), Student.class));
+        Student student = studentRepository.findById(dto.studentId())
+                .orElseThrow(notFoundException(dto.studentId().id(), Student.class));
         parent.setStudent(student);
         parent.setUser(user);
         return parent;

@@ -1,18 +1,29 @@
 package pl.edziennik.eDziennik.domain.studentsubject.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.experimental.Accessors;
+import pl.edziennik.eDziennik.domain.student.domain.wrapper.StudentId;
+import pl.edziennik.eDziennik.domain.subject.domain.wrapper.SubjectId;
 
 
 @Builder
-public record StudentSubjectRequestDto(
-        @NotNull(message = "{subject.empty}")
-        Long idSubject,
+@Getter
+@Accessors(fluent = true)
+@AllArgsConstructor
+public class StudentSubjectRequestDto {
+    @NotNull(message = "{subject.empty}")
+    @JsonUnwrapped
+    private final SubjectId subjectId;
 
-        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-        Long idStudent
-) {
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonUnwrapped
+    private final StudentId studentId;
+
 
     public static final String ID_SUBJECT = "idSubject";
     public static final String ID_STUDENT = "idStudent";

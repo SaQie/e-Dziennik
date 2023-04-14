@@ -55,8 +55,8 @@ public class StudentMapper {
                 .pesel(entity.getPersonInformation().pesel().value())
                 .email(entity.getUser().getEmail())
                 .phoneNumber(entity.getPersonInformation().phoneNumber().value())
-                .idSchool(entity.getSchool().getSchoolId().id())
-                .idSchoolClass(entity.getSchoolClass().getSchoolClassId().id())
+                .schoolId(entity.getSchool().getSchoolId())
+                .schoolClassId(entity.getSchoolClass().getSchoolClassId())
                 .build();
     }
 

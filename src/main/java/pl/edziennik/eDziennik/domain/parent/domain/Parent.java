@@ -1,10 +1,7 @@
 package pl.edziennik.eDziennik.domain.parent.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pl.edziennik.eDziennik.domain.address.domain.Address;
 import pl.edziennik.eDziennik.domain.parent.domain.wrapper.ParentId;
 import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
@@ -14,8 +11,10 @@ import pl.edziennik.eDziennik.domain.user.domain.User;
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode
 @NoArgsConstructor
-public class Parent{
+@IdClass(ParentId.class)
+public class Parent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "parent_id_seq")
@@ -44,12 +43,12 @@ public class Parent{
         student.setHasParentAccount(true);
     }
 
-    public void clearStudent(){
+    public void clearStudent() {
         this.student.setParent(null);
         this.student = null;
     }
 
-    public ParentId getParentId(){
+    public ParentId getParentId() {
         return ParentId.wrap(id);
     }
 

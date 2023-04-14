@@ -17,6 +17,6 @@ class ParentValidatorService extends ServiceValidator<ParentValidators, ParentRe
 
 
     protected void checkParentHasStudent(ParentId parentId) {
-        runSelectedValidator(parentId.id(), ParentValidators.PARENT_STILL_HAS_STUDENT_VALIDATOR);
+        runSelectedValidator(parentId, ParentValidators.PARENT_STILL_HAS_STUDENT_VALIDATOR);
     }
 }

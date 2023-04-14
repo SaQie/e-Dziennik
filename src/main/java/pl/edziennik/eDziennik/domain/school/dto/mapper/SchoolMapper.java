@@ -2,9 +2,9 @@ package pl.edziennik.eDziennik.domain.school.dto.mapper;
 
 import pl.edziennik.eDziennik.domain.address.dto.mapper.AddressMapper;
 import pl.edziennik.eDziennik.domain.school.domain.School;
-import pl.edziennik.eDziennik.domain.school.dto.SchoolSimpleResponseApiDto;
 import pl.edziennik.eDziennik.domain.school.dto.SchoolRequestApiDto;
 import pl.edziennik.eDziennik.domain.school.dto.SchoolResponseApiDto;
+import pl.edziennik.eDziennik.domain.school.dto.SchoolSimpleResponseApiDto;
 import pl.edziennik.eDziennik.domain.schoollevel.dto.mapper.SchoolLevelMapper;
 
 import java.util.List;

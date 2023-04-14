@@ -38,7 +38,7 @@ public class SchoolIntegrationTest extends BaseTesting {
         assertEquals(expected.city(), actual.getAddress().getCity());
         assertEquals(expected.postalCode(), actual.getAddress().getPostalCode());
         assertEquals(expected.regon(), actual.getRegon());
-        assertEquals(expected.idSchoolLevel(), actual.getSchoolLevel().getSchoolLevelId().id());
+        assertEquals(expected.idSchoolLevel(), actual.getSchoolLevel().getSchoolLevelId().value());
     }
 
     @Test
@@ -62,7 +62,7 @@ public class SchoolIntegrationTest extends BaseTesting {
         assertEquals(expected.city(), actual.getAddress().getCity());
         assertEquals(expected.postalCode(), actual.getAddress().getPostalCode());
         assertEquals(expected.regon(), actual.getRegon());
-        assertEquals(expected.idSchoolLevel(), actual.getSchoolLevel().getSchoolLevelId().id());
+        assertEquals(expected.idSchoolLevel(), actual.getSchoolLevel().getSchoolLevelId().value());
 
     }
 

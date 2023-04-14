@@ -2,6 +2,7 @@ package pl.edziennik.eDziennik.domain.role.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.edziennik.eDziennik.domain.role.domain.wrapper.RoleId;
@@ -9,7 +10,9 @@ import pl.edziennik.eDziennik.domain.role.domain.wrapper.RoleId;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Role{
+@EqualsAndHashCode
+@IdClass(RoleId.class)
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_id_seq")
@@ -29,7 +32,7 @@ public class Role{
         this.name = name;
     }
 
-    public RoleId getRoleId(){
+    public RoleId getRoleId() {
         return RoleId.wrap(id);
     }
 

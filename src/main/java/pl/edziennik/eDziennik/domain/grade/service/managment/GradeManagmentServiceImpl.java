@@ -54,11 +54,11 @@ class GradeManagmentServiceImpl extends BaseService implements GradeManagmentSer
     }
 
     @Override
-    public StudentGradesInSubjectDto updateStudentSubjectGrade(final StudentSubjectSeparateId studentSubjectId, GradeId idGrade, GradeRequestApiDto requestApiDto) {
+    public StudentGradesInSubjectDto updateStudentSubjectGrade(final StudentSubjectSeparateId studentSubjectId, GradeId gradeId, GradeRequestApiDto requestApiDto) {
         StudentSubject studentSubject = studentSubjectRepository.findByStudentIdAndSubjectId(studentSubjectId.idStudent().id(), studentSubjectId.idSubject().id())
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Student " + studentSubjectId.idStudent().id() + " not assigned to subject " + studentSubjectId.idSubject().id()));
-        Optional<Grade> optionalGrade = repository.findById(idGrade.id());
+        Optional<Grade> optionalGrade = repository.findById(gradeId);
         if (optionalGrade.isPresent()) {
             Grade grade = optionalGrade.get();
             grade.setGrade(Grade.GradeConst.getByRating(requestApiDto.getGrade()));
@@ -73,7 +73,7 @@ class GradeManagmentServiceImpl extends BaseService implements GradeManagmentSer
     private Grade insertNewGrade(GradeRequestApiDto dto, StudentSubject studentSubject) {
         Teacher teacher = teacherRepository.getByUserUsername(dto.getTeacherName());
         Long idGrade = gradeService.addNewGrade(dto).id();
-        Grade grade = repository.findById(idGrade)
+        Grade grade = repository.findById(GradeId.wrap(idGrade))
                 .orElseThrow(notFoundException(idGrade, Grade.class));
         grade.setStudentSubject(studentSubject);
         grade.setTeacher(teacher);

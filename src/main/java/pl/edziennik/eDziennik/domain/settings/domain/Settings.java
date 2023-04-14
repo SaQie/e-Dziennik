@@ -1,10 +1,7 @@
 package pl.edziennik.eDziennik.domain.settings.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pl.edziennik.eDziennik.domain.settings.domain.wrapper.SettingsId;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 
@@ -13,6 +10,8 @@ import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 @Getter
 @Setter
 @Table(name = "app_settings")
+@IdClass(SettingsId.class)
+@EqualsAndHashCode
 public class Settings {
 
     @Id

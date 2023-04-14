@@ -4,9 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import pl.edziennik.eDziennik.domain.user.domain.User;
+import pl.edziennik.eDziennik.domain.user.domain.wrapper.UserId;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, UserId> {
 
     boolean existsByUsername(String username);
 

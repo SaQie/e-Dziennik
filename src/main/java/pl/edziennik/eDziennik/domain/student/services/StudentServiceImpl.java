@@ -11,10 +11,10 @@ import pl.edziennik.eDziennik.domain.address.services.AddressService;
 import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
 import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.Pesel;
 import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.PhoneNumber;
-import pl.edziennik.eDziennik.domain.personinformation.services.PersonInformationService;
 import pl.edziennik.eDziennik.domain.school.domain.School;
 import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
+import pl.edziennik.eDziennik.domain.schoolclass.domain.wrapper.SchoolClassId;
 import pl.edziennik.eDziennik.domain.schoolclass.repository.SchoolClassRepository;
 import pl.edziennik.eDziennik.domain.settings.services.SettingsService;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
@@ -46,7 +46,6 @@ class StudentServiceImpl extends BaseService implements StudentService {
     private final UserService userService;
     private final SettingsService settingsService;
     private final StudentSubjectRepository studentSubjectRepository;
-    private final PersonInformationService personInformationService;
     private final AddressService addressService;
 
 
@@ -57,20 +56,20 @@ class StudentServiceImpl extends BaseService implements StudentService {
         Student student = mapToEntity(dto);
         User user = userService.createUser(UserMapper.toDto(dto));
         student.setUser(user);
-        assignAllSchoolClassSubjectsToStudentIfNeeded(student, dto.idSchoolClass());
+        assignAllSchoolClassSubjectsToStudentIfNeeded(student, dto.schoolClassId());
         return StudentMapper.toDto(repository.save(student));
     }
 
     @Override
     public StudentResponseApiDto findStudentById(final StudentId studentId) {
-        Student student = repository.findById(studentId.id())
+        Student student = repository.findById(studentId)
                 .orElseThrow(notFoundException(studentId.id(), Student.class));
         return StudentMapper.toDto(student);
     }
 
     @Override
     public void deleteStudentById(final StudentId studentId) {
-        Student student = repository.findById(studentId.id())
+        Student student = repository.findById(studentId)
                 .orElseThrow(notFoundException(studentId.id(), Student.class));
         if (student.getParent() != null) {
             student.getParent().clearStudent();
@@ -94,16 +93,16 @@ class StudentServiceImpl extends BaseService implements StudentService {
     @Override
     @Transactional
     public StudentResponseApiDto updateStudent(final StudentId studentId, StudentRequestApiDto dto) {
-        Optional<Student> optionalStudent = repository.findById(studentId.id());
+        Optional<Student> optionalStudent = repository.findById(studentId);
         if (optionalStudent.isPresent()) {
             validatorService.valid(dto);
 
             // update student data
             Student student = optionalStudent.get();
-            schoolRepository.findById(dto.idSchool())
-                    .ifPresentOrElse(student::setSchool, notFoundException(School.class, dto.idSchool()));
-            schoolClassRepository.findById(dto.idSchoolClass())
-                    .ifPresentOrElse(student::setSchoolClass, notFoundException(SchoolClass.class, dto.idSchoolClass()));
+            schoolRepository.findById(dto.schoolId())
+                    .ifPresentOrElse(student::setSchool, notFoundException(School.class, dto.schoolId().id()));
+            schoolClassRepository.findById(dto.schoolClassId())
+                    .ifPresentOrElse(student::setSchoolClass, notFoundException(SchoolClass.class, dto.schoolId().id()));
 
             // update person information student data
             student.setPersonInformation(PersonInformation.of(dto.firstName(),
@@ -127,20 +126,20 @@ class StudentServiceImpl extends BaseService implements StudentService {
 
     private Student mapToEntity(final StudentRequestApiDto dto) {
         Student student = StudentMapper.toEntity(dto);
-        School school = schoolRepository.findById(dto.idSchool())
-                .orElseThrow(notFoundException(dto.idSchool(), School.class));
-        SchoolClass schoolClass = schoolClassRepository.findById(dto.idSchool())
-                .orElseThrow(notFoundException(dto.idSchool(), SchoolClass.class));
+        School school = schoolRepository.findById(dto.schoolId())
+                .orElseThrow(notFoundException(dto.schoolId().id(), School.class));
+        SchoolClass schoolClass = schoolClassRepository.findById(dto.schoolClassId())
+                .orElseThrow(notFoundException(dto.schoolId().id(), SchoolClass.class));
         student.setSchool(school);
         student.setSchoolClass(schoolClass);
         return student;
     }
 
-    private void assignAllSchoolClassSubjectsToStudentIfNeeded(Student student, Long idSchoolClass) {
+    private void assignAllSchoolClassSubjectsToStudentIfNeeded(Student student, SchoolClassId schoolClassId) {
         // This method will assign automatically all subjects assigned to school class to selected student if configuration is enabled
         if (settingsService.getSettingsDataByName(SettingsService.AUTOMATICALLY_INSERT_STUDENT_SUBJECTS_WHEN_ADD).booleanValue()) {
-            SchoolClass schoolClass = schoolClassRepository.findById(idSchoolClass)
-                    .orElseThrow(notFoundException(idSchoolClass, SchoolClass.class));
+            SchoolClass schoolClass = schoolClassRepository.findById(schoolClassId)
+                    .orElseThrow(notFoundException(schoolClassId.id(), SchoolClass.class));
             if (!schoolClass.getSubjects().isEmpty()) {
                 List<Subject> subjects = schoolClass.getSubjects();
                 for (Subject subject : subjects) {

@@ -44,7 +44,7 @@ public class SubjectIntegrationTest extends BaseTesting {
 
         assertEquals(expected.name(), actual.getName());
         assertEquals(expected.description(), actual.getDescription());
-        assertEquals(expected.idTeacher(), actual.getTeacher().getTeacherId().id());
+        assertEquals(expected.idTeacher(), actual.getTeacher().getTeacherId().value());
     }
 
     @Test
@@ -69,7 +69,7 @@ public class SubjectIntegrationTest extends BaseTesting {
 
         assertEquals(expected.name(), actual.getName());
         assertEquals(expected.description(), actual.getDescription());
-        assertEquals(expected.idTeacher(), actual.getTeacher().getTeacherId().id());
+        assertEquals(expected.idTeacher(), actual.getTeacher().getTeacherId().value());
     }
 
     @Test

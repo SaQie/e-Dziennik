@@ -34,10 +34,10 @@ class TeacherIsAlreadySupervisingTeacherValidator extends BaseService implements
     @Override
     public Optional<ApiValidationResult> validate(SchoolClassRequestApiDto dto) {
         if (dto.idClassTeacher() != null) {
-            if (repository.existsByTeacherId(dto.idClassTeacher())) {
+            if (repository.existsByTeacherId(dto.idClassTeacher().id())) {
                 Teacher teacher = teacherRepository.findById(dto.idClassTeacher())
-                        .orElseThrow(notFoundException(dto.idClassTeacher(), Teacher.class));
-                String actualTeacherSchoolClassName = repository.getSchoolClassNameBySupervisingTeacherId(dto.idClassTeacher());
+                        .orElseThrow(notFoundException(dto.idClassTeacher().id(), Teacher.class));
+                String actualTeacherSchoolClassName = repository.getSchoolClassNameBySupervisingTeacherId(dto.idClassTeacher().id());
 
                 String teacherName = teacher.getPersonInformation().fullName();
                 String message = resourceCreator.of(EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER, teacherName, actualTeacherSchoolClassName);

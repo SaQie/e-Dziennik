@@ -2,6 +2,7 @@ package pl.edziennik.eDziennik.domain.schoollevel.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.edziennik.eDziennik.domain.school.domain.School;
@@ -13,6 +14,8 @@ import java.util.Collection;
 @Entity
 @NoArgsConstructor
 @Getter
+@IdClass(SchoolLevelId.class)
+@EqualsAndHashCode
 public class SchoolLevel {
 
     @Id
@@ -31,12 +34,12 @@ public class SchoolLevel {
         this.name = name;
     }
 
-    public void addSchool(School school){
+    public void addSchool(School school) {
         schools.add(school);
         school.setSchoolLevel(this);
     }
 
-    public SchoolLevelId getSchoolLevelId(){
+    public SchoolLevelId getSchoolLevelId() {
         return SchoolLevelId.wrap(id);
     }
 

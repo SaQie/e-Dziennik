@@ -1,9 +1,35 @@
 package pl.edziennik.eDziennik.domain.address.domain.wrapper;
 
-public record AddressId(
-        Long id
-) {
-    public static AddressId wrap(Long id){
-        return new AddressId(id);
+import com.fasterxml.jackson.annotation.JsonCreator;
+import jakarta.persistence.Embeddable;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.experimental.Accessors;
+import pl.edziennik.eDziennik.server.basics.vo.ValueObject;
+
+import java.io.Serializable;
+
+@Embeddable
+@Getter
+@EqualsAndHashCode
+@Accessors(fluent = true)
+public class AddressId implements Serializable, ValueObject {
+
+
+    private final Long id;
+
+    @JsonCreator
+    public AddressId(Long id) {
+        this.id = id;
     }
+
+    public AddressId() {
+        this.id = null;
+    }
+
+    public static AddressId wrap(Long value) {
+        return new AddressId(value);
+    }
+
+
 }

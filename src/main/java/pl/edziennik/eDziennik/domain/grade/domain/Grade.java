@@ -1,10 +1,7 @@
 package pl.edziennik.eDziennik.domain.grade.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pl.edziennik.eDziennik.domain.grade.domain.wrapper.GradeId;
 import pl.edziennik.eDziennik.domain.studentsubject.domain.StudentSubject;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
@@ -16,7 +13,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Grade{
+@EqualsAndHashCode
+@IdClass(GradeId.class)
+public class Grade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "grade_id_seq")
@@ -44,17 +43,17 @@ public class Grade{
         this.description = description;
     }
 
-    public GradeId getGradeId(){
+    public GradeId getGradeId() {
         return GradeId.wrap(id);
     }
 
     @PrePersist
-    protected void onCreate(){
+    protected void onCreate() {
         this.createdDate = LocalDateTime.now();
     }
 
     @PreUpdate
-    protected void onUpdate(){
+    protected void onUpdate() {
         this.createdDate = LocalDateTime.now();
     }
 
@@ -75,9 +74,9 @@ public class Grade{
             this.grade = grade;
         }
 
-        public static GradeConst getByRating(int grade){
-            for (GradeConst ratingConst : GradeConst.values()){
-                if (ratingConst.grade == grade){
+        public static GradeConst getByRating(int grade) {
+            for (GradeConst ratingConst : GradeConst.values()) {
+                if (ratingConst.grade == grade) {
                     return ratingConst;
                 }
             }

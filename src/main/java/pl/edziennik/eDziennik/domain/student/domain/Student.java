@@ -16,6 +16,7 @@ import pl.edziennik.eDziennik.domain.user.domain.User;
 @Getter
 @Setter
 @EqualsAndHashCode
+@IdClass(StudentId.class)
 public class Student {
 
     @Id
@@ -53,6 +54,11 @@ public class Student {
     public Student(PersonInformation personInformation, Address address) {
         this.personInformation = personInformation;
         this.address = address;
+    }
+
+    @PrePersist
+    private void setIdentifier() {
+
     }
 
 

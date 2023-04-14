@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.domain.role.domain.Role;
+import pl.edziennik.eDziennik.domain.role.domain.wrapper.RoleId;
 import pl.edziennik.eDziennik.domain.role.repository.RoleRepository;
 import pl.edziennik.eDziennik.domain.user.domain.User;
 import pl.edziennik.eDziennik.domain.user.domain.wrapper.UserId;
@@ -31,7 +32,7 @@ class UserServiceImpl extends ServiceValidator<UserValidators, UserRequestDto> i
         runValidators(dto);
         User user = UserMapper.toEntity(dto);
         Role role = roleRepository.findByName(dto.role())
-                .orElse(roleRepository.getReferenceById(Role.RoleConst.ROLE_STUDENT.getId()));
+                .orElse(roleRepository.getReferenceById(RoleId.wrap(Role.RoleConst.ROLE_STUDENT.getId())));
         user.setRole(role);
         user.setPassword(passwordEncoder.encode(dto.password()));
         return repository.save(user);
@@ -40,7 +41,7 @@ class UserServiceImpl extends ServiceValidator<UserValidators, UserRequestDto> i
     @Override
     @Transactional
     public void updateUser(final UserId userId, final UserRequestDto dto) {
-        Optional<User> userOptional = repository.findById(userId.id());
+        Optional<User> userOptional = repository.findById(userId);
         if (userOptional.isPresent()) {
             runValidators(dto);
             User user = userOptional.get();
@@ -48,7 +49,7 @@ class UserServiceImpl extends ServiceValidator<UserValidators, UserRequestDto> i
             user.setEmail(dto.email());
             user.setPassword(passwordEncoder.encode(dto.password()));
             Role role = roleRepository.findByName(dto.role())
-                    .orElse(roleRepository.getReferenceById(Role.RoleConst.ROLE_STUDENT.getId()));
+                    .orElse(roleRepository.getReferenceById(RoleId.wrap(Role.RoleConst.ROLE_STUDENT.getId())));
             user.setRole(role);
         }
     }

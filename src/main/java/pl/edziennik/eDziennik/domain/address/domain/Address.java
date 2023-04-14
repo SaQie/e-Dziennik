@@ -10,6 +10,8 @@ import pl.edziennik.eDziennik.domain.address.domain.wrapper.AddressId;
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@IdClass(AddressId.class)
 public class Address {
 
     @Id

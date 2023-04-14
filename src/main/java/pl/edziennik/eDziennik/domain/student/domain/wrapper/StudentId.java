@@ -1,9 +1,37 @@
 package pl.edziennik.eDziennik.domain.student.domain.wrapper;
 
-public record StudentId(
-        Long id
-) {
-    public static StudentId wrap(Long id) {
-        return new StudentId(id);
+import com.fasterxml.jackson.annotation.JsonCreator;
+import jakarta.persistence.Embeddable;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.experimental.Accessors;
+import pl.edziennik.eDziennik.server.basics.vo.ValueObject;
+
+import java.io.Serializable;
+
+
+@Embeddable
+@Getter
+@Accessors(fluent = true)
+@EqualsAndHashCode
+public class StudentId implements Serializable, ValueObject {
+
+
+    private final Long id;
+
+
+    @JsonCreator
+    public StudentId(Long id) {
+        this.id = id;
     }
+
+    public StudentId() {
+        this.id = null;
+    }
+
+    public static StudentId wrap(Long value) {
+        return new StudentId(value);
+    }
+
+
 }

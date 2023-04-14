@@ -15,6 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@IdClass(StudentSubjectId.class)
 public class StudentSubject {
 
     @Id

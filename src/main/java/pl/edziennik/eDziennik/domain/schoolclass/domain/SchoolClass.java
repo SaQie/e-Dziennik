@@ -17,6 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode
+@IdClass(SchoolClassId.class)
 public class SchoolClass {
 
     @Id

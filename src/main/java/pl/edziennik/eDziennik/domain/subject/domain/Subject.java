@@ -1,10 +1,7 @@
 package pl.edziennik.eDziennik.domain.subject.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.domain.subject.domain.wrapper.SubjectId;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
@@ -13,6 +10,8 @@ import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@IdClass(SubjectId.class)
 public class Subject{
 
 

@@ -2,8 +2,8 @@ package pl.edziennik.eDziennik.domain.subject.dto.mapper;
 
 import pl.edziennik.eDziennik.domain.schoolclass.dto.mapper.SchoolClassMapper;
 import pl.edziennik.eDziennik.domain.subject.domain.Subject;
-import pl.edziennik.eDziennik.domain.subject.dto.SubjectResponseApiDto;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
+import pl.edziennik.eDziennik.domain.subject.dto.SubjectResponseApiDto;
 import pl.edziennik.eDziennik.domain.teacher.dto.mapper.TeacherMapper;
 
 import java.util.List;

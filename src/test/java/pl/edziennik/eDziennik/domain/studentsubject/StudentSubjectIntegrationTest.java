@@ -58,12 +58,12 @@ public class StudentSubjectIntegrationTest extends BaseTesting {
         assertEquals(1, studentSubject.getSubjects().size());
         assertEquals(expectedStudent.getPersonInformation().firstName(), studentSubject.getFirstName());
         assertEquals(expectedStudent.getPersonInformation().lastName(), studentSubject.getLastName());
-        assertEquals(expectedStudent.getStudentId().id(), studentSubject.getId());
+        assertEquals(expectedStudent.getStudentId().value(), studentSubject.getId());
 
         SubjectResponseApiDto actualSubject = studentSubject.getSubjects().get(0);
         assertEquals(expectedSubject.getName(), actualSubject.name());
         assertEquals(expectedSubject.getDescription(), actualSubject.description());
-        assertEquals(expectedSubject.getTeacher().getTeacherId().id(), actualSubject.teacher().id());
+        assertEquals(expectedSubject.getTeacher().getTeacherId().value(), actualSubject.teacher().id());
     }
 
     @Test

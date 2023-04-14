@@ -60,7 +60,7 @@ class AdminServiceImpl extends BaseService implements AdminService {
 
     @Override
     public AdminResponseApiDto getAdminById(final AdminId adminId) {
-        Admin admin = repository.findById(adminId.id())
+        Admin admin = repository.findById(adminId)
                 .orElseThrow(notFoundException(adminId.id(), Admin.class));
         return AdminMapper.mapToDto(admin);
     }
@@ -70,12 +70,12 @@ class AdminServiceImpl extends BaseService implements AdminService {
         if (repository.findAll().size() == 1) {
             throw new BusinessException(getMessage("cannot.delete.last.admin.account"));
         }
-        repository.deleteById(adminId.id());
+        repository.deleteById(adminId);
     }
 
     @Override
     public AdminResponseApiDto updateAdmin(final AdminRequestApiDto dto, final AdminId adminId) {
-        Optional<Admin> optionalStudent = repository.findById(adminId.id());
+        Optional<Admin> optionalStudent = repository.findById(adminId);
         if (optionalStudent.isPresent()) {
             validator.valid(dto);
             Admin admin = optionalStudent.get();

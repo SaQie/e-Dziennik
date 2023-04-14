@@ -13,8 +13,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
+@EqualsAndHashCode
+@IdClass(UserId.class)
 @Table(name = "users")
-public class User{
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
@@ -38,7 +40,7 @@ public class User{
         this.email = email;
     }
 
-    public UserId getUserId(){
+    public UserId getUserId() {
         return UserId.wrap(id);
     }
 

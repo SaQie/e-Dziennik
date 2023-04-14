@@ -161,7 +161,7 @@ public class StudentIntegrationTest extends BaseTesting {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> studentService.findStudentById(studentId));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", studentId.id(), Student.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", studentId.value(), Student.class.getSimpleName()));
     }
 
     @Test
@@ -173,7 +173,7 @@ public class StudentIntegrationTest extends BaseTesting {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> studentService.deleteStudentById(studentId));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", studentId.id(), Student.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", studentId.value(), Student.class.getSimpleName()));
     }
 
     @Test

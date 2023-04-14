@@ -19,7 +19,7 @@ class AddressServiceImpl implements AddressService{
     @Override
     @Transactional
     public void update(final AddressId addressId, final Address addressSource) {
-        Optional<Address> addressOptional = repository.findById(addressId.id());
+        Optional<Address> addressOptional = repository.findById(addressId);
         if (addressOptional.isPresent()){
             Address addressToEdit = addressOptional.get();
             addressToEdit.setAddress(addressSource.getAddress());

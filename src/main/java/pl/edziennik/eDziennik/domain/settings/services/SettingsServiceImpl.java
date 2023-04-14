@@ -68,7 +68,7 @@ class SettingsServiceImpl extends BaseService implements SettingsService {
 
     @Override
     public void updateSettings(final SettingsId settingsId, final SettingsValue value) {
-        Settings settings = settingsRepostory.findById(settingsId.id())
+        Settings settings = settingsRepostory.findById(settingsId)
                 .orElseThrow(notFoundException(settingsId.id(), Settings.class));
         setCorrectValue(settings, value);
         settingsRepostory.save(settings);

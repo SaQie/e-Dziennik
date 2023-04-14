@@ -32,7 +32,7 @@ public class StudentSubjectController {
 //    @Operation(summary = "Assign student to subject",
 //            description = "This method assigns subject to specific student")
     public ApiResponse<?> assignStudentToSubject(@RequestBody StudentSubjectRequestDto requestApiDto, @PathVariable StudentId studentId) {
-        requestApiDto = new StudentSubjectRequestDto(requestApiDto.idSubject(), studentId.id());
+        requestApiDto = new StudentSubjectRequestDto(requestApiDto.subjectId(), studentId);
         StudentSubjectResponseDto responseApiDto = service.assignStudentToSubject(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.OK, responseApiDto, uri);

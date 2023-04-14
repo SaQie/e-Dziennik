@@ -30,20 +30,20 @@ class GradeServiceImpl extends BaseService implements GradeService {
 
     @Override
     public GradeResponseApiDto findGradeById(final GradeId gradeId) {
-        Grade grade = repository.findById(gradeId.id())
+        Grade grade = repository.findById(gradeId)
                 .orElseThrow(() -> new EntityNotFoundException(getMessage("not.found.message", gradeId, Grade.class.getSimpleName())));
         return GradeMapper.toDto(grade);
     }
 
     @Override
     public void deleteGradeById(final GradeId gradeId) {
-        repository.findById(gradeId.id()).ifPresent(repository::delete);
+        repository.findById(gradeId).ifPresent(repository::delete);
     }
 
     @Override
     @Transactional
     public GradeResponseApiDto updateGrade(final GradeId gradeId, GradeRequestApiDto dto) {
-        Optional<Grade> optionalGrade = repository.findById(gradeId.id());
+        Optional<Grade> optionalGrade = repository.findById(gradeId);
 
         if (optionalGrade.isPresent()) {
             Grade grade = optionalGrade.get();

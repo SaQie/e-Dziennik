@@ -37,7 +37,6 @@ public class StudentController {
 
     @DeleteMapping("/{studentId}")
     @ResponseStatus(HttpStatus.OK)
-//    @Operation(summary = "Delete student")
     public ApiResponse<?> deleteStudent(@PathVariable StudentId studentId) {
         service.deleteStudentById(studentId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();

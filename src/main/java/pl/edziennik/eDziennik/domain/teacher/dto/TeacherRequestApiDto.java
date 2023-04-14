@@ -5,50 +5,57 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.experimental.Accessors;
+import pl.edziennik.eDziennik.domain.school.domain.wrapper.SchoolId;
 
 
 @Builder
-public record TeacherRequestApiDto(
-        @NotEmpty(message = "{username.empty}")
-        @Size(min = 4, message = "{username.size}")
-        String username,
+@Getter
+@Accessors(fluent = true)
+@AllArgsConstructor
+public class TeacherRequestApiDto {
+    @NotEmpty(message = "{username.empty}")
+    @Size(min = 4, message = "{username.size}")
+    private final String username;
 
-        @NotEmpty(message = "{firstName.empty}")
-        String firstName,
+    @NotEmpty(message = "{firstName.empty}")
+    private final String firstName;
 
-        @NotEmpty(message = "{lastName.empty}")
-        String lastName,
+    @NotEmpty(message = "{lastName.empty}")
+    private final String lastName;
 
-        @NotEmpty(message = "{address.empty}")
-        String address,
+    @NotEmpty(message = "{address.empty}")
+    private final String address;
 
-        @NotEmpty(message = "{postalCode.empty}")
-        @Size(min = 6, max = 6, message = "{postalCode.size}")
-        String postalCode,
+    @NotEmpty(message = "{postalCode.empty}")
+    @Size(min = 6, max = 6, message = "{postalCode.size}")
+    private final String postalCode;
 
-        @NotEmpty(message = "{city.empty}")
-        String city,
+    @NotEmpty(message = "{city.empty}")
+    private final String city;
 
-        @org.hibernate.validator.constraints.pl.PESEL(message = "{pesel.invalid}")
-        String pesel,
+    @org.hibernate.validator.constraints.pl.PESEL(message = "{pesel.invalid}")
+    private final String pesel;
 
-        @Email(message = "{email.is.not.valid}")
-        @NotEmpty(message = "{email.empty}")
-        String email,
+    @Email(message = "{email.is.not.valid}")
+    @NotEmpty(message = "{email.empty}")
+    private final String email;
 
-        String role,
+    private final String role;
 
-        @Pattern(regexp = "[\\d]{9}", message = "{phone.invalid}")
-        String phoneNumber,
+    @Pattern(regexp = "[\\d]{9}", message = "{phone.invalid}")
+    private final String phoneNumber;
 
-        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-        @NotEmpty(message = "{password.empty}")
-        @Size(min = 4, message = "{password.size}")
-        String password,
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @NotEmpty(message = "{password.empty}")
+    @Size(min = 4, message = "{password.size}")
+    private final String password;
 
-        Long idSchool
-) {
+    private final SchoolId schoolId;
+
 
     public static final String USERNAME = "username";
     public static final String FIRST_NAME = "firstName";

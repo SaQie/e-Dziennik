@@ -1,8 +1,8 @@
 package pl.edziennik.eDziennik.domain.schoollevel.dto.mapper;
 
+import pl.edziennik.eDziennik.domain.schoollevel.domain.SchoolLevel;
 import pl.edziennik.eDziennik.domain.schoollevel.dto.SchoolLevelRequestApiDto;
 import pl.edziennik.eDziennik.domain.schoollevel.dto.SchoolLevelResponseApiDto;
-import pl.edziennik.eDziennik.domain.schoollevel.domain.SchoolLevel;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public class SchoolLevelMapper {
 
     public static SchoolLevel toEntity(SchoolLevelRequestApiDto dto) {
         return new SchoolLevel(
-                dto.id(),
+                dto.schoolLevelId().id(),
                 dto.name()
         );
     }

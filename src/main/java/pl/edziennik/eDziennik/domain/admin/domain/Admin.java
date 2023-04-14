@@ -1,18 +1,17 @@
 package pl.edziennik.eDziennik.domain.admin.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pl.edziennik.eDziennik.domain.admin.domain.wrapper.AdminId;
 import pl.edziennik.eDziennik.domain.user.domain.User;
 
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode
 @NoArgsConstructor
-public class Admin{
+@IdClass(AdminId.class)
+public class Admin {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "admin_id_seq")
@@ -25,7 +24,7 @@ public class Admin{
     private User user;
 
 
-    public AdminId getAdminId(){
+    public AdminId getAdminId() {
         return AdminId.wrap(id);
     }
 

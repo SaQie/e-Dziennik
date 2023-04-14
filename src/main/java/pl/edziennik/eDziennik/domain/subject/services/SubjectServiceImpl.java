@@ -41,14 +41,14 @@ class SubjectServiceImpl extends BaseService implements SubjectService {
 
     @Override
     public SubjectResponseApiDto findSubjectById(final SubjectId subjectId) {
-        Subject subject = repository.findById(subjectId.id())
+        Subject subject = repository.findById(subjectId)
                 .orElseThrow(notFoundException(subjectId.id(), Subject.class));
         return SubjectMapper.toDto(subject);
     }
 
     @Override
     public void deleteSubjectById(final SubjectId subjectId) {
-        Subject subject = repository.findById(subjectId.id())
+        Subject subject = repository.findById(subjectId)
                 .orElseThrow(notFoundException(subjectId.id(), Subject.class));
         repository.delete(subject);
     }
@@ -62,7 +62,7 @@ class SubjectServiceImpl extends BaseService implements SubjectService {
     @Override
     @Transactional
     public SubjectResponseApiDto updateSubject(final SubjectId subjectId, final SubjectRequestApiDto dto) {
-        Optional<Subject> optionalSubject = repository.findById(subjectId.id());
+        Optional<Subject> optionalSubject = repository.findById(subjectId);
         if (optionalSubject.isPresent()) {
             validatorService.valid(dto);
             Subject subject = optionalSubject.get();
@@ -75,12 +75,12 @@ class SubjectServiceImpl extends BaseService implements SubjectService {
 
     private Subject mapToEntity(SubjectRequestApiDto dto) {
         Subject subject = SubjectMapper.toEntity(dto);
-        if (dto.idTeacher() != null) {
-            teacherRepository.findById(dto.idTeacher()).ifPresentOrElse(subject::setTeacher,notFoundException(Teacher.class, dto.idTeacher()));
+        if (dto.teacherId() != null) {
+            teacherRepository.findById(dto.teacherId()).ifPresentOrElse(subject::setTeacher,notFoundException(Teacher.class, dto.teacherId().id()));
 
         }
-        SchoolClass schoolClass = schoolClassRepository.findById(dto.idSchoolClass())
-                .orElseThrow(notFoundException(dto.idSchoolClass(), SchoolClass.class));
+        SchoolClass schoolClass = schoolClassRepository.findById(dto.schoolClassId())
+                .orElseThrow(notFoundException(dto.schoolClassId().id(), SchoolClass.class));
         schoolClass.addSubject(subject);
         return subject;
     }

@@ -46,7 +46,7 @@ public class ParentIntegrationTest extends BaseTesting {
         assertEquals(expected.email(), actual.getUser().getEmail());
         assertEquals(expected.username(), actual.getUser().getUsername());
         assertEquals(ROLE_PARENT_TEXT, actual.getUser().getRole().getName());
-        assertEquals(expected.idStudent(), actual.getStudent().getStudentId().id());
+        assertEquals(expected.idStudent(), actual.getStudent().getStudentId().value());
     }
 
     @Test
@@ -82,7 +82,7 @@ public class ParentIntegrationTest extends BaseTesting {
         assertEquals(expected.getAddress().getPostalCode(), actual.postalCode());
         assertEquals(expected.getUser().getEmail(), actual.email());
         assertEquals(expected.getUser().getUsername(), actual.username());
-        assertEquals(expected.getStudent().getStudentId().id(), actual.student().id());
+        assertEquals(expected.getStudent().getStudentId().value(), actual.student().id());
     }
 
     @Test
@@ -146,7 +146,7 @@ public class ParentIntegrationTest extends BaseTesting {
         assertEquals(1, exception.getErrors().size());
         assertEquals(ParentValidators.PARENT_STILL_HAS_STUDENT_VALIDATOR, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(ParentRequestApiDto.ID_STUDENT, exception.getErrors().get(0).getField());
-        String expectedExceptionMessage = resourceCreator.of(ParentValidators.EXCEPTON_MESSAGE_PARENT_STILL_HAS_STUDENT, getStudentFullName(student.getStudentId().id()));
+        String expectedExceptionMessage = resourceCreator.of(ParentValidators.EXCEPTON_MESSAGE_PARENT_STILL_HAS_STUDENT, getStudentFullName(student.getStudentId().value()));
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
 
     }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.domain.parent.domain.Parent;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
+import pl.edziennik.eDziennik.domain.parent.domain.wrapper.ParentId;
 import pl.edziennik.eDziennik.domain.parent.repository.ParentRepository;
 import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.basics.service.BaseService;
@@ -18,7 +19,7 @@ import static pl.edziennik.eDziennik.domain.parent.services.validator.ParentVali
 
 @Component
 @AllArgsConstructor
-class ParentStillHasStudentValidator extends BaseService implements AbstractValidator<Long> {
+class ParentStillHasStudentValidator extends BaseService implements AbstractValidator<ParentId> {
 
     private final ParentRepository repository;
     private final ResourceCreator resourceCreator;
@@ -29,9 +30,9 @@ class ParentStillHasStudentValidator extends BaseService implements AbstractVali
     }
 
     @Override
-    public Optional<ApiValidationResult> validate(Long id) {
-        Parent parent = repository.findById(id)
-                .orElseThrow(notFoundException(id, Parent.class));
+    public Optional<ApiValidationResult> validate(ParentId parentId) {
+        Parent parent = repository.findById(parentId)
+                .orElseThrow(notFoundException(parentId.id(), Parent.class));
 
         if (parent.getStudent() != null) {
 

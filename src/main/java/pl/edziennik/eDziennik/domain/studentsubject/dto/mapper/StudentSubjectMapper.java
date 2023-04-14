@@ -2,9 +2,9 @@ package pl.edziennik.eDziennik.domain.studentsubject.dto.mapper;
 
 import pl.edziennik.eDziennik.domain.grade.domain.Grade;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.mapper.SchoolClassMapper;
+import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.studentsubject.domain.StudentSubject;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.response.*;
-import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.subject.domain.Subject;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectResponseApiDto;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherSimpleResponseApiDto;

@@ -4,13 +4,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import pl.edziennik.eDziennik.domain.settings.domain.Settings;
+import pl.edziennik.eDziennik.domain.settings.domain.wrapper.SettingsId;
 import pl.edziennik.eDziennik.domain.settings.dto.SettingsDto;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface SettingsRepostory extends JpaRepository<Settings, Long> {
+public interface SettingsRepostory extends JpaRepository<Settings, SettingsId> {
 
     Optional<Settings> findByName(String name);
 
