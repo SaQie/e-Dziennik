@@ -32,7 +32,7 @@ class ParentStillHasStudentValidator extends BaseService implements AbstractVali
     @Override
     public Optional<ApiValidationResult> validate(ParentId parentId) {
         Parent parent = repository.findById(parentId)
-                .orElseThrow(notFoundException(parentId.id(), Parent.class));
+                .orElseThrow(notFoundException(parentId, Parent.class));
 
         if (parent.getStudent() != null) {
 

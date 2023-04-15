@@ -2,6 +2,7 @@ package pl.edziennik.eDziennik.server.basics.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.edziennik.eDziennik.server.basics.vo.Identifier;
 import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
@@ -34,16 +35,16 @@ public abstract class BaseService {
     /**
      * Method used in lambda expression to throw exception when entity was not found
      */
-    protected Supplier<EntityNotFoundException> notFoundException(Long id, Class clazz) {
-        return () -> new EntityNotFoundException(getMessage("not.found.message", id, clazz.getSimpleName()));
+    protected Supplier<EntityNotFoundException> notFoundException(Identifier id, Class clazz) {
+        return () -> new EntityNotFoundException(getMessage("not.found.message", id.id(), clazz.getSimpleName()));
     }
 
     /**
      * Method used in lambda expression to throw exception when entity was not found
      */
-    protected Runnable notFoundException(Class clazz, Long id) {
+    protected Runnable notFoundException(Class clazz, Identifier id) {
         return () -> {
-            throw new EntityNotFoundException(getMessage("not.found.message", id, clazz.getSimpleName()));
+            throw new EntityNotFoundException(getMessage("not.found.message", id.id(), clazz.getSimpleName()));
         };
     }
 }

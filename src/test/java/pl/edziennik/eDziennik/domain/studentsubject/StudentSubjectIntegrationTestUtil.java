@@ -3,10 +3,13 @@ package pl.edziennik.eDziennik.domain.studentsubject;
 import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
+import pl.edziennik.eDziennik.domain.student.domain.wrapper.StudentId;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.request.StudentSubjectRequestDto;
-import pl.edziennik.eDziennik.domain.subject.domain.Subject;
-import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.domain.subject.SubjectIntegrationTestUtil;
+import pl.edziennik.eDziennik.domain.subject.domain.Subject;
+import pl.edziennik.eDziennik.domain.subject.domain.wrapper.SubjectId;
+import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
+import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
 import pl.edziennik.eDziennik.domain.user.domain.User;
 
 /**
@@ -20,12 +23,12 @@ public class StudentSubjectIntegrationTestUtil {
         this.subjectUtil = new SubjectIntegrationTestUtil();
     }
 
-    public SubjectRequestApiDto prepareSubject(Long idTeacher) {
-        return subjectUtil.prepareSubjectRequestDto(idTeacher);
+    public SubjectRequestApiDto prepareSubject(TeacherId teacherId) {
+        return subjectUtil.prepareSubjectRequestDto(teacherId);
     }
 
-    public StudentSubjectRequestDto prepareStudentSubjectRequestDto(Long idSubject, Long idStudent) {
-        return new StudentSubjectRequestDto(idSubject, idStudent);
+    public StudentSubjectRequestDto prepareStudentSubjectRequestDto(SubjectId subjectId, StudentId studentId) {
+        return new StudentSubjectRequestDto(subjectId, studentId);
     }
 
 

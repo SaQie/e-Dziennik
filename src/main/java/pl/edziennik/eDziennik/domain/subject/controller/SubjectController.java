@@ -31,7 +31,7 @@ public class SubjectController {
         SubjectResponseApiDto responseApiDto = service.createNewSubject(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(responseApiDto.id())
+                .buildAndExpand(responseApiDto.subjectId().id())
                 .toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.CREATED, responseApiDto, uri);
     }
@@ -74,7 +74,7 @@ public class SubjectController {
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/subjects")
                 .path("/{id}")
-                .buildAndExpand(responseApiDto.id())
+                .buildAndExpand(responseApiDto.subjectId().id())
                 .toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.PUT, HttpStatus.OK, responseApiDto, uri);
     }

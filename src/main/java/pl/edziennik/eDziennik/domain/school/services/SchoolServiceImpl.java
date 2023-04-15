@@ -39,14 +39,14 @@ class SchoolServiceImpl extends BaseService implements SchoolService {
     @Override
     public SchoolResponseApiDto findSchoolById(final SchoolId schoolId) {
         School school = schoolRepository.findById(schoolId)
-                .orElseThrow(notFoundException(schoolId.id(), School.class));
+                .orElseThrow(notFoundException(schoolId, School.class));
         return SchoolMapper.toDto(school);
     }
 
     @Override
     public void deleteSchoolById(final SchoolId schoolId) {
         School school = schoolRepository.findById(schoolId)
-                .orElseThrow(notFoundException(schoolId.id(), School.class));
+                .orElseThrow(notFoundException(schoolId, School.class));
         schoolRepository.delete(school);
     }
 
@@ -84,7 +84,7 @@ class SchoolServiceImpl extends BaseService implements SchoolService {
     private School mapToEntity(final SchoolRequestApiDto dto) {
         School school = SchoolMapper.toEntity(dto);
         schoolLevelRepository.findById(dto.schoolLevelId())
-                .ifPresentOrElse(school::setSchoolLevel, notFoundException(SchoolLevel.class, dto.schoolLevelId().id()));
+                .ifPresentOrElse(school::setSchoolLevel, notFoundException(SchoolLevel.class, dto.schoolLevelId()));
         return school;
     }
 }

@@ -1,12 +1,14 @@
 package pl.edziennik.eDziennik.domain.parent.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Builder;
-import lombok.Getter;
+import pl.edziennik.eDziennik.domain.parent.domain.wrapper.ParentId;
 import pl.edziennik.eDziennik.domain.student.dto.StudentSimpleResponseApiDto;
 
 @Builder
 public record ParentResponseApiDto(
-        Long id,
+        @JsonUnwrapped
+        ParentId parentId,
         String username,
         String firstName,
         String lastName,
@@ -20,7 +22,6 @@ public record ParentResponseApiDto(
         String role,
         StudentSimpleResponseApiDto student
 ) {
-
 
 
 }

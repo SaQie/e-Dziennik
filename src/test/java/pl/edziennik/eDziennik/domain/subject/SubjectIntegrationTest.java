@@ -13,6 +13,7 @@ import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectResponseApiDto;
 import pl.edziennik.eDziennik.domain.subject.services.validator.SubjectValidators;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
+import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.basics.page.PageDto;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
@@ -29,13 +30,13 @@ public class SubjectIntegrationTest extends BaseTesting {
     public void shouldSaveNewSubjectWithTeacher() {
         // given
         TeacherRequestApiDto dto = teacherUtil.prepareTeacherRequestDto();
-        Long teacherId = teacherService.register(dto).id();
+        TeacherId teacherId = teacherService.register(dto).teacherId();
         assertNotNull(teacherId);
 
         SubjectRequestApiDto expected = subjectUtil.prepareSubjectRequestDto(teacherId);
 
         // when
-        Long subjectId = subjectService.createNewSubject(expected).id();
+        SubjectId subjectId = subjectService.createNewSubject(expected).subjectId();
 
         // then
         assertNotNull(subjectId);
@@ -44,22 +45,22 @@ public class SubjectIntegrationTest extends BaseTesting {
 
         assertEquals(expected.name(), actual.getName());
         assertEquals(expected.description(), actual.getDescription());
-        assertEquals(expected.idTeacher(), actual.getTeacher().getTeacherId().value());
+        assertEquals(expected.teacherId(), actual.getTeacher().getTeacherId());
     }
 
     @Test
     public void shouldUpdateSubject() {
         // given
         TeacherRequestApiDto teacherDto = teacherUtil.prepareTeacherRequestDto();
-        Long teacherId = teacherService.register(teacherDto).id();
+        TeacherId teacherId = teacherService.register(teacherDto).teacherId();
         assertNotNull(teacherId);
 
         SubjectRequestApiDto dto = subjectUtil.prepareSubjectRequestDto(teacherId);
-        Long subjectId = subjectService.createNewSubject(dto).id();
+        SubjectId subjectId = subjectService.createNewSubject(dto).subjectId();
         SubjectRequestApiDto expected = subjectUtil.prepareSubjectRequestDto("Chemia", teacherId);
 
         // when
-        Long updated = subjectService.updateSubject(SubjectId.wrap(subjectId), expected).id();
+        SubjectId updated = subjectService.updateSubject(subjectId, expected).subjectId();
 
         // then
         assertNotNull(updated);
@@ -69,7 +70,7 @@ public class SubjectIntegrationTest extends BaseTesting {
 
         assertEquals(expected.name(), actual.getName());
         assertEquals(expected.description(), actual.getDescription());
-        assertEquals(expected.idTeacher(), actual.getTeacher().getTeacherId().value());
+        assertEquals(expected.teacherId(), actual.getTeacher().getTeacherId());
     }
 
     @Test
@@ -78,7 +79,7 @@ public class SubjectIntegrationTest extends BaseTesting {
         SubjectRequestApiDto expected = subjectUtil.prepareSubjectRequestDto(null);
 
         // when
-        Long subjectId = subjectService.createNewSubject(expected).id();
+        SubjectId subjectId = subjectService.createNewSubject(expected).subjectId();
 
         // then
         assertNotNull(subjectId);
@@ -93,25 +94,25 @@ public class SubjectIntegrationTest extends BaseTesting {
     @Test
     public void shouldThrowsExceptionWhenSaveNewSubjectAndTeacherNotExist() {
         // given
-        Long idTeacher = 222L;
-        SubjectRequestApiDto expected = subjectUtil.prepareSubjectRequestDto(idTeacher);
+        TeacherId teacherId = TeacherId.wrap(222L);
+        SubjectRequestApiDto expected = subjectUtil.prepareSubjectRequestDto(teacherId);
 
         // when
         Exception exception = assertThrows(EntityNotFoundException.class, () -> subjectService.createNewSubject(expected));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idTeacher, Teacher.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", teacherId.id(), Teacher.class.getSimpleName()));
     }
 
     @Test
     public void shouldFindSubjectWithGivenId() {
         // given
         SubjectRequestApiDto expected = subjectUtil.prepareSubjectRequestDto(null);
-        Long idSubject = subjectService.createNewSubject(expected).id();
-        assertNotNull(idSubject);
+        SubjectId subjectId = subjectService.createNewSubject(expected).subjectId();
+        assertNotNull(subjectId);
 
         // when
-        SubjectResponseApiDto actual = subjectService.findSubjectById(SubjectId.wrap(idSubject));
+        SubjectResponseApiDto actual = subjectService.findSubjectById(subjectId);
 
         // then
         assertNotNull(actual);
@@ -126,9 +127,9 @@ public class SubjectIntegrationTest extends BaseTesting {
         SubjectRequestApiDto firstSubject = subjectUtil.prepareSubjectRequestDto(null);
         SubjectRequestApiDto secondSubject = subjectUtil.prepareSubjectRequestDto("Chemia", null);
 
-        Long firstSubjectId = subjectService.createNewSubject(firstSubject).id();
+        SubjectId firstSubjectId = subjectService.createNewSubject(firstSubject).subjectId();
         assertNotNull(firstSubjectId);
-        Long secondSubjectId = subjectService.createNewSubject(secondSubject).id();
+        SubjectId secondSubjectId = subjectService.createNewSubject(secondSubject).subjectId();
         assertNotNull(secondSubjectId);
 
         // when
@@ -155,7 +156,7 @@ public class SubjectIntegrationTest extends BaseTesting {
         assertEquals(1, exception.getErrors().size());
         assertEquals(SubjectValidators.SUBJECT_ALREADY_EXIST_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(SubjectRequestApiDto.NAME, exception.getErrors().get(0).getField());
-        String expectedExceptionMessage = resourceCreator.of(SubjectValidators.EXCEPTION_MESSAGE_SUBJECT_ALREADY_EXIST, dto.name(), find(SchoolClass.class, dto.idSchoolClass()).getClassName());
+        String expectedExceptionMessage = resourceCreator.of(SubjectValidators.EXCEPTION_MESSAGE_SUBJECT_ALREADY_EXIST, dto.name(), find(SchoolClass.class, dto.schoolClassId()).getClassName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
 
 

@@ -26,7 +26,7 @@ public class ParentMapper {
 
     public static ParentResponseApiDto toDto(Parent entity) {
         return ParentResponseApiDto.builder()
-                .id(entity.getParentId().id())
+                .parentId(entity.getParentId())
                 .pesel(entity.getPersonInformation().pesel().value())
                 .email(entity.getUser().getEmail())
                 .address(entity.getAddress().getAddress())
@@ -49,7 +49,7 @@ public class ParentMapper {
 
     public static ParentSimpleResponseApiDto toSimpleDto(Parent parent) {
         if (parent != null) {
-            return new ParentSimpleResponseApiDto(parent.getParentId().id(), parent.getPersonInformation().fullName());
+            return new ParentSimpleResponseApiDto(parent.getParentId(), parent.getPersonInformation().fullName());
         }
         return null;
     }

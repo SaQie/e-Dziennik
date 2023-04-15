@@ -43,6 +43,7 @@ class SettingsServiceImpl extends BaseService implements SettingsService {
 
     private void addCorrectValue(final SettingsDto settingsDto, final List<SettingsDto> translatedSettingsData) {
         SettingsDto.SettingsDtoBuilder settingsDtoBuilder = SettingsDto.builder()
+                .id(settingsDto.id())
                 .name(resourceCreator.of(settingsDto.name()))
                 .booleanValue(settingsDto.booleanValue())
                 .stringValue(settingsDto.stringValue())
@@ -69,7 +70,7 @@ class SettingsServiceImpl extends BaseService implements SettingsService {
     @Override
     public void updateSettings(final SettingsId settingsId, final SettingsValue value) {
         Settings settings = settingsRepostory.findById(settingsId)
-                .orElseThrow(notFoundException(settingsId.id(), Settings.class));
+                .orElseThrow(notFoundException(settingsId, Settings.class));
         setCorrectValue(settings, value);
         settingsRepostory.save(settings);
         refreshCache();
@@ -132,7 +133,7 @@ class SettingsServiceImpl extends BaseService implements SettingsService {
     }
 
     private SettingsDto returnCorrectSettingsDto(final SettingsDto settingsDto) {
-        Long settingId = settingsDto.id();
+        SettingsId settingId = settingsDto.id();
         String translatedName = resourceCreator.of(settingsDto.name());
         if (settingsDto.booleanValue() == null && settingsDto.stringValue() == null && settingsDto.longValue() == null) {
             throw new BusinessException(resourceCreator.of("setting.value.not.set", settingsDto.name()));

@@ -33,7 +33,7 @@ class SubjectAlreadyExistValidator extends BaseService implements SubjectValidat
     public Optional<ApiValidationResult> validate(SubjectRequestApiDto dto) {
         if (repository.existsByNameAndSchoolClassId(dto.name(), dto.schoolClassId().id())) {
             SchoolClass schoolClass = schoolClassRepository.findById(dto.schoolClassId())
-                    .orElseThrow(notFoundException(dto.schoolClassId().id(), SchoolClass.class));
+                    .orElseThrow(notFoundException(dto.schoolClassId(), SchoolClass.class));
 
             String message = resourceCreator.of(EXCEPTION_MESSAGE_SUBJECT_ALREADY_EXIST, dto.name(), schoolClass.getClassName());
 

@@ -1,6 +1,7 @@
 package pl.edziennik.eDziennik.domain.school;
 
 import pl.edziennik.eDziennik.domain.school.dto.SchoolRequestApiDto;
+import pl.edziennik.eDziennik.domain.schoollevel.domain.wrapper.SchoolLevelId;
 
 /**
  * Util class for school integration tests {@link SchoolIntegrationTest}
@@ -16,7 +17,7 @@ public class SchoolIntegrationTestUtil {
                 "89234",
                 "5352",
                 "123553",
-                1L
+                SchoolLevelId.wrap(1L)
         );
     }
 
@@ -29,11 +30,11 @@ public class SchoolIntegrationTestUtil {
                 nip,
                 regon,
                 "11232553",
-                1L
+                SchoolLevelId.wrap(1L)
         );
     }
 
-    public SchoolRequestApiDto prepareSchoolRequestApi(final Long idSchoolLevel){
+    public SchoolRequestApiDto prepareSchoolRequestApi(final SchoolLevelId schoolLevelId){
         return new SchoolRequestApiDto(
                 "1B",
                 "ZXC",
@@ -42,7 +43,7 @@ public class SchoolIntegrationTestUtil {
                 "89234",
                 "5352",
                 "123553",
-                idSchoolLevel
+                schoolLevelId
         );
     }
 

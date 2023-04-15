@@ -12,6 +12,7 @@ import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentResponseApiDto;
 import pl.edziennik.eDziennik.domain.parent.domain.wrapper.ParentId;
 import pl.edziennik.eDziennik.domain.parent.services.validator.ParentValidators;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
+import pl.edziennik.eDziennik.domain.student.domain.wrapper.StudentId;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 
@@ -28,17 +29,17 @@ public class ParentIntegrationTest extends BaseTesting {
     @Test
     public void shouldSaveNewParent() {
         // given
-        // i need to create student first because parent idStudent field is required
-        Long idStudent = createBaseStudent();
+        // i need to create student first because parent studentId field is required
+        StudentId studentId = createBaseStudent();
 
-        ParentRequestApiDto expected = parentUtil.prepareParentRequestApiDto(idStudent);
+        ParentRequestApiDto expected = parentUtil.prepareParentRequestApiDto(studentId);
 
         // when
-        Long id = parentService.register(expected).id();
+        ParentId parentId = parentService.register(expected).parentId();
 
         // then
-        assertNotNull(id);
-        Parent actual = find(Parent.class, id);
+        assertNotNull(parentId);
+        Parent actual = find(Parent.class, parentId);
         assertEquals(expected.firstName(), actual.getPersonInformation().firstName());
         assertEquals(expected.lastName(), actual.getPersonInformation().lastName());
         assertEquals(expected.city(), actual.getAddress().getCity());
@@ -46,33 +47,33 @@ public class ParentIntegrationTest extends BaseTesting {
         assertEquals(expected.email(), actual.getUser().getEmail());
         assertEquals(expected.username(), actual.getUser().getUsername());
         assertEquals(ROLE_PARENT_TEXT, actual.getUser().getRole().getName());
-        assertEquals(expected.idStudent(), actual.getStudent().getStudentId().value());
+        assertEquals(expected.studentId(), actual.getStudent().getStudentId());
     }
 
     @Test
     public void shouldDeleteParent() {
         // given
-        Long idParent = createBaseParent();
-        Parent parent = find(Parent.class, idParent);
+        ParentId parentId = createBaseParent();
+        Parent parent = find(Parent.class, parentId);
         // firstly i need to delete student
         studentService.deleteStudentById(parent.getStudent().getStudentId());
 
         // when
-        parentService.deleteById(ParentId.wrap(idParent));
+        parentService.deleteById(parentId);
 
         // then
-        Parent actual = find(Parent.class, idParent);
+        Parent actual = find(Parent.class, parentId);
         assertNull(actual);
     }
 
     @Test
     public void shouldFindParentById() {
         // given
-        Long idParent = createBaseParent();
-        Parent expected = find(Parent.class, idParent);
+        ParentId parentId = createBaseParent();
+        Parent expected = find(Parent.class, parentId);
 
         // when
-        ParentResponseApiDto actual = parentService.findById(ParentId.wrap(idParent));
+        ParentResponseApiDto actual = parentService.findById(parentId);
 
         // then
         assertNotNull(actual);
@@ -82,15 +83,15 @@ public class ParentIntegrationTest extends BaseTesting {
         assertEquals(expected.getAddress().getPostalCode(), actual.postalCode());
         assertEquals(expected.getUser().getEmail(), actual.email());
         assertEquals(expected.getUser().getUsername(), actual.username());
-        assertEquals(expected.getStudent().getStudentId().value(), actual.student().id());
+        assertEquals(expected.getStudent().getStudentId(), actual.student().studentId());
     }
 
     @Test
     public void shouldFindListOfParents() {
         // given
         createBaseParent();
-        Long idStudent = createBaseStudent();
-        ParentRequestApiDto dto = parentUtil.prepareParentRequestApiDto(idStudent, "bubu", "bubub@o2.pl");
+        StudentId studentId = createBaseStudent();
+        ParentRequestApiDto dto = parentUtil.prepareParentRequestApiDto(studentId, "bubu", "bubub@o2.pl");
         parentService.register(dto);
 
         // when
@@ -124,29 +125,29 @@ public class ParentIntegrationTest extends BaseTesting {
 
     @Test
     public void shouldThrowExceptionWhenUpdateAndStudentNotExists(){
-        Long idParent = createBaseParent();
-        ParentRequestApiDto expected = parentUtil.prepareParentRequestApiDto("Tomasz", "Nowakowy", 999L, "asdasd", "ifeife@o2.pl");
+        ParentId parentId = createBaseParent();
+        ParentRequestApiDto expected = parentUtil.prepareParentRequestApiDto("Tomasz", "Nowakowy", StudentId.wrap(999L), "asdasd", "ifeife@o2.pl");
         // when
 
         // then
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> parentService.update(ParentId.wrap(idParent), expected));
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", expected.idStudent(), Student.class.getSimpleName()));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> parentService.update(parentId, expected));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", expected.studentId().id(), Student.class.getSimpleName()));
     }
 
     @Test
     public void shouldThrowExceptionWhenDeleteAndParentStillHasStudent(){
         // given
-        Long idParent = createBaseParent();
-        Student student = em.find(Parent.class, idParent).getStudent();
+        ParentId parentId = createBaseParent();
+        Student student = em.find(Parent.class, parentId).getStudent();
 
         // when
-        BusinessException exception = assertThrows(BusinessException.class, () -> parentService.deleteById(ParentId.wrap(idParent)));
+        BusinessException exception = assertThrows(BusinessException.class, () -> parentService.deleteById(parentId));
 
         // then
         assertEquals(1, exception.getErrors().size());
         assertEquals(ParentValidators.PARENT_STILL_HAS_STUDENT_VALIDATOR, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(ParentRequestApiDto.ID_STUDENT, exception.getErrors().get(0).getField());
-        String expectedExceptionMessage = resourceCreator.of(ParentValidators.EXCEPTON_MESSAGE_PARENT_STILL_HAS_STUDENT, getStudentFullName(student.getStudentId().value()));
+        String expectedExceptionMessage = resourceCreator.of(ParentValidators.EXCEPTON_MESSAGE_PARENT_STILL_HAS_STUDENT, getStudentFullName(student.getStudentId()));
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
 
     }
@@ -154,7 +155,7 @@ public class ParentIntegrationTest extends BaseTesting {
     @Test
     public void shouldThrowsExceptionWhenStudentHasAlreadyParent() {
         // given
-        Long idStudent = createBaseStudent();
+        StudentId idStudent = createBaseStudent();
         ParentRequestApiDto dto = parentUtil.prepareParentRequestApiDto(idStudent);
         parentService.register(dto);
         ParentRequestApiDto dto2 = parentUtil.prepareParentRequestApiDto(idStudent);
@@ -173,8 +174,8 @@ public class ParentIntegrationTest extends BaseTesting {
     @Test
     public void shouldThrowsExceptionWhenParentPeselAlreadyExists() {
         // given
-        Long idStudent = createBaseStudent();
-        Long idStudent2 = createBaseStudent();
+        StudentId idStudent = createBaseStudent();
+        StudentId idStudent2 = createBaseStudent();
         ParentRequestApiDto dto = parentUtil.prepareParentRequestApiDto("000000000", idStudent);
         parentService.register(dto);
         ParentRequestApiDto dto2 = parentUtil.prepareParentRequestApiDto("000000000", idStudent2);

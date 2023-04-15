@@ -44,7 +44,7 @@ class StudentSubjectServiceImpl extends BaseService implements StudentSubjectSer
     @Override
     public StudentGradesInSubjectDto getStudentSubjectGrades(final StudentId studentId, final SubjectId subjectId) {
         StudentSubject studentSubject = repository.findByStudentIdAndSubjectId(studentId.id(), subjectId.id())
-                .orElseThrow(notFoundException(studentId.id(), Student.class));;
+                .orElseThrow(notFoundException(studentId, Student.class));;
         return StudentSubjectMapper.toStudentSubjectRatingsDto(studentSubject);
     }
 
@@ -52,7 +52,7 @@ class StudentSubjectServiceImpl extends BaseService implements StudentSubjectSer
     public AllStudentsGradesInSubjectsDto getStudentAllSubjectsGrades(final StudentId studentId) {
         List<StudentSubject> entities = repository.findStudentSubjectsByStudentId(studentId.id());
         Student student = studentRepository.findById(studentId)
-                .orElseThrow(notFoundException(studentId.id(), Student.class));
+                .orElseThrow(notFoundException(studentId, Student.class));
         return StudentSubjectMapper.toAllStudentSubjectRatingDto(entities, student);
     }
 
@@ -60,16 +60,16 @@ class StudentSubjectServiceImpl extends BaseService implements StudentSubjectSer
     public StudentSubjectsResponseDto getStudentSubjects(final StudentId studentId) {
         List<StudentSubject> entities = repository.findStudentSubjectsByStudentId(studentId.id());
         Student student = studentRepository.findById(studentId)
-                .orElseThrow(notFoundException(studentId.id(), Student.class));
+                .orElseThrow(notFoundException(studentId, Student.class));
         return StudentSubjectMapper.toStudentSubjectsResponseDto(entities, student);
     }
 
 
     private StudentSubject mapToEntity(final StudentId studentId, final SubjectId subjectId) {
         Student student = studentRepository.findById(studentId)
-                .orElseThrow(notFoundException(studentId.id(), Student.class));
+                .orElseThrow(notFoundException(studentId, Student.class));
         Subject subject = subjectRepository.findById(subjectId)
-                .orElseThrow(notFoundException(subjectId.id(), Subject.class));
+                .orElseThrow(notFoundException(subjectId, Subject.class));
         StudentSubject studentSubject = new StudentSubject();
         studentSubject.setStudent(student);
         studentSubject.setSubject(subject);

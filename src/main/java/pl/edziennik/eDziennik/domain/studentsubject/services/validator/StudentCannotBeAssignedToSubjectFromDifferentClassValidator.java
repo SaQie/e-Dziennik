@@ -38,9 +38,9 @@ class StudentCannotBeAssignedToSubjectFromDifferentClassValidator extends BaseSe
     @Override
     public Optional<ApiValidationResult> validate(StudentSubjectRequestDto dto) {
         Student student = studentRepository.findById(dto.studentId())
-                .orElseThrow(notFoundException(dto.studentId().id(), Student.class));
+                .orElseThrow(notFoundException(dto.studentId(), Student.class));
         Subject subject = subjectRepository.findById(dto.subjectId())
-                .orElseThrow(notFoundException(dto.subjectId().id(), Subject.class));
+                .orElseThrow(notFoundException(dto.subjectId(), Subject.class));
 
         if (!student.getSchoolClass().equals(subject.getSchoolClass())) {
             String studentName = student.getPersonInformation().fullName();

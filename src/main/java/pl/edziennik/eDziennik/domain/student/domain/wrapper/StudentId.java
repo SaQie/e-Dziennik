@@ -1,11 +1,12 @@
 package pl.edziennik.eDziennik.domain.student.domain.wrapper;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Embeddable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import pl.edziennik.eDziennik.server.basics.vo.ValueObject;
+import pl.edziennik.eDziennik.server.basics.vo.Identifier;
 
 import java.io.Serializable;
 
@@ -14,9 +15,9 @@ import java.io.Serializable;
 @Getter
 @Accessors(fluent = true)
 @EqualsAndHashCode
-public class StudentId implements Serializable, ValueObject {
+public class StudentId implements Serializable, Identifier {
 
-
+    @JsonProperty(value = "studentId", access = JsonProperty.Access.READ_ONLY)
     private final Long id;
 
 

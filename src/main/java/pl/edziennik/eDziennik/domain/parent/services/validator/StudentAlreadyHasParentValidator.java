@@ -31,7 +31,7 @@ class StudentAlreadyHasParentValidator extends BaseService implements ParentVali
     @Override
     public Optional<ApiValidationResult> validate(ParentRequestApiDto dto) {
         Student student = repository.findById(dto.studentId())
-                .orElseThrow(notFoundException(dto.studentId().id(), Student.class));
+                .orElseThrow(notFoundException(dto.studentId(), Student.class));
         if (student.getParent() != null) {
 
             String studentFullName = student.getPersonInformation().fullName();

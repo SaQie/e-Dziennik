@@ -6,6 +6,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTesting;
 import pl.edziennik.eDziennik.domain.admin.domain.Admin;
+import pl.edziennik.eDziennik.domain.admin.domain.wrapper.AdminId;
 import pl.edziennik.eDziennik.domain.admin.dto.AdminRequestApiDto;
 import pl.edziennik.eDziennik.domain.admin.services.validator.AdminValidators;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
@@ -23,7 +24,7 @@ public class AdminIntegrationTest extends BaseTesting {
         AdminRequestApiDto expected = adminUtil.prepareAdminRequest();
 
         // when
-        Long id = adminService.createNewAdminAccount(expected).id();
+        AdminId id = adminService.createNewAdminAccount(expected).adminId();
 
         // then
         assertNotNull(id);
@@ -39,7 +40,7 @@ public class AdminIntegrationTest extends BaseTesting {
         // given
         String expectedValidatorName = "AdminAlreadyExistValidator";
         AdminRequestApiDto firstAdminAccount = adminUtil.prepareAdminRequest();
-        Long id = adminService.createNewAdminAccount(firstAdminAccount).id();
+        Long id = adminService.createNewAdminAccount(firstAdminAccount).adminId().id();
         assertNotNull(id);
 
         AdminRequestApiDto secondAdminAccount = adminUtil.prepareAdminRequest();

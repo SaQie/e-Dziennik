@@ -16,7 +16,7 @@ public class SchoolMapper {
 
     public static SchoolResponseApiDto toDto(School entity) {
         return SchoolResponseApiDto.builder()
-                .id(entity.getSchoolId().id())
+                .schoolId(entity.getSchoolId())
                 .name(entity.getName())
                 .postalCode(entity.getAddress().getPostalCode())
                 .city(entity.getAddress().getCity())
@@ -43,6 +43,6 @@ public class SchoolMapper {
     }
 
     public static SchoolSimpleResponseApiDto toSimpleDto(School entity) {
-        return new SchoolSimpleResponseApiDto(entity.getSchoolId().id(), entity.getName());
+        return new SchoolSimpleResponseApiDto(entity.getSchoolId(), entity.getName());
     }
 }

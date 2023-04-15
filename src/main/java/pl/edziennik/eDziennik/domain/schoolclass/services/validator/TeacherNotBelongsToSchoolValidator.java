@@ -38,12 +38,12 @@ class TeacherNotBelongsToSchoolValidator extends BaseService implements SchoolCl
         if (dto.idClassTeacher() != null) {
             if (!repository.existsByTeacherIdAndSchoolId(dto.idClassTeacher().id(), dto.schoolId().id())) {
                 Teacher teacher = teacherRepository.findById(dto.idClassTeacher())
-                        .orElseThrow(notFoundException(dto.idClassTeacher().id(), Teacher.class));
+                        .orElseThrow(notFoundException(dto.idClassTeacher(), Teacher.class));
 
                 String teacherName = teacher.getPersonInformation().fullName();
 
                 String schoolName = schoolRepository.findById(dto.schoolId())
-                        .orElseThrow(notFoundException(dto.schoolId().id(), School.class)).getName();
+                        .orElseThrow(notFoundException(dto.schoolId(), School.class)).getName();
 
                 String message = resourceCreator.of(EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL, teacherName, schoolName);
 

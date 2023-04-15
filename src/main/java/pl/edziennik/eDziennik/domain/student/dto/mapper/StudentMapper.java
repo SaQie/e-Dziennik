@@ -20,8 +20,8 @@ public class StudentMapper {
 
     public static StudentResponseApiDto toDto(Student entity) {
         return StudentResponseApiDto.builder()
-                .id(entity.getStudentId().id())
-                .userId(entity.getUser().getUserId().id())
+                .studentId(entity.getStudentId())
+                .userId(entity.getUser().getUserId())
                 .username(entity.getUser().getUsername())
                 .firstName(entity.getPersonInformation().firstName())
                 .lastName(entity.getPersonInformation().lastName())
@@ -62,7 +62,7 @@ public class StudentMapper {
 
     public static StudentSimpleResponseApiDto toSimpleDto(Student student) {
         if (student != null) {
-            return new StudentSimpleResponseApiDto(student.getStudentId().id(), student.getPersonInformation().fullName());
+            return new StudentSimpleResponseApiDto(student.getStudentId(), student.getPersonInformation().fullName());
         }
         return null;
     }

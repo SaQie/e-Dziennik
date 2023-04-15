@@ -36,7 +36,7 @@ class TeacherIsAlreadySupervisingTeacherValidator extends BaseService implements
         if (dto.idClassTeacher() != null) {
             if (repository.existsByTeacherId(dto.idClassTeacher().id())) {
                 Teacher teacher = teacherRepository.findById(dto.idClassTeacher())
-                        .orElseThrow(notFoundException(dto.idClassTeacher().id(), Teacher.class));
+                        .orElseThrow(notFoundException(dto.idClassTeacher(), Teacher.class));
                 String actualTeacherSchoolClassName = repository.getSchoolClassNameBySupervisingTeacherId(dto.idClassTeacher().id());
 
                 String teacherName = teacher.getPersonInformation().fullName();

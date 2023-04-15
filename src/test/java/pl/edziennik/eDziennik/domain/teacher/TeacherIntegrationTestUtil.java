@@ -1,6 +1,7 @@
 package pl.edziennik.eDziennik.domain.teacher;
 
 import pl.edziennik.eDziennik.domain.role.domain.Role;
+import pl.edziennik.eDziennik.domain.school.domain.wrapper.SchoolId;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 
 /**
@@ -23,7 +24,7 @@ public class TeacherIntegrationTestUtil {
                 null,
                 "123123123",
                 "asdasd",
-                100L
+                SchoolId.wrap(100L)
         );
     }
 
@@ -40,13 +41,13 @@ public class TeacherIntegrationTestUtil {
                 null,
                 "123123123",
                 "asdasd",
-                100L
+                SchoolId.wrap(100L)
         );
     }
 
 
 
-    public TeacherRequestApiDto prepareTeacherRequestDto(final Long idSchool){
+    public TeacherRequestApiDto prepareTeacherRequestDto(final SchoolId schoolId){
         return new TeacherRequestApiDto(
                 "Kamil",
                 "Nowak",
@@ -59,7 +60,7 @@ public class TeacherIntegrationTestUtil {
                 null,
                 "1231231123",
                 "asdasd",
-                idSchool
+                schoolId
         );
     }
 
@@ -76,7 +77,7 @@ public class TeacherIntegrationTestUtil {
                 role.name(),
                 "123123123",
                 "asdasd",
-                100L
+                SchoolId.wrap(100L)
         );
     }
 
@@ -93,7 +94,7 @@ public class TeacherIntegrationTestUtil {
                 role,
                 "123123123",
                 "asdasd",
-                100L
+                SchoolId.wrap(100L)
         );
     }
 
@@ -110,7 +111,7 @@ public class TeacherIntegrationTestUtil {
                 null,
                 "123123123",
                 "asdasd",
-                100L
+                SchoolId.wrap(100L)
         );
     }
 

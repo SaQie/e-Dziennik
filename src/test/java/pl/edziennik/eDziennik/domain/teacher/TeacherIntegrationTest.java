@@ -8,6 +8,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTesting;
 import pl.edziennik.eDziennik.domain.school.domain.School;
+import pl.edziennik.eDziennik.domain.school.domain.wrapper.SchoolId;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
@@ -29,7 +30,7 @@ public class TeacherIntegrationTest extends BaseTesting {
         TeacherRequestApiDto expected = teacherUtil.prepareTeacherRequestDto();
 
         // when
-        Long id = teacherService.register(expected).id();
+        TeacherId id = teacherService.register(expected).teacherId();
 
         // then
         assertNotNull(id);
@@ -48,12 +49,12 @@ public class TeacherIntegrationTest extends BaseTesting {
     public void shouldUpdateTeacher() {
         // given
         TeacherRequestApiDto dto = teacherUtil.prepareTeacherRequestDto();
-        Long id = teacherService.register(dto).id();
+        TeacherId id = teacherService.register(dto).teacherId();
         TeacherRequestApiDto expected = teacherUtil.prepareTeacherRequestDto("AfterEdit", "AfterEdit2", "55555251",
                 "test2" + "@example.com");
 
         // when
-        Long updated = teacherService.updateTeacher(TeacherId.wrap(id), expected).id();
+        TeacherId updated = teacherService.updateTeacher(id, expected).teacherId();
 
         // then
         assertNotNull(updated);
@@ -73,29 +74,29 @@ public class TeacherIntegrationTest extends BaseTesting {
     public void shouldThrowExceptionWhenUpdateAndSchoolNotExists(){
         // given
         TeacherRequestApiDto dto = teacherUtil.prepareTeacherRequestDto();
-        Long id = teacherService.register(dto).id();
-        TeacherRequestApiDto expected = teacherUtil.prepareTeacherRequestDto(999999L);
+        TeacherId id = teacherService.register(dto).teacherId();
+        TeacherRequestApiDto expected = teacherUtil.prepareTeacherRequestDto(SchoolId.wrap(99999L));
 
         // when
 
         // then
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> teacherService.updateTeacher(TeacherId.wrap(id), expected));
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", expected.idSchool(), School.class.getSimpleName()));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> teacherService.updateTeacher(id, expected));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", expected.schoolId().id(), School.class.getSimpleName()));
     }
 
     @Test
     public void shouldDeleteTeacher() {
         // given
         TeacherRequestApiDto dto = teacherUtil.prepareTeacherRequestDto();
-        Long id = teacherService.register(dto).id();
+        TeacherId id = teacherService.register(dto).teacherId();
         assertNotNull(id);
 
         // when
-        teacherService.deleteTeacherById(TeacherId.wrap(id));
+        teacherService.deleteTeacherById(id);
 
         // then
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> teacherService.findTeacherById(TeacherId.wrap(id)));
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", id,
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> teacherService.findTeacherById(id));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", id.id(),
                 Teacher.class.getSimpleName()));
     }
 
@@ -105,8 +106,8 @@ public class TeacherIntegrationTest extends BaseTesting {
         TeacherRequestApiDto firstTeacher = teacherUtil.prepareTeacherRequestDto();
         TeacherRequestApiDto secondTeacher = teacherUtil.prepareTeacherRequestDto("TEST1", "TESTOWY2", "12356", "test2" +
                 "@example.com");
-        Long firstTeacherId = teacherService.register(firstTeacher).id();
-        Long secondTeacherId = teacherService.register(secondTeacher).id();
+        TeacherId firstTeacherId = teacherService.register(firstTeacher).teacherId();
+        TeacherId secondTeacherId = teacherService.register(secondTeacher).teacherId();
         assertNotNull(firstTeacherId);
         assertNotNull(secondTeacherId);
 
@@ -123,11 +124,11 @@ public class TeacherIntegrationTest extends BaseTesting {
     public void shouldFindTeacherWithGivenId() {
         // given
         TeacherRequestApiDto expected = teacherUtil.prepareTeacherRequestDto();
-        Long id = teacherService.register(expected).id();
+        TeacherId id = teacherService.register(expected).teacherId();
         assertNotNull(id);
 
         // when
-        TeacherResponseApiDto actual = teacherService.findTeacherById(TeacherId.wrap(id));
+        TeacherResponseApiDto actual = teacherService.findTeacherById(id);
 
         // then
         assertNotNull(actual);
@@ -157,7 +158,7 @@ public class TeacherIntegrationTest extends BaseTesting {
     public void shouldThrowsExceptionWhenSchoolNotExist() {
         // given
         Long idSchool = 99L;
-        TeacherRequestApiDto dto = teacherUtil.prepareTeacherRequestDto(idSchool);
+        TeacherRequestApiDto dto = teacherUtil.prepareTeacherRequestDto(SchoolId.wrap(idSchool));
 
         // when
         Exception exception = assertThrows(EntityNotFoundException.class, () -> teacherService.register(dto));

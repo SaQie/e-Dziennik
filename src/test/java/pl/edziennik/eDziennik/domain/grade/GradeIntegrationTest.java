@@ -26,7 +26,7 @@ public class GradeIntegrationTest extends BaseTesting {
         GradeRequestApiDto expected = gradeUtil.prepareRequestApi(grade, 1);
 
         // when
-        Long id = gradeService.addNewGrade(expected).id();
+        GradeId id = gradeService.addNewGrade(expected).gradeId();
 
         // then
         Grade actual = find(Grade.class, id);
@@ -53,11 +53,11 @@ public class GradeIntegrationTest extends BaseTesting {
     public void shouldFindGradeWithGivenId(){
         // given
         GradeRequestApiDto expected = gradeUtil.prepareRequestApi(1, 1);
-        Long gradeId = gradeService.addNewGrade(expected).id();
+        GradeId gradeId = gradeService.addNewGrade(expected).gradeId();
         assertNotNull(gradeId);
 
         // when
-        Long id = gradeService.findGradeById(GradeId.wrap(gradeId)).id();
+        GradeId id = gradeService.findGradeById(gradeId).gradeId();
 
         // then
         assertNotNull(id);
@@ -72,11 +72,11 @@ public class GradeIntegrationTest extends BaseTesting {
     public void shouldUpdateGrade(){
         // given
         GradeRequestApiDto dto = gradeUtil.prepareRequestApi(1, 1);
-        Long gradeId = gradeService.addNewGrade(dto).id();
+        GradeId gradeId = gradeService.addNewGrade(dto).gradeId();
         GradeRequestApiDto expected = gradeUtil.prepareRequestApi(2, 2);
 
         // when
-        Long updated = gradeService.updateGrade(GradeId.wrap(gradeId), expected).id();
+        GradeId updated = gradeService.updateGrade(gradeId, expected).gradeId();
 
         // then
         assertNotNull(updated);

@@ -36,7 +36,7 @@ class GradeManagmentServiceImpl extends BaseService implements GradeManagmentSer
     @Transactional
     public StudentGradesInSubjectDto assignGradeToStudentSubject(final StudentSubjectSeparateId studentSubjectId, final GradeRequestApiDto dto) {
         StudentSubject studentSubject = studentSubjectRepository.findByStudentIdAndSubjectId(studentSubjectId.idStudent().id(), studentSubjectId.idSubject().id())
-                .orElseThrow(notFoundException(studentSubjectId.idStudent().id(), Student.class));
+                .orElseThrow(notFoundException(studentSubjectId.idStudent(), Student.class));
         Grade grade = insertNewGrade(dto, studentSubject);
         studentSubject.addGrade(grade);
         StudentSubject studentSubjectAfterSave = studentSubjectRepository.save(studentSubject);
@@ -48,7 +48,7 @@ class GradeManagmentServiceImpl extends BaseService implements GradeManagmentSer
         // TODO -> Sprawdzac czy ocena zgadza sie z tym studentem i przedmiotem
         StudentSubject studentSubject = studentSubjectRepository.findByStudentIdAndSubjectId(
                 studentSubjectId.idStudent().id(), studentSubjectId.idSubject().id())
-                .orElseThrow(notFoundException(studentSubjectId.idStudent().id(), Student.class));
+                .orElseThrow(notFoundException(studentSubjectId.idStudent(), Student.class));
         validatorService.checkGradeExistInStudentSubject(idGrade, studentSubject.getStudentSubjectId());
         gradeService.deleteGradeById(idGrade);
     }
@@ -72,9 +72,9 @@ class GradeManagmentServiceImpl extends BaseService implements GradeManagmentSer
 
     private Grade insertNewGrade(GradeRequestApiDto dto, StudentSubject studentSubject) {
         Teacher teacher = teacherRepository.getByUserUsername(dto.getTeacherName());
-        Long idGrade = gradeService.addNewGrade(dto).id();
-        Grade grade = repository.findById(GradeId.wrap(idGrade))
-                .orElseThrow(notFoundException(idGrade, Grade.class));
+        GradeId gradeId = gradeService.addNewGrade(dto).gradeId();
+        Grade grade = repository.findById(gradeId)
+                .orElseThrow(notFoundException(gradeId, Grade.class));
         grade.setStudentSubject(studentSubject);
         grade.setTeacher(teacher);
         return grade;

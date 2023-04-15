@@ -118,7 +118,7 @@ public class SettingsIntegrationTest extends BaseTesting {
         SettingsDto settingsDto = settingsService.getSettingsDataByName(settingName);
 
         // then
-        assertEquals(settingsDto.id(), 1L);
+        assertEquals(settingsDto.id(), SettingsId.wrap(1L));
         assertEquals(settingsDto.booleanValue(), false);
     }
 

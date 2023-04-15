@@ -35,9 +35,9 @@ class StudentSchoolClassNotBelongsToSchoolValidator extends BaseService implemen
     @Override
     public Optional<ApiValidationResult> validate(StudentRequestApiDto dto) {
         School school = repository.findById(dto.schoolId())
-                .orElseThrow(notFoundException(dto.schoolId().id(), School.class));
+                .orElseThrow(notFoundException(dto.schoolId(), School.class));
         SchoolClass schoolClass = schoolClassRepository.findById(dto.schoolClassId())
-                .orElseThrow(notFoundException(dto.schoolClassId().id(), SchoolClass.class));
+                .orElseThrow(notFoundException(dto.schoolClassId(), SchoolClass.class));
 
         if (!school.getSchoolClasses().contains(schoolClass)) {
             String message = resourceCreator.of(EXCEPTION_MESSAGE_SCHOOL_CLASS_NOT_BELONG_TO_SCHOOL, schoolClass.getClassName(), school.getName());

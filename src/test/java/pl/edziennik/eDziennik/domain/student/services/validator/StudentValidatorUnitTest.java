@@ -87,8 +87,8 @@ public class StudentValidatorUnitTest extends BaseUnitTest {
         School school = new School();
         school.setSchoolClasses(Collections.emptyList());
 
-        when(schoolRepository.findById(request.idSchool())).thenReturn(Optional.of(school));
-        when(schoolClassRepository.findById(request.idSchoolClass())).thenReturn(Optional.of(schoolClass));
+        when(schoolRepository.findById(request.schoolId())).thenReturn(Optional.of(school));
+        when(schoolClassRepository.findById(request.schoolClassId())).thenReturn(Optional.of(schoolClass));
         lenient().when(resourceCreator.of(StudentValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_NOT_BELONG_TO_SCHOOL, null, null))
                 .thenReturn(StudentValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_NOT_BELONG_TO_SCHOOL);
 
@@ -110,8 +110,8 @@ public class StudentValidatorUnitTest extends BaseUnitTest {
         School school = new School();
         school.setSchoolClasses(List.of(schoolClass));
 
-        when(schoolRepository.findById(request.idSchool())).thenReturn(Optional.of(school));
-        when(schoolClassRepository.findById(request.idSchoolClass())).thenReturn(Optional.of(schoolClass));
+        when(schoolRepository.findById(request.schoolId())).thenReturn(Optional.of(school));
+        when(schoolClassRepository.findById(request.schoolClassId())).thenReturn(Optional.of(schoolClass));
 
         // when
         Optional<ApiValidationResult> validationResult = belongsToSchoolValidator.validate(request);

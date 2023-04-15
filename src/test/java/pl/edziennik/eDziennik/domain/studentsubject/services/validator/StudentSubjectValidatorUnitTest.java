@@ -6,9 +6,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.edziennik.eDziennik.BaseUnitTest;
+import pl.edziennik.eDziennik.domain.student.domain.wrapper.StudentId;
 import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.request.StudentSubjectRequestDto;
 import pl.edziennik.eDziennik.domain.studentsubject.repository.StudentSubjectRepository;
+import pl.edziennik.eDziennik.domain.subject.domain.wrapper.SubjectId;
 import pl.edziennik.eDziennik.domain.subject.repository.SubjectRepository;
 import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
@@ -43,11 +45,13 @@ public class StudentSubjectValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldReturnApiErrorWhenStudentSubjectAlreadyExists() {
         // given
-        StudentSubjectRequestDto dto = studentSubjectUtil.prepareStudentSubjectRequestDto(1L, 1L);
+        SubjectId subjectId = SubjectId.wrap(1L);
+        StudentId studentId = StudentId.wrap(1L);
+        StudentSubjectRequestDto dto = studentSubjectUtil.prepareStudentSubjectRequestDto(subjectId, studentId);
 
         when(repository.existsByStudentIdAndSubjectId(1L, 1L)).thenReturn(true);
-        when(studentRepository.findById(1L)).thenReturn(Optional.of(studentSubjectUtil.prepareStudentWithSchoolClass("1b")));
-        when(subjectRepository.findById(1L)).thenReturn(Optional.of(studentSubjectUtil.prepareSubjectWithSchoolClass("1b")));
+        when(studentRepository.findById(studentId)).thenReturn(Optional.of(studentSubjectUtil.prepareStudentWithSchoolClass("1b")));
+        when(subjectRepository.findById(subjectId)).thenReturn(Optional.of(studentSubjectUtil.prepareSubjectWithSchoolClass("1b")));
 
         lenient().when(resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST, null, null))
                 .thenReturn(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST);
@@ -67,10 +71,12 @@ public class StudentSubjectValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldReturnApiErrorWhenTryingToAssignStudentToSubjectFromDifferentSchoolClass() {
         // given
-        StudentSubjectRequestDto dto = studentSubjectUtil.prepareStudentSubjectRequestDto(1L, 1L);
+        SubjectId subjectId = SubjectId.wrap(1L);
+        StudentId studentId = StudentId.wrap(1L);
+        StudentSubjectRequestDto dto = studentSubjectUtil.prepareStudentSubjectRequestDto(subjectId, studentId);
 
-        when(studentRepository.findById(1L)).thenReturn(Optional.of(studentSubjectUtil.prepareStudentWithSchoolClass("1b")));
-        when(subjectRepository.findById(1L)).thenReturn(Optional.of(studentSubjectUtil.prepareSubjectWithSchoolClass("2b")));
+        when(studentRepository.findById(studentId)).thenReturn(Optional.of(studentSubjectUtil.prepareStudentWithSchoolClass("1b")));
+        when(subjectRepository.findById(subjectId)).thenReturn(Optional.of(studentSubjectUtil.prepareSubjectWithSchoolClass("2b")));
         lenient().when(resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS, null, null))
                 .thenReturn(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS);
 
@@ -88,7 +94,9 @@ public class StudentSubjectValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldNotReturnApiErrorWhenStudentSubjectNotExists() {
         // given
-        StudentSubjectRequestDto dto = studentSubjectUtil.prepareStudentSubjectRequestDto(1L, 1L);
+        SubjectId subjectId = SubjectId.wrap(1L);
+        StudentId studentId = StudentId.wrap(1L);
+        StudentSubjectRequestDto dto = studentSubjectUtil.prepareStudentSubjectRequestDto(subjectId, studentId);
 
         when(repository.existsByStudentIdAndSubjectId(1L, 1L)).thenReturn(false);
         lenient().when(resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST, "null null", null))
@@ -104,10 +112,12 @@ public class StudentSubjectValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldNotReturnApiErrorWhenTryingToAssignStudentToSubjectFromTheSameSchoolClass() {
         // given
-        StudentSubjectRequestDto dto = studentSubjectUtil.prepareStudentSubjectRequestDto(1L, 1L);
+        SubjectId subjectId = SubjectId.wrap(1L);
+        StudentId studentId = StudentId.wrap(1L);
+        StudentSubjectRequestDto dto = studentSubjectUtil.prepareStudentSubjectRequestDto(subjectId, studentId);
 
-        when(studentRepository.findById(1L)).thenReturn(Optional.of(studentSubjectUtil.prepareStudentWithSchoolClass("1b")));
-        when(subjectRepository.findById(1L)).thenReturn(Optional.of(studentSubjectUtil.prepareSubjectWithSchoolClass("1b")));
+        when(studentRepository.findById(studentId)).thenReturn(Optional.of(studentSubjectUtil.prepareStudentWithSchoolClass("1b")));
+        when(subjectRepository.findById(subjectId)).thenReturn(Optional.of(studentSubjectUtil.prepareSubjectWithSchoolClass("1b")));
         lenient().when(resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS, "null null", null))
                 .thenReturn(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS);
 

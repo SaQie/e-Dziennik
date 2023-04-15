@@ -11,6 +11,7 @@ import pl.edziennik.eDziennik.domain.school.dto.SchoolRequestApiDto;
 import pl.edziennik.eDziennik.domain.school.dto.SchoolResponseApiDto;
 import pl.edziennik.eDziennik.domain.school.services.validator.SchoolValidators;
 import pl.edziennik.eDziennik.domain.schoollevel.domain.SchoolLevel;
+import pl.edziennik.eDziennik.domain.schoollevel.domain.wrapper.SchoolLevelId;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 
@@ -26,11 +27,11 @@ public class SchoolIntegrationTest extends BaseTesting {
         SchoolRequestApiDto expected = schoolUtil.prepareSchoolRequestApi();
 
         // when
-        Long id = schoolService.createNewSchool(expected).id();
+        SchoolId schoolId = schoolService.createNewSchool(expected).schoolId();
 
         // then
-        assertNotNull(id);
-        School actual = find(School.class, id);
+        assertNotNull(schoolId);
+        School actual = find(School.class, schoolId);
 
         assertEquals(expected.name(), actual.getName());
         assertEquals(expected.address(), actual.getAddress().getAddress());
@@ -38,18 +39,18 @@ public class SchoolIntegrationTest extends BaseTesting {
         assertEquals(expected.city(), actual.getAddress().getCity());
         assertEquals(expected.postalCode(), actual.getAddress().getPostalCode());
         assertEquals(expected.regon(), actual.getRegon());
-        assertEquals(expected.idSchoolLevel(), actual.getSchoolLevel().getSchoolLevelId().value());
+        assertEquals(expected.schoolLevelId(), actual.getSchoolLevel().getSchoolLevelId());
     }
 
     @Test
     public void shouldUpdateSchool() {
         // given
         SchoolRequestApiDto dto = schoolUtil.prepareSchoolRequestApi();
-        Long id = schoolService.createNewSchool(dto).id();
+        SchoolId id = schoolService.createNewSchool(dto).schoolId();
         SchoolRequestApiDto expected = schoolUtil.prepareSchoolRequestApi("afterEdit", "555555", "555555");
 
         // when
-        Long updated = schoolService.updateSchool(SchoolId.wrap(id), expected).id();
+        SchoolId updated = schoolService.updateSchool(id, expected).schoolId();
 
         // then
         assertNotNull(updated);
@@ -62,7 +63,7 @@ public class SchoolIntegrationTest extends BaseTesting {
         assertEquals(expected.city(), actual.getAddress().getCity());
         assertEquals(expected.postalCode(), actual.getAddress().getPostalCode());
         assertEquals(expected.regon(), actual.getRegon());
-        assertEquals(expected.idSchoolLevel(), actual.getSchoolLevel().getSchoolLevelId().value());
+        assertEquals(expected.schoolLevelId(), actual.getSchoolLevel().getSchoolLevelId());
 
     }
 
@@ -70,7 +71,7 @@ public class SchoolIntegrationTest extends BaseTesting {
     public void shouldThrowsExceptionWhenSchoolLevelNotExist() {
         // given
         Long idSchoolLevel = 99L;
-        SchoolRequestApiDto dto = schoolUtil.prepareSchoolRequestApi(idSchoolLevel);
+        SchoolRequestApiDto dto = schoolUtil.prepareSchoolRequestApi(SchoolLevelId.wrap(idSchoolLevel));
 
         // when
         Exception exception = assertThrows(EntityNotFoundException.class, () -> schoolService.createNewSchool(dto));
@@ -83,10 +84,10 @@ public class SchoolIntegrationTest extends BaseTesting {
     public void shouldReturnSchoolWithGivenId() {
         // given
         SchoolRequestApiDto expected = schoolUtil.prepareSchoolRequestApi();
-        Long id = schoolService.createNewSchool(expected).id();
+        SchoolId id = schoolService.createNewSchool(expected).schoolId();
 
         // when
-        SchoolResponseApiDto actual = schoolService.findSchoolById(SchoolId.wrap(id));
+        SchoolResponseApiDto actual = schoolService.findSchoolById(id);
 
         // then
         assertEquals(expected.name(), actual.name());
@@ -95,7 +96,7 @@ public class SchoolIntegrationTest extends BaseTesting {
         assertEquals(expected.city(), actual.city());
         assertEquals(expected.postalCode(), actual.postalCode());
         assertEquals(expected.regon(), actual.regon());
-        assertEquals(expected.idSchoolLevel(), actual.schoolLevel().id());
+        assertEquals(expected.schoolLevelId(), actual.schoolLevel().schoolLevelId());
     }
 
     @Test

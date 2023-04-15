@@ -10,7 +10,7 @@ public class SettingsMapper {
 
     public static SettingsDto mapToDto(Settings settings){
         return new SettingsDto(
-                settings.getSettingsId().id(),
+                settings.getSettingsId(),
                 settings.getName(),
                 settings.getBooleanValue(),
                 settings.getStringValue(),

@@ -8,11 +8,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pl.edziennik.eDziennik.BaseUnitTest;
 import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
 import pl.edziennik.eDziennik.domain.school.domain.School;
+import pl.edziennik.eDziennik.domain.school.domain.wrapper.SchoolId;
 import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassRequestApiDto;
 import pl.edziennik.eDziennik.domain.schoolclass.repository.SchoolClassRepository;
 import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
+import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
 import pl.edziennik.eDziennik.domain.teacher.repository.TeacherRepository;
 import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
@@ -53,10 +55,10 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldReturnApiErrorWhenTryingToAddNewSchoolClassAndGivenTeacherIsAlreadySupervisingTeacher() {
         // given
-        SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(1L);
+        SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(TeacherId.wrap(1L));
 
         when(repository.existsByTeacherId(1L)).thenReturn(true);
-        when(teacherRepository.findById(1L)).thenReturn(Optional.of(schoolClassUtil.prepareTeacherForTests()));
+        when(teacherRepository.findById(TeacherId.wrap(1L))).thenReturn(Optional.of(schoolClassUtil.prepareTeacherForTests()));
         lenient().when(resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER, null, null))
                 .thenReturn(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER);
 
@@ -74,7 +76,7 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldNotReturnApiErrorWhenTryingToAddNewSchoolClassAndGivenTeacherIsNotSupervisingTeacher() {
         // given
-        SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(1L);
+        SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(TeacherId.wrap(1L));
         Teacher teacher = new Teacher();
         teacher.setPersonInformation(new PersonInformation());
 
@@ -92,11 +94,11 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldReturnApiErrorWhenGivenTeacherIsFromDifferentSchool() {
         // given
-        SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(1L);
+        SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(TeacherId.wrap(1L));
 
         when(repository.existsByTeacherIdAndSchoolId(1L, 100L)).thenReturn(false);
-        when(teacherRepository.findById(1L)).thenReturn(Optional.of(schoolClassUtil.prepareTeacherForTests()));
-        when(schoolRepository.findById(100L)).thenReturn(Optional.of(new School()));
+        when(teacherRepository.findById(TeacherId.wrap(1L))).thenReturn(Optional.of(schoolClassUtil.prepareTeacherForTests()));
+        when(schoolRepository.findById(SchoolId.wrap(100L))).thenReturn(Optional.of(new School()));
         lenient().when(resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL, null, null))
                 .thenReturn(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL);
 
@@ -114,7 +116,7 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldNotReturnApiErrorWhenGivenTeacherIsFromTheSameSchool(){
         // given
-        SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(1L);
+        SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(TeacherId.wrap(1L));
 
         when(repository.existsByTeacherIdAndSchoolId(1L, 100L)).thenReturn(true);
         lenient().when(resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL, "null null", null))
@@ -131,10 +133,10 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldReturnApiErrorWhenSchoolClassAlreadyExists(){
         // given
-        SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(1L);
+        SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(TeacherId.wrap(1L));
 
         when(repository.existsByClassNameAndSchoolId("3B", 100L)).thenReturn(true);
-        when(schoolRepository.findById(100L)).thenReturn(Optional.of(new School()));
+        when(schoolRepository.findById(SchoolId.wrap(100L))).thenReturn(Optional.of(new School()));
         lenient().when(resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_ALREADY_EXIST, "3B", null))
                 .thenReturn(SchoolClassValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_ALREADY_EXIST);
 
@@ -152,7 +154,7 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldNotReturnApiErrorWhenSchoolClassNotExists(){
         // given
-        SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(1L);
+        SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(TeacherId.wrap(1L));
 
         when(repository.existsByClassNameAndSchoolId("3B", 100L)).thenReturn(false);
         lenient().when(resourceCreator.of(SchoolClassValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_ALREADY_EXIST, "3B", null))

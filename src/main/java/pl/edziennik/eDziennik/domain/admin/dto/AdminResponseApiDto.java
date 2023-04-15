@@ -1,18 +1,20 @@
 package pl.edziennik.eDziennik.domain.admin.dto;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Builder;
-import lombok.Getter;
-import pl.edziennik.eDziennik.domain.role.domain.Role;
+import pl.edziennik.eDziennik.domain.admin.domain.wrapper.AdminId;
+import pl.edziennik.eDziennik.domain.user.domain.wrapper.UserId;
 
 @Builder
 public record AdminResponseApiDto(
-        Long id,
-        Long userId,
+        @JsonUnwrapped
+        AdminId adminId,
+        @JsonUnwrapped
+        UserId userId,
         String username,
         String email,
         String role
 ) {
-
 
 
 }

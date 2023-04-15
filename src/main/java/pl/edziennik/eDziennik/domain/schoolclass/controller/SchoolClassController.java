@@ -33,7 +33,7 @@ public class SchoolClassController {
         SchoolClassResponseApiDto responseApiDto = service.createSchoolClass(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(responseApiDto.id())
+                .buildAndExpand(responseApiDto.schoolClassId().id())
                 .toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.CREATED, responseApiDto, uri);
     }
@@ -81,7 +81,7 @@ public class SchoolClassController {
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/schoolclasses")
                 .path("{id}")
-                .buildAndExpand(responseApiDto.id())
+                .buildAndExpand(responseApiDto.schoolClassId().id())
                 .toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.PUT, HttpStatus.OK, responseApiDto, uri);
     }

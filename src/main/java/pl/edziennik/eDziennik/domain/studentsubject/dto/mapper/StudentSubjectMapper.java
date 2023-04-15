@@ -24,10 +24,10 @@ public class StudentSubjectMapper {
         for (StudentSubject entity : entites){
             List<SubjectGradesResponseDto.GradesDto> grades = new ArrayList<>();
             for (Grade grade : entity.getGrades()) {
-                grades.add(new SubjectGradesResponseDto.GradesDto(grade.getGradeId().id(), grade.getGrade().grade, grade.getWeight(), grade.getDescription(), grade.getTeacher().getTeacherId().id(), grade.getCreatedDate()));
+                grades.add(new SubjectGradesResponseDto.GradesDto(grade.getGradeId(), grade.getGrade().grade, grade.getWeight(), grade.getDescription(), grade.getTeacher().getTeacherId(), grade.getCreatedDate()));
             }
             Subject subject = entity.getSubject();
-            subjectRatingsList.add(new SubjectGradesResponseDto(subject.getSubjectId().id(), subject.getName(), grades));
+            subjectRatingsList.add(new SubjectGradesResponseDto(subject.getSubjectId(), subject.getName(), grades));
         }
         return new AllStudentsGradesInSubjectsDto(student.getStudentId().id(), student.getPersonInformation().firstName(), student.getPersonInformation().lastName(), subjectRatingsList);
     }
@@ -36,10 +36,10 @@ public class StudentSubjectMapper {
         List<SubjectGradesResponseDto.GradesDto> ratings = new ArrayList<>();
 
         for (Grade grade : entity.getGrades()) {
-            ratings.add(new SubjectGradesResponseDto.GradesDto(grade.getGradeId().id(), grade.getGrade().grade, grade.getWeight(), grade.getDescription(), grade.getTeacher().getTeacherId().id(), grade.getCreatedDate()));
+            ratings.add(new SubjectGradesResponseDto.GradesDto(grade.getGradeId(), grade.getGrade().grade, grade.getWeight(), grade.getDescription(), grade.getTeacher().getTeacherId(), grade.getCreatedDate()));
         }
         Subject subject = entity.getSubject();
-        SubjectGradesResponseDto subjectGradesResponseDto = new SubjectGradesResponseDto(subject.getSubjectId().id(), subject.getName(), ratings);
+        SubjectGradesResponseDto subjectGradesResponseDto = new SubjectGradesResponseDto(subject.getSubjectId(), subject.getName(), ratings);
         Student student = entity.getStudent();
         return new StudentGradesInSubjectDto(student.getStudentId().id(), student.getPersonInformation().firstName(), student.getPersonInformation().lastName(), subjectGradesResponseDto);
     }
@@ -48,7 +48,7 @@ public class StudentSubjectMapper {
         Student student = entity.getStudent();
         Subject subject = entity.getSubject();
         TeacherSimpleResponseApiDto teacherDto = subject.getTeacher() != null ? TeacherMapper.toSimpleDto(subject.getTeacher()) : null;
-        List<SubjectResponseApiDto> subjects = List.of(new SubjectResponseApiDto(subject.getSubjectId().id(), subject.getName(), subject.getDescription(),SchoolClassMapper.toSimpleDto(subject.getSchoolClass()), teacherDto));
+        List<SubjectResponseApiDto> subjects = List.of(new SubjectResponseApiDto(subject.getSubjectId(), subject.getName(), subject.getDescription(),SchoolClassMapper.toSimpleDto(subject.getSchoolClass()), teacherDto));
         return new StudentSubjectResponseDto(student.getStudentId().id(), student.getPersonInformation().firstName(), student.getPersonInformation().lastName(), subjects);
     }
 
@@ -58,7 +58,7 @@ public class StudentSubjectMapper {
         for (StudentSubject entity : entites) {
             Subject subject = entity.getSubject();
             TeacherSimpleResponseApiDto teacherDto = subject.getTeacher() != null ? TeacherMapper.toSimpleDto(subject.getTeacher()) : null;
-            SubjectResponseApiDto subjectDto = new SubjectResponseApiDto(subject.getSubjectId().id(), subject.getName(), subject.getDescription(), SchoolClassMapper.toSimpleDto(subject.getSchoolClass()), teacherDto);
+            SubjectResponseApiDto subjectDto = new SubjectResponseApiDto(subject.getSubjectId(), subject.getName(), subject.getDescription(), SchoolClassMapper.toSimpleDto(subject.getSchoolClass()), teacherDto);
             subjects.add(subjectDto);
         }
 

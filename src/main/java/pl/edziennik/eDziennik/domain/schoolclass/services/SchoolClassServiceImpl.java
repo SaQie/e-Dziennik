@@ -42,14 +42,14 @@ class SchoolClassServiceImpl extends BaseService implements SchoolClassService {
     @Override
     public SchoolClassResponseApiDto findSchoolClassById(final SchoolClassId schoolClassId) {
         SchoolClass schoolClass = repository.findById(schoolClassId)
-                .orElseThrow(notFoundException(schoolClassId.id(), SchoolClass.class));
+                .orElseThrow(notFoundException(schoolClassId, SchoolClass.class));
         return SchoolClassMapper.toDto(schoolClass);
     }
 
     @Override
     public void deleteSchoolClassById(final SchoolClassId schoolClassId) {
         SchoolClass schoolClass = repository.findById(schoolClassId)
-                .orElseThrow(notFoundException(schoolClassId.id(), SchoolClass.class));
+                .orElseThrow(notFoundException(schoolClassId, SchoolClass.class));
         repository.delete(schoolClass);
     }
 
@@ -69,11 +69,11 @@ class SchoolClassServiceImpl extends BaseService implements SchoolClassService {
             SchoolClass schoolClass = schoolClassOptional.get();
 
             schoolRepository.findById(dto.schoolId())
-                    .ifPresentOrElse(schoolClass::setSchool, notFoundException(School.class, dto.schoolId().id()));
+                    .ifPresentOrElse(schoolClass::setSchool, notFoundException(School.class, dto.schoolId()));
 
             if (dto.idClassTeacher() != null) {
                 teacherRepository.findById(dto.idClassTeacher())
-                        .ifPresentOrElse(schoolClass::setTeacher, notFoundException(Teacher.class, dto.idClassTeacher().id()));
+                        .ifPresentOrElse(schoolClass::setTeacher, notFoundException(Teacher.class, dto.idClassTeacher()));
             }
 
             schoolClass.setClassName(dto.className());
@@ -93,11 +93,11 @@ class SchoolClassServiceImpl extends BaseService implements SchoolClassService {
     private SchoolClass mapToEntity(final SchoolClassRequestApiDto dto) {
         SchoolClass schoolClass = SchoolClassMapper.toEntity(dto);
         schoolRepository.findById(dto.schoolId())
-                .ifPresentOrElse(schoolClass::setSchool, notFoundException(School.class, dto.schoolId().id()));
+                .ifPresentOrElse(schoolClass::setSchool, notFoundException(School.class, dto.schoolId()));
 
         if (dto.idClassTeacher() != null) {
             teacherRepository.findById(dto.idClassTeacher())
-                    .ifPresentOrElse(schoolClass::setTeacher, notFoundException(Teacher.class, dto.idClassTeacher().id()));
+                    .ifPresentOrElse(schoolClass::setTeacher, notFoundException(Teacher.class, dto.idClassTeacher()));
         }
         return schoolClass;
     }

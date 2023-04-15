@@ -8,7 +8,9 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTesting;
 import pl.edziennik.eDziennik.domain.school.domain.School;
+import pl.edziennik.eDziennik.domain.school.domain.wrapper.SchoolId;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
+import pl.edziennik.eDziennik.domain.schoolclass.domain.wrapper.SchoolClassId;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassRequestApiDto;
 import pl.edziennik.eDziennik.domain.settings.dto.SettingsValue;
 import pl.edziennik.eDziennik.domain.settings.services.SettingsService;
@@ -17,7 +19,9 @@ import pl.edziennik.eDziennik.domain.student.domain.wrapper.StudentId;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.domain.student.dto.StudentResponseApiDto;
 import pl.edziennik.eDziennik.domain.student.services.validator.StudentValidators;
+import pl.edziennik.eDziennik.domain.subject.domain.wrapper.SubjectId;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
+import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
@@ -38,7 +42,7 @@ public class StudentIntegrationTest extends BaseTesting {
         StudentRequestApiDto expected = studentUtil.prepareStudentRequestDto();
 
         // when
-        Long id = studentService.register(expected).id();
+        StudentId id = studentService.register(expected).studentId();
 
         // then
         assertNotNull(id);
@@ -55,11 +59,11 @@ public class StudentIntegrationTest extends BaseTesting {
     public void shouldUpdateStudent() {
         // given
         StudentRequestApiDto dto = studentUtil.prepareStudentRequestDto();
-        Long id = studentService.register(dto).id();
+        StudentId id = studentService.register(dto).studentId();
         StudentRequestApiDto expected = studentUtil.prepareStudentRequestDto("AfterEdit", "AfterEdit1", "AfterEdit2", "999999", "test2@example.com");
 
         // when
-        Long updated = studentService.updateStudent(StudentId.wrap(id), expected).id();
+        StudentId updated = studentService.updateStudent(id, expected).studentId();
 
         // then
         assertNotNull(updated);
@@ -78,43 +82,43 @@ public class StudentIntegrationTest extends BaseTesting {
     public void shouldThrowsExceptionWhenUpdateAndSchoolNotExists(){
         // given
         StudentRequestApiDto dto = studentUtil.prepareStudentRequestDto();
-        Long id = studentService.register(dto).id();
-        StudentRequestApiDto expected = studentUtil.prepareStudentRequestDto(9999L, 999L);
+        StudentId id = studentService.register(dto).studentId();
+        StudentRequestApiDto expected = studentUtil.prepareStudentRequestDto(SchoolId.wrap(999L), SchoolClassId.wrap(999L));
 
         // when
 
         // then
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> studentService.updateStudent(StudentId.wrap(id), expected));
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", expected.idSchool(), School.class.getSimpleName()));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> studentService.updateStudent(id, expected));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", expected.schoolId().id(), School.class.getSimpleName()));
     }
 
     @Test
     public void shouldThrowsExceptionWhenUpdateAndSchoolClassNotExists(){
         // given
         StudentRequestApiDto dto = studentUtil.prepareStudentRequestDto();
-        Long id = studentService.register(dto).id();
-        StudentRequestApiDto expected = studentUtil.prepareStudentRequestDto(100L, 999L);
+        StudentId id = studentService.register(dto).studentId();
+        StudentRequestApiDto expected = studentUtil.prepareStudentRequestDto(SchoolId.wrap(100L), SchoolClassId.wrap(999L));
 
         // when
 
         // then
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> studentService.updateStudent(StudentId.wrap(id), expected));
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", expected.idSchoolClass(), SchoolClass.class.getSimpleName()));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> studentService.updateStudent(id, expected));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", expected.schoolClassId().id(), SchoolClass.class.getSimpleName()));
     }
 
     @Test
     public void shouldDeleteStudent() {
         // given
         StudentRequestApiDto dto = studentUtil.prepareStudentRequestDto();
-        Long idStudent = studentService.register(dto).id();
+        StudentId idStudent = studentService.register(dto).studentId();
         assertNotNull(idStudent);
 
         // when
-        studentService.deleteStudentById(StudentId.wrap(idStudent));
+        studentService.deleteStudentById(idStudent);
 
         // then
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> studentService.findStudentById(StudentId.wrap(idStudent)));
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent, Student.class.getSimpleName()));
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> studentService.findStudentById(idStudent));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idStudent.id(), Student.class.getSimpleName()));
     }
 
     @Test
@@ -122,8 +126,8 @@ public class StudentIntegrationTest extends BaseTesting {
         // given
         StudentRequestApiDto firstStudent = studentUtil.prepareStudentRequestDto();
         StudentRequestApiDto secondStudent = studentUtil.prepareStudentRequestDto("Adam", "Nowako", "ASD", "12312322", "test2@example.com");
-        Long firstStudentId = studentService.register(firstStudent).id();
-        Long secondStudentId = studentService.register(secondStudent).id();
+        StudentId firstStudentId = studentService.register(firstStudent).studentId();
+        StudentId secondStudentId = studentService.register(secondStudent).studentId();
         assertNotNull(firstStudentId);
         assertNotNull(secondStudentId);
 
@@ -138,10 +142,10 @@ public class StudentIntegrationTest extends BaseTesting {
     public void shouldFindStudentWithGivenId() {
         // given
         StudentRequestApiDto expected = studentUtil.prepareStudentRequestDto();
-        Long id = studentService.register(expected).id();
+        StudentId id = studentService.register(expected).studentId();
 
         // when
-        StudentResponseApiDto actual = studentService.findStudentById(StudentId.wrap(id));
+        StudentResponseApiDto actual = studentService.findStudentById(id);
 
         // then
         assertNotNull(actual);
@@ -161,7 +165,7 @@ public class StudentIntegrationTest extends BaseTesting {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> studentService.findStudentById(studentId));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", studentId.value(), Student.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", studentId.id(), Student.class.getSimpleName()));
     }
 
     @Test
@@ -173,41 +177,43 @@ public class StudentIntegrationTest extends BaseTesting {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> studentService.deleteStudentById(studentId));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", studentId.value(), Student.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", studentId.id(), Student.class.getSimpleName()));
     }
 
     @Test
     public void shouldThrowsExceptionWhenTryingSaveNewStudentIfSchoolNotExist() {
         // given
-        Long idSchool = 15L;
-        StudentRequestApiDto dto = studentUtil.prepareStudentRequestDto(idSchool);
+        SchoolId schoolId = SchoolId.wrap(15L);
+        StudentRequestApiDto dto = studentUtil.prepareStudentRequestDto(schoolId);
 
         // when
         Exception exception = assertThrows(EntityNotFoundException.class, () -> studentService.register(dto));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchool, School.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", schoolId.id(), School.class.getSimpleName()));
 
     }
 
     @Test
     public void shouldThrowsExceptionWhenTryingSaveNewStudentIfSchoolClassNotExist() {
         // given
-        Long idSchool = 100L;
-        Long idSchoolClass = 999L;
-        StudentRequestApiDto dto = studentUtil.prepareStudentRequestDto(idSchool, idSchoolClass);
+        SchoolId schoolId = SchoolId.wrap(100L);
+        SchoolClassId schoolClassId = SchoolClassId.wrap(999L);
+        StudentRequestApiDto dto = studentUtil.prepareStudentRequestDto(schoolId, schoolClassId);
 
         // when
         Exception exception = assertThrows(EntityNotFoundException.class, () -> studentService.register(dto));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", idSchoolClass, SchoolClass.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", schoolClassId.id(), SchoolClass.class.getSimpleName()));
     }
 
     @Test
     public void shouldThrowsBusinessExceptionWhenTryingToRegisterNewStudentAndSchoolClassNotBelongsToSchool() {
         // given
-        StudentRequestApiDto dto = studentUtil.prepareStudentRequestDto(100L, 101L);
+        SchoolId schoolId = SchoolId.wrap(100L);
+        SchoolClassId schoolClassId = SchoolClassId.wrap(101L);
+        StudentRequestApiDto dto = studentUtil.prepareStudentRequestDto(schoolId, schoolClassId);
 
         // when
         BusinessException exception = assertThrows(BusinessException.class, () -> studentService.register(dto));
@@ -216,7 +222,7 @@ public class StudentIntegrationTest extends BaseTesting {
         assertEquals(1, exception.getErrors().size());
         assertEquals(StudentValidators.STUDENT_SCHOOL_CLASS_NOT_BELONGS_TO_SCHOOL_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(StudentRequestApiDto.ID_SCHOOL_CLASS, exception.getErrors().get(0).getField());
-        String expectedExceptionMessage = resourceCreator.of(StudentValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_NOT_BELONG_TO_SCHOOL, find(SchoolClass.class, dto.idSchoolClass()).getClassName(), find(School.class, dto.idSchool()).getName());
+        String expectedExceptionMessage = resourceCreator.of(StudentValidators.EXCEPTION_MESSAGE_SCHOOL_CLASS_NOT_BELONG_TO_SCHOOL, find(SchoolClass.class, dto.schoolClassId()).getClassName(), find(School.class, dto.schoolId()).getName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 
@@ -244,31 +250,31 @@ public class StudentIntegrationTest extends BaseTesting {
         settingsService.updateSetting(SettingsService.AUTOMATICALLY_INSERT_STUDENT_SUBJECTS_WHEN_ADD, new SettingsValue(true, null, null));
 
         SchoolClassRequestApiDto schoolClassRequestApiDto = schoolClassUtil.prepareSchoolClassRequest();
-        Long idSchoolClass = schoolClassService.createSchoolClass(schoolClassRequestApiDto).id();
+        SchoolClassId idSchoolClass = schoolClassService.createSchoolClass(schoolClassRequestApiDto).schoolClassId();
 
         TeacherRequestApiDto teacherRequestApiDto = teacherUtil.prepareTeacherRequestDto();
-        Long idTeacher = teacherService.register(teacherRequestApiDto).id();
+        TeacherId idTeacher = teacherService.register(teacherRequestApiDto).teacherId();
 
         SubjectRequestApiDto subjectRequestApiDto = subjectUtil.prepareSubjectRequestDto("first", idTeacher, idSchoolClass);
-        Long firstIdSubject = subjectService.createNewSubject(subjectRequestApiDto).id();
+        SubjectId firstIdSubject = subjectService.createNewSubject(subjectRequestApiDto).subjectId();
 
         SubjectRequestApiDto secondSubjectRequestApiDto = subjectUtil.prepareSubjectRequestDto("second", idTeacher, idSchoolClass);
-        Long secondIdSubject = subjectService.createNewSubject(secondSubjectRequestApiDto).id();
+        SubjectId secondIdSubject = subjectService.createNewSubject(secondSubjectRequestApiDto).subjectId();
 
         SubjectRequestApiDto thirdSubjectRequestApiDto = subjectUtil.prepareSubjectRequestDto("third", idTeacher, idSchoolClass);
-        Long thirdIdSubject = subjectService.createNewSubject(thirdSubjectRequestApiDto).id();
+        SubjectId thirdIdSubject = subjectService.createNewSubject(thirdSubjectRequestApiDto).subjectId();
 
         SubjectRequestApiDto fourthSubjectRequestApiDto = subjectUtil.prepareSubjectRequestDto("fourth", idTeacher, idSchoolClass);
-        Long fourthIdSubject = subjectService.createNewSubject(fourthSubjectRequestApiDto).id();
+        SubjectId fourthIdSubject = subjectService.createNewSubject(fourthSubjectRequestApiDto).subjectId();
 
         StudentRequestApiDto dto = studentUtil.prepareStudentRequestDto("example", "wwww@o2.pl", idSchoolClass);
         // when
         StudentResponseApiDto responseApiDto = studentService.register(dto);
 
         // then
-        List<Long> idsSubjects = getActualStudentSubjectsIdsList(responseApiDto.id());
+        List<Long> idsSubjects = getActualStudentSubjectsIdsList(responseApiDto.studentId().id());
         assertEquals(idsSubjects.size(), 4);
-        assertTrue(idsSubjects.containsAll(List.of(firstIdSubject, secondIdSubject, thirdIdSubject, fourthIdSubject)));
+        assertTrue(idsSubjects.containsAll(List.of(firstIdSubject.id(), secondIdSubject.id(), thirdIdSubject.id(), fourthIdSubject.id())));
     }
 
     /**

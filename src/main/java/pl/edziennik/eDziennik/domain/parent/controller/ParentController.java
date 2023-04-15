@@ -31,7 +31,7 @@ class ParentController {
         ParentResponseApiDto responseApiDto = service.register(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(responseApiDto.id())
+                .buildAndExpand(responseApiDto.parentId().id())
                 .toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.CREATED, responseApiDto, uri);
     }

@@ -53,14 +53,14 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
     @Override
     public TeacherResponseApiDto findTeacherById(final TeacherId teacherId) {
         Teacher teacher = repository.findById(teacherId)
-                .orElseThrow(notFoundException(teacherId.id(), Teacher.class));
+                .orElseThrow(notFoundException(teacherId, Teacher.class));
         return TeacherMapper.toDto(teacher);
     }
 
     @Override
     public void deleteTeacherById(final TeacherId teacherId) {
         Teacher teacher = repository.findById(teacherId)
-                .orElseThrow(notFoundException(teacherId.id(), Teacher.class));
+                .orElseThrow(notFoundException(teacherId, Teacher.class));
         repository.delete(teacher);
     }
 
@@ -80,7 +80,7 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
             // update teacher data
             Teacher teacher = optionalTeacher.get();
             schoolRepository.findById(dto.schoolId())
-                    .ifPresentOrElse(teacher::setSchool, notFoundException(School.class,dto.schoolId().id()));
+                    .ifPresentOrElse(teacher::setSchool, notFoundException(School.class,dto.schoolId()));
 
             // update person information teacher data
             teacher.setPersonInformation(PersonInformation.of(dto.firstName(),

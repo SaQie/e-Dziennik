@@ -61,7 +61,7 @@ class AdminServiceImpl extends BaseService implements AdminService {
     @Override
     public AdminResponseApiDto getAdminById(final AdminId adminId) {
         Admin admin = repository.findById(adminId)
-                .orElseThrow(notFoundException(adminId.id(), Admin.class));
+                .orElseThrow(notFoundException(adminId, Admin.class));
         return AdminMapper.mapToDto(admin);
     }
 

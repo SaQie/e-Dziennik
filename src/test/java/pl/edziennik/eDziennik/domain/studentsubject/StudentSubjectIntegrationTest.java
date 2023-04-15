@@ -6,6 +6,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTesting;
 import pl.edziennik.eDziennik.domain.grade.dto.GradeRequestApiDto;
+import pl.edziennik.eDziennik.domain.schoolclass.domain.wrapper.SchoolClassId;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.student.domain.wrapper.StudentId;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
@@ -20,6 +21,7 @@ import pl.edziennik.eDziennik.domain.subject.domain.wrapper.SubjectId;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectResponseApiDto;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
+import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
 import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
@@ -36,13 +38,13 @@ public class StudentSubjectIntegrationTest extends BaseTesting {
     public void shouldAssignStudentToSubject() {
         // given
         TeacherRequestApiDto teacherDto = teacherUtil.prepareTeacherRequestDto();
-        Long teacherId = teacherService.register(teacherDto).id();
+        TeacherId teacherId = teacherService.register(teacherDto).teacherId();
 
         StudentRequestApiDto studentDto = studentUtil.prepareStudentRequestDto("Test333", "test5@example.com");
-        Long studentId = studentService.register(studentDto).id();
+        StudentId studentId = studentService.register(studentDto).studentId();
 
         SubjectRequestApiDto subjectDto = studentSubjectUtil.prepareSubject(teacherId);
-        Long subjectId = subjectService.createNewSubject(subjectDto).id();
+        SubjectId subjectId = subjectService.createNewSubject(subjectDto).subjectId();
 
         StudentSubjectRequestDto requestDto = studentSubjectUtil.prepareStudentSubjectRequestDto(subjectId, studentId);
 
@@ -50,7 +52,7 @@ public class StudentSubjectIntegrationTest extends BaseTesting {
         studentSubjectService.assignStudentToSubject(requestDto);
 
         // then
-        StudentSubjectsResponseDto studentSubject = studentSubjectService.getStudentSubjects(StudentId.wrap(studentId));
+        StudentSubjectsResponseDto studentSubject = studentSubjectService.getStudentSubjects(studentId);
 
         Subject expectedSubject = find(Subject.class, subjectId);
         Student expectedStudent = find(Student.class, studentId);
@@ -58,12 +60,12 @@ public class StudentSubjectIntegrationTest extends BaseTesting {
         assertEquals(1, studentSubject.getSubjects().size());
         assertEquals(expectedStudent.getPersonInformation().firstName(), studentSubject.getFirstName());
         assertEquals(expectedStudent.getPersonInformation().lastName(), studentSubject.getLastName());
-        assertEquals(expectedStudent.getStudentId().value(), studentSubject.getId());
+        assertEquals(expectedStudent.getStudentId().id(), studentSubject.getId());
 
         SubjectResponseApiDto actualSubject = studentSubject.getSubjects().get(0);
         assertEquals(expectedSubject.getName(), actualSubject.name());
         assertEquals(expectedSubject.getDescription(), actualSubject.description());
-        assertEquals(expectedSubject.getTeacher().getTeacherId().value(), actualSubject.teacher().id());
+        assertEquals(expectedSubject.getTeacher().getTeacherId(), actualSubject.teacher().teacherId());
     }
 
     @Test
@@ -72,12 +74,12 @@ public class StudentSubjectIntegrationTest extends BaseTesting {
         Long studentId = 999L;
 
         TeacherRequestApiDto teacherDto = teacherUtil.prepareTeacherRequestDto();
-        Long teacherId = teacherService.register(teacherDto).id();
+        TeacherId teacherId = teacherService.register(teacherDto).teacherId();
 
         SubjectRequestApiDto subjectDto = studentSubjectUtil.prepareSubject(teacherId);
-        Long subjectId = subjectService.createNewSubject(subjectDto).id();
+        SubjectId subjectId = subjectService.createNewSubject(subjectDto).subjectId();
 
-        StudentSubjectRequestDto requestDto = studentSubjectUtil.prepareStudentSubjectRequestDto(subjectId, studentId);
+        StudentSubjectRequestDto requestDto = studentSubjectUtil.prepareStudentSubjectRequestDto(subjectId, StudentId.wrap(studentId));
 
         // when
         Exception exception = assertThrows(EntityNotFoundException.class, () -> studentSubjectService.assignStudentToSubject(requestDto));
@@ -90,46 +92,46 @@ public class StudentSubjectIntegrationTest extends BaseTesting {
     public void shouldThrowsExceptionWhenTryingAssignStudentToSubjectAndSubjectNotExist() {
         // given
         StudentRequestApiDto studentDto = studentUtil.prepareStudentRequestDto();
-        Long studentId = studentService.register(studentDto).id();
+        StudentId studentId = studentService.register(studentDto).studentId();
 
-        StudentSubjectRequestDto requestDto = studentSubjectUtil.prepareStudentSubjectRequestDto(999L, studentId);
-        Long subjectId = requestDto.idSubject();
+        StudentSubjectRequestDto requestDto = studentSubjectUtil.prepareStudentSubjectRequestDto(SubjectId.wrap(999L), studentId);
+        SubjectId subjectId = requestDto.subjectId();
 
         // when
         Exception exception = assertThrows(EntityNotFoundException.class, () -> studentSubjectService.assignStudentToSubject(requestDto));
 
         // then
-        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", subjectId, Subject.class.getSimpleName()));
+        assertEquals(exception.getMessage(), resourceCreator.of("not.found.message", subjectId.id(), Subject.class.getSimpleName()));
     }
 
     @Test
     public void shouldAssignGradeToStudentSubject() {
         // given
         TeacherRequestApiDto teacherDto = teacherUtil.prepareTeacherRequestDto();
-        Long teacherId = teacherService.register(teacherDto).id();
+        TeacherId teacherId = teacherService.register(teacherDto).teacherId();
 
         StudentRequestApiDto studentDto = studentUtil.prepareStudentRequestDto("Test22221", "Test5@example.com");
-        Long studentId = studentService.register(studentDto).id();
+        StudentId studentId = studentService.register(studentDto).studentId();
 
         SubjectRequestApiDto expectedSubject = studentSubjectUtil.prepareSubject(teacherId);
-        Long subjectId = subjectService.createNewSubject(expectedSubject).id();
+        SubjectId subjectId = subjectService.createNewSubject(expectedSubject).subjectId();
 
         GradeRequestApiDto expectedGrade = gradeUtil.prepareRequestApi(5, 5);
         expectedGrade.setTeacherName(find(Teacher.class, teacherId).getUser().getUsername());
 
         StudentSubjectRequestDto studentSubjectRequestDto = studentSubjectUtil.prepareStudentSubjectRequestDto(subjectId, studentId);
         studentSubjectService.assignStudentToSubject(studentSubjectRequestDto);
-        StudentSubjectSeparateId studentSubjectSeparateId = StudentSubjectSeparateId.wrap(StudentId.wrap(studentId), SubjectId.wrap(subjectId));
+        StudentSubjectSeparateId studentSubjectSeparateId = StudentSubjectSeparateId.wrap(studentId, subjectId);
 
         // when
         gradeManagmentService.assignGradeToStudentSubject(studentSubjectSeparateId, expectedGrade);
 
         // then
-        StudentGradesInSubjectDto studentSubjectGrades = studentSubjectService.getStudentSubjectGrades(StudentId.wrap(studentId), SubjectId.wrap(subjectId));
+        StudentGradesInSubjectDto studentSubjectGrades = studentSubjectService.getStudentSubjectGrades(studentId, subjectId);
 
         SubjectGradesResponseDto actualSubject = studentSubjectGrades.getSubject();
         assertEquals(expectedSubject.name(), actualSubject.getName());
-        assertEquals(subjectId, actualSubject.getId());
+        assertEquals(subjectId, actualSubject.getSubjectId());
 
         List<SubjectGradesResponseDto.GradesDto> actualGrades = studentSubjectGrades.getSubject().getGrades();
         assertEquals(1, actualGrades.size());
@@ -148,8 +150,8 @@ public class StudentSubjectIntegrationTest extends BaseTesting {
         // given
         StudentRequestApiDto studentDto = studentUtil.prepareStudentRequestDto();
         SubjectRequestApiDto subjectDto = subjectUtil.prepareSubjectRequestDto("Przyroda", null);
-        Long studentId = studentService.register(studentDto).id();
-        Long subjectId = subjectService.createNewSubject(subjectDto).id();
+        StudentId studentId = studentService.register(studentDto).studentId();
+        SubjectId subjectId = subjectService.createNewSubject(subjectDto).subjectId();
 
         StudentSubjectRequestDto requestDto = studentSubjectUtil.prepareStudentSubjectRequestDto(subjectId, studentId);
 
@@ -163,8 +165,8 @@ public class StudentSubjectIntegrationTest extends BaseTesting {
         assertEquals(StudentSubjectValidators.STUDENT_SUBJECT_ALREADY_EXIST_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(StudentSubjectRequestDto.ID_SUBJECT, exception.getErrors().get(0).getField());
         String expectedExceptionMessage = resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST, find(Student.class,
-                requestDto.idStudent()).getPersonInformation().firstName() + " " + find(Student.class,
-                requestDto.idStudent()).getPersonInformation().lastName(), find(Subject.class, requestDto.idSubject()).getName());
+                requestDto.studentId()).getPersonInformation().firstName() + " " + find(Student.class,
+                requestDto.studentId()).getPersonInformation().lastName(), find(Subject.class, requestDto.subjectId()).getName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 
@@ -173,13 +175,13 @@ public class StudentSubjectIntegrationTest extends BaseTesting {
         // given
         StudentRequestApiDto studentRequestApiDto = studentUtil.prepareStudentRequestDto();
         // school class - 100L
-        Long idStudent = studentService.register(studentRequestApiDto).id();
+        StudentId idStudent = studentService.register(studentRequestApiDto).studentId();
         assertNotNull(idStudent);
         // school class - 101L
-        SubjectRequestApiDto subjectRequestApiDto = subjectUtil.prepareSubjectRequestDto("Chemia", null, 101L);
-        Long idSubject = subjectService.createNewSubject(subjectRequestApiDto).id();
+        SubjectRequestApiDto subjectRequestApiDto = subjectUtil.prepareSubjectRequestDto("Chemia", null, SchoolClassId.wrap(101L));
+        SubjectId idSubject = subjectService.createNewSubject(subjectRequestApiDto).subjectId();
 
-        StudentSubjectRequestDto studentSubjectRequestDto = studentSubjectUtil.prepareStudentSubjectRequestDto(idStudent, idSubject);
+        StudentSubjectRequestDto studentSubjectRequestDto = studentSubjectUtil.prepareStudentSubjectRequestDto(idSubject, idStudent);
 
         // when
         BusinessException exception = assertThrows(BusinessException.class, () -> studentSubjectService.assignStudentToSubject(studentSubjectRequestDto));
@@ -189,8 +191,8 @@ public class StudentSubjectIntegrationTest extends BaseTesting {
         assertEquals(StudentSubjectValidators.STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FRON_DIFFERENT_CLASS_VALIDATOR_NAME, exception.getErrors().get(0).getErrorThrownedBy());
         assertEquals(StudentSubjectRequestDto.ID_SUBJECT, exception.getErrors().get(0).getField());
         String expectedExceptionMessage = resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS, find(Student.class,
-                studentSubjectRequestDto.idStudent()).getPersonInformation().firstName() + " " + find(Student.class,
-                studentSubjectRequestDto.idStudent()).getPersonInformation().lastName(), find(Subject.class, studentSubjectRequestDto.idSubject()).getName());
+                studentSubjectRequestDto.studentId()).getPersonInformation().firstName() + " " + find(Student.class,
+                studentSubjectRequestDto.studentId()).getPersonInformation().lastName(), find(Subject.class, studentSubjectRequestDto.subjectId()).getName());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
     }
 

@@ -5,7 +5,7 @@ import jakarta.persistence.Embeddable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import pl.edziennik.eDziennik.server.basics.vo.ValueObject;
+import pl.edziennik.eDziennik.server.basics.vo.Identifier;
 
 import java.io.Serializable;
 
@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Getter
 @EqualsAndHashCode
 @Accessors(fluent = true)
-public class AddressId implements Serializable, ValueObject {
+public class AddressId implements Serializable, Identifier {
 
 
     private final Long id;

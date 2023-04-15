@@ -20,11 +20,11 @@ public class AdminMapper {
 
     public static AdminResponseApiDto mapToDto(Admin entity) {
         return AdminResponseApiDto.builder()
-                .id(entity.getAdminId().id())
+                .adminId(entity.getAdminId())
                 .username(entity.getUser().getUsername())
                 .email(entity.getUser().getEmail())
                 .role(Role.RoleConst.ROLE_ADMIN.name())
-                .userId(entity.getUser().getUserId().id())
+                .userId(entity.getUser().getUserId())
                 .build();
     }
 

@@ -17,14 +17,14 @@ public class SchoolClassMapper {
     public static SchoolClassResponseApiDto toDto(SchoolClass entity) {
         if (entity.getTeacher() != null) {
             return new SchoolClassResponseApiDto(
-                    entity.getSchoolClassId().id(),
+                    entity.getSchoolClassId(),
                     entity.getClassName(),
                     SchoolMapper.toSimpleDto(entity.getSchool()),
                     TeacherMapper.toSimpleDto(entity.getTeacher())
             );
         } else {
             return new SchoolClassResponseApiDto(
-                    entity.getSchoolClassId().id(),
+                    entity.getSchoolClassId(),
                     entity.getClassName(),
                     SchoolMapper.toSimpleDto(entity.getSchool()),
                     null
@@ -43,6 +43,6 @@ public class SchoolClassMapper {
     }
 
     public static SchoolClassSimpleResponseApiDto toSimpleDto(SchoolClass schoolClass) {
-        return new SchoolClassSimpleResponseApiDto(schoolClass.getSchoolClassId().id(), schoolClass.getClassName());
+        return new SchoolClassSimpleResponseApiDto(schoolClass.getSchoolClassId(), schoolClass.getClassName());
     }
 }

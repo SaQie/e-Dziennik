@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.edziennik.eDziennik.BaseUnitTest;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
+import pl.edziennik.eDziennik.domain.schoolclass.domain.wrapper.SchoolClassId;
 import pl.edziennik.eDziennik.domain.schoolclass.repository.SchoolClassRepository;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.domain.subject.repository.SubjectRepository;
@@ -38,9 +39,9 @@ public class SubjectValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldReturnApiErrorWhenSubjectAlreadyExists() {
         // given
-        SubjectRequestApiDto dto = subjectUtil.prepareSubjectRequestDto("Przyroda", null, 1L);
+        SubjectRequestApiDto dto = subjectUtil.prepareSubjectRequestDto("Przyroda", null, SchoolClassId.wrap(1L));
         when(repository.existsByNameAndSchoolClassId("Przyroda", 1L)).thenReturn(true);
-        when(schoolClassRepository.findById(1L)).thenReturn(Optional.of(new SchoolClass()));
+        when(schoolClassRepository.findById(SchoolClassId.wrap(1L))).thenReturn(Optional.of(new SchoolClass()));
         lenient().when(resourceCreator.of(SubjectValidators.EXCEPTION_MESSAGE_SUBJECT_ALREADY_EXIST, dto.name(), null))
                 .thenReturn(SubjectValidators.EXCEPTION_MESSAGE_SUBJECT_ALREADY_EXIST);
 
@@ -58,7 +59,7 @@ public class SubjectValidatorUnitTest extends BaseUnitTest {
     @Test
     public void shouldNotReturnApiErrorWhenSubjectNotExists() {
         // given
-        SubjectRequestApiDto dto = subjectUtil.prepareSubjectRequestDto("Przyroda", null, 1L);
+        SubjectRequestApiDto dto = subjectUtil.prepareSubjectRequestDto("Przyroda", null, SchoolClassId.wrap(1L));
         when(repository.existsByNameAndSchoolClassId("Przyroda", 1L)).thenReturn(false);
 
         // when

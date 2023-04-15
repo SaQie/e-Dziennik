@@ -49,7 +49,7 @@ class ParentServiceImpl extends BaseService implements ParentService {
     @Override
     public ParentResponseApiDto findById(final ParentId parentId) {
         Parent parent = repository.findById(parentId)
-                .orElseThrow(notFoundException(parentId.id(), Parent.class));
+                .orElseThrow(notFoundException(parentId, Parent.class));
         return ParentMapper.toDto(parent);
     }
 
@@ -100,7 +100,7 @@ class ParentServiceImpl extends BaseService implements ParentService {
         Parent parent = ParentMapper.toEntity(dto);
         User user = userService.createUser(UserMapper.toDto(dto));
         Student student = studentRepository.findById(dto.studentId())
-                .orElseThrow(notFoundException(dto.studentId().id(), Student.class));
+                .orElseThrow(notFoundException(dto.studentId(), Student.class));
         parent.setStudent(student);
         parent.setUser(user);
         return parent;

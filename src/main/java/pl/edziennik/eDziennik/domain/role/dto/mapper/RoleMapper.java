@@ -10,7 +10,7 @@ public class RoleMapper {
 
     public static RoleResponseApiDto toDto(Role entity) {
         return new RoleResponseApiDto(
-                entity.getRoleId().id(),
+                entity.getRoleId(),
                 entity.getName()
         );
     }
@@ -21,7 +21,7 @@ public class RoleMapper {
 
     public static Role toEntity(RoleResponseApiDto dto) {
         return new Role(
-                dto.id(),
+                dto.roleId().id(),
                 dto.name());
     }
 }

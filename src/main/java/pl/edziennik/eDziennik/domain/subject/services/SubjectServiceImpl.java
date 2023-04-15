@@ -42,14 +42,14 @@ class SubjectServiceImpl extends BaseService implements SubjectService {
     @Override
     public SubjectResponseApiDto findSubjectById(final SubjectId subjectId) {
         Subject subject = repository.findById(subjectId)
-                .orElseThrow(notFoundException(subjectId.id(), Subject.class));
+                .orElseThrow(notFoundException(subjectId, Subject.class));
         return SubjectMapper.toDto(subject);
     }
 
     @Override
     public void deleteSubjectById(final SubjectId subjectId) {
         Subject subject = repository.findById(subjectId)
-                .orElseThrow(notFoundException(subjectId.id(), Subject.class));
+                .orElseThrow(notFoundException(subjectId, Subject.class));
         repository.delete(subject);
     }
 
@@ -76,11 +76,11 @@ class SubjectServiceImpl extends BaseService implements SubjectService {
     private Subject mapToEntity(SubjectRequestApiDto dto) {
         Subject subject = SubjectMapper.toEntity(dto);
         if (dto.teacherId() != null) {
-            teacherRepository.findById(dto.teacherId()).ifPresentOrElse(subject::setTeacher,notFoundException(Teacher.class, dto.teacherId().id()));
+            teacherRepository.findById(dto.teacherId()).ifPresentOrElse(subject::setTeacher,notFoundException(Teacher.class, dto.teacherId()));
 
         }
         SchoolClass schoolClass = schoolClassRepository.findById(dto.schoolClassId())
-                .orElseThrow(notFoundException(dto.schoolClassId().id(), SchoolClass.class));
+                .orElseThrow(notFoundException(dto.schoolClassId(), SchoolClass.class));
         schoolClass.addSubject(subject);
         return subject;
     }

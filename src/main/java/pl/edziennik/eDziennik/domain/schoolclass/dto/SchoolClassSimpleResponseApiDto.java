@@ -1,11 +1,13 @@
 package pl.edziennik.eDziennik.domain.schoolclass.dto;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Builder;
-import lombok.Getter;
+import pl.edziennik.eDziennik.domain.schoolclass.domain.wrapper.SchoolClassId;
 
 @Builder
 public record SchoolClassSimpleResponseApiDto(
-        Long id,
+        @JsonUnwrapped
+        SchoolClassId schoolClassId,
         String className) {
 
 }

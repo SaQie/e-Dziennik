@@ -1,13 +1,17 @@
 package pl.edziennik.eDziennik.domain.teacher.dto;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Builder;
-import lombok.Getter;
 import pl.edziennik.eDziennik.domain.school.dto.SchoolSimpleResponseApiDto;
+import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
+import pl.edziennik.eDziennik.domain.user.domain.wrapper.UserId;
 
 @Builder
 public record TeacherResponseApiDto(
-        Long id,
-        Long userId,
+        @JsonUnwrapped
+        TeacherId teacherId,
+        @JsonUnwrapped
+        UserId userId,
         String username,
         String firstName,
         String lastName,

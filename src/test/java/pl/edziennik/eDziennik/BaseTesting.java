@@ -16,6 +16,7 @@ import pl.edziennik.eDziennik.domain.grade.service.managment.GradeManagmentServi
 import pl.edziennik.eDziennik.domain.parent.ParentIntegrationTestUtil;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentResponseApiDto;
+import pl.edziennik.eDziennik.domain.parent.domain.wrapper.ParentId;
 import pl.edziennik.eDziennik.domain.parent.services.ParentService;
 import pl.edziennik.eDziennik.domain.school.SchoolIntegrationTestUtil;
 import pl.edziennik.eDziennik.domain.school.services.SchoolService;
@@ -24,6 +25,7 @@ import pl.edziennik.eDziennik.domain.schoolclass.services.SchoolClassService;
 import pl.edziennik.eDziennik.domain.settings.services.SettingsService;
 import pl.edziennik.eDziennik.domain.student.StudentIntegrationTestUtil;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
+import pl.edziennik.eDziennik.domain.student.domain.wrapper.StudentId;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.domain.student.dto.StudentResponseApiDto;
 import pl.edziennik.eDziennik.domain.student.services.StudentService;
@@ -35,6 +37,7 @@ import pl.edziennik.eDziennik.domain.teacher.TeacherIntegrationTestUtil;
 import pl.edziennik.eDziennik.domain.teacher.services.TeacherService;
 import pl.edziennik.eDziennik.domain.user.UserIntegrationTestUtil;
 import pl.edziennik.eDziennik.domain.user.services.UserService;
+import pl.edziennik.eDziennik.server.basics.vo.Identifier;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import javax.sql.DataSource;
@@ -133,7 +136,7 @@ public class BaseTesting {
      * @param <T>
      * @return
      */
-    public <T> T find(Class<T> clazz, Long id) {
+    public <T> T find(Class<T> clazz, Identifier id) {
         return em.find(clazz, id);
     }
 
@@ -149,21 +152,21 @@ public class BaseTesting {
         populator.execute(dataSource);
     }
 
-    protected Long createBaseStudent() {
+    protected StudentId createBaseStudent() {
         StudentRequestApiDto studentRequestApiDto = studentUtil.prepareStudentRequestDto();
         StudentResponseApiDto response = studentService.register(studentRequestApiDto);
-        return response.id();
+        return response.studentId();
     }
 
-    protected Long createBaseParent() {
-        Long idStudent = createBaseStudent();
-        ParentRequestApiDto parentRequestApiDto = parentUtil.prepareParentRequestApiDto(idStudent);
+    protected ParentId createBaseParent() {
+        StudentId studentId = createBaseStudent();
+        ParentRequestApiDto parentRequestApiDto = parentUtil.prepareParentRequestApiDto(studentId);
         ParentResponseApiDto response = parentService.register(parentRequestApiDto);
-        return response.id();
+        return response.parentId();
     }
 
-    protected String getStudentFullName(Long idStudent) {
-        Student student = find(Student.class, idStudent);
+    protected String getStudentFullName(StudentId studentId) {
+        Student student = find(Student.class, studentId);
         return student.getPersonInformation().fullName();
     }
 

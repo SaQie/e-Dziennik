@@ -1,8 +1,10 @@
 package pl.edziennik.eDziennik.domain.schoolclass;
 
 import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
+import pl.edziennik.eDziennik.domain.school.domain.wrapper.SchoolId;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassRequestApiDto;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
+import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
 import pl.edziennik.eDziennik.domain.user.domain.User;
 
 /**
@@ -15,31 +17,31 @@ public class SchoolClassIntergrationTestUtil {
         return new SchoolClassRequestApiDto(
                 "6B",
                 null,
-                100L
+                SchoolId.wrap(100L)
         );
     }
 
-    public SchoolClassRequestApiDto prepareSchoolClassRequest(final String className, final Long idTeacher) {
+    public SchoolClassRequestApiDto prepareSchoolClassRequest(final String className, final TeacherId teacherId) {
         return new SchoolClassRequestApiDto(
                 className,
-                idTeacher,
-                100L
+                teacherId,
+                SchoolId.wrap(100L)
         );
     }
 
-    public SchoolClassRequestApiDto prepareSchoolClassRequest(final Long idTeacher) {
+    public SchoolClassRequestApiDto prepareSchoolClassRequest(final TeacherId teacherId) {
         return new SchoolClassRequestApiDto(
                 "3B",
-                idTeacher,
-                100L
+                teacherId,
+                SchoolId.wrap(100L)
         );
     }
 
-    public SchoolClassRequestApiDto prepareSchoolClassRequest(final Long idTeacher, final Long idSchool) {
+    public SchoolClassRequestApiDto prepareSchoolClassRequest(final TeacherId teacherId, final SchoolId schoolId) {
         return new SchoolClassRequestApiDto(
                 "3B",
-                idTeacher,
-                idSchool
+                teacherId,
+                schoolId
         );
     }
 

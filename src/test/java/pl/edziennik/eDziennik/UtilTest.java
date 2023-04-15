@@ -32,7 +32,7 @@ public class UtilTest extends BaseTesting {
         String expectedFullNameAfterSave = studentRequestApiDto.firstName() + " " + studentRequestApiDto.lastName();
 
         // when
-        Long id = studentService.register(studentRequestApiDto).id();
+        StudentId id = studentService.register(studentRequestApiDto).studentId();
 
         // then
         assertNotNull(id);
@@ -44,12 +44,12 @@ public class UtilTest extends BaseTesting {
     @Test
     public void shouldAutomaticallyUpdatePersonFullNameWhenUpdate() {
         StudentRequestApiDto studentRequestApiDto = studentUtil.prepareStudentRequestDto();
-        Long id = studentService.register(studentRequestApiDto).id();
+        StudentId id = studentService.register(studentRequestApiDto).studentId();
         String expectedFullNameAfterUpdate = "Dawid" + " " + "Nowak";
         studentRequestApiDto = studentUtil.prepareStudentRequestDto("Test", "Dawid", "Nowak", "q", "qwe");
 
         // when
-        studentService.updateStudent(StudentId.wrap(id), studentRequestApiDto);
+        studentService.updateStudent(id, studentRequestApiDto);
 
         // then
         assertNotNull(id);
