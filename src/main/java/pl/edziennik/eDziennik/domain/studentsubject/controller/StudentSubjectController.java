@@ -53,7 +53,7 @@ public class StudentSubjectController {
 //    @Operation(summary = "Get specific student subject grades",
 //            description = "This method returns list of grades for specific student subject")
     public ApiResponse<?> getStudentSubjectRatings(@ModelAttribute(name = "studentSubjectId") StudentSubjectSeparateId studentSubjectId) {
-        StudentGradesInSubjectDto responseApiDto = service.getStudentSubjectGrades(studentSubjectId.idStudent(), studentSubjectId.idSubject());
+        StudentGradesInSubjectDto responseApiDto = service.getStudentSubjectGrades(studentSubjectId.studentId(), studentSubjectId.subjectId());
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
     }

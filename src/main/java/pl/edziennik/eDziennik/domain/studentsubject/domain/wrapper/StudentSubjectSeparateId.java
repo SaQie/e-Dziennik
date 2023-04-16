@@ -4,8 +4,8 @@ import pl.edziennik.eDziennik.domain.student.domain.wrapper.StudentId;
 import pl.edziennik.eDziennik.domain.subject.domain.wrapper.SubjectId;
 
 public record StudentSubjectSeparateId(
-        StudentId idStudent,
-        SubjectId idSubject
+        StudentId studentId,
+        SubjectId subjectId
 ) {
 
     public static StudentSubjectSeparateId wrap(StudentId studentId, SubjectId subjectId) {

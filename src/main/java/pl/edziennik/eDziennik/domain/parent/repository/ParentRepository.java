@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import pl.edziennik.eDziennik.domain.parent.domain.Parent;
 import pl.edziennik.eDziennik.domain.parent.domain.wrapper.ParentId;
 import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.Pesel;
+import pl.edziennik.eDziennik.domain.role.domain.wrapper.RoleId;
 
 @Repository
 public interface ParentRepository extends JpaRepository<Parent, ParentId> {
@@ -17,8 +18,8 @@ public interface ParentRepository extends JpaRepository<Parent, ParentId> {
             "JOIN p.personInformation pi " +
             "JOIN p.user u " +
             "WHERE pi.pesel = :pesel " +
-            "AND u.role.id = :idRole")
-    boolean existsByPesel(Pesel pesel, Long idRole);
+            "AND u.role.id = :#{#roleId.id()}")
+    boolean existsByPesel(Pesel pesel, RoleId roleId);
 
     @EntityGraph(
             type = EntityGraph.EntityGraphType.FETCH,

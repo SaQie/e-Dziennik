@@ -35,8 +35,8 @@ class GradeManagmentServiceImpl extends BaseService implements GradeManagmentSer
     @Override
     @Transactional
     public StudentGradesInSubjectDto assignGradeToStudentSubject(final StudentSubjectSeparateId studentSubjectId, final GradeRequestApiDto dto) {
-        StudentSubject studentSubject = studentSubjectRepository.findByStudentIdAndSubjectId(studentSubjectId.idStudent().id(), studentSubjectId.idSubject().id())
-                .orElseThrow(notFoundException(studentSubjectId.idStudent(), Student.class));
+        StudentSubject studentSubject = studentSubjectRepository.findByStudentIdAndSubjectId(studentSubjectId.studentId(), studentSubjectId.subjectId())
+                .orElseThrow(notFoundException(studentSubjectId.studentId(), Student.class));
         Grade grade = insertNewGrade(dto, studentSubject);
         studentSubject.addGrade(grade);
         StudentSubject studentSubjectAfterSave = studentSubjectRepository.save(studentSubject);
@@ -47,17 +47,17 @@ class GradeManagmentServiceImpl extends BaseService implements GradeManagmentSer
     public void deleteGradeFromStudentSubject(final StudentSubjectSeparateId studentSubjectId, GradeId idGrade) {
         // TODO -> Sprawdzac czy ocena zgadza sie z tym studentem i przedmiotem
         StudentSubject studentSubject = studentSubjectRepository.findByStudentIdAndSubjectId(
-                studentSubjectId.idStudent().id(), studentSubjectId.idSubject().id())
-                .orElseThrow(notFoundException(studentSubjectId.idStudent(), Student.class));
+                studentSubjectId.studentId(), studentSubjectId.subjectId())
+                .orElseThrow(notFoundException(studentSubjectId.studentId(), Student.class));
         validatorService.checkGradeExistInStudentSubject(idGrade, studentSubject.getStudentSubjectId());
         gradeService.deleteGradeById(idGrade);
     }
 
     @Override
     public StudentGradesInSubjectDto updateStudentSubjectGrade(final StudentSubjectSeparateId studentSubjectId, GradeId gradeId, GradeRequestApiDto requestApiDto) {
-        StudentSubject studentSubject = studentSubjectRepository.findByStudentIdAndSubjectId(studentSubjectId.idStudent().id(), studentSubjectId.idSubject().id())
+        StudentSubject studentSubject = studentSubjectRepository.findByStudentIdAndSubjectId(studentSubjectId.studentId(), studentSubjectId.subjectId())
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "Student " + studentSubjectId.idStudent().id() + " not assigned to subject " + studentSubjectId.idSubject().id()));
+                        "Student " + studentSubjectId.studentId().id() + " not assigned to subject " + studentSubjectId.subjectId().id()));
         Optional<Grade> optionalGrade = repository.findById(gradeId);
         if (optionalGrade.isPresent()) {
             Grade grade = optionalGrade.get();

@@ -86,7 +86,7 @@ class SchoolClassServiceImpl extends BaseService implements SchoolClassService {
 
     @Override
     public PageDto<SchoolClassResponseApiDto> findSchoolClassesBySchoolId(final Pageable pageable, final SchoolId schoolId) {
-        Page<SchoolClassResponseApiDto> page = repository.findSchoolClassesBySchoolId(pageable, schoolId.id()).map(SchoolClassMapper::toDto);
+        Page<SchoolClassResponseApiDto> page = repository.findSchoolClassesBySchoolId(pageable, schoolId).map(SchoolClassMapper::toDto);
         return PageDto.fromPage(page);
     }
 

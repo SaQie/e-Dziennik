@@ -20,6 +20,5 @@ public record SettingsDto(
     public SettingsDto(
             Long id, String name, Boolean booleanValue, String stringValue, Long longValue) {
         this(SettingsId.wrap(id), name, booleanValue, stringValue, longValue);
-        System.out.println("xx");
     }
 }

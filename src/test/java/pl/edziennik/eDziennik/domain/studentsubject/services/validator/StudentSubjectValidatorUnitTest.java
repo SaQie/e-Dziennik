@@ -49,7 +49,7 @@ public class StudentSubjectValidatorUnitTest extends BaseUnitTest {
         StudentId studentId = StudentId.wrap(1L);
         StudentSubjectRequestDto dto = studentSubjectUtil.prepareStudentSubjectRequestDto(subjectId, studentId);
 
-        when(repository.existsByStudentIdAndSubjectId(1L, 1L)).thenReturn(true);
+        when(repository.existsByStudentIdAndSubjectId(studentId, subjectId)).thenReturn(true);
         when(studentRepository.findById(studentId)).thenReturn(Optional.of(studentSubjectUtil.prepareStudentWithSchoolClass("1b")));
         when(subjectRepository.findById(subjectId)).thenReturn(Optional.of(studentSubjectUtil.prepareSubjectWithSchoolClass("1b")));
 
@@ -98,7 +98,7 @@ public class StudentSubjectValidatorUnitTest extends BaseUnitTest {
         StudentId studentId = StudentId.wrap(1L);
         StudentSubjectRequestDto dto = studentSubjectUtil.prepareStudentSubjectRequestDto(subjectId, studentId);
 
-        when(repository.existsByStudentIdAndSubjectId(1L, 1L)).thenReturn(false);
+        when(repository.existsByStudentIdAndSubjectId(studentId, subjectId)).thenReturn(false);
         lenient().when(resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST, "null null", null))
                 .thenReturn(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST);
 

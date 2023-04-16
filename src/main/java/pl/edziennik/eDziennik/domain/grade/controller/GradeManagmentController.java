@@ -31,7 +31,7 @@ public class GradeManagmentController {
         StudentGradesInSubjectDto responseApiDto = service.assignGradeToStudentSubject(studentSubjectId, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/students/{idStudent}/subjects/{idSubject}/grades")
-                .buildAndExpand(studentSubjectId.idStudent().id(), studentSubjectId.idSubject().id())
+                .buildAndExpand(studentSubjectId.studentId().id(), studentSubjectId.subjectId().id())
                 .toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.CREATED, responseApiDto, uri);
     }
@@ -43,7 +43,7 @@ public class GradeManagmentController {
         service.deleteGradeFromStudentSubject(studentSubjectId, gradeId);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/students/{idStudent}/subjects/{idSubject}/grades")
-                .buildAndExpand(studentSubjectId.idStudent().id(), studentSubjectId.idSubject().id())
+                .buildAndExpand(studentSubjectId.studentId().id(), studentSubjectId.subjectId().id())
                 .toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.DELETE, HttpStatus.OK, "Grade deleted successfully !", uri);
     }
@@ -57,7 +57,7 @@ public class GradeManagmentController {
         StudentGradesInSubjectDto responseApiDto = service.updateStudentSubjectGrade(studentSubjectId, gradeId, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/students/{idStudent}/subjects/{idSubject}/grades")
-                .buildAndExpand(studentSubjectId.idStudent().id(), studentSubjectId.idSubject().id())
+                .buildAndExpand(studentSubjectId.studentId().id(), studentSubjectId.subjectId().id())
                 .toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.PUT, HttpStatus.OK, responseApiDto, uri);
     }

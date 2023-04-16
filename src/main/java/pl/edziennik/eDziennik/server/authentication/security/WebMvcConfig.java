@@ -31,7 +31,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addConverter(new AdminIdConverter());
         registry.addConverter(new ParentIdConverter());
         registry.addConverter(new SchoolIdConverter());
+        registry.addConverter(new RoleIdConverter());
     }
+
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

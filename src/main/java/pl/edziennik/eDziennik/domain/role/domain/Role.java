@@ -37,18 +37,18 @@ public class Role {
     }
 
     public enum RoleConst {
-        ROLE_ADMIN(1L),
-        ROLE_TEACHER(2L),
-        ROLE_STUDENT(3L),
-        ROLE_PARENT(4L);
+        ROLE_ADMIN(RoleId.wrap(1L)),
+        ROLE_TEACHER(RoleId.wrap(2L)),
+        ROLE_STUDENT(RoleId.wrap(3L)),
+        ROLE_PARENT(RoleId.wrap(4L));
 
-        private final Long id;
+        private final RoleId id;
 
-        RoleConst(Long id) {
+        RoleConst(RoleId id) {
             this.id = id;
         }
 
-        public Long getId() {
+        public RoleId getId() {
             return id;
         }
     }

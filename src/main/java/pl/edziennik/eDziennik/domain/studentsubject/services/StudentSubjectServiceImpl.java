@@ -43,14 +43,14 @@ class StudentSubjectServiceImpl extends BaseService implements StudentSubjectSer
 
     @Override
     public StudentGradesInSubjectDto getStudentSubjectGrades(final StudentId studentId, final SubjectId subjectId) {
-        StudentSubject studentSubject = repository.findByStudentIdAndSubjectId(studentId.id(), subjectId.id())
+        StudentSubject studentSubject = repository.findByStudentIdAndSubjectId(studentId, subjectId)
                 .orElseThrow(notFoundException(studentId, Student.class));;
         return StudentSubjectMapper.toStudentSubjectRatingsDto(studentSubject);
     }
 
     @Override
     public AllStudentsGradesInSubjectsDto getStudentAllSubjectsGrades(final StudentId studentId) {
-        List<StudentSubject> entities = repository.findStudentSubjectsByStudentId(studentId.id());
+        List<StudentSubject> entities = repository.findStudentSubjectsByStudentId(studentId);
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(notFoundException(studentId, Student.class));
         return StudentSubjectMapper.toAllStudentSubjectRatingDto(entities, student);
@@ -58,7 +58,7 @@ class StudentSubjectServiceImpl extends BaseService implements StudentSubjectSer
 
     @Override
     public StudentSubjectsResponseDto getStudentSubjects(final StudentId studentId) {
-        List<StudentSubject> entities = repository.findStudentSubjectsByStudentId(studentId.id());
+        List<StudentSubject> entities = repository.findStudentSubjectsByStudentId(studentId);
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(notFoundException(studentId, Student.class));
         return StudentSubjectMapper.toStudentSubjectsResponseDto(entities, student);

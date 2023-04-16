@@ -36,7 +36,7 @@ class TeacherNotBelongsToSchoolValidator extends BaseService implements SchoolCl
     @Override
     public Optional<ApiValidationResult> validate(SchoolClassRequestApiDto dto) {
         if (dto.idClassTeacher() != null) {
-            if (!repository.existsByTeacherIdAndSchoolId(dto.idClassTeacher().id(), dto.schoolId().id())) {
+            if (!repository.existsByTeacherIdAndSchoolId(dto.idClassTeacher(), dto.schoolId())) {
                 Teacher teacher = teacherRepository.findById(dto.idClassTeacher())
                         .orElseThrow(notFoundException(dto.idClassTeacher(), Teacher.class));
 

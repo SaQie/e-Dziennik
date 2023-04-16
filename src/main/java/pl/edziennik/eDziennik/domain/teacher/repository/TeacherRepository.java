@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.Pesel;
+import pl.edziennik.eDziennik.domain.role.domain.wrapper.RoleId;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
 
@@ -18,8 +19,8 @@ public interface TeacherRepository extends JpaRepository<Teacher, TeacherId> {
             "JOIN t.personInformation pi " +
             "JOIN t.user u " +
             "WHERE pi.pesel = :pesel " +
-            "AND u.role.id = :idRole")
-    boolean isTeacherExistsByPesel(Pesel pesel, Long idRole);
+            "AND u.role.id = :#{#roleId.id()}")
+    boolean isTeacherExistsByPesel(Pesel pesel, RoleId roleId);
 
     boolean existsByUserUsername(String username);
 

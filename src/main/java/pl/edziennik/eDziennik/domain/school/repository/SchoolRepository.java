@@ -16,6 +16,7 @@ public interface SchoolRepository extends JpaRepository<School, SchoolId> {
     boolean existsByNip(String nip);
 
     boolean existsByRegon(String regon);
+
     @EntityGraph(
             type = EntityGraph.EntityGraphType.FETCH,
             attributePaths = {

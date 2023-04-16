@@ -36,7 +36,7 @@ class StudentSubjectAlreadyExistValidator extends BaseService implements Student
 
     @Override
     public Optional<ApiValidationResult> validate(StudentSubjectRequestDto dto) {
-        if (repository.existsByStudentIdAndSubjectId(dto.studentId().id(), dto.subjectId().id())) {
+        if (repository.existsByStudentIdAndSubjectId(dto.studentId(), dto.subjectId())) {
 
             Student student = studentRepository.findById(dto.studentId())
                     .orElseThrow(notFoundException(dto.studentId(), Student.class));
