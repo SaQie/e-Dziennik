@@ -1,7 +1,6 @@
 package pl.edziennik.eDziennik.domain.studentsubject.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,11 +16,9 @@ import pl.edziennik.eDziennik.domain.subject.domain.wrapper.SubjectId;
 @AllArgsConstructor
 public class StudentSubjectRequestDto {
     @NotNull(message = "{subject.empty}")
-    @JsonUnwrapped
     private final SubjectId subjectId;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @JsonUnwrapped
     private final StudentId studentId;
 
 

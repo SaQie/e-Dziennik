@@ -37,8 +37,8 @@ public interface SchoolClassRepository extends JpaRepository<SchoolClass, School
 
     @Query(value = "SELECT sc FROM SchoolClass sc " +
             "JOIN FETCH sc.school " +
-            "JOIN FETCH sc.teacher " +
-            "WHERE sc.school.id = :schoolId",
+            "LEFT JOIN FETCH sc.teacher " +
+            "WHERE sc.school.id = :#{#schoolId.id()}",
             countQuery = "SELECT COUNT(sc) FROM SchoolClass sc where sc.school.id = :#{schoolId.id()}")
     Page<SchoolClass> findSchoolClassesBySchoolId(Pageable pageable, SchoolId schoolId);
 

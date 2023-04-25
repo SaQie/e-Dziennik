@@ -44,7 +44,7 @@ class StudentSubjectServiceImpl extends BaseService implements StudentSubjectSer
     @Override
     public StudentGradesInSubjectDto getStudentSubjectGrades(final StudentId studentId, final SubjectId subjectId) {
         StudentSubject studentSubject = repository.findByStudentIdAndSubjectId(studentId, subjectId)
-                .orElseThrow(notFoundException(studentId, Student.class));;
+                .orElseThrow(notFoundException(studentId, StudentSubject.class));;
         return StudentSubjectMapper.toStudentSubjectRatingsDto(studentSubject);
     }
 

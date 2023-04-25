@@ -18,13 +18,13 @@ import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/api/v1/grade-managment")
+@RequestMapping("/api/v1/grade-managment/")
 @AllArgsConstructor
 public class GradeManagmentController {
 
     private final GradeManagmentService service;
 
-    @PostMapping("/students/{studentId}/subjects/{subjectId}/grades")
+    @PostMapping("students/{studentId}/subjects/{subjectId}/grades")
     @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<?> assignGradeToStudentSubject(@RequestBody GradeRequestApiDto requestApiDto,
                                                       @ModelAttribute(name = "studentSubjectId") StudentSubjectSeparateId studentSubjectId) {
@@ -36,7 +36,7 @@ public class GradeManagmentController {
         return ApiResponseCreator.buildApiResponse(HttpMethod.POST, HttpStatus.CREATED, responseApiDto, uri);
     }
 
-    @DeleteMapping("/students/{studentId}/subjects/{subjectId}/grades/{gradeId}")
+    @DeleteMapping("students/{studentId}/subjects/{subjectId}/grades/{gradeId}")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<?> deleteGradeFromStudentSubject(@ModelAttribute(name = "studentSubjectId") StudentSubjectSeparateId studentSubjectId,
                                                         @PathVariable GradeId gradeId) {
@@ -48,7 +48,7 @@ public class GradeManagmentController {
         return ApiResponseCreator.buildApiResponse(HttpMethod.DELETE, HttpStatus.OK, "Grade deleted successfully !", uri);
     }
 
-    @PutMapping("/students/{studentId}/subjects/{subjectId}/grades/{gradeId}")
+    @PutMapping("students/{studentId}/subjects/{subjectId}/grades/{gradeId}")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<?> updateStudentSubjectGrade(@ModelAttribute(name = "studentSubjectId") StudentSubjectSeparateId studentSubjectId,
                                                     @PathVariable GradeId gradeId,

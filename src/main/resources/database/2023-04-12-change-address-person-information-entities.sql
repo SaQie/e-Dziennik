@@ -49,3 +49,28 @@ ALTER TABLE TEACHER
 ALTER TABLE TEACHER
     ADD
         pesel        varchar(11)  NOT NULL;
+
+
+ALTER TABLE parent
+    DROP COLUMN IF EXISTS person_information_id;
+
+
+ALTER TABLE parent
+    ADD
+        first_name   varchar(50)  NOT NULL;
+
+ALTER TABLE parent
+    ADD
+        last_name    varchar(50)  NOT NULL;
+
+ALTER TABLE parent
+    ADD
+        full_name    varchar(100) NOT NULL;
+
+ALTER TABLE parent
+    ADD
+        phone_number varchar(10);
+
+ALTER TABLE parent
+    ADD
+        pesel        varchar(11)  NOT NULL;

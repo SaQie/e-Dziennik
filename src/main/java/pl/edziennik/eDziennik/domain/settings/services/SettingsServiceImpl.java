@@ -64,7 +64,7 @@ class SettingsServiceImpl extends BaseService implements SettingsService {
     @Override
     public SettingsDto findSettingById(SettingsId settingsId) {
         refreshCache();
-        return getSettingsDataFromCacheById(settingsId.id());
+        return getSettingsDataFromCacheById(settingsId);
     }
 
     @Override
@@ -120,7 +120,7 @@ class SettingsServiceImpl extends BaseService implements SettingsService {
         return returnCorrectSettingsDto(settingsDto);
     }
 
-    private SettingsDto getSettingsDataFromCacheById(final Long id) {
+    private SettingsDto getSettingsDataFromCacheById(final SettingsId id) {
         List<SettingsDto> translatedSettingsData = new ArrayList<>(cacheSettingsList);
         SettingsDto settingsDto = translatedSettingsData.stream()
                 .filter(data -> data.id().equals(id))

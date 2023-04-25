@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.domain.admin.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +18,7 @@ import pl.edziennik.eDziennik.server.basics.page.PageDto;
 
 import java.net.URI;
 
-@RequestMapping("/api/v1/admins")
+@RequestMapping("/api/v1/admins/")
 @RestController
 @AllArgsConstructor
 public class AdminController {
@@ -26,8 +27,8 @@ public class AdminController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-//    @Operation(summary = "Add administration account",
-//            description = "Add administration account, that will have all permissions to manage application")
+    @Operation(summary = "Add administration account",
+            description = "Add administration account, that will have all permissions to manage application")
     public ApiResponse<?> createAdminAccount(@RequestBody @Valid AdminRequestApiDto requestApiDto) {
         AdminResponseApiDto responseApiDto = service.createNewAdminAccount(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -39,37 +40,37 @@ public class AdminController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-//    @Operation(summary = "Get admin list",
-//            description = "Returns list of admins")
+    @Operation(summary = "Get admin list",
+            description = "Returns list of admins")
     public ApiResponse<PageDto<AdminResponseApiDto>> getAdminList(Pageable pageable) {
         PageDto<AdminResponseApiDto> responseApiDto = service.getAdminList(pageable);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
     }
 
-    @GetMapping("/{adminId}")
+    @GetMapping("{adminId}")
     @ResponseStatus(HttpStatus.OK)
-//    @Operation(summary = "Get specific admin",
-//            description = "Returns information about specific admin")
+    @Operation(summary = "Get specific admin",
+            description = "Returns information about specific admin")
     public ApiResponse<AdminResponseApiDto> getAdmin(@PathVariable AdminId adminId) {
         AdminResponseApiDto responseApiDto = service.getAdminById(adminId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
     }
 
-    @DeleteMapping("/{adminId}")
+    @DeleteMapping("{adminId}")
     @ResponseStatus(HttpStatus.OK)
-//    @Operation(summary = "Delete admin")
+    @Operation(summary = "Delete admin")
     public ApiResponse<?> deleteAdminById(@PathVariable AdminId adminId) {
         service.deleteAdminById(adminId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.DELETE, HttpStatus.OK, "Admin deleted successfully", uri);
     }
 
-    @PutMapping("/{adminId}")
+    @PutMapping("{adminId}")
     @ResponseStatus(HttpStatus.OK)
-//    @Operation(summary = "Update admin",
-//            description = "This method will update specific Admin or create new if not exists")
+    @Operation(summary = "Update admin",
+            description = "This method will update specific Admin or create new if not exists")
     public ApiResponse<AdminResponseApiDto> updateAdmin(@RequestBody @Valid AdminRequestApiDto dto, @PathVariable AdminId adminId) {
         AdminResponseApiDto responseApiDto = service.updateAdmin(dto, adminId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
