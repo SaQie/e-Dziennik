@@ -2,6 +2,7 @@ package pl.edziennik.eDziennik.domain.studentsubject;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTesting;
@@ -20,7 +21,6 @@ import pl.edziennik.eDziennik.domain.subject.domain.Subject;
 import pl.edziennik.eDziennik.domain.subject.domain.wrapper.SubjectId;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectResponseApiDto;
-import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.server.exceptions.BusinessException;
@@ -105,6 +105,7 @@ public class StudentSubjectIntegrationTest extends BaseTesting {
     }
 
     @Test
+    @WithMockUser(username = "Kamil")
     public void shouldAssignGradeToStudentSubject() {
         // given
         TeacherRequestApiDto teacherDto = teacherUtil.prepareTeacherRequestDto();
@@ -117,7 +118,6 @@ public class StudentSubjectIntegrationTest extends BaseTesting {
         SubjectId subjectId = subjectService.createNewSubject(expectedSubject).subjectId();
 
         GradeRequestApiDto expectedGrade = gradeUtil.prepareRequestApi(5, 5);
-        expectedGrade.setTeacherName(find(Teacher.class, teacherId).getUser().getUsername());
 
         StudentSubjectRequestDto studentSubjectRequestDto = studentSubjectUtil.prepareStudentSubjectRequestDto(subjectId, studentId);
         studentSubjectService.assignStudentToSubject(studentSubjectRequestDto);

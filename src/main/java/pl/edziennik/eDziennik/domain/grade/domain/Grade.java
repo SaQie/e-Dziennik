@@ -7,7 +7,7 @@ import pl.edziennik.eDziennik.domain.studentsubject.domain.StudentSubject;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor
@@ -34,7 +34,7 @@ public class Grade {
     @ManyToOne(fetch = FetchType.LAZY)
     private Teacher teacher;
 
-    private LocalDateTime createdDate;
+    private LocalDate createdDate;
 
 
     public Grade(GradeConst grade, Integer weight, String description) {
@@ -49,12 +49,12 @@ public class Grade {
 
     @PrePersist
     protected void onCreate() {
-        this.createdDate = LocalDateTime.now();
+        this.createdDate = LocalDate.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        this.createdDate = LocalDateTime.now();
+        this.createdDate = LocalDate.now();
     }
 
 

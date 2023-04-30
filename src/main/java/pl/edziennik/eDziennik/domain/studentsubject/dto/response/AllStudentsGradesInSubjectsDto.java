@@ -1,21 +1,24 @@
 package pl.edziennik.eDziennik.domain.studentsubject.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Getter;
+import pl.edziennik.eDziennik.domain.student.domain.wrapper.StudentId;
 
 import java.util.List;
 
 @Getter
 public class AllStudentsGradesInSubjectsDto {
 
-    private final Long id;
+    @JsonUnwrapped
+    private final StudentId studentId;
 
     private final String firstName;
     private final String lastName;
 
     private final List<SubjectGradesResponseDto> subjects;
 
-    public AllStudentsGradesInSubjectsDto(Long id, String firstName, String lastName, List<SubjectGradesResponseDto> subjects) {
-        this.id = id;
+    public AllStudentsGradesInSubjectsDto(StudentId studentId, String firstName, String lastName, List<SubjectGradesResponseDto> subjects) {
+        this.studentId = studentId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.subjects = subjects;

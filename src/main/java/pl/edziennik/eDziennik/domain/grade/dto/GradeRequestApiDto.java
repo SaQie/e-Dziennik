@@ -1,6 +1,5 @@
 package pl.edziennik.eDziennik.domain.grade.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +14,6 @@ public class GradeRequestApiDto {
     public static final String GRADE = "grade";
     public static final String WEIGHT = "weight";
     public static final String DESCRIPTION = "description";
-    public static final String TEACHER_NAME = "teacherName";
 
     @NotNull(message = "{grade.empty}")
     private Integer grade;
@@ -31,11 +29,5 @@ public class GradeRequestApiDto {
         this.description = description;
     }
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private String teacherName;
-
-    public void setTeacherName(String teacherName){
-        this.teacherName = teacherName;
-    }
 
 }

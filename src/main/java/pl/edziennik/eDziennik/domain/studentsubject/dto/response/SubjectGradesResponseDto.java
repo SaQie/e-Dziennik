@@ -6,7 +6,7 @@ import pl.edziennik.eDziennik.domain.grade.domain.wrapper.GradeId;
 import pl.edziennik.eDziennik.domain.subject.domain.wrapper.SubjectId;
 import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -24,7 +24,7 @@ public class SubjectGradesResponseDto {
     }
 
     @Getter
-    public static class GradesDto{
+    public static class GradesDto {
 
         @JsonUnwrapped
         private final GradeId gradeId;
@@ -33,15 +33,17 @@ public class SubjectGradesResponseDto {
         private final String description;
         @JsonUnwrapped
         private final TeacherId teacher;
-        private final LocalDateTime createdDate;
+        private final String teacherName;
+        private final LocalDate createdDate;
 
-        public GradesDto(GradeId gradeId, int grade, int weight, String description, TeacherId teacher, LocalDateTime createdDate) {
+        public GradesDto(GradeId gradeId, int grade, int weight, String description, TeacherId teacher, String teacherName, LocalDate createdDate) {
             this.gradeId = gradeId;
             this.grade = grade;
             this.weight = weight;
             this.description = description;
             this.createdDate = createdDate;
             this.teacher = teacher;
+            this.teacherName = teacherName;
         }
     }
 

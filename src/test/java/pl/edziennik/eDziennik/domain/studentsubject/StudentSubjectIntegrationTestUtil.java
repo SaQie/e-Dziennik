@@ -32,11 +32,12 @@ public class StudentSubjectIntegrationTestUtil {
     }
 
 
-    public Student prepareStudentWithSchoolClass(String className) {
+    public Student prepareStudentWithSchoolClass(Long schoolClassId, String className) {
         SchoolClass schoolClass = new SchoolClass();
         User user = new User();
         PersonInformation personInformation = new PersonInformation();
         schoolClass.setClassName(className);
+        schoolClass.setId(schoolClassId);
         Student student = new Student();
         student.setUser(user);
         student.setSchoolClass(schoolClass);
@@ -44,9 +45,10 @@ public class StudentSubjectIntegrationTestUtil {
         return student;
     }
 
-    public Subject prepareSubjectWithSchoolClass(String className) {
+    public Subject prepareSubjectWithSchoolClass(Long id, String className) {
         SchoolClass schoolClass = new SchoolClass();
         schoolClass.setClassName(className);
+        schoolClass.setId(id);
         Subject subject = new Subject();
         subject.setSchoolClass(schoolClass);
         return subject;

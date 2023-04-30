@@ -1,6 +1,8 @@
 package pl.edziennik.eDziennik.domain.grade.service.managment;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.domain.grade.domain.Grade;
@@ -71,7 +73,8 @@ class GradeManagmentServiceImpl extends BaseService implements GradeManagmentSer
 
 
     private Grade insertNewGrade(GradeRequestApiDto dto, StudentSubject studentSubject) {
-        Teacher teacher = teacherRepository.getByUserUsername(dto.getTeacherName());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Teacher teacher = teacherRepository.getByUserUsername(authentication.getName());
         GradeId gradeId = gradeService.addNewGrade(dto).gradeId();
         Grade grade = repository.findById(gradeId)
                 .orElseThrow(notFoundException(gradeId, Grade.class));
