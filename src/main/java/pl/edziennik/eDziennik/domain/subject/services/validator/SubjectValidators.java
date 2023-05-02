@@ -1,6 +1,6 @@
 package pl.edziennik.eDziennik.domain.subject.services.validator;
 
-import pl.edziennik.eDziennik.server.basics.validator.AbstractValidator;
+import pl.edziennik.eDziennik.server.basic.validator.AbstractValidator;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
 
 public interface SubjectValidators extends AbstractValidator<SubjectRequestApiDto> {

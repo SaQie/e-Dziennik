@@ -14,7 +14,7 @@ import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.domain.schoolclass.repository.SchoolClassRepository;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
-import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
+import pl.edziennik.eDziennik.server.basic.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Collections;

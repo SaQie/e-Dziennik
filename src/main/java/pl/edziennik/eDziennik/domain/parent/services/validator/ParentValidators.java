@@ -1,7 +1,7 @@
 package pl.edziennik.eDziennik.domain.parent.services.validator;
 
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
-import pl.edziennik.eDziennik.server.basics.validator.AbstractValidator;
+import pl.edziennik.eDziennik.server.basic.validator.AbstractValidator;
 
 public interface ParentValidators extends AbstractValidator<ParentRequestApiDto> {
 

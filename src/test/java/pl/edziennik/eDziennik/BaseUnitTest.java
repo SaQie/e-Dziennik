@@ -12,7 +12,7 @@ import pl.edziennik.eDziennik.domain.studentsubject.StudentSubjectIntegrationTes
 import pl.edziennik.eDziennik.domain.subject.SubjectIntegrationTestUtil;
 import pl.edziennik.eDziennik.domain.teacher.TeacherIntegrationTestUtil;
 import pl.edziennik.eDziennik.domain.user.UserIntegrationTestUtil;
-import pl.edziennik.eDziennik.server.config.messages.MessageConfig;
+import pl.edziennik.eDziennik.server.config.message.MessageConfig;
 
 import java.util.Locale;
 

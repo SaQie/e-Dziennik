@@ -14,15 +14,16 @@ import pl.edziennik.eDziennik.domain.admin.repository.AdminRepository;
 import pl.edziennik.eDziennik.domain.user.domain.User;
 import pl.edziennik.eDziennik.domain.user.dto.mapper.UserMapper;
 import pl.edziennik.eDziennik.domain.user.services.UserService;
-import pl.edziennik.eDziennik.server.basics.page.PageDto;
-import pl.edziennik.eDziennik.server.basics.service.BaseService;
-import pl.edziennik.eDziennik.server.exceptions.BusinessException;
+import pl.edziennik.eDziennik.server.basic.page.PageDto;
+import pl.edziennik.eDziennik.server.basic.service.BaseService;
+import pl.edziennik.eDziennik.server.exception.BusinessException;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Transactional(readOnly = true)
 class AdminServiceImpl extends BaseService implements AdminService {
 
     private final AdminValidatorService validator;

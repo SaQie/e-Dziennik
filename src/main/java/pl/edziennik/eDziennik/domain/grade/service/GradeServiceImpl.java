@@ -9,13 +9,14 @@ import pl.edziennik.eDziennik.domain.grade.dto.GradeRequestApiDto;
 import pl.edziennik.eDziennik.domain.grade.dto.GradeResponseApiDto;
 import pl.edziennik.eDziennik.domain.grade.dto.mapper.GradeMapper;
 import pl.edziennik.eDziennik.domain.grade.repository.GradeRepository;
-import pl.edziennik.eDziennik.server.basics.service.BaseService;
-import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
+import pl.edziennik.eDziennik.server.basic.service.BaseService;
+import pl.edziennik.eDziennik.server.exception.EntityNotFoundException;
 
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Transactional(readOnly = true)
 class GradeServiceImpl extends BaseService implements GradeService {
 
     private final GradeRepository repository;

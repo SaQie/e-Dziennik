@@ -1,6 +1,6 @@
 package pl.edziennik.eDziennik.domain.user.services.validator;
 
-import pl.edziennik.eDziennik.server.basics.validator.AbstractValidator;
+import pl.edziennik.eDziennik.server.basic.validator.AbstractValidator;
 import pl.edziennik.eDziennik.domain.user.dto.UserRequestDto;
 
 public interface UserValidators extends AbstractValidator<UserRequestDto> {

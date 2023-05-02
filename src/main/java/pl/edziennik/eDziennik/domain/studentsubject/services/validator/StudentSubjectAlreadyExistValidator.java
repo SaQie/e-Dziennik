@@ -8,9 +8,9 @@ import pl.edziennik.eDziennik.domain.studentsubject.dto.request.StudentSubjectRe
 import pl.edziennik.eDziennik.domain.studentsubject.repository.StudentSubjectRepository;
 import pl.edziennik.eDziennik.domain.subject.domain.Subject;
 import pl.edziennik.eDziennik.domain.subject.repository.SubjectRepository;
-import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
-import pl.edziennik.eDziennik.server.basics.service.BaseService;
-import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
+import pl.edziennik.eDziennik.server.basic.dto.ApiValidationResult;
+import pl.edziennik.eDziennik.server.basic.service.BaseService;
+import pl.edziennik.eDziennik.server.exception.ExceptionType;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Optional;

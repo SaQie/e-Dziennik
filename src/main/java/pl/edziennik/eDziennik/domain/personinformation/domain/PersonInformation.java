@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.Pesel;
 import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.PhoneNumber;
-import pl.edziennik.eDziennik.server.basics.vo.ValueObject;
-import pl.edziennik.eDziennik.server.converters.attributes.PeselAttributeConverter;
-import pl.edziennik.eDziennik.server.converters.attributes.PhoneNumberAttributeConverter;
+import pl.edziennik.eDziennik.server.basic.vo.ValueObject;
+import pl.edziennik.eDziennik.server.converter.attribute.PeselAttributeConverter;
+import pl.edziennik.eDziennik.server.converter.attribute.PhoneNumberAttributeConverter;
 
 import java.io.Serializable;
 

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import pl.edziennik.eDziennik.domain.grade.domain.wrapper.GradeId;
 import pl.edziennik.eDziennik.domain.grade.repository.GradeRepository;
 import pl.edziennik.eDziennik.domain.studentsubject.domain.wrapper.StudentSubjectId;
-import pl.edziennik.eDziennik.server.basics.service.BaseService;
+import pl.edziennik.eDziennik.server.basic.service.BaseService;
 
 @Service
 @AllArgsConstructor

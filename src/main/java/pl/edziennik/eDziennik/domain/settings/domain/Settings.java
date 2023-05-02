@@ -3,7 +3,7 @@ package pl.edziennik.eDziennik.domain.settings.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import pl.edziennik.eDziennik.domain.settings.domain.wrapper.SettingsId;
-import pl.edziennik.eDziennik.server.exceptions.BusinessException;
+import pl.edziennik.eDziennik.server.exception.BusinessException;
 
 @Entity
 @NoArgsConstructor

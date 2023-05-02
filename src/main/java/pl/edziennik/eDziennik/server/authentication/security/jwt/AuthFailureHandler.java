@@ -12,8 +12,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 import pl.edziennik.eDziennik.server.authentication.security.jwt.dto.AuthResponseDto;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
+import pl.edziennik.eDziennik.server.basic.dto.ApiResponse;
+import pl.edziennik.eDziennik.server.basic.dto.ApiResponseCreator;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.net.URI;

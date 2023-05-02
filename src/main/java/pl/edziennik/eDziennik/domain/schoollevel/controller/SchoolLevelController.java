@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.eDziennik.domain.schoollevel.dto.SchoolLevelResponseApiDto;
 import pl.edziennik.eDziennik.domain.schoollevel.service.SchoolLevelService;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
+import pl.edziennik.eDziennik.server.basic.dto.ApiResponse;
+import pl.edziennik.eDziennik.server.basic.dto.ApiResponseCreator;
 
 import java.net.URI;
 import java.util.List;

@@ -17,12 +17,13 @@ import pl.edziennik.eDziennik.domain.studentsubject.repository.StudentSubjectRep
 import pl.edziennik.eDziennik.domain.subject.domain.Subject;
 import pl.edziennik.eDziennik.domain.subject.domain.wrapper.SubjectId;
 import pl.edziennik.eDziennik.domain.subject.repository.SubjectRepository;
-import pl.edziennik.eDziennik.server.basics.service.BaseService;
+import pl.edziennik.eDziennik.server.basic.service.BaseService;
 
 import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Transactional(readOnly = true)
 class StudentSubjectServiceImpl extends BaseService implements StudentSubjectService {
 
     private final StudentSubjectRepository repository;

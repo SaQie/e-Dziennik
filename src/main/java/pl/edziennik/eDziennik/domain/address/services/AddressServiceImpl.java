@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Transactional(readOnly = true)
 class AddressServiceImpl implements AddressService{
 
     private final AddressRepository repository;

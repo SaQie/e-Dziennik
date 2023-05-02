@@ -18,8 +18,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import pl.edziennik.eDziennik.server.authentication.AuthUserDetailsService;
 import pl.edziennik.eDziennik.server.authentication.security.jwt.*;
 import pl.edziennik.eDziennik.server.authentication.security.jwt.dto.AuthResponseDto;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
+import pl.edziennik.eDziennik.server.basic.dto.ApiResponse;
+import pl.edziennik.eDziennik.server.basic.dto.ApiResponseCreator;
 import pl.edziennik.eDziennik.server.utils.JwtUtils;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 

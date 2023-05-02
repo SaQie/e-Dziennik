@@ -15,13 +15,14 @@ import pl.edziennik.eDziennik.domain.subject.dto.mapper.SubjectMapper;
 import pl.edziennik.eDziennik.domain.subject.repository.SubjectRepository;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.domain.teacher.repository.TeacherRepository;
-import pl.edziennik.eDziennik.server.basics.page.PageDto;
-import pl.edziennik.eDziennik.server.basics.service.BaseService;
+import pl.edziennik.eDziennik.server.basic.page.PageDto;
+import pl.edziennik.eDziennik.server.basic.service.BaseService;
 
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Transactional(readOnly = true)
 class SubjectServiceImpl extends BaseService implements SubjectService {
 
     private final SubjectRepository repository;

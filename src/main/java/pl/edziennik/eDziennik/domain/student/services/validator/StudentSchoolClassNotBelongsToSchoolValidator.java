@@ -7,9 +7,9 @@ import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.domain.schoolclass.repository.SchoolClassRepository;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
-import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
-import pl.edziennik.eDziennik.server.basics.service.BaseService;
-import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
+import pl.edziennik.eDziennik.server.basic.dto.ApiValidationResult;
+import pl.edziennik.eDziennik.server.basic.service.BaseService;
+import pl.edziennik.eDziennik.server.exception.ExceptionType;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Optional;

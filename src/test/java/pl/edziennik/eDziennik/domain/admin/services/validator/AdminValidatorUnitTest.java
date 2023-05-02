@@ -9,7 +9,7 @@ import pl.edziennik.eDziennik.BaseUnitTest;
 import pl.edziennik.eDziennik.domain.admin.domain.Admin;
 import pl.edziennik.eDziennik.domain.admin.dto.AdminRequestApiDto;
 import pl.edziennik.eDziennik.domain.admin.repository.AdminRepository;
-import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
+import pl.edziennik.eDziennik.server.basic.dto.ApiValidationResult;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Collections;

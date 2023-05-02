@@ -8,16 +8,18 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pl.edziennik.eDziennik.domain.subject.dto.SubjectResponseApiDto;
 import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherResponseApiDto;
 import pl.edziennik.eDziennik.domain.teacher.services.TeacherService;
 import pl.edziennik.eDziennik.server.authentication.AuthCredentials;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
-import pl.edziennik.eDziennik.server.basics.page.PageDto;
+import pl.edziennik.eDziennik.server.basic.dto.ApiResponse;
+import pl.edziennik.eDziennik.server.basic.dto.ApiResponseCreator;
+import pl.edziennik.eDziennik.server.basic.page.PageDto;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/teachers/")
@@ -34,7 +36,7 @@ class TeacherController {
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Add new teacher")
-    public ApiResponse<?> register(@RequestBody @Valid TeacherRequestApiDto requestApiDto) {
+    public ApiResponse<TeacherResponseApiDto> register(@RequestBody @Valid TeacherRequestApiDto requestApiDto) {
         TeacherResponseApiDto responseApiDto = service.register(requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -47,7 +49,7 @@ class TeacherController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get specific teacher",
             description = "Returns specific information about admin")
-    public ApiResponse<?> findTeacher(@PathVariable TeacherId teacherId) {
+    public ApiResponse<TeacherResponseApiDto> findTeacher(@PathVariable TeacherId teacherId) {
         TeacherResponseApiDto responseApiDto = service.findTeacherById(teacherId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
@@ -77,7 +79,7 @@ class TeacherController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Update teacher",
             description = "This method will update specific teacher or create new if not exists")
-    public ApiResponse<?> updateTeacher(@PathVariable TeacherId teacherId, TeacherRequestApiDto requestApiDto) {
+    public ApiResponse<TeacherResponseApiDto> updateTeacher(@PathVariable TeacherId teacherId, TeacherRequestApiDto requestApiDto) {
         TeacherResponseApiDto responseApiDto = service.updateTeacher(teacherId, requestApiDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/teachers")
@@ -85,6 +87,17 @@ class TeacherController {
                 .buildAndExpand(responseApiDto.teacherId().id())
                 .toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.PUT, HttpStatus.OK, responseApiDto, uri);
+    }
+
+
+    @GetMapping("{teacherId}/subjects")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get teacher subjects",
+            description = "Returns all teacher subjects")
+    public ApiResponse<List<SubjectResponseApiDto>> getTeacherSubjects(@PathVariable TeacherId teacherId) {
+        List<SubjectResponseApiDto> responseApiDto = service.getTeacherSubjects(teacherId);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+        return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
     }
 
 }

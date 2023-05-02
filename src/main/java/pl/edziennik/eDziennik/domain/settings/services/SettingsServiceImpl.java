@@ -3,19 +3,21 @@ package pl.edziennik.eDziennik.domain.settings.services;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.domain.settings.domain.Settings;
 import pl.edziennik.eDziennik.domain.settings.domain.wrapper.SettingsId;
 import pl.edziennik.eDziennik.domain.settings.dto.SettingsDto;
 import pl.edziennik.eDziennik.domain.settings.dto.SettingsValue;
 import pl.edziennik.eDziennik.domain.settings.repository.SettingsRepostory;
-import pl.edziennik.eDziennik.server.basics.service.BaseService;
-import pl.edziennik.eDziennik.server.exceptions.BusinessException;
+import pl.edziennik.eDziennik.server.basic.service.BaseService;
+import pl.edziennik.eDziennik.server.exception.BusinessException;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 class SettingsServiceImpl extends BaseService implements SettingsService {
 
     @Autowired

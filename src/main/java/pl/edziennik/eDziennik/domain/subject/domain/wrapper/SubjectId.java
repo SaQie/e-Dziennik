@@ -6,8 +6,8 @@ import jakarta.persistence.Embeddable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import pl.edziennik.eDziennik.server.basics.vo.Identifier;
-import pl.edziennik.eDziennik.server.basics.vo.ValueObject;
+import pl.edziennik.eDziennik.server.basic.vo.Identifier;
+import pl.edziennik.eDziennik.server.basic.vo.ValueObject;
 
 import java.io.Serializable;
 

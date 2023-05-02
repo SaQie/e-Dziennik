@@ -12,8 +12,8 @@ import pl.edziennik.eDziennik.domain.student.domain.wrapper.StudentId;
 import pl.edziennik.eDziennik.domain.studentsubject.domain.wrapper.StudentSubjectSeparateId;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentGradesInSubjectDto;
 import pl.edziennik.eDziennik.domain.subject.domain.wrapper.SubjectId;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
+import pl.edziennik.eDziennik.server.basic.dto.ApiResponse;
+import pl.edziennik.eDziennik.server.basic.dto.ApiResponseCreator;
 
 import java.net.URI;
 

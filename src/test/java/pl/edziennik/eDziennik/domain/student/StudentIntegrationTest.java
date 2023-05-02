@@ -23,8 +23,8 @@ import pl.edziennik.eDziennik.domain.subject.domain.wrapper.SubjectId;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
-import pl.edziennik.eDziennik.server.exceptions.BusinessException;
-import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
+import pl.edziennik.eDziennik.server.exception.BusinessException;
+import pl.edziennik.eDziennik.server.exception.EntityNotFoundException;
 
 import java.util.List;
 

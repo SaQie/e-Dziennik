@@ -5,7 +5,7 @@ import lombok.*;
 import pl.edziennik.eDziennik.domain.grade.domain.wrapper.GradeId;
 import pl.edziennik.eDziennik.domain.studentsubject.domain.StudentSubject;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
-import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
+import pl.edziennik.eDziennik.server.exception.EntityNotFoundException;
 
 import java.time.LocalDate;
 

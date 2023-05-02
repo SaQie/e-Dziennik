@@ -1,7 +1,7 @@
 package pl.edziennik.eDziennik.domain.admin.services.validator;
 
 import pl.edziennik.eDziennik.domain.admin.dto.AdminRequestApiDto;
-import pl.edziennik.eDziennik.server.basics.validator.AbstractValidator;
+import pl.edziennik.eDziennik.server.basic.validator.AbstractValidator;
 
 public interface AdminValidators extends AbstractValidator<AdminRequestApiDto> {
 

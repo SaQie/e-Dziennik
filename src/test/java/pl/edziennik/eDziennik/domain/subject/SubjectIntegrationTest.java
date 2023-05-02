@@ -15,9 +15,9 @@ import pl.edziennik.eDziennik.domain.subject.services.validator.SubjectValidator
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
-import pl.edziennik.eDziennik.server.basics.page.PageDto;
-import pl.edziennik.eDziennik.server.exceptions.BusinessException;
-import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
+import pl.edziennik.eDziennik.server.basic.page.PageDto;
+import pl.edziennik.eDziennik.server.exception.BusinessException;
+import pl.edziennik.eDziennik.server.exception.EntityNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 

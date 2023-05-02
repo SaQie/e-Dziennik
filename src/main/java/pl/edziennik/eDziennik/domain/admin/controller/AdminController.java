@@ -12,9 +12,9 @@ import pl.edziennik.eDziennik.domain.admin.domain.wrapper.AdminId;
 import pl.edziennik.eDziennik.domain.admin.dto.AdminRequestApiDto;
 import pl.edziennik.eDziennik.domain.admin.dto.AdminResponseApiDto;
 import pl.edziennik.eDziennik.domain.admin.services.AdminService;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
-import pl.edziennik.eDziennik.server.basics.page.PageDto;
+import pl.edziennik.eDziennik.server.basic.dto.ApiResponse;
+import pl.edziennik.eDziennik.server.basic.dto.ApiResponseCreator;
+import pl.edziennik.eDziennik.server.basic.page.PageDto;
 
 import java.net.URI;
 

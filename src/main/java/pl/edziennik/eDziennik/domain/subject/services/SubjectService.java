@@ -4,7 +4,7 @@ import org.springframework.data.domain.Pageable;
 import pl.edziennik.eDziennik.domain.subject.domain.wrapper.SubjectId;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
 import pl.edziennik.eDziennik.domain.subject.dto.SubjectResponseApiDto;
-import pl.edziennik.eDziennik.server.basics.page.PageDto;
+import pl.edziennik.eDziennik.server.basic.page.PageDto;
 
 public interface SubjectService {
 

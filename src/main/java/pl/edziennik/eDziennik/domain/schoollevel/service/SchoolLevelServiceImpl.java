@@ -2,6 +2,7 @@ package pl.edziennik.eDziennik.domain.schoollevel.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.eDziennik.domain.schoollevel.domain.SchoolLevel;
 import pl.edziennik.eDziennik.domain.schoollevel.dto.SchoolLevelResponseApiDto;
 import pl.edziennik.eDziennik.domain.schoollevel.dto.mapper.SchoolLevelMapper;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Transactional(readOnly = true)
 class SchoolLevelServiceImpl implements SchoolLevelService {
 
     private final SchoolLevelRepository repository;

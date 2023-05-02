@@ -24,6 +24,8 @@ public class User {
     @Getter(AccessLevel.NONE)
     private Long id;
 
+    private Long superId;
+
     private String username;
     private String password;
     private LocalDate createdDate;

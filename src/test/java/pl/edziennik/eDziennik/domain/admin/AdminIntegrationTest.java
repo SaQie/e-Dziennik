@@ -9,7 +9,7 @@ import pl.edziennik.eDziennik.domain.admin.domain.Admin;
 import pl.edziennik.eDziennik.domain.admin.domain.wrapper.AdminId;
 import pl.edziennik.eDziennik.domain.admin.dto.AdminRequestApiDto;
 import pl.edziennik.eDziennik.domain.admin.services.validator.AdminValidators;
-import pl.edziennik.eDziennik.server.exceptions.BusinessException;
+import pl.edziennik.eDziennik.server.exception.BusinessException;
 
 import static org.junit.jupiter.api.Assertions.*;
 

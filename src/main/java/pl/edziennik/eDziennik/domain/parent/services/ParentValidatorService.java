@@ -5,11 +5,11 @@ import org.springframework.stereotype.Service;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.parent.domain.wrapper.ParentId;
 import pl.edziennik.eDziennik.domain.parent.services.validator.ParentValidators;
-import pl.edziennik.eDziennik.server.basics.validator.ServiceValidator;
+import pl.edziennik.eDziennik.server.basic.validator.ServiceValidator;
 
 @Service
 @AllArgsConstructor
-class ParentValidatorService extends ServiceValidator<ParentValidators, ParentRequestApiDto> {
+class ParentValidatorService extends ServiceValidator<ParentRequestApiDto> {
 
     protected void valid(ParentRequestApiDto dto) {
         runValidators(dto);

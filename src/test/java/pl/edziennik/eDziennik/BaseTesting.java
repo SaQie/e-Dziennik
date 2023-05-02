@@ -37,7 +37,7 @@ import pl.edziennik.eDziennik.domain.teacher.TeacherIntegrationTestUtil;
 import pl.edziennik.eDziennik.domain.teacher.services.TeacherService;
 import pl.edziennik.eDziennik.domain.user.UserIntegrationTestUtil;
 import pl.edziennik.eDziennik.domain.user.services.UserService;
-import pl.edziennik.eDziennik.server.basics.vo.Identifier;
+import pl.edziennik.eDziennik.server.basic.vo.Identifier;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import javax.sql.DataSource;

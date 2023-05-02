@@ -10,7 +10,7 @@ import pl.edziennik.eDziennik.BaseTesting;
 import pl.edziennik.eDziennik.domain.grade.domain.Grade;
 import pl.edziennik.eDziennik.domain.grade.domain.wrapper.GradeId;
 import pl.edziennik.eDziennik.domain.grade.dto.GradeRequestApiDto;
-import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
+import pl.edziennik.eDziennik.server.exception.EntityNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 

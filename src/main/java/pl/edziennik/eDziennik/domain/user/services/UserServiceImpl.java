@@ -11,15 +11,15 @@ import pl.edziennik.eDziennik.domain.user.domain.wrapper.UserId;
 import pl.edziennik.eDziennik.domain.user.dto.UserRequestDto;
 import pl.edziennik.eDziennik.domain.user.dto.mapper.UserMapper;
 import pl.edziennik.eDziennik.domain.user.repository.UserRepository;
-import pl.edziennik.eDziennik.domain.user.services.validator.UserValidators;
-import pl.edziennik.eDziennik.server.basics.validator.ServiceValidator;
+import pl.edziennik.eDziennik.server.basic.validator.ServiceValidator;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-class UserServiceImpl extends ServiceValidator<UserValidators, UserRequestDto> implements UserService {
+@Transactional(readOnly = true)
+class UserServiceImpl extends ServiceValidator<UserRequestDto> implements UserService {
 
     private final UserRepository repository;
     private final RoleRepository roleRepository;

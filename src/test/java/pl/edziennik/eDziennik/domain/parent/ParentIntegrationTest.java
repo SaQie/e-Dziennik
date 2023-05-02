@@ -13,8 +13,8 @@ import pl.edziennik.eDziennik.domain.parent.domain.wrapper.ParentId;
 import pl.edziennik.eDziennik.domain.parent.services.validator.ParentValidators;
 import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.student.domain.wrapper.StudentId;
-import pl.edziennik.eDziennik.server.exceptions.BusinessException;
-import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
+import pl.edziennik.eDziennik.server.exception.BusinessException;
+import pl.edziennik.eDziennik.server.exception.EntityNotFoundException;
 
 import java.util.List;
 
@@ -102,7 +102,7 @@ public class ParentIntegrationTest extends BaseTesting {
     }
 
     @Test
-    public void shouldUpdateParent(){
+    public void shouldUpdateParent() {
         // TODO -> Przemyslec czy mozna zmieniac studenta rodzicowi ?
 
         // given
@@ -124,7 +124,7 @@ public class ParentIntegrationTest extends BaseTesting {
     }
 
     @Test
-    public void shouldThrowExceptionWhenUpdateAndStudentNotExists(){
+    public void shouldThrowExceptionWhenUpdateAndStudentNotExists() {
         ParentId parentId = createBaseParent();
         ParentRequestApiDto expected = parentUtil.prepareParentRequestApiDto("Tomasz", "Nowakowy", StudentId.wrap(999L), "asdasd", "ifeife@o2.pl");
         // when
@@ -135,7 +135,7 @@ public class ParentIntegrationTest extends BaseTesting {
     }
 
     @Test
-    public void shouldThrowExceptionWhenDeleteAndParentStillHasStudent(){
+    public void shouldThrowExceptionWhenDeleteAndParentStillHasStudent() {
         // given
         ParentId parentId = createBaseParent();
         Student student = em.find(Parent.class, parentId).getStudent();
@@ -189,6 +189,11 @@ public class ParentIntegrationTest extends BaseTesting {
         assertEquals(ParentRequestApiDto.PESEL, exception.getErrors().get(0).getField());
         String expectedExceptionMessage = resourceCreator.of(ParentValidators.EXCEPTION_MESSAGE_PARENT_PESEL_ALREADY_EXISTS, dto.pesel());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
+    }
+
+    @Test
+    public void shouldAutomaticallyInsertUserSuperIdAfterInsertParent() {
+        // TODO: after change test db to postgres
     }
 
 }

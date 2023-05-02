@@ -56,10 +56,5 @@ public class Student {
         this.address = address;
     }
 
-    @PrePersist
-    private void setIdentifier() {
-
-    }
-
 
 }

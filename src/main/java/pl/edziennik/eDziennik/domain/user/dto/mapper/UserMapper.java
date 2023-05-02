@@ -3,9 +3,10 @@ package pl.edziennik.eDziennik.domain.user.dto.mapper;
 import pl.edziennik.eDziennik.domain.admin.dto.AdminRequestApiDto;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.role.domain.Role;
-import pl.edziennik.eDziennik.domain.user.domain.User;
+import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
+import pl.edziennik.eDziennik.domain.user.domain.User;
 import pl.edziennik.eDziennik.domain.user.dto.UserRequestDto;
 
 public class UserMapper {
@@ -28,6 +29,10 @@ public class UserMapper {
 
     public static User toEntity(ParentRequestApiDto dto) {
         return new User(dto.username(), dto.password(), dto.email());
+    }
+
+    public static User toEntity(Student student){
+        return new User();
     }
 
     public static UserRequestDto toDto(StudentRequestApiDto dto) {

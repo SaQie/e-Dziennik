@@ -10,8 +10,8 @@ import pl.edziennik.eDziennik.domain.settings.domain.wrapper.SettingsId;
 import pl.edziennik.eDziennik.domain.settings.dto.SettingsDto;
 import pl.edziennik.eDziennik.domain.settings.dto.SettingsValue;
 import pl.edziennik.eDziennik.domain.settings.services.SettingsService;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponse;
-import pl.edziennik.eDziennik.server.basics.dto.ApiResponseCreator;
+import pl.edziennik.eDziennik.server.basic.dto.ApiResponse;
+import pl.edziennik.eDziennik.server.basic.dto.ApiResponseCreator;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.net.URI;

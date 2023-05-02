@@ -6,10 +6,10 @@ import pl.edziennik.eDziennik.domain.parent.domain.Parent;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.parent.domain.wrapper.ParentId;
 import pl.edziennik.eDziennik.domain.parent.repository.ParentRepository;
-import pl.edziennik.eDziennik.server.basics.dto.ApiValidationResult;
-import pl.edziennik.eDziennik.server.basics.service.BaseService;
-import pl.edziennik.eDziennik.server.basics.validator.AbstractValidator;
-import pl.edziennik.eDziennik.server.exceptions.ExceptionType;
+import pl.edziennik.eDziennik.server.basic.dto.ApiValidationResult;
+import pl.edziennik.eDziennik.server.basic.service.BaseService;
+import pl.edziennik.eDziennik.server.basic.validator.AbstractValidator;
+import pl.edziennik.eDziennik.server.exception.ExceptionType;
 import pl.edziennik.eDziennik.server.utils.ResourceCreator;
 
 import java.util.Optional;

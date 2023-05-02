@@ -13,6 +13,8 @@ import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.Pesel;
 import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.PhoneNumber;
 import pl.edziennik.eDziennik.domain.school.domain.School;
 import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
+import pl.edziennik.eDziennik.domain.subject.dto.SubjectResponseApiDto;
+import pl.edziennik.eDziennik.domain.subject.dto.mapper.SubjectMapper;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
@@ -22,13 +24,15 @@ import pl.edziennik.eDziennik.domain.teacher.repository.TeacherRepository;
 import pl.edziennik.eDziennik.domain.user.domain.User;
 import pl.edziennik.eDziennik.domain.user.dto.mapper.UserMapper;
 import pl.edziennik.eDziennik.domain.user.services.UserService;
-import pl.edziennik.eDziennik.server.basics.page.PageDto;
-import pl.edziennik.eDziennik.server.basics.service.BaseService;
+import pl.edziennik.eDziennik.server.basic.page.PageDto;
+import pl.edziennik.eDziennik.server.basic.service.BaseService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Transactional(readOnly = true)
 class TeacherServiceImpl extends BaseService implements TeacherService {
 
     private final TeacherRepository repository;
@@ -80,7 +84,7 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
             // update teacher data
             Teacher teacher = optionalTeacher.get();
             schoolRepository.findById(dto.schoolId())
-                    .ifPresentOrElse(teacher::setSchool, notFoundException(School.class,dto.schoolId()));
+                    .ifPresentOrElse(teacher::setSchool, notFoundException(School.class, dto.schoolId()));
 
             // update person information teacher data
             teacher.setPersonInformation(PersonInformation.of(dto.firstName(),
@@ -103,6 +107,11 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
     public TeacherResponseApiDto getTeacherByUsername(String username) {
         Teacher teacher = repository.getByUserUsername(username);
         return teacher == null ? null : TeacherMapper.toDto(teacher);
+    }
+
+    @Override
+    public List<SubjectResponseApiDto> getTeacherSubjects(TeacherId teacherId) {
+        return repository.getTeacherSubjectList(teacherId).stream().map(SubjectMapper::toDto).toList();
     }
 
     private Teacher mapToEntity(TeacherRequestApiDto dto) {

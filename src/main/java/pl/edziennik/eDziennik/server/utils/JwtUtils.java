@@ -33,8 +33,8 @@ public class JwtUtils {
     @Value("${jwt.token.prefix}")
     private String tokenPrefix;
 
-    public String generateJwtToken(UserDetails userDetails, Long id) {
-        return generateTokenFromUsername(userDetails, id);
+    public String generateJwtToken(UserDetails userDetails, Long id, Long superId) {
+        return generateTokenFromUsername(userDetails, id, superId);
     }
 
     public String generateRefreshToken(UserDetails userDetails, Long id) {
@@ -50,7 +50,7 @@ public class JwtUtils {
                 .sign(Algorithm.HMAC256(secretKey));
     }
 
-    private String generateTokenFromUsername(UserDetails userDetails, Long id) {
+    private String generateTokenFromUsername(UserDetails userDetails, Long id, Long superId) {
         if (userDetails.getAuthorities() != null){
             return JWT.create()
                     .withSubject(userDetails.getUsername())
@@ -58,6 +58,7 @@ public class JwtUtils {
                             .toInstant().toEpochMilli() + expirationTime))
                     .withClaim("roles", userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                     .withClaim("id", id)
+                    .withClaim("superId", superId)
                     .sign(Algorithm.HMAC256(secretKey));
         }
         return JWT.create()
@@ -65,6 +66,7 @@ public class JwtUtils {
                 .withExpiresAt(Instant.ofEpochMilli(ZonedDateTime.now(ZoneId.systemDefault())
                         .toInstant().toEpochMilli() + expirationTime))
                 .withClaim("id", id)
+                .withClaim("superId", superId)
                 .sign(Algorithm.HMAC256(secretKey));
     }
 
@@ -80,11 +82,18 @@ public class JwtUtils {
                 .verify(token.replace(tokenPrefix + " ", ""))
                 .getSubject();
         jwtData.put("username", login);
+
         String id = JWT.require(Algorithm.HMAC256(secretKey))
                 .build()
                 .verify(token.replace(tokenPrefix + " ", ""))
                 .getClaim("id").asString();
         jwtData.put("id", id);
+
+        String superId = JWT.require(Algorithm.HMAC256(secretKey))
+                .build()
+                .verify(token.replace(tokenPrefix + " ", ""))
+                .getClaim("superId").asString();
+        jwtData.put("superId", superId);
 
         return jwtData;
     }

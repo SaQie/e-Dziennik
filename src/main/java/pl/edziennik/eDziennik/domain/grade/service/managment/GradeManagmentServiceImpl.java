@@ -18,9 +18,9 @@ import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentGradesIn
 import pl.edziennik.eDziennik.domain.studentsubject.repository.StudentSubjectRepository;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.domain.teacher.repository.TeacherRepository;
-import pl.edziennik.eDziennik.server.basics.service.BaseService;
-import pl.edziennik.eDziennik.server.exceptions.BusinessException;
-import pl.edziennik.eDziennik.server.exceptions.EntityNotFoundException;
+import pl.edziennik.eDziennik.server.basic.service.BaseService;
+import pl.edziennik.eDziennik.server.exception.BusinessException;
+import pl.edziennik.eDziennik.server.exception.EntityNotFoundException;
 
 import java.util.Optional;
 

@@ -8,8 +8,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.Pesel;
 import pl.edziennik.eDziennik.domain.role.domain.wrapper.RoleId;
+import pl.edziennik.eDziennik.domain.subject.domain.Subject;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
+
+import java.util.List;
 
 @Repository
 public interface TeacherRepository extends JpaRepository<Teacher, TeacherId> {
@@ -26,6 +29,9 @@ public interface TeacherRepository extends JpaRepository<Teacher, TeacherId> {
 
     Teacher getByUserUsername(String username);
 
+    @Query("SELECT s FROM Subject s where s.teacher.id = :#{#teacherId.id()}")
+    List<Subject> getTeacherSubjectList(TeacherId teacherId);
+
     @EntityGraph(
             type = EntityGraph.EntityGraphType.FETCH,
             attributePaths = {
@@ -36,5 +42,6 @@ public interface TeacherRepository extends JpaRepository<Teacher, TeacherId> {
             }
     )
     Page<Teacher> findAll(Pageable pageable);
+
 
 }

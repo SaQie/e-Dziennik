@@ -9,7 +9,7 @@ import pl.edziennik.eDziennik.domain.settings.domain.wrapper.SettingsId;
 import pl.edziennik.eDziennik.domain.settings.dto.SettingsDto;
 import pl.edziennik.eDziennik.domain.settings.dto.SettingsValue;
 import pl.edziennik.eDziennik.domain.settings.services.SettingsService;
-import pl.edziennik.eDziennik.server.exceptions.BusinessException;
+import pl.edziennik.eDziennik.server.exception.BusinessException;
 
 import java.util.List;
 

@@ -25,7 +25,8 @@ public class JwtService {
         }
         UserDetails userDetails = authUserDetailsService.loadUserByUsername(username);
         Long id = Long.valueOf(jwtData.get("id"));
-        return jwtUtils.generateJwtToken(userDetails, id);
+        Long superId = Long.valueOf(jwtData.get("superId"));
+        return jwtUtils.generateJwtToken(userDetails, id, superId);
     }
 
 }

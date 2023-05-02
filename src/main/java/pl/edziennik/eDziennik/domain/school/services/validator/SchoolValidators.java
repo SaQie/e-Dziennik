@@ -1,7 +1,7 @@
 package pl.edziennik.eDziennik.domain.school.services.validator;
 
 import pl.edziennik.eDziennik.domain.school.dto.SchoolRequestApiDto;
-import pl.edziennik.eDziennik.server.basics.validator.AbstractValidator;
+import pl.edziennik.eDziennik.server.basic.validator.AbstractValidator;
 
 public interface SchoolValidators extends AbstractValidator<SchoolRequestApiDto> {
 

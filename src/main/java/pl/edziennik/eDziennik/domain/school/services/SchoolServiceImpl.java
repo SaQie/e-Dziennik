@@ -14,13 +14,14 @@ import pl.edziennik.eDziennik.domain.school.dto.mapper.SchoolMapper;
 import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
 import pl.edziennik.eDziennik.domain.schoollevel.domain.SchoolLevel;
 import pl.edziennik.eDziennik.domain.schoollevel.repository.SchoolLevelRepository;
-import pl.edziennik.eDziennik.server.basics.page.PageDto;
-import pl.edziennik.eDziennik.server.basics.service.BaseService;
+import pl.edziennik.eDziennik.server.basic.page.PageDto;
+import pl.edziennik.eDziennik.server.basic.service.BaseService;
 
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Transactional(readOnly = true)
 class SchoolServiceImpl extends BaseService implements SchoolService {
 
     private final SchoolRepository schoolRepository;
