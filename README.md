@@ -20,7 +20,7 @@ _____________
 
 
 <div>
-    <h3>About project <img src="images/info.png" width="20"></h3>
+    <h3>About project <img src="images/Info.png" width="20"></h3>
 </div>
 
 _____________
@@ -32,12 +32,12 @@ _____________
 
 | Description                   |                                            |
 |-------------------------------|--------------------------------------------|
-| **CRUD schools**              | ![#00d1a0](images/School Building.png)     |
-| **CRUD school classes**       | ![#00d1a0](images/Meeting Room.png)        |
-| **CRUD students**             | ![#00d1a0](images/Student Male.png)        |
+| **CRUD schools**              | ![#00d1a0](images/School_Building.png)     |
+| **CRUD school classes**       | ![#00d1a0](images/Meeting_Room.png)        |
+| **CRUD students**             | ![#00d1a0](images/Student_Male.png)        |
 | **CRUD teachers**             | ![#00d1a0](images/Teacher.png)             |
 | **CRUD parents**              | ![#00d1a0](images/Family.png)              |
-| **CRUD admins**               | ![#00d1a0](images/Admin Settings Male.png) |
+| **CRUD admins**               | ![#00d1a0](images/Admin_Settings_Male.png) |
 | **CRUD subjects**             | ![#00d1a0](images/Read.png)                |
 | **CRUD grades**               | ![#00d1a0](images/Numbers.png)             |
 | **Dynamic app configuration** | ![#FC0000](images/Services.png)            |
