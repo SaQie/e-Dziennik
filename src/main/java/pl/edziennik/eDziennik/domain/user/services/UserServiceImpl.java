@@ -28,7 +28,7 @@ class UserServiceImpl extends ServiceValidator<UserRequestDto> implements UserSe
     @Override
     @Transactional
     public User createUser(final UserRequestDto dto) {
-        runValidators(dto);
+        validate(dto);
         User user = UserMapper.toEntity(dto);
         Role role = roleRepository.findByName(dto.role())
                 .orElse(roleRepository.getReferenceById(Role.RoleConst.ROLE_STUDENT.getId()));
@@ -42,7 +42,7 @@ class UserServiceImpl extends ServiceValidator<UserRequestDto> implements UserSe
     public void updateUser(final UserId userId, final UserRequestDto dto) {
         Optional<User> userOptional = repository.findById(userId);
         if (userOptional.isPresent()) {
-            runValidators(dto);
+            validate(dto);
             User user = userOptional.get();
             user.setUsername(dto.username());
             user.setEmail(dto.email());

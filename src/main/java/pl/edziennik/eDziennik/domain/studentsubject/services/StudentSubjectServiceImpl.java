@@ -9,8 +9,8 @@ import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
 import pl.edziennik.eDziennik.domain.studentsubject.domain.StudentSubject;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.mapper.StudentSubjectMapper;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.request.StudentSubjectRequestDto;
-import pl.edziennik.eDziennik.domain.studentsubject.dto.response.AllStudentsGradesInSubjectsDto;
-import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentGradesInSubjectDto;
+import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentGradesInSubjectResponseApiDto;
+import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentGradesInSubjectsDto;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentSubjectResponseDto;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentSubjectsResponseDto;
 import pl.edziennik.eDziennik.domain.studentsubject.repository.StudentSubjectRepository;
@@ -43,14 +43,21 @@ class StudentSubjectServiceImpl extends BaseService implements StudentSubjectSer
 
 
     @Override
-    public StudentGradesInSubjectDto getStudentSubjectGrades(final StudentId studentId, final SubjectId subjectId) {
+    public StudentGradesInSubjectResponseApiDto getStudentSubjectGrades(final StudentId studentId, final SubjectId subjectId) {
         StudentSubject studentSubject = repository.findByStudentIdAndSubjectId(studentId, subjectId)
-                .orElseThrow(notFoundException(studentId, StudentSubject.class));;
+                .orElseThrow(notFoundException(studentId, StudentSubject.class));
+        ;
         return StudentSubjectMapper.toStudentSubjectRatingsDto(studentSubject);
     }
 
     @Override
-    public AllStudentsGradesInSubjectsDto getStudentAllSubjectsGrades(final StudentId studentId) {
+    public List<StudentGradesInSubjectResponseApiDto> getSpecificSubjectStudentsGrades(SubjectId subjectId) {
+        List<StudentSubject> studentSubjects = repository.findStudentSubjectsBySubjectId(subjectId);
+        return StudentSubjectMapper.toStudentGradesInSubject(studentSubjects);
+    }
+
+    @Override
+    public StudentGradesInSubjectsDto getStudentAllSubjectsGrades(final StudentId studentId) {
         List<StudentSubject> entities = repository.findStudentSubjectsByStudentId(studentId);
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(notFoundException(studentId, Student.class));

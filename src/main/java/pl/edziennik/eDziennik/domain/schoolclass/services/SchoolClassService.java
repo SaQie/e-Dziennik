@@ -17,6 +17,10 @@ public interface SchoolClassService {
     void deleteSchoolClassById(final SchoolClassId schoolClassId);
 
     PageDto<SchoolClassResponseApiDto> findAllSchoolClasses(final Pageable Pageable);
+
     SchoolClassResponseApiDto updateSchoolClass(final SchoolClassId schoolClassId, final SchoolClassRequestApiDto dto);
-    PageDto<SchoolClassResponseApiDto> findSchoolClassesBySchoolId(final Pageable pageable,final SchoolId schoolId);
+
+    PageDto<SchoolClassResponseApiDto> findSchoolClassesBySchoolId(final Pageable pageable, final SchoolId schoolId);
+
+
 }

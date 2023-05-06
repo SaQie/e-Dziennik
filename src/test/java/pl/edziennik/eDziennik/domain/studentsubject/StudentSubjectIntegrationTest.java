@@ -13,7 +13,7 @@ import pl.edziennik.eDziennik.domain.student.domain.wrapper.StudentId;
 import pl.edziennik.eDziennik.domain.student.dto.StudentRequestApiDto;
 import pl.edziennik.eDziennik.domain.studentsubject.domain.wrapper.StudentSubjectSeparateId;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.request.StudentSubjectRequestDto;
-import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentGradesInSubjectDto;
+import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentGradesInSubjectResponseApiDto;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentSubjectsResponseDto;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.response.SubjectGradesResponseDto;
 import pl.edziennik.eDziennik.domain.studentsubject.services.validator.StudentSubjectValidators;
@@ -127,13 +127,13 @@ public class StudentSubjectIntegrationTest extends BaseTesting {
         gradeManagmentService.assignGradeToStudentSubject(studentSubjectSeparateId, expectedGrade);
 
         // then
-        StudentGradesInSubjectDto studentSubjectGrades = studentSubjectService.getStudentSubjectGrades(studentId, subjectId);
+        StudentGradesInSubjectResponseApiDto studentSubjectGrades = studentSubjectService.getStudentSubjectGrades(studentId, subjectId);
 
-        SubjectGradesResponseDto actualSubject = studentSubjectGrades.getSubject();
+        SubjectGradesResponseDto actualSubject = studentSubjectGrades.subjectData();
         assertEquals(expectedSubject.name(), actualSubject.getName());
         assertEquals(subjectId, actualSubject.getSubjectId());
 
-        List<SubjectGradesResponseDto.GradesDto> actualGrades = studentSubjectGrades.getSubject().getGrades();
+        List<SubjectGradesResponseDto.GradesDto> actualGrades = studentSubjectGrades.subjectData().getGrades();
         assertEquals(1, actualGrades.size());
 
         SubjectGradesResponseDto.GradesDto actualGrade = actualGrades.get(0);

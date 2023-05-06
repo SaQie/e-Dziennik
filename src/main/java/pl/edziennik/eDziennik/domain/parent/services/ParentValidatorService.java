@@ -12,7 +12,7 @@ import pl.edziennik.eDziennik.server.basic.validator.ServiceValidator;
 class ParentValidatorService extends ServiceValidator<ParentRequestApiDto> {
 
     protected void valid(ParentRequestApiDto dto) {
-        runValidators(dto);
+        validate(dto);
     }
 
 

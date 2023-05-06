@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.eDziennik.domain.student.domain.wrapper.StudentId;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.request.StudentSubjectRequestDto;
-import pl.edziennik.eDziennik.domain.studentsubject.dto.response.AllStudentsGradesInSubjectsDto;
-import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentGradesInSubjectDto;
+import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentGradesInSubjectResponseApiDto;
+import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentGradesInSubjectsDto;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentSubjectResponseDto;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentSubjectsResponseDto;
 import pl.edziennik.eDziennik.domain.studentsubject.services.StudentSubjectService;
@@ -18,6 +18,7 @@ import pl.edziennik.eDziennik.server.basic.dto.ApiResponse;
 import pl.edziennik.eDziennik.server.basic.dto.ApiResponseCreator;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -53,7 +54,7 @@ public class StudentSubjectController {
     @Operation(summary = "Get specific student subject grades",
             description = "This method returns list of grades for specific student subject")
     public ApiResponse<?> getStudentSubjectRatings(@PathVariable StudentId studentId, @PathVariable SubjectId subjectId) {
-        StudentGradesInSubjectDto responseApiDto = service.getStudentSubjectGrades(studentId, subjectId);
+        StudentGradesInSubjectResponseApiDto responseApiDto = service.getStudentSubjectGrades(studentId, subjectId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
     }
@@ -63,7 +64,17 @@ public class StudentSubjectController {
     @Operation(summary = "Get list of all student grades",
             description = "This method returns list of all specific student grades for all subjects")
     public ApiResponse<?> getStudentAllSubjectsRatings(@PathVariable StudentId studentId) {
-        AllStudentsGradesInSubjectsDto responseApiDto = service.getStudentAllSubjectsGrades(studentId);
+        StudentGradesInSubjectsDto responseApiDto = service.getStudentAllSubjectsGrades(studentId);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+        return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
+    }
+
+    @GetMapping("/subjects/{subjectId}/grades")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get list of all student grades",
+            description = "This method returns list of all specific student grades for all subjects")
+    public ApiResponse<List<StudentGradesInSubjectResponseApiDto>> getSpecificSubjectAllStudentsGrades(@PathVariable SubjectId subjectId) {
+        List<StudentGradesInSubjectResponseApiDto> responseApiDto = service.getSpecificSubjectStudentsGrades(subjectId);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ApiResponseCreator.buildApiResponse(HttpMethod.GET, HttpStatus.OK, responseApiDto, uri);
     }

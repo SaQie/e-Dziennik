@@ -1,7 +1,7 @@
 package pl.edziennik.eDziennik.domain.schoolclass.services.validator;
 
-import pl.edziennik.eDziennik.server.basic.validator.AbstractValidator;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassRequestApiDto;
+import pl.edziennik.eDziennik.server.basic.validator.AbstractValidator;
 
 public interface SchoolClassValidators extends AbstractValidator<SchoolClassRequestApiDto> {
 
@@ -12,5 +12,6 @@ public interface SchoolClassValidators extends AbstractValidator<SchoolClassRequ
     String EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL = "teacher.not.belongs.to.school";
     String EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER = "teacher.is.already.supervising.teacher";
     String EXCEPTION_MESSAGE_SCHOOL_CLASS_ALREADY_EXIST = "school.class.already.exist";
+
 
 }

@@ -30,4 +30,9 @@ public interface StudentSubjectRepository extends JpaRepository<StudentSubject, 
             "WHERE ss.student.id =:#{#studentId.id()}")
     List<StudentSubject> findStudentSubjectsByStudentId(StudentId studentId);
 
+    @Query("SELECT ss from StudentSubject ss " +
+            "JOIN FETCH ss.student " +
+            "JOIN FETCH ss.subject " +
+            "where ss.subject.id = :#{#subjectId.id()}")
+    List<StudentSubject> findStudentSubjectsBySubjectId(SubjectId subjectId);
 }

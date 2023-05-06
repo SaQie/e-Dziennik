@@ -5,6 +5,9 @@ import pl.edziennik.eDziennik.server.basic.dto.ApiValidationResult;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Business exception that represent exception of business layer
+ */
 public class BusinessException extends RuntimeException{
 
     private List<ApiValidationResult> errors = new ArrayList<>();

@@ -29,7 +29,7 @@ public abstract class ServiceValidator<INPUT> extends BaseService {
      *
      * @param input -> Object to validate
      */
-    protected void runValidators(final INPUT input) {
+    protected void validate(final INPUT input) {
         List<ApiValidationResult> errors = new ArrayList<>();
         validators.forEach(valid -> valid.validate(input).ifPresent(error -> {
             if (error.isThrownImmediately()) {
@@ -48,7 +48,7 @@ public abstract class ServiceValidator<INPUT> extends BaseService {
      * @param input           -> Object to validate
      * @param validatePurpose -> Type of validation
      */
-    protected void runValidators(final INPUT input, final ValidatePurpose validatePurpose) {
+    protected void validate(final INPUT input, final ValidatePurpose validatePurpose) {
         List<ApiValidationResult> errors = new ArrayList<>();
         validators.stream()
                 .filter(validator -> validator.getValidatorPurposes().contains(validatePurpose))
@@ -71,7 +71,7 @@ public abstract class ServiceValidator<INPUT> extends BaseService {
      * @param input              -> Object to validate
      * @param validatePurposeSet -> Types of validation
      */
-    protected void runValidators(final INPUT input,final Set<ValidatePurpose> validatePurposeSet) {
+    protected void validate(final INPUT input, final Set<ValidatePurpose> validatePurposeSet) {
         List<ApiValidationResult> errors = new ArrayList<>();
         validators.stream()
                 .filter(validator -> validator.getValidatorPurposes().containsAll(validatePurposeSet))
@@ -118,5 +118,22 @@ public abstract class ServiceValidator<INPUT> extends BaseService {
             throw new BusinessException(validateResult.get());
         }
     }
+
+    /**
+     * This method run selected validator by validator name with any inputs
+     *
+     * @param validatorId
+     * @param inputs
+     * @param <T>
+     */
+    protected <T> void runSelectedValidator(String validatorId, final T... inputs) {
+        validatorId = Character.toLowerCase(validatorId.charAt(0)) + validatorId.substring(1);
+        AbstractValidator<T> bean = context.getBean(validatorId, AbstractValidator.class);
+        Optional<ApiValidationResult> validationResult = bean.validate(inputs);
+        if (validationResult.isPresent()) {
+            throw new BusinessException(validationResult.get());
+        }
+    }
+
 
 }

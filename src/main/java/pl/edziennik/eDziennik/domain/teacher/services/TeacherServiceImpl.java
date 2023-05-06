@@ -46,7 +46,7 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
     @Override
     @Transactional
     public TeacherResponseApiDto register(TeacherRequestApiDto dto) {
-        validatorService.validate(dto);
+        validatorService.valid(dto);
         User user = userService.createUser(UserMapper.toDto(dto));
         Teacher teacher = mapToEntity(dto);
         teacher.setUser(user);
@@ -80,7 +80,7 @@ class TeacherServiceImpl extends BaseService implements TeacherService {
     public TeacherResponseApiDto updateTeacher(final TeacherId teacherId, final TeacherRequestApiDto dto) {
         Optional<Teacher> optionalTeacher = repository.findById(teacherId);
         if (optionalTeacher.isPresent()) {
-            validatorService.validate(dto);
+            validatorService.valid(dto);
             // update teacher data
             Teacher teacher = optionalTeacher.get();
             schoolRepository.findById(dto.schoolId())

@@ -18,7 +18,7 @@ public class StudentSubjectMapper {
     private StudentSubjectMapper() {
     }
 
-    public static AllStudentsGradesInSubjectsDto toAllStudentSubjectRatingDto(List<StudentSubject> entites, Student student) {
+    public static StudentGradesInSubjectsDto toAllStudentSubjectRatingDto(List<StudentSubject> entites, Student student) {
 
         List<SubjectGradesResponseDto> subjectRatingsList = new ArrayList<>();
         for (StudentSubject entity : entites) {
@@ -29,10 +29,10 @@ public class StudentSubjectMapper {
             Subject subject = entity.getSubject();
             subjectRatingsList.add(new SubjectGradesResponseDto(subject.getSubjectId(), subject.getName(), grades));
         }
-        return new AllStudentsGradesInSubjectsDto(student.getStudentId(), student.getPersonInformation().firstName(), student.getPersonInformation().lastName(), subjectRatingsList);
+        return new StudentGradesInSubjectsDto(student.getStudentId(), student.getPersonInformation().firstName(), student.getPersonInformation().lastName(), subjectRatingsList);
     }
 
-    public static StudentGradesInSubjectDto toStudentSubjectRatingsDto(StudentSubject entity) {
+    public static StudentGradesInSubjectResponseApiDto toStudentSubjectRatingsDto(StudentSubject entity) {
         List<SubjectGradesResponseDto.GradesDto> ratings = new ArrayList<>();
 
         for (Grade grade : entity.getGrades()) {
@@ -41,7 +41,7 @@ public class StudentSubjectMapper {
         Subject subject = entity.getSubject();
         SubjectGradesResponseDto subjectGradesResponseDto = new SubjectGradesResponseDto(subject.getSubjectId(), subject.getName(), ratings);
         Student student = entity.getStudent();
-        return new StudentGradesInSubjectDto(student.getStudentId().id(), student.getPersonInformation().firstName(), student.getPersonInformation().lastName(), subjectGradesResponseDto);
+        return new StudentGradesInSubjectResponseApiDto(student.getStudentId(), student.getPersonInformation().fullName(), subjectGradesResponseDto);
     }
 
     public static StudentSubjectResponseDto toStudentSubjectResponseDto(StudentSubject entity) {
@@ -66,4 +66,28 @@ public class StudentSubjectMapper {
     }
 
 
+    public static List<StudentGradesInSubjectResponseApiDto> toStudentGradesInSubject(List<StudentSubject> studentSubjects) {
+        return studentSubjects.stream().map(studentSubject ->
+                // create StudentGradesInSubject that contains student information and specific subject data
+                new StudentGradesInSubjectResponseApiDto(
+                        studentSubject.getStudent().getStudentId(),
+                        studentSubject.getStudent().getPersonInformation().fullName(),
+                        // create specific student subject data
+                        new SubjectGradesResponseDto(
+                                studentSubject.getSubject().getSubjectId(),
+                                studentSubject.getSubject().getName(),
+                                // Create list of grades data per student subject
+                                studentSubject.getGrades()
+                                        .stream()
+                                        .map(grade -> new SubjectGradesResponseDto.GradesDto(
+                                                grade.getGradeId(),
+                                                grade.getGrade().grade,
+                                                grade.getWeight(),
+                                                grade.getDescription(),
+                                                grade.getTeacher().getTeacherId(),
+                                                grade.getTeacher().getPersonInformation().fullName(),
+                                                grade.getCreatedDate()))
+                                        .toList())
+                )).toList();
+    }
 }

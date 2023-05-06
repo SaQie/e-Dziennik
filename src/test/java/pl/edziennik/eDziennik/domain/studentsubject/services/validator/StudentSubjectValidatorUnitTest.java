@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.edziennik.eDziennik.BaseUnitTest;
+import pl.edziennik.eDziennik.domain.schoolclass.repository.SchoolClassRepository;
 import pl.edziennik.eDziennik.domain.student.domain.wrapper.StudentId;
 import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.request.StudentSubjectRequestDto;
@@ -42,6 +43,10 @@ public class StudentSubjectValidatorUnitTest extends BaseUnitTest {
     @Mock
     private ResourceCreator resourceCreator;
 
+
+    @Mock
+    private SchoolClassRepository schoolClassRepository;
+
     @Test
     public void shouldReturnApiErrorWhenStudentSubjectAlreadyExists() {
         // given
@@ -50,8 +55,8 @@ public class StudentSubjectValidatorUnitTest extends BaseUnitTest {
         StudentSubjectRequestDto dto = studentSubjectUtil.prepareStudentSubjectRequestDto(subjectId, studentId);
 
         when(repository.existsByStudentIdAndSubjectId(studentId, subjectId)).thenReturn(true);
-        when(studentRepository.findById(studentId)).thenReturn(Optional.of(studentSubjectUtil.prepareStudentWithSchoolClass(1L,"1b")));
-        when(subjectRepository.findById(subjectId)).thenReturn(Optional.of(studentSubjectUtil.prepareSubjectWithSchoolClass(1L,"1b")));
+        when(studentRepository.findById(studentId)).thenReturn(Optional.of(studentSubjectUtil.prepareStudentWithSchoolClass(1L, "1b")));
+        when(subjectRepository.findById(subjectId)).thenReturn(Optional.of(studentSubjectUtil.prepareSubjectWithSchoolClass(1L, "1b")));
 
         lenient().when(resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST, null, null))
                 .thenReturn(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_SUBJECT_ALREADY_EXIST);
@@ -75,8 +80,8 @@ public class StudentSubjectValidatorUnitTest extends BaseUnitTest {
         StudentId studentId = StudentId.wrap(1L);
         StudentSubjectRequestDto dto = studentSubjectUtil.prepareStudentSubjectRequestDto(subjectId, studentId);
 
-        when(studentRepository.findById(studentId)).thenReturn(Optional.of(studentSubjectUtil.prepareStudentWithSchoolClass(1L,"1b")));
-        when(subjectRepository.findById(subjectId)).thenReturn(Optional.of(studentSubjectUtil.prepareSubjectWithSchoolClass(2L,"2b")));
+        when(studentRepository.findById(studentId)).thenReturn(Optional.of(studentSubjectUtil.prepareStudentWithSchoolClass(1L, "1b")));
+        when(subjectRepository.findById(subjectId)).thenReturn(Optional.of(studentSubjectUtil.prepareSubjectWithSchoolClass(2L, "2b")));
         lenient().when(resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS, null, null))
                 .thenReturn(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS);
 
@@ -116,8 +121,8 @@ public class StudentSubjectValidatorUnitTest extends BaseUnitTest {
         StudentId studentId = StudentId.wrap(1L);
         StudentSubjectRequestDto dto = studentSubjectUtil.prepareStudentSubjectRequestDto(subjectId, studentId);
 
-        when(studentRepository.findById(studentId)).thenReturn(Optional.of(studentSubjectUtil.prepareStudentWithSchoolClass(1L,"1b")));
-        when(subjectRepository.findById(subjectId)).thenReturn(Optional.of(studentSubjectUtil.prepareSubjectWithSchoolClass(1L,"1b")));
+        when(studentRepository.findById(studentId)).thenReturn(Optional.of(studentSubjectUtil.prepareStudentWithSchoolClass(1L, "1b")));
+        when(subjectRepository.findById(subjectId)).thenReturn(Optional.of(studentSubjectUtil.prepareSubjectWithSchoolClass(1L, "1b")));
         lenient().when(resourceCreator.of(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS, "null null", null))
                 .thenReturn(StudentSubjectValidators.EXCEPTION_MESSAGE_STUDENT_CANNOT_BE_ASSIGNED_TO_SUBJECT_FROM_DIFFERENT_CLASS);
 

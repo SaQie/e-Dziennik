@@ -9,7 +9,10 @@ import org.springframework.stereotype.Repository;
 import pl.edziennik.eDziennik.domain.school.domain.wrapper.SchoolId;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.SchoolClass;
 import pl.edziennik.eDziennik.domain.schoolclass.domain.wrapper.SchoolClassId;
+import pl.edziennik.eDziennik.domain.subject.domain.wrapper.SubjectId;
 import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
+
+import java.util.List;
 
 @Repository
 public interface SchoolClassRepository extends JpaRepository<SchoolClass, SchoolClassId> {
@@ -42,6 +45,11 @@ public interface SchoolClassRepository extends JpaRepository<SchoolClass, School
             countQuery = "SELECT COUNT(sc) FROM SchoolClass sc where sc.school.id = :#{schoolId.id()}")
     Page<SchoolClass> findSchoolClassesBySchoolId(Pageable pageable, SchoolId schoolId);
 
+    @Query(value = "SELECT NEW pl.edziennik.eDziennik.domain.subject.domain.wrapper.SubjectId(s.id) " +
+            "FROM Subject s " +
+            "WHERE s.schoolClass.id = :#{#schoolClassId.id()}")
+    List<SubjectId> findAllSchoolClassSubjects(SchoolClassId schoolClassId);
+
     @EntityGraph(
             type = EntityGraph.EntityGraphType.FETCH,
             attributePaths = {
@@ -50,4 +58,5 @@ public interface SchoolClassRepository extends JpaRepository<SchoolClass, School
             }
     )
     Page<SchoolClass> findAll(Pageable pageable);
+
 }

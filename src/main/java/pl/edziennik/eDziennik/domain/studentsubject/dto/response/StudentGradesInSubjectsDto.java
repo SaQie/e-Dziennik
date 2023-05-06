@@ -7,7 +7,7 @@ import pl.edziennik.eDziennik.domain.student.domain.wrapper.StudentId;
 import java.util.List;
 
 @Getter
-public class AllStudentsGradesInSubjectsDto {
+public class StudentGradesInSubjectsDto {
 
     @JsonUnwrapped
     private final StudentId studentId;
@@ -17,7 +17,7 @@ public class AllStudentsGradesInSubjectsDto {
 
     private final List<SubjectGradesResponseDto> subjects;
 
-    public AllStudentsGradesInSubjectsDto(StudentId studentId, String firstName, String lastName, List<SubjectGradesResponseDto> subjects) {
+    public StudentGradesInSubjectsDto(StudentId studentId, String firstName, String lastName, List<SubjectGradesResponseDto> subjects) {
         this.studentId = studentId;
         this.firstName = firstName;
         this.lastName = lastName;

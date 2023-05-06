@@ -19,7 +19,7 @@ class StudentValidatorService extends ServiceValidator<StudentRequestApiDto> {
 
 
     protected void valid(final StudentRequestApiDto dto) {
-        runValidators(dto, ValidatePurpose.CREATE);
+        validate(dto, ValidatePurpose.CREATE);
         schoolClassRepository.findById(dto.schoolClassId())
                 .orElseThrow(notFoundException(dto.schoolClassId(), SchoolClass.class));
         schoolRepository.findById(dto.schoolId())

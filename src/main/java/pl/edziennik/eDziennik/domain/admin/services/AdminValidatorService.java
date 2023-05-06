@@ -11,6 +11,6 @@ class AdminValidatorService extends ServiceValidator<AdminRequestApiDto> {
 
 
     protected void valid(AdminRequestApiDto dto) {
-        runValidators(dto);
+        validate(dto);
     }
 }

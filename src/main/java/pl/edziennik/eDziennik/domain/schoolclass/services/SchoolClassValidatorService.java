@@ -11,6 +11,8 @@ class SchoolClassValidatorService extends ServiceValidator<SchoolClassRequestApi
 
 
     protected void valid(final SchoolClassRequestApiDto dto) {
-        runValidators(dto);
+        validate(dto);
     }
+
+
 }

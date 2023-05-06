@@ -11,7 +11,7 @@ class StudentSubjectValidatorService extends ServiceValidator<StudentSubjectRequ
 
 
     protected void valid(final StudentSubjectRequestDto dto) {
-        runValidators(dto);
+        validate(dto);
     }
 
 }

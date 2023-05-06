@@ -13,8 +13,8 @@ class TeacherValidatorService extends ServiceValidator<TeacherRequestApiDto> {
 
     private final SchoolRepository schoolRepository;
 
-    protected void validate(final TeacherRequestApiDto dto) {
-        runValidators(dto);
+    protected void valid(final TeacherRequestApiDto dto) {
+        super.validate(dto);
         schoolRepository.findById(dto.schoolId())
                 .orElseThrow(notFoundException(dto.schoolId(), School.class));
     }

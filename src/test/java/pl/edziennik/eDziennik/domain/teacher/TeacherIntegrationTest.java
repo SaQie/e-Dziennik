@@ -9,6 +9,9 @@ import org.springframework.test.context.ActiveProfiles;
 import pl.edziennik.eDziennik.BaseTesting;
 import pl.edziennik.eDziennik.domain.school.domain.School;
 import pl.edziennik.eDziennik.domain.school.domain.wrapper.SchoolId;
+import pl.edziennik.eDziennik.domain.subject.domain.wrapper.SubjectId;
+import pl.edziennik.eDziennik.domain.subject.dto.SubjectRequestApiDto;
+import pl.edziennik.eDziennik.domain.subject.dto.SubjectResponseApiDto;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
@@ -16,6 +19,8 @@ import pl.edziennik.eDziennik.domain.teacher.dto.TeacherResponseApiDto;
 import pl.edziennik.eDziennik.domain.teacher.services.validator.TeacherValidators;
 import pl.edziennik.eDziennik.server.exception.BusinessException;
 import pl.edziennik.eDziennik.server.exception.EntityNotFoundException;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -71,7 +76,7 @@ public class TeacherIntegrationTest extends BaseTesting {
     }
 
     @Test
-    public void shouldThrowExceptionWhenUpdateAndSchoolNotExists(){
+    public void shouldThrowExceptionWhenUpdateAndSchoolNotExists() {
         // given
         TeacherRequestApiDto dto = teacherUtil.prepareTeacherRequestDto();
         TeacherId id = teacherService.register(dto).teacherId();
@@ -186,6 +191,28 @@ public class TeacherIntegrationTest extends BaseTesting {
         String expectedExceptionMessage = resourceCreator.of(TeacherValidators.EXCEPTION_MESSAGE_PESEL_NOT_UNIQUE,
                 dto.pesel());
         assertEquals(expectedExceptionMessage, exception.getErrors().get(0).getCause());
+    }
+
+    @Test
+    public void shouldReturnListOfTeacherSubjects() {
+        // given
+        TeacherRequestApiDto teacherRequestApiDto = teacherUtil.prepareTeacherRequestDto();
+        TeacherId teacherId = teacherService.register(teacherRequestApiDto).teacherId();
+
+        SubjectRequestApiDto subjectRequestApiDto = subjectUtil.prepareSubjectRequestDto(teacherId);
+        SubjectId firstSubjectId = subjectService.createNewSubject(subjectRequestApiDto).subjectId();
+
+        SubjectRequestApiDto subjectRequestApiDto2 = subjectUtil.prepareSubjectRequestDto("Chemia", teacherId);
+        SubjectId secondSubjectId = subjectService.createNewSubject(subjectRequestApiDto2).subjectId();
+
+        // when
+        List<SubjectResponseApiDto> teacherSubjects = teacherService.getTeacherSubjects(teacherId);
+
+        // then
+        List<SubjectId> subjectIds = teacherSubjects.stream().map(SubjectResponseApiDto::subjectId).toList();
+        assertEquals(2, subjectIds.size());
+        assertTrue(subjectIds.contains(firstSubjectId));
+        assertTrue(subjectIds.contains(secondSubjectId));
     }
 
 

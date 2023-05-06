@@ -12,7 +12,6 @@ import pl.edziennik.eDziennik.domain.school.domain.wrapper.SchoolId;
 import pl.edziennik.eDziennik.domain.school.repository.SchoolRepository;
 import pl.edziennik.eDziennik.domain.schoolclass.dto.SchoolClassRequestApiDto;
 import pl.edziennik.eDziennik.domain.schoolclass.repository.SchoolClassRepository;
-import pl.edziennik.eDziennik.domain.student.repository.StudentRepository;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
 import pl.edziennik.eDziennik.domain.teacher.repository.TeacherRepository;
@@ -42,9 +41,6 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
 
     @Mock
     private TeacherRepository teacherRepository;
-
-    @Mock
-    private StudentRepository studentRepository;
 
     @Mock
     private SchoolRepository schoolRepository;
@@ -118,7 +114,7 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldNotReturnApiErrorWhenGivenTeacherIsFromTheSameSchool(){
+    public void shouldNotReturnApiErrorWhenGivenTeacherIsFromTheSameSchool() {
         // given
         TeacherId teacherId = TeacherId.wrap(1L);
         SchoolId schoolId = SchoolId.wrap(100L);
@@ -137,7 +133,7 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
 
 
     @Test
-    public void shouldReturnApiErrorWhenSchoolClassAlreadyExists(){
+    public void shouldReturnApiErrorWhenSchoolClassAlreadyExists() {
         // given
         SchoolId schoolId = SchoolId.wrap(100L);
         SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(TeacherId.wrap(1L));
@@ -159,7 +155,7 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldNotReturnApiErrorWhenSchoolClassNotExists(){
+    public void shouldNotReturnApiErrorWhenSchoolClassNotExists() {
         // given
         SchoolId schoolId = SchoolId.wrap(100L);
         SchoolClassRequestApiDto dto = schoolClassUtil.prepareSchoolClassRequest(TeacherId.wrap(1L));
@@ -174,5 +170,6 @@ public class SchoolClassValidatorUnitTest extends BaseUnitTest {
         // then
         assertFalse(validationResult.isPresent());
     }
+
 
 }

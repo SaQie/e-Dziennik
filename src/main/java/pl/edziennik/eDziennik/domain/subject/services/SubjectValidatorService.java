@@ -10,7 +10,7 @@ import pl.edziennik.eDziennik.server.basic.validator.ServiceValidator;
 class SubjectValidatorService extends ServiceValidator<SubjectRequestApiDto> {
 
     protected void valid(final SubjectRequestApiDto dto) {
-        runValidators(dto);
+        validate(dto);
 
     }
 }

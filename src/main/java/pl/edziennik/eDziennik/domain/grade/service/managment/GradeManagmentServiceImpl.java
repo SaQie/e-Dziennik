@@ -14,7 +14,7 @@ import pl.edziennik.eDziennik.domain.student.domain.Student;
 import pl.edziennik.eDziennik.domain.studentsubject.domain.StudentSubject;
 import pl.edziennik.eDziennik.domain.studentsubject.domain.wrapper.StudentSubjectSeparateId;
 import pl.edziennik.eDziennik.domain.studentsubject.dto.mapper.StudentSubjectMapper;
-import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentGradesInSubjectDto;
+import pl.edziennik.eDziennik.domain.studentsubject.dto.response.StudentGradesInSubjectResponseApiDto;
 import pl.edziennik.eDziennik.domain.studentsubject.repository.StudentSubjectRepository;
 import pl.edziennik.eDziennik.domain.teacher.domain.Teacher;
 import pl.edziennik.eDziennik.domain.teacher.repository.TeacherRepository;
@@ -36,7 +36,7 @@ class GradeManagmentServiceImpl extends BaseService implements GradeManagmentSer
 
     @Override
     @Transactional
-    public StudentGradesInSubjectDto assignGradeToStudentSubject(final StudentSubjectSeparateId studentSubjectId, final GradeRequestApiDto dto) {
+    public StudentGradesInSubjectResponseApiDto assignGradeToStudentSubject(final StudentSubjectSeparateId studentSubjectId, final GradeRequestApiDto dto) {
         StudentSubject studentSubject = studentSubjectRepository.findByStudentIdAndSubjectId(studentSubjectId.studentId(), studentSubjectId.subjectId())
                 .orElseThrow(notFoundException(studentSubjectId.studentId(), Student.class));
         Grade grade = insertNewGrade(dto, studentSubject);
@@ -56,7 +56,7 @@ class GradeManagmentServiceImpl extends BaseService implements GradeManagmentSer
     }
 
     @Override
-    public StudentGradesInSubjectDto updateStudentSubjectGrade(final StudentSubjectSeparateId studentSubjectId, GradeId gradeId, GradeRequestApiDto requestApiDto) {
+    public StudentGradesInSubjectResponseApiDto updateStudentSubjectGrade(final StudentSubjectSeparateId studentSubjectId, GradeId gradeId, GradeRequestApiDto requestApiDto) {
         StudentSubject studentSubject = studentSubjectRepository.findByStudentIdAndSubjectId(studentSubjectId.studentId(), studentSubjectId.subjectId())
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Student " + studentSubjectId.studentId().id() + " not assigned to subject " + studentSubjectId.subjectId().id()));

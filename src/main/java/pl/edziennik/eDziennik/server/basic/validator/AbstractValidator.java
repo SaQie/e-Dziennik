@@ -23,12 +23,13 @@ public interface AbstractValidator<INPUT> {
         return Set.of(ValidatePurpose.CREATE);
     }
 
-    default String getValidatorName(Class clazz) {
-        return clazz.getSimpleName().substring(0, 1).toLowerCase()
-                + clazz.getSimpleName().substring(1);
+    default Optional<ApiValidationResult> validate(INPUT e) {
+        return Optional.empty();
     }
 
-    Optional<ApiValidationResult> validate(INPUT e);
+    default Optional<ApiValidationResult> validate(INPUT... inputs) {
+        return Optional.empty();
+    }
 
 
 }
