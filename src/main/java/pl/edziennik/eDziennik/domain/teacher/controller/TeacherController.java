@@ -13,10 +13,15 @@ import pl.edziennik.eDziennik.domain.teacher.domain.wrapper.TeacherId;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherRequestApiDto;
 import pl.edziennik.eDziennik.domain.teacher.dto.TeacherResponseApiDto;
 import pl.edziennik.eDziennik.domain.teacher.services.TeacherService;
+import pl.edziennik.eDziennik.infrastructure.CreateUserCommand;
+import pl.edziennik.eDziennik.infrastructure.GetUserQuery;
+import pl.edziennik.eDziennik.infrastructure.UpdateUserCommand;
+import pl.edziennik.eDziennik.infrastructure.spring.dispatcher.Dispatcher;
 import pl.edziennik.eDziennik.server.authentication.AuthCredentials;
 import pl.edziennik.eDziennik.server.basic.dto.ApiResponse;
 import pl.edziennik.eDziennik.server.basic.dto.ApiResponseCreator;
 import pl.edziennik.eDziennik.server.basic.page.PageDto;
+import pl.edziennik.eDziennik.server.basic.vo.Identifier;
 
 import java.net.URI;
 import java.util.List;
@@ -27,6 +32,23 @@ import java.util.List;
 class TeacherController {
 
     private final TeacherService service;
+    private final Dispatcher handlerResolver;
+
+    @GetMapping("/123")
+    public void testtt(@RequestBody CreateUserCommand createUserCommand){
+        Identifier identifier = handlerResolver.callHandler(createUserCommand);
+
+    }
+
+    @GetMapping("/12345")
+    public void testtttttt(@RequestBody GetUserQuery query){
+        handlerResolver.callHandler(query);
+    }
+
+    @GetMapping("/1234")
+    public void test22(@RequestBody UpdateUserCommand updateUserCommand){
+        handlerResolver.callHandler(updateUserCommand);
+    }
 
     @PostMapping("/login")
     public void login(@RequestBody AuthCredentials authCredentials) {

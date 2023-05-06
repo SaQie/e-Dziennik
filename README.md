@@ -67,6 +67,17 @@ List of task's I will implements in future in this project:
 * *Add interactive panel that allows to run groovy script and get result(for homeworks)* ❌
 * *And more.....*
 
+# 🪨 Milestones
+___
+
+- *(15/09/2022) Start project*
+  - When I started the project, I decided to implement DAO pattern instead of Repository pattern
+- *(21/12/2022)* Start client desktop project for this app     <a href="https://github.com/SaQie/e-Dziennik-desktop"><strong>Move to client »</strong></a>
+- *(24/03/2023) Change persistence layer to Spring Data Jpa repositories*
+  - I decided to change my persistence layer, due to i had a lot of problems with DAO pattern (Pagination, transactions etc.)
+- *(06/05/2023) Changed architecture layer to CQRS, check <strong>[Architecture Look »](#-architecture-look)</strong>*
+
+
 # 👨‍💻 Tech stack
 
 _____
@@ -87,7 +98,15 @@ _____
 * Maven
 * GitHub with GitHub Workflows
 
-# 🖥️ How to run
+# 🗾 Architecture look
+___
+
+*I am currently using CQRS architecture in my project.*
+*Architecture look is available in a picture below:*
+
+![#FC0000](images/CQRS_architecture.png)
+
+#  🖥️ How to run
 
 _____
 Project has a docker-compose file that allows to run application very simple:
