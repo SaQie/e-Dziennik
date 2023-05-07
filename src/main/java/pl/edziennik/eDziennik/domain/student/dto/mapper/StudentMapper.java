@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.domain.student.dto.mapper;
 
+import pl.edziennik.eDziennik.command.student.service.create.CreateStudentCommand;
 import pl.edziennik.eDziennik.domain.address.dto.mapper.AddressMapper;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.mapper.ParentMapper;
 import pl.edziennik.eDziennik.domain.personinformation.dto.mapper.PersonInformationMapper;
@@ -71,6 +72,13 @@ public class StudentMapper {
         return new Student(
                 PersonInformationMapper.mapToPersonInformation(dto),
                 AddressMapper.mapToAddress(dto)
+        );
+    }
+
+    public static Student toEntity(CreateStudentCommand command){
+        return new Student(
+                PersonInformationMapper.mapToPersonInformation(command),
+                AddressMapper.mapToAddress(command)
         );
     }
 }

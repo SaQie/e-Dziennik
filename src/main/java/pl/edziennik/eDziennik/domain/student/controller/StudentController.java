@@ -18,7 +18,7 @@ import pl.edziennik.eDziennik.server.basic.page.PageDto;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/api/v1/students/")
+//@RequestMapping("/api/v1/students/")
 @AllArgsConstructor
 public class StudentController {
 

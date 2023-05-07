@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.domain.personinformation.dto.mapper;
 
+import pl.edziennik.eDziennik.command.student.service.create.CreateStudentCommand;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.personinformation.domain.PersonInformation;
 import pl.edziennik.eDziennik.domain.personinformation.domain.wrapper.Pesel;
@@ -25,4 +26,7 @@ public class PersonInformationMapper {
         return PersonInformation.of(dto.firstName(), dto.lastName(), PhoneNumber.of(dto.phoneNumber()), Pesel.of(dto.pesel()));
     }
 
+    public static PersonInformation mapToPersonInformation(CreateStudentCommand command) {
+        return PersonInformation.of(command.firstName(), command.lastName(), PhoneNumber.of(command.phoneNumber()), Pesel.of(command.pesel()));
+    }
 }

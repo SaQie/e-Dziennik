@@ -7,4 +7,7 @@ import pl.edziennik.eDziennik.domain.user.domain.wrapper.UserId;
 
 @Repository
 public interface UserCommandRepository extends JpaRepository<User, UserId> {
+
+
+
 }

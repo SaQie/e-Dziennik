@@ -1,5 +1,6 @@
 package pl.edziennik.eDziennik.domain.address.dto.mapper;
 
+import pl.edziennik.eDziennik.command.student.service.create.CreateStudentCommand;
 import pl.edziennik.eDziennik.domain.address.domain.Address;
 import pl.edziennik.eDziennik.domain.parent.domain.dto.ParentRequestApiDto;
 import pl.edziennik.eDziennik.domain.school.dto.SchoolRequestApiDto;
@@ -41,5 +42,9 @@ public class AddressMapper {
         addressEntity.setCity(dto.city());
         addressEntity.setPostalCode(dto.postalCode());
         return addressEntity;
+    }
+
+    public static Address mapToAddress(CreateStudentCommand command) {
+        return new Address(command.address(), command.city(), command.postalCode());
     }
 }

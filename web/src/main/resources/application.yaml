@@ -1,0 +1,39 @@
+spring:
+  sql:
+    init:
+      mode: embedded
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  datasource:
+    #    url: jdbc:postgresql://postgres:5432/diary_db -- for docker
+    url: jdbc:postgresql://localhost:5432/diary_db # -- localhost
+    username: postgres
+    password: admin
+  liquibase:
+    change-log: classpath:liquibase-changeLog.xml
+
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+
+
+jwt:
+  secret: testtt
+  expiration: 3600000
+  refresh:
+    expiration: 4800000
+  token:
+    prefix: Bearer

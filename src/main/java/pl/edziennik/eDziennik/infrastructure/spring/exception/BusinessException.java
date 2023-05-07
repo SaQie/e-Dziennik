@@ -2,6 +2,7 @@ package pl.edziennik.eDziennik.infrastructure.spring.exception;
 
 import pl.edziennik.eDziennik.infrastructure.validator.ValidationError;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,6 +16,12 @@ public class BusinessException extends RuntimeException {
     public BusinessException(List<ValidationError> errors) {
         super(String.format("Business exception occurred, list of errors: %s", toStringErrorList(errors)));
         this.errors = errors;
+    }
+
+    public BusinessException(ValidationError error){
+        super(error.errorMessage());
+        this.errors = new ArrayList<>();
+        this.errors.add(error);
     }
 
     private static String toStringErrorList(List<ValidationError> errors) {

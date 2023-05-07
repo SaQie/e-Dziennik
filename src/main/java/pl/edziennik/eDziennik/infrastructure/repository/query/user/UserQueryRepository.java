@@ -7,4 +7,8 @@ import pl.edziennik.eDziennik.domain.user.domain.wrapper.UserId;
 
 @Repository
 public interface UserQueryRepository extends JpaRepository<User, UserId> {
+
+    boolean existsByEmail(String email);
+
+    boolean existsByUsername(String username);
 }

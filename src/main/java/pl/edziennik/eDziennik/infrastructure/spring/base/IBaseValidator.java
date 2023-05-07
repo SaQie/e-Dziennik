@@ -1,6 +1,6 @@
 package pl.edziennik.eDziennik.infrastructure.spring.base;
 
-import pl.edziennik.eDziennik.infrastructure.spring.dispatcher.ValidationResultBuilder;
+import pl.edziennik.eDziennik.infrastructure.spring.dispatcher.ValidationErrorBuilder;
 
 /**
  * Base validator for all types of {@link IDispatchable} (Query/command)
@@ -9,5 +9,5 @@ import pl.edziennik.eDziennik.infrastructure.spring.dispatcher.ValidationResultB
  */
 public interface IBaseValidator<T extends IDispatchable<?>>{
 
-    void validate(T command, ValidationResultBuilder resultBuilder);
+    void validate(T command, ValidationErrorBuilder errorBuilder);
 }

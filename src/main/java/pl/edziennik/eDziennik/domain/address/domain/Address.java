@@ -28,5 +28,9 @@ public class Address {
         return AddressId.wrap(id);
     }
 
-
+    public Address(String address, String city, String postalCode) {
+        this.address = address;
+        this.city = city;
+        this.postalCode = postalCode;
+    }
 }

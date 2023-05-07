@@ -11,8 +11,15 @@
     <groupId>pl.edziennik</groupId>
     <artifactId>e-Dziennik</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>e-Dziennik</name>
     <description>Elektroniczny dziennik szkolny</description>
+    <modules>
+        <module>web</module>
+        <module>infrastructure</module>
+        <module>domain</module>
+        <module>application</module>
+    </modules>
     <properties>
         <java.version>17</java.version>
     </properties>
