@@ -1,13 +1,14 @@
-package pl.edziennik.application.command.student.service.create;
+package pl.edziennik.application.command.student.create;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
+import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.base.HandledBy;
 import pl.edziennik.application.common.dispatcher.base.ValidatedBy;
 import pl.edziennik.application.common.dispatcher.command.ICommand;
+import pl.edziennik.domain.personinfromation.Pesel;
 import pl.edziennik.domain.school.SchoolId;
 import pl.edziennik.domain.schoolclass.SchoolClassId;
-import pl.edziennik.domain.student.StudentId;
 
 @HandledBy(handler = CreateStudentCommandHandler.class)
 @ValidatedBy(validator = CreateStudentCommandValidator.class)
@@ -38,7 +39,7 @@ public record CreateStudentCommand(
         String city,
 
         @org.hibernate.validator.constraints.pl.PESEL(message = "{pesel.invalid}")
-        String pesel,
+        Pesel pesel,
 
         @Email(message = "{email.is.not.valid}")
         @NotEmpty(message = "{email.empty}")
@@ -53,7 +54,7 @@ public record CreateStudentCommand(
         @NotNull(message = "{schoolClass.empty}")
         SchoolClassId schoolClassId
 
-) implements ICommand<StudentId> {
+) implements ICommand<OperationResult> {
 
     public static final String USERNAME = "username";
     public static final String FIRST_NAME = "firstName";

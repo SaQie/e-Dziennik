@@ -17,7 +17,7 @@ class HandlerResolver {
 
     private final ApplicationContext context;
 
-    protected <T> IBaseHandler<IDispatchable<T>, T> resolve(final IDispatchable<T> dispatchable) {
+    protected final <T> IBaseHandler<IDispatchable<T>, T> resolve(final IDispatchable<T> dispatchable) {
         // get annotation above the command/query
         HandledBy handlerAnnotation = dispatchable.getClass().getAnnotation(HandledBy.class);
         if (handlerAnnotation == null) {

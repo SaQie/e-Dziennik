@@ -11,4 +11,6 @@ import pl.edziennik.application.common.dispatcher.base.IDispatchable;
  * @param <R> Result object
  */
 public interface ICommandHandler<T extends IDispatchable<R>, R> extends IBaseHandler<T, R> {
+
+
 }

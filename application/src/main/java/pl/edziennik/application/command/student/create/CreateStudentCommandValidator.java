@@ -1,15 +1,13 @@
-package pl.edziennik.application.command.student.service.create;
+package pl.edziennik.application.command.student.create;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.command.user.createuser.CreateUserCommand;
 import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
 import pl.edziennik.application.common.dispatcher.base.IBaseValidator;
-import pl.edziennik.domain.personinfromation.Pesel;
 import pl.edziennik.domain.role.Role;
-import pl.edziennik.infrastructure.query.schoolclass.SchoolClassQueryRepository;
-import pl.edziennik.infrastructure.query.student.StudentQueryRepository;
-import pl.edziennik.infrastructure.query.user.UserQueryRepository;
+import pl.edziennik.infrastructure.command.schoolclass.SchoolClassCommandRepository;
+import pl.edziennik.infrastructure.command.student.StudentCommandRepository;
+import pl.edziennik.infrastructure.command.user.UserCommandRepository;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
@@ -18,27 +16,27 @@ import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 class CreateStudentCommandValidator implements IBaseValidator<CreateStudentCommand> {
 
     private final ResourceCreator res;
-    private final StudentQueryRepository studentQueryRepository;
-    private final SchoolClassQueryRepository schoolClassQueryRepository;
-    private final UserQueryRepository userRepository;
+    private final StudentCommandRepository studentCommandRepository;
+    private final SchoolClassCommandRepository schoolClassCommandRepository;
+    private final UserCommandRepository userCommandRepository;
 
     @Override
     public void validate(CreateStudentCommand command, ValidationErrorBuilder errorBuilder) {
-        if (userRepository.existsByEmail(command.email())) {
+        if (userCommandRepository.existsByEmail(command.email())) {
             errorBuilder.addError(
-                    CreateUserCommand.EMAIL,
+                    CreateStudentCommand.EMAIL,
                     res.of("user.already.exists.by.email", command.email()),
                     ErrorCode.OBJECT_ALREADY_EXISTS);
         }
 
-        if (userRepository.existsByUsername(command.username())) {
+        if (userCommandRepository.existsByUsername(command.username())) {
             errorBuilder.addError(
-                    CreateUserCommand.USERNAME,
+                    CreateStudentCommand.USERNAME,
                     res.of("user.already.exists", command.username()),
                     ErrorCode.OBJECT_ALREADY_EXISTS);
         }
 
-        if (studentQueryRepository.isStudentExistsByPesel(Pesel.of(command.pesel()), Role.RoleConst.ROLE_STUDENT.getId())) {
+        if (studentCommandRepository.isStudentExistsByPesel(command.pesel(), Role.RoleConst.ROLE_STUDENT.getId())) {
             errorBuilder.addError(
                     CreateStudentCommand.PESEL,
                     res.of("student.pesel.not.unique", command.pesel()),
@@ -46,7 +44,7 @@ class CreateStudentCommandValidator implements IBaseValidator<CreateStudentComma
             );
         }
 
-        if (!schoolClassQueryRepository.isSchoolClassBelongToSchool(command.schoolClassId(), command.schoolId())) {
+        if (!schoolClassCommandRepository.isSchoolClassBelongToSchool(command.schoolClassId(), command.schoolId())) {
             errorBuilder.addError(
                     CreateStudentCommand.ID_SCHOOL,
                     res.of("school.class.not.belong.to.school"),

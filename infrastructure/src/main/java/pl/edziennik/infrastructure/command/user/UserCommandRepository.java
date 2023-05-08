@@ -8,6 +8,9 @@ import pl.edziennik.domain.user.UserId;
 @Repository
 public interface UserCommandRepository extends JpaRepository<User, UserId> {
 
+    boolean existsByEmail(String email);
+
+    boolean existsByUsername(String username);
 
 
 }

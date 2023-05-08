@@ -7,4 +7,5 @@ public interface Identifier extends ValueObject {
 
     Long id();
 
+
 }

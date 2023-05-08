@@ -1,4 +1,4 @@
-package pl.edziennik.application.command.student.service.delete;
+package pl.edziennik.application.command.student.delete;
 
 
 import pl.edziennik.application.common.dispatcher.OperationResult;

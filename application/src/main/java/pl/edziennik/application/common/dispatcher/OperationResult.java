@@ -1,15 +1,19 @@
 package pl.edziennik.application.common.dispatcher;
 
-public class OperationResult {
+import pl.edziennik.Identifier;
 
-    private final boolean success;
+public record OperationResult(
+        Identifier identifier,
+        boolean isSuccess
+) {
 
-    private OperationResult(boolean success) {
-        this.success = success;
+
+    public static OperationResult of(Identifier id) {
+        return new OperationResult(id,true);
     }
 
-    public static OperationResult success() {
-        return new OperationResult(true);
+    public static OperationResult success(){
+        return new OperationResult(null, true);
     }
 
 }

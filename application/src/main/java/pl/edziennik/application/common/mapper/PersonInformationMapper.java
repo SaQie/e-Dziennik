@@ -1,7 +1,7 @@
 package pl.edziennik.application.common.mapper;
 
 
-import pl.edziennik.application.command.student.service.create.CreateStudentCommand;
+import pl.edziennik.application.command.student.create.CreateStudentCommand;
 import pl.edziennik.domain.personinfromation.PersonInformation;
 import pl.edziennik.domain.personinfromation.Pesel;
 import pl.edziennik.domain.personinfromation.PhoneNumber;

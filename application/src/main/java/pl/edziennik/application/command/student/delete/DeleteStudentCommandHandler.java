@@ -1,7 +1,8 @@
-package pl.edziennik.application.command.student.service.delete;
+package pl.edziennik.application.command.student.delete;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
 import pl.edziennik.application.common.dispatcher.exception.BusinessException;
@@ -17,6 +18,7 @@ class DeleteStudentCommandHandler implements ICommandHandler<DeleteStudentComman
     private final ResourceCreator res;
 
     @Override
+    @Transactional
     public OperationResult handle(DeleteStudentCommand command) {
         Student student = studentCommandRepository.findById(command.studentId())
                 .orElseThrow(() -> new BusinessException(

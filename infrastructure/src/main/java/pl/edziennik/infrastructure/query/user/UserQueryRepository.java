@@ -9,10 +9,6 @@ import pl.edziennik.domain.user.UserId;
 @Repository
 public interface UserQueryRepository extends JpaRepository<User, UserId> {
 
-    boolean existsByEmail(String email);
-
-    boolean existsByUsername(String username);
-
     @Query("SELECT u FROM User u " +
             "JOIN FETCH u.role " +
             "WHERE u.username = :username")

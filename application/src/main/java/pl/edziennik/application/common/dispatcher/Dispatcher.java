@@ -12,12 +12,12 @@ import pl.edziennik.application.common.dispatcher.base.IDispatchable;
 @Component
 @AllArgsConstructor
 @Slf4j
-class Dispatcher {
+public class Dispatcher {
 
     private final HandlerResolver handlerResolver;
     private final ValidatorResolver validatorResolver;
 
-    <T> T callHandler(final IDispatchable<T> dispatchable) {
+    public final <T> T callHandler(final IDispatchable<T> dispatchable) {
         IBaseHandler<IDispatchable<T>, T> handler = handlerResolver.resolve(dispatchable);
 
         validatorResolver.resolve(dispatchable)

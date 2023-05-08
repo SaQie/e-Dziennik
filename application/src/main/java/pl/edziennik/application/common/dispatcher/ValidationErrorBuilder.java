@@ -13,34 +13,45 @@ import java.util.List;
  */
 public class ValidationErrorBuilder {
 
-    ValidationErrorBuilder(){
+    private final String NOT_FOUND_MESSAGE_KEY = "not.found.message";
+
+    ValidationErrorBuilder() {
 
     }
 
     private final List<ValidationError> errors = new ArrayList<>();
 
-    public ValidationErrorBuilder addError(ValidationError error){
+    public ValidationErrorBuilder addError(ValidationError error) {
         this.errors.add(error);
         return this;
     }
 
-    public ValidationErrorBuilder addError(String field, String message, ErrorCode errorCode){
+    public ValidationErrorBuilder addError(String field, String message, ErrorCode errorCode) {
         ValidationError validationError = new ValidationError(field, message, errorCode.errorCode());
         this.errors.add(validationError);
         return this;
     }
 
-    public boolean errorExists(){
+    public ValidationErrorBuilder addNotFoundError(String field) {
+        ValidationError validationError = new ValidationError(field, NOT_FOUND_MESSAGE_KEY, ErrorCode.OBJECT_NOT_EXISTS.errorCode());
+        this.errors.add(validationError);
+        return this;
+    }
+
+    public void flushErrors() {
+        build();
+    }
+
+    public boolean errorExists() {
         return !errors.isEmpty();
     }
 
 
-    protected void build(){
-        if (!errors.isEmpty()){
+    protected void build() {
+        if (!errors.isEmpty()) {
             throw new BusinessException(errors);
         }
     }
-
 
 
 }

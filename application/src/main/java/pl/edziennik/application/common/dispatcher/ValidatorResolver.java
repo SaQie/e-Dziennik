@@ -18,7 +18,7 @@ class ValidatorResolver {
 
     private final ApplicationContext context;
 
-    public <T> Optional<IBaseValidator<IDispatchable<T>>> resolve(IDispatchable<T> dispatchable) {
+    protected final <T> Optional<IBaseValidator<IDispatchable<T>>> resolve(IDispatchable<T> dispatchable) {
         // get annotation above the command/query
         ValidatedBy validatedBy = dispatchable.getClass().getAnnotation(ValidatedBy.class);
         if (validatedBy == null) {

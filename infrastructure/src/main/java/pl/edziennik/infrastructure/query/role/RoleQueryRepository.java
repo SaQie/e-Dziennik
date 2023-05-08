@@ -7,5 +7,5 @@ import pl.edziennik.domain.role.RoleId;
 
 @Repository
 public interface RoleQueryRepository extends JpaRepository<Role, RoleId> {
-    Role getByName(String role);
+
 }

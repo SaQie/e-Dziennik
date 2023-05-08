@@ -1,7 +1,7 @@
 package pl.edziennik.application.common.mapper;
 
 
-import pl.edziennik.application.command.student.service.create.CreateStudentCommand;
+import pl.edziennik.application.command.student.create.CreateStudentCommand;
 import pl.edziennik.domain.student.Student;
 
 public class StudentMapper {

@@ -17,7 +17,7 @@ import java.io.Serializable;
 public class SchoolId implements Serializable, Identifier {
 
     @JsonProperty(value = "schoolId", access = JsonProperty.Access.READ_ONLY)
-    private Long id;
+    private final Long id;
 
     @JsonCreator
     public SchoolId(Long id) {
