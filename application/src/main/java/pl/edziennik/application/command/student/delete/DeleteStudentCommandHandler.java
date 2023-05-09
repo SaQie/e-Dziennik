@@ -7,7 +7,7 @@ import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
 import pl.edziennik.application.common.dispatcher.exception.BusinessException;
 import pl.edziennik.domain.student.Student;
-import pl.edziennik.infrastructure.command.student.StudentCommandRepository;
+import pl.edziennik.infrastructure.repositories.student.StudentCommandRepository;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
 
 @Component

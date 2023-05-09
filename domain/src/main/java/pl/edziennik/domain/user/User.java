@@ -2,6 +2,9 @@ package pl.edziennik.domain.user;
 
 import jakarta.persistence.*;
 import lombok.*;
+import pl.edziennik.common.valueobject.Email;
+import pl.edziennik.common.valueobject.Password;
+import pl.edziennik.common.valueobject.Regon;
 import pl.edziennik.domain.role.Role;
 
 import java.time.LocalDate;
@@ -25,17 +28,34 @@ public class User {
 
     private Long superId;
 
-    private String username;
-    private String password;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "value", column = @Column(name = "username"))
+    })
+    private Regon username;
+
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "value", column = @Column(name = "password"))
+    })
+    private Password password;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "value", column = @Column(name = "email"))
+    })
+    private Email email;
+
+
     private LocalDate createdDate;
     private LocalDateTime updatedDate;
     private LocalDateTime lastLoginDate;
-    private String email;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Role role;
 
-    public User(String username, String password, String email) {
+    public User(Regon username, Password password, Email email) {
         this.username = username;
         this.password = password;
         this.email = email;

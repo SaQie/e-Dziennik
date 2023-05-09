@@ -2,6 +2,8 @@ package pl.edziennik.domain.grade;
 
 import jakarta.persistence.*;
 import lombok.*;
+import pl.edziennik.common.valueobject.Description;
+import pl.edziennik.common.valueobject.Weigth;
 import pl.edziennik.domain.studentsubject.StudentSubject;
 import pl.edziennik.domain.teacher.Teacher;
 
@@ -23,8 +25,18 @@ public class Grade {
 
     @Enumerated
     private GradeConst grade;
-    private Integer weight;
-    private String description;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "value", column = @Column(name = "weigth"))
+    })
+    private Weigth weight;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "value", column = @Column(name = "description"))
+    })
+    private Description description;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private StudentSubject studentSubject;
@@ -35,7 +47,7 @@ public class Grade {
     private LocalDate createdDate;
 
 
-    public Grade(GradeConst grade, Integer weight, String description) {
+    public Grade(GradeConst grade, Weigth weight, Description description) {
         this.grade = grade;
         this.weight = weight;
         this.description = description;

@@ -2,6 +2,7 @@ package pl.edziennik.domain.setting;
 
 import jakarta.persistence.*;
 import lombok.*;
+import pl.edziennik.common.valueobject.Name;
 
 @Entity
 @NoArgsConstructor
@@ -18,7 +19,12 @@ public class Settings {
     @Getter(AccessLevel.NONE)
     private Long id;
 
-    private String name;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "value", column = @Column(name = "name"))
+    })
+    private Name name;
+
     private Boolean booleanValue;
     private String stringValue;
     private Long longValue;

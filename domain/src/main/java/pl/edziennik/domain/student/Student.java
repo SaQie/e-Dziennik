@@ -2,9 +2,9 @@ package pl.edziennik.domain.student;
 
 import jakarta.persistence.*;
 import lombok.*;
+import pl.edziennik.common.valueobject.PersonInformation;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.parent.Parent;
-import pl.edziennik.domain.personinfromation.PersonInformation;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.user.User;

@@ -6,8 +6,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import pl.edziennik.common.valueobject.Regon;
 import pl.edziennik.domain.user.User;
-import pl.edziennik.infrastructure.query.user.UserQueryRepository;
+import pl.edziennik.infrastructure.repositories.user.UserQueryRepository;
 
 
 @Service
@@ -18,7 +19,7 @@ public class AuthUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = repository.getByUsername(username);
+        User user = repository.getByUsername(Regon.of(username));
         if (user != null){
             return new AuthUserDetails(user);
         }

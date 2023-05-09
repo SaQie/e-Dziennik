@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pl.edziennik.common.valueobject.Name;
 
 @Entity
 @NoArgsConstructor
@@ -19,35 +20,41 @@ public class Role {
     @Getter(AccessLevel.NONE)
     private Long id;
 
-    private String name;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "value", column = @Column(name = "name"))
+    })
+    private Name name;
 
-    public Role(Long id, String name) {
+    public Role(Long id, Name name) {
         this.id = id;
         this.name = name;
     }
 
-
-    public Role(String name) {
-        this.name = name;
-    }
 
     public RoleId getRoleId() {
         return RoleId.wrap(id);
     }
 
     public enum RoleConst {
-        ROLE_ADMIN(RoleId.wrap(1L)),
-        ROLE_TEACHER(RoleId.wrap(2L)),
-        ROLE_STUDENT(RoleId.wrap(3L)),
-        ROLE_PARENT(RoleId.wrap(4L));
+        ROLE_ADMIN(RoleId.wrap(1L), Name.of("ROLE_ADMIN")),
+        ROLE_TEACHER(RoleId.wrap(2L), Name.of("ROLE_TEACHER")),
+        ROLE_STUDENT(RoleId.wrap(3L), Name.of("ROLE_STUDENT")),
+        ROLE_PARENT(RoleId.wrap(4L), Name.of("ROLE_PARENT"));
 
         private final RoleId id;
+        private final Name name;
 
-        RoleConst(RoleId id) {
+        RoleConst(RoleId id, Name name) {
             this.id = id;
+            this.name = name;
         }
 
-        public RoleId getId() {
+        public Name roleName() {
+            return name;
+        }
+
+        public RoleId id() {
             return id;
         }
     }

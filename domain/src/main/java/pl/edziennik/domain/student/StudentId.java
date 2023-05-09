@@ -6,7 +6,7 @@ import jakarta.persistence.Embeddable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import pl.edziennik.Identifier;
+import pl.edziennik.common.valueobject.Identifier;
 
 import java.io.Serializable;
 
@@ -19,7 +19,6 @@ public class StudentId implements Serializable, Identifier {
 
     @JsonProperty(value = "studentId", access = JsonProperty.Access.READ_ONLY)
     private final Long id;
-
 
     @JsonCreator
     public StudentId(Long id) {

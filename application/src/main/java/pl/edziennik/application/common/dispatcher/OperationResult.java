@@ -1,6 +1,7 @@
 package pl.edziennik.application.common.dispatcher;
 
-import pl.edziennik.Identifier;
+
+import pl.edziennik.common.valueobject.Identifier;
 
 public record OperationResult(
         Identifier identifier,

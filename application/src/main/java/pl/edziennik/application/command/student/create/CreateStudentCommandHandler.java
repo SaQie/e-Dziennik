@@ -7,16 +7,17 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
 import pl.edziennik.application.common.mapper.StudentMapper;
+import pl.edziennik.common.valueobject.Password;
 import pl.edziennik.domain.role.Role;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.student.Student;
 import pl.edziennik.domain.student.StudentId;
 import pl.edziennik.domain.user.User;
-import pl.edziennik.infrastructure.command.role.RoleCommandRepository;
-import pl.edziennik.infrastructure.command.school.SchoolCommandRepository;
-import pl.edziennik.infrastructure.command.student.StudentCommandRepository;
-import pl.edziennik.infrastructure.query.schoolclass.SchoolClassQueryRepository;
+import pl.edziennik.infrastructure.repositories.role.RoleCommandRepository;
+import pl.edziennik.infrastructure.repositories.school.SchoolCommandRepository;
+import pl.edziennik.infrastructure.repositories.schoolclass.SchoolClassQueryRepository;
+import pl.edziennik.infrastructure.repositories.student.StudentCommandRepository;
 
 @Component
 @AllArgsConstructor
@@ -51,10 +52,10 @@ class CreateStudentCommandHandler implements ICommandHandler<CreateStudentComman
 
     private User createUser(CreateStudentCommand command) {
         User user = new User(command.username(), command.password(), command.email());
-        Role role = roleCommandRepository.getByName(Role.RoleConst.ROLE_STUDENT.name());
+        Role role = roleCommandRepository.getByName(Role.RoleConst.ROLE_STUDENT.roleName());
 
         user.setRole(role);
-        user.setPassword(passwordEncoder.encode(command.password()));
+        user.setPassword(Password.of(passwordEncoder.encode(command.password().value())));
 
         return user;
     }

@@ -2,6 +2,8 @@ package pl.edziennik.domain.subject;
 
 import jakarta.persistence.*;
 import lombok.*;
+import pl.edziennik.common.valueobject.Description;
+import pl.edziennik.common.valueobject.Name;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.teacher.Teacher;
 
@@ -11,7 +13,7 @@ import pl.edziennik.domain.teacher.Teacher;
 @Setter
 @EqualsAndHashCode
 @IdClass(SubjectId.class)
-public class Subject{
+public class Subject {
 
 
     @Id
@@ -20,8 +22,17 @@ public class Subject{
     @Getter(AccessLevel.NONE)
     private Long id;
 
-    private String description;
-    private String name;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "value", column = @Column(name = "description"))
+    })
+    private Description description;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "value", column = @Column(name = "subject_name"))
+    })
+    private Name name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Teacher teacher;
@@ -30,12 +41,12 @@ public class Subject{
     private SchoolClass schoolClass;
 
 
-    public Subject(String name, String description) {
+    public Subject(Name subjectName, Description description) {
         this.description = description;
-        this.name = name;
+        this.name = subjectName;
     }
 
-    public SubjectId getSubjectId(){
+    public SubjectId getSubjectId() {
         return SubjectId.wrap(id);
     }
 

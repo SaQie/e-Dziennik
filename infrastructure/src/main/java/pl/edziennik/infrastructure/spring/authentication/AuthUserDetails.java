@@ -20,18 +20,18 @@ public class AuthUserDetails implements UserDetails{
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
+        authorities.add(new SimpleGrantedAuthority(user.getRole().getName().value()));
         return authorities;
     }
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return user.getPassword().value();
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return user.getUsername().value();
     }
 
     @Override

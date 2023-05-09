@@ -2,6 +2,7 @@ package pl.edziennik.domain.schoolclass;
 
 import jakarta.persistence.*;
 import lombok.*;
+import pl.edziennik.common.valueobject.Name;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.student.Student;
 import pl.edziennik.domain.subject.Subject;
@@ -25,7 +26,11 @@ public class SchoolClass {
     @Getter(AccessLevel.NONE)
     private Long id;
 
-    private String className;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "value", column = @Column(name = "class_name"))
+    })
+    private Name className;
 
     @OneToMany(mappedBy = "schoolClass")
     private final List<Student> students = new ArrayList<>();
@@ -44,10 +49,6 @@ public class SchoolClass {
 
     public SchoolClassId getSchoolClassId() {
         return SchoolClassId.wrap(id);
-    }
-
-    public SchoolClass(String className) {
-        this.className = className;
     }
 
     @PrePersist

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
-import pl.edziennik.Identifier;
+import pl.edziennik.common.valueobject.Identifier;
 import pl.edziennik.infrastructure.validator.ValidationError;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 

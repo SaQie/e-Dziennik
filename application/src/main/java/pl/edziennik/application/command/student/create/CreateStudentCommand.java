@@ -1,12 +1,13 @@
 package pl.edziennik.application.command.student.create;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.*;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.base.HandledBy;
 import pl.edziennik.application.common.dispatcher.base.ValidatedBy;
 import pl.edziennik.application.common.dispatcher.command.ICommand;
-import pl.edziennik.domain.personinfromation.Pesel;
+import pl.edziennik.common.valueobject.*;
 import pl.edziennik.domain.school.SchoolId;
 import pl.edziennik.domain.schoolclass.SchoolClassId;
 
@@ -16,37 +17,37 @@ public record CreateStudentCommand(
         @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
         @NotEmpty(message = "{password.empty}")
         @Size(min = 5, message = "{password.size}")
-        String password,
+        Password password,
 
         @NotEmpty(message = "{username.empty}")
         @Size(min = 4, message = "{username.size}")
-        String username,
+        Regon username,
 
         @NotEmpty(message = "{firstName.empty}")
-        String firstName,
+        FirstName firstName,
 
         @NotEmpty(message = "{lastName.empty}")
-        String lastName,
+        LastName lastName,
 
         @NotEmpty(message = "{address.empty}")
-        String address,
+        Address address,
 
         @NotEmpty(message = "{postalCode.empty}")
         @Size(min = 6, max = 6, message = "{postalCode.size}")
-        String postalCode,
+        PostalCode postalCode,
 
         @NotEmpty(message = "{city.empty}")
-        String city,
+        City city,
 
         @org.hibernate.validator.constraints.pl.PESEL(message = "{pesel.invalid}")
         Pesel pesel,
 
         @Email(message = "{email.is.not.valid}")
         @NotEmpty(message = "{email.empty}")
-        String email,
+        pl.edziennik.common.valueobject.Email email,
 
         @Pattern(regexp = "[\\d]{9}", message = "{phone.invalid}")
-        String phoneNumber,
+        PhoneNumber phoneNumber,
 
         @NotNull(message = "{school.empty}")
         SchoolId schoolId,

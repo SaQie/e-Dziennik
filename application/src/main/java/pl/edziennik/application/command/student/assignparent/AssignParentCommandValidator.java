@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
 import pl.edziennik.application.common.dispatcher.base.IBaseValidator;
-import pl.edziennik.infrastructure.command.parent.ParentCommandRepository;
-import pl.edziennik.infrastructure.command.student.StudentCommandRepository;
+import pl.edziennik.infrastructure.repositories.parent.ParentCommandRepository;
+import pl.edziennik.infrastructure.repositories.student.StudentCommandRepository;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 

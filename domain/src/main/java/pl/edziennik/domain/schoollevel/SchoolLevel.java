@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pl.edziennik.common.valueobject.Name;
 import pl.edziennik.domain.school.School;
 
 import java.util.ArrayList;
@@ -23,12 +24,16 @@ public class SchoolLevel {
     @Getter(AccessLevel.NONE)
     private Long id;
 
-    private String name;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "value", column = @Column(name = "name"))
+    })
+    private Name name;
 
     @OneToMany(mappedBy = "schoolLevel", orphanRemoval = true)
     private final List<School> schools = new ArrayList<>();
 
-    public SchoolLevel(Long id, String name) {
+    public SchoolLevel(Long id, Name name) {
         this.id = id;
         this.name = name;
     }

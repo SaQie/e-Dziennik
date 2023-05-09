@@ -19,6 +19,7 @@
         <module>infrastructure</module>
         <module>domain</module>
         <module>application</module>
+        <module>common</module>
     </modules>
     <properties>
         <java.version>17</java.version>

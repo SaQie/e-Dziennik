@@ -2,6 +2,8 @@ package pl.edziennik.domain.address;
 
 import jakarta.persistence.*;
 import lombok.*;
+import pl.edziennik.common.valueobject.City;
+import pl.edziennik.common.valueobject.PostalCode;
 
 
 @Entity
@@ -19,15 +21,30 @@ public class Address {
     @Getter(AccessLevel.NONE)
     private Long id;
 
-    private String address;
-    private String city;
-    private String postalCode;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "value", column = @Column(name = "address"))
+    })
+    private pl.edziennik.common.valueobject.Address address;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "value", column = @Column(name = "city"))
+    })
+    private City city;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "value", column = @Column(name = "postal_code"))
+    })
+    private PostalCode postalCode;
 
     public AddressId getAddressId() {
         return AddressId.wrap(id);
     }
 
-    public Address(String address, String city, String postalCode) {
+    public Address(pl.edziennik.common.valueobject.Address address, City city, PostalCode postalCode) {
         this.address = address;
         this.city = city;
         this.postalCode = postalCode;
