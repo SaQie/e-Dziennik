@@ -4,24 +4,21 @@ import jakarta.persistence.*;
 import lombok.*;
 import pl.edziennik.common.valueobject.Description;
 import pl.edziennik.common.valueobject.Weigth;
+import pl.edziennik.common.valueobject.id.GradeId;
 import pl.edziennik.domain.studentsubject.StudentSubject;
 import pl.edziennik.domain.teacher.Teacher;
 
 import java.time.LocalDate;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
+@Setter(AccessLevel.PROTECTED)
 @EqualsAndHashCode
-@IdClass(GradeId.class)
 public class Grade {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "grade_id_seq")
-    @SequenceGenerator(name = "grade_id_seq", sequenceName = "grade_id_seq", allocationSize = 1)
-    @Getter(AccessLevel.NONE)
-    private Long id;
+    @EmbeddedId
+    private GradeId gradeId = GradeId.create();
 
     @Enumerated
     private GradeConst grade;
@@ -46,20 +43,17 @@ public class Grade {
 
     private LocalDate createdDate;
 
+    public static Grade of(GradeConst gradeConst, Weigth weight, Description description, StudentSubject studentSubject,
+                           Teacher teacher){
+        Grade grade = new Grade();
+        grade.createdDate = LocalDate.now();
+        grade.teacher = teacher;
+        grade.description = description;
+        grade.studentSubject = studentSubject;
+        grade.grade = gradeConst;
+        grade.weight = weight;
 
-    public Grade(GradeConst grade, Weigth weight, Description description) {
-        this.grade = grade;
-        this.weight = weight;
-        this.description = description;
-    }
-
-    public GradeId getGradeId() {
-        return GradeId.wrap(id);
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdDate = LocalDate.now();
+        return grade;
     }
 
     @PreUpdate

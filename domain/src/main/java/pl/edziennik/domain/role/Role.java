@@ -6,19 +6,16 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.edziennik.common.valueobject.Name;
+import pl.edziennik.common.valueobject.id.RoleId;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode
-@IdClass(RoleId.class)
 public class Role {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_id_seq")
-    @SequenceGenerator(name = "role_id_seq", sequenceName = "role_id_seq", allocationSize = 1)
-    @Getter(AccessLevel.NONE)
-    private Long id;
+    @EmbeddedId
+    private RoleId roleId = RoleId.create();
 
     @Embedded
     @AttributeOverrides({
@@ -26,27 +23,16 @@ public class Role {
     })
     private Name name;
 
-    public Role(Long id, Name name) {
-        this.id = id;
-        this.name = name;
-    }
-
-
-    public RoleId getRoleId() {
-        return RoleId.wrap(id);
-    }
 
     public enum RoleConst {
-        ROLE_ADMIN(RoleId.wrap(1L), Name.of("ROLE_ADMIN")),
-        ROLE_TEACHER(RoleId.wrap(2L), Name.of("ROLE_TEACHER")),
-        ROLE_STUDENT(RoleId.wrap(3L), Name.of("ROLE_STUDENT")),
-        ROLE_PARENT(RoleId.wrap(4L), Name.of("ROLE_PARENT"));
+        ROLE_ADMIN(Name.of("ROLE_ADMIN")),
+        ROLE_TEACHER(Name.of("ROLE_TEACHER")),
+        ROLE_STUDENT(Name.of("ROLE_STUDENT")),
+        ROLE_PARENT(Name.of("ROLE_PARENT"));
 
-        private final RoleId id;
         private final Name name;
 
-        RoleConst(RoleId id, Name name) {
-            this.id = id;
+        RoleConst(Name name) {
             this.name = name;
         }
 
@@ -54,9 +40,6 @@ public class Role {
             return name;
         }
 
-        public RoleId id() {
-            return id;
-        }
     }
 
 }

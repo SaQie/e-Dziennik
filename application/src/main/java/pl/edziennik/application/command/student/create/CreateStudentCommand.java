@@ -8,8 +8,8 @@ import pl.edziennik.application.common.dispatcher.base.HandledBy;
 import pl.edziennik.application.common.dispatcher.base.ValidatedBy;
 import pl.edziennik.application.common.dispatcher.command.ICommand;
 import pl.edziennik.common.valueobject.*;
-import pl.edziennik.domain.school.SchoolId;
-import pl.edziennik.domain.schoolclass.SchoolClassId;
+import pl.edziennik.common.valueobject.id.SchoolClassId;
+import pl.edziennik.common.valueobject.id.SchoolId;
 
 @HandledBy(handler = CreateStudentCommandHandler.class)
 @ValidatedBy(validator = CreateStudentCommandValidator.class)
@@ -21,7 +21,7 @@ public record CreateStudentCommand(
 
         @NotEmpty(message = "{username.empty}")
         @Size(min = 4, message = "{username.size}")
-        Regon username,
+        Username username,
 
         @NotEmpty(message = "{firstName.empty}")
         FirstName firstName,

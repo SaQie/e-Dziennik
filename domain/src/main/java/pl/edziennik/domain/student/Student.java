@@ -3,6 +3,7 @@ package pl.edziennik.domain.student;
 import jakarta.persistence.*;
 import lombok.*;
 import pl.edziennik.common.valueobject.PersonInformation;
+import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.parent.Parent;
 import pl.edziennik.domain.school.School;
@@ -11,18 +12,14 @@ import pl.edziennik.domain.user.User;
 
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
+@Setter(AccessLevel.PROTECTED)
 @EqualsAndHashCode
-@IdClass(StudentId.class)
 public class Student {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_id_seq")
-    @SequenceGenerator(name = "student_id_seq", sequenceName = "student_id_seq", allocationSize = 1)
-    @Getter(AccessLevel.NONE)
-    private Long id;
+    @EmbeddedId
+    private StudentId studentId = StudentId.create();
 
     private boolean hasParentAccount;
 
@@ -43,16 +40,24 @@ public class Student {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
     private Parent parent;
 
-    public StudentId getStudentId() {
-        return StudentId.wrap(id);
+
+    public static Student of(User user, School school, SchoolClass schoolClass, PersonInformation personInformation,
+                             Address address) {
+        Student student = new Student();
+        student.address = address;
+        student.personInformation = personInformation;
+        student.school = school;
+        student.schoolClass = schoolClass;
+        student.user = user;
+
+        return student;
     }
 
-    public Student(PersonInformation personInformation, Address address) {
-        this.personInformation = personInformation;
-        this.address = address;
+    public void assignParent(Parent parent){
+        this.parent = parent;
     }
 
 

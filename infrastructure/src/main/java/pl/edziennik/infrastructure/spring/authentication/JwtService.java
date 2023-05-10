@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -23,8 +24,8 @@ public class JwtService {
             throw new RuntimeException("login is missing");
         }
         UserDetails userDetails = authUserDetailsService.loadUserByUsername(username);
-        Long id = Long.valueOf(jwtData.get("id"));
-        Long superId = Long.valueOf(jwtData.get("superId"));
+        UUID id = UUID.fromString(jwtData.get("id"));
+        UUID superId = UUID.fromString(jwtData.get("superId"));
         return jwtUtils.generateJwtToken(userDetails, id, superId);
     }
 

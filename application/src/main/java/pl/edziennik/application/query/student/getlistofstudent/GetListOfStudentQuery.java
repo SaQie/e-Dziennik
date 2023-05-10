@@ -1,7 +1,15 @@
 package pl.edziennik.application.query.student.getlistofstudent;
 
+import org.springframework.data.domain.Pageable;
+import pl.edziennik.application.common.dispatcher.base.HandledBy;
 import pl.edziennik.application.common.dispatcher.query.IQuery;
-import pl.edziennik.application.query.student.getstudent.GetStudentQuery;
+import pl.edziennik.common.dto.PageDto;
+import pl.edziennik.common.dto.student.StudentDto;
 
-public class GetListOfStudentQuery implements IQuery<GetStudentQuery> {
+@HandledBy(handler = GetListOfStudentQueryHandler.class)
+public record GetListOfStudentQuery(
+
+        Pageable pageable
+
+) implements IQuery<PageDto<StudentDto>> {
 }

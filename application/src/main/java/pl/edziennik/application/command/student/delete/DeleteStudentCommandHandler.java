@@ -25,10 +25,6 @@ class DeleteStudentCommandHandler implements ICommandHandler<DeleteStudentComman
                         res.notFoundError(DeleteStudentCommand.STUDENT_ID, command.studentId())
                 ));
 
-        if (student.getParent() != null) {
-            student.getParent().clearStudent();
-        }
-
         studentCommandRepository.delete(student);
 
         return OperationResult.success();

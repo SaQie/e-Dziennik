@@ -6,23 +6,20 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.edziennik.common.valueobject.Name;
+import pl.edziennik.common.valueobject.id.SchoolLevelId;
 import pl.edziennik.domain.school.School;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@IdClass(SchoolLevelId.class)
 @EqualsAndHashCode
 public class SchoolLevel {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "school_level_id_seq")
-    @SequenceGenerator(name = "school_level_id_seq", sequenceName = "school_level_id_seq", allocationSize = 1)
-    @Getter(AccessLevel.NONE)
-    private Long id;
+    @EmbeddedId
+    private SchoolLevelId schoolLevelId = SchoolLevelId.create();
 
     @Embedded
     @AttributeOverrides({
@@ -32,21 +29,6 @@ public class SchoolLevel {
 
     @OneToMany(mappedBy = "schoolLevel", orphanRemoval = true)
     private final List<School> schools = new ArrayList<>();
-
-    public SchoolLevel(Long id, Name name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public void addSchool(School school) {
-        schools.add(school);
-        school.setSchoolLevel(this);
-    }
-
-    public SchoolLevelId getSchoolLevelId() {
-        return SchoolLevelId.wrap(id);
-    }
-
 
     public enum SchoolLevelConst {
 

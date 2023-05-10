@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import pl.edziennik.common.valueobject.City;
 import pl.edziennik.common.valueobject.PostalCode;
+import pl.edziennik.common.valueobject.id.AddressId;
 
 
 @Entity
@@ -12,15 +13,10 @@ import pl.edziennik.common.valueobject.PostalCode;
 @Getter
 @Setter
 @EqualsAndHashCode
-@IdClass(AddressId.class)
 public class Address {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_id_seq")
-    @SequenceGenerator(name = "address_id_seq", sequenceName = "address_id_seq", allocationSize = 1)
-    @Getter(AccessLevel.NONE)
-    private Long id;
-
+    @EmbeddedId
+    private AddressId addressId = AddressId.create();
 
     @Embedded
     @AttributeOverrides({
@@ -40,13 +36,12 @@ public class Address {
     })
     private PostalCode postalCode;
 
-    public AddressId getAddressId() {
-        return AddressId.wrap(id);
-    }
 
-    public Address(pl.edziennik.common.valueobject.Address address, City city, PostalCode postalCode) {
-        this.address = address;
-        this.city = city;
-        this.postalCode = postalCode;
+    public static Address of(pl.edziennik.common.valueobject.Address address, City city, PostalCode postalCode){
+        Address addressEntity = new Address();
+        addressEntity.setAddress(address);
+        addressEntity.setCity(city);
+        addressEntity.setPostalCode(postalCode);
+        return addressEntity;
     }
 }

@@ -23,7 +23,7 @@ class AssignParentCommandHandler implements ICommandHandler<AssignParentCommand,
         Parent parent = parentCommandRepository.getReferenceById(command.parentId());
         Student student = studentCommandRepository.getReferenceById(command.studentId());
 
-        parent.setStudent(student);
+        student.assignParent(parent);
 
         // FIXME : CQRS -> Zmienic model Parenta (idStudent nie wymagane podczas dodawania Parenta)
 

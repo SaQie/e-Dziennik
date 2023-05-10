@@ -2,8 +2,8 @@ package pl.edziennik.infrastructure.repositories.parent;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.RepositoryDefinition;
+import pl.edziennik.common.valueobject.id.ParentId;
 import pl.edziennik.domain.parent.Parent;
-import pl.edziennik.domain.parent.ParentId;
 
 import java.util.Optional;
 

@@ -4,23 +4,20 @@ import jakarta.persistence.*;
 import lombok.*;
 import pl.edziennik.common.valueobject.Description;
 import pl.edziennik.common.valueobject.Name;
+import pl.edziennik.common.valueobject.id.SubjectId;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.teacher.Teacher;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
+@Setter(AccessLevel.PROTECTED)
 @EqualsAndHashCode
-@IdClass(SubjectId.class)
 public class Subject {
 
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subject_id_seq")
-    @SequenceGenerator(name = "subject_id_seq", sequenceName = "subject_id_seq", allocationSize = 1)
-    @Getter(AccessLevel.NONE)
-    private Long id;
+    @EmbeddedId
+    private SubjectId subjectId = SubjectId.create();
 
     @Embedded
     @AttributeOverrides({
@@ -41,13 +38,20 @@ public class Subject {
     private SchoolClass schoolClass;
 
 
-    public Subject(Name subjectName, Description description) {
-        this.description = description;
-        this.name = subjectName;
+    public static Subject of(Name subjectName, Description description, SchoolClass schoolClass) {
+        Subject subject = new Subject();
+        subject.description = description;
+        subject.name = subjectName;
+        subject.schoolClass = schoolClass;
+
+        return subject;
     }
 
-    public SubjectId getSubjectId() {
-        return SubjectId.wrap(id);
+    public static Subject of(Name subjectName, Description description, SchoolClass schoolClass, Teacher teacher) {
+        Subject subject = of(subjectName, description, schoolClass);
+        subject.teacher = teacher;
+
+        return subject;
     }
 
 

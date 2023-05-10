@@ -1,7 +1,11 @@
 package pl.edziennik.domain.admin;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import pl.edziennik.common.valueobject.id.AdminId;
 import pl.edziennik.domain.user.User;
 
 @Entity
@@ -9,26 +13,20 @@ import pl.edziennik.domain.user.User;
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
-@IdClass(AdminId.class)
 public class Admin {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "admin_id_seq")
-    @SequenceGenerator(name = "admin_id_seq", sequenceName = "admin_id_seq", allocationSize = 1)
-    @Getter(AccessLevel.NONE)
-    private Long id;
+    @EmbeddedId
+    private AdminId adminId = AdminId.create();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
 
-    public AdminId getAdminId() {
-        return AdminId.wrap(id);
-    }
+    public static Admin of(User user){
+        Admin admin = new Admin();
+        admin.user = user;
 
-    public Admin(User user) {
-        this.user = user;
+        return admin;
     }
-
 }

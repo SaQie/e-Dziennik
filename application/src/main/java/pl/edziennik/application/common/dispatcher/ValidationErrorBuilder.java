@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class ValidationErrorBuilder {
 
-    private final String NOT_FOUND_MESSAGE_KEY = "not.found.message";
+    private static final String NOT_FOUND_MESSAGE_KEY = "not.found.message";
 
     ValidationErrorBuilder() {
 
@@ -26,16 +26,14 @@ public class ValidationErrorBuilder {
         return this;
     }
 
-    public ValidationErrorBuilder addError(String field, String message, ErrorCode errorCode) {
+    public void addError(String field, String message, ErrorCode errorCode) {
         ValidationError validationError = new ValidationError(field, message, errorCode.errorCode());
         this.errors.add(validationError);
-        return this;
     }
 
-    public ValidationErrorBuilder addNotFoundError(String field) {
+    public void addNotFoundError(String field) {
         ValidationError validationError = new ValidationError(field, NOT_FOUND_MESSAGE_KEY, ErrorCode.OBJECT_NOT_EXISTS.errorCode());
         this.errors.add(validationError);
-        return this;
     }
 
     public void flushErrors() {

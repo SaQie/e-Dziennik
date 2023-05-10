@@ -3,6 +3,7 @@ package pl.edziennik.domain.schoolclass;
 import jakarta.persistence.*;
 import lombok.*;
 import pl.edziennik.common.valueobject.Name;
+import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.student.Student;
 import pl.edziennik.domain.subject.Subject;
@@ -13,18 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
+@Setter(AccessLevel.PROTECTED)
 @EqualsAndHashCode
-@IdClass(SchoolClassId.class)
 public class SchoolClass {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "school_class_id_seq")
-    @SequenceGenerator(name = "school_class_id_seq", sequenceName = "school_class_id_seq", allocationSize = 1)
-    @Getter(AccessLevel.NONE)
-    private Long id;
+    @EmbeddedId
+    private SchoolClassId schoolClassId = SchoolClassId.create();
 
     @Embedded
     @AttributeOverrides({
@@ -46,23 +43,19 @@ public class SchoolClass {
 
     private LocalDate createdDate;
 
+    public static SchoolClass of(Name name, School school) {
+        SchoolClass schoolClass = new SchoolClass();
+        schoolClass.className = name;
+        schoolClass.school = school;
+        schoolClass.createdDate = LocalDate.now();
 
-    public SchoolClassId getSchoolClassId() {
-        return SchoolClassId.wrap(id);
+        return schoolClass;
     }
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdDate = LocalDate.now();
-    }
+    public static SchoolClass of(Name name, School school, Teacher teacher) {
+        SchoolClass schoolClass = of(name, school);
+        schoolClass.teacher = teacher;
 
-    public void addStudent(Student student) {
-        students.add(student);
-        student.setSchoolClass(this);
-    }
-
-    public void addSubject(Subject subject) {
-        subjects.add(subject);
-        subject.setSchoolClass(this);
+        return schoolClass;
     }
 }

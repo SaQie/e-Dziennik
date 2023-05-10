@@ -33,40 +33,40 @@ public class JwtUtils {
     @Value("${jwt.token.prefix}")
     private String tokenPrefix;
 
-    public String generateJwtToken(UserDetails userDetails, Long id, Long superId) {
+    public String generateJwtToken(UserDetails userDetails, UUID id, UUID superId) {
         return generateTokenFromUsername(userDetails, id, superId);
     }
 
-    public String generateRefreshToken(UserDetails userDetails, Long id) {
+    public String generateRefreshToken(UserDetails userDetails, UUID id) {
         return generateRefreshTokenFromUsername(userDetails.getUsername(), id);
     }
 
-    private String generateRefreshTokenFromUsername(String username, Long id) {
+    private String generateRefreshTokenFromUsername(String username, UUID id) {
         return JWT.create()
                 .withSubject(username)
                 .withExpiresAt(Instant.ofEpochMilli(ZonedDateTime.now(ZoneId.systemDefault())
                         .toInstant().toEpochMilli() + refreshTokenExpirationTime))
-                .withClaim("id", id)
+                .withClaim("id", id.toString())
                 .sign(Algorithm.HMAC256(secretKey));
     }
 
-    private String generateTokenFromUsername(UserDetails userDetails, Long id, Long superId) {
-        if (userDetails.getAuthorities() != null){
+    private String generateTokenFromUsername(UserDetails userDetails, UUID id, UUID superId) {
+        if (userDetails.getAuthorities() != null) {
             return JWT.create()
                     .withSubject(userDetails.getUsername())
                     .withExpiresAt(Instant.ofEpochMilli(ZonedDateTime.now(ZoneId.systemDefault())
                             .toInstant().toEpochMilli() + expirationTime))
                     .withClaim("roles", userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
-                    .withClaim("id", id)
-                    .withClaim("superId", superId)
+                    .withClaim("id", id.toString())
+                    .withClaim("superId", superId.toString())
                     .sign(Algorithm.HMAC256(secretKey));
         }
         return JWT.create()
                 .withSubject(userDetails.getUsername())
                 .withExpiresAt(Instant.ofEpochMilli(ZonedDateTime.now(ZoneId.systemDefault())
                         .toInstant().toEpochMilli() + expirationTime))
-                .withClaim("id", id)
-                .withClaim("superId", superId)
+                .withClaim("id", id.toString())
+                .withClaim("superId", superId.toString())
                 .sign(Algorithm.HMAC256(secretKey));
     }
 

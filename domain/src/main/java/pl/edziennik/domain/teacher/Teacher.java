@@ -3,23 +3,20 @@ package pl.edziennik.domain.teacher;
 import jakarta.persistence.*;
 import lombok.*;
 import pl.edziennik.common.valueobject.PersonInformation;
+import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.user.User;
 
 @Entity
-@NoArgsConstructor
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter(AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode
-@IdClass(TeacherId.class)
 public class Teacher {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teacher_id_seq")
-    @SequenceGenerator(name = "teacher_id_seq", sequenceName = "teacher_id_seq", allocationSize = 1)
-    @Getter(AccessLevel.NONE)
-    private Long id;
+    @EmbeddedId
+    private TeacherId teacherId = TeacherId.create();
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -36,13 +33,14 @@ public class Teacher {
     private Address address;
 
 
-    public Teacher(PersonInformation personInformation, Address address) {
-        this.personInformation = personInformation;
-        this.address = address;
-    }
+    public static Teacher of(User user, School school, PersonInformation personInformation, Address address) {
+        Teacher teacher = new Teacher();
+        teacher.school = school;
+        teacher.address = address;
+        teacher.personInformation = personInformation;
+        teacher.user = user;
 
-    public TeacherId getTeacherId() {
-        return TeacherId.wrap(id);
+        return teacher;
     }
 
 }

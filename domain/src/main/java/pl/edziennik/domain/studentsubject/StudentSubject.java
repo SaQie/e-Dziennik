@@ -2,6 +2,7 @@ package pl.edziennik.domain.studentsubject;
 
 import jakarta.persistence.*;
 import lombok.*;
+import pl.edziennik.common.valueobject.id.StudentSubjectId;
 import pl.edziennik.domain.grade.Grade;
 import pl.edziennik.domain.student.Student;
 import pl.edziennik.domain.subject.Subject;
@@ -11,18 +12,14 @@ import java.util.List;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
+@Setter(AccessLevel.PROTECTED)
 @EqualsAndHashCode
-@IdClass(StudentSubjectId.class)
 public class StudentSubject {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_subject_id_seq")
-    @SequenceGenerator(name = "student_subject_id_seq", sequenceName = "student_subject_id_seq", allocationSize = 1)
-    @Getter(AccessLevel.NONE)
-    private Long id;
+    @EmbeddedId
+    private StudentSubjectId studentSubjectId = StudentSubjectId.create();
 
     @OneToMany(mappedBy = "studentSubject")
     private List<Grade> grades = new ArrayList<>();
@@ -34,14 +31,12 @@ public class StudentSubject {
     private Subject subject;
 
 
-    public void addGrade(Grade grade) {
-        this.grades.add(grade);
-        grade.setStudentSubject(this);
-    }
+    public static StudentSubject of(Student student, Subject subject) {
+        StudentSubject studentSubject = new StudentSubject();
+        studentSubject.student = student;
+        studentSubject.subject = subject;
 
-    public StudentSubjectId getStudentSubjectId() {
-        return StudentSubjectId.wrap(id);
+        return studentSubject;
     }
-
 
 }

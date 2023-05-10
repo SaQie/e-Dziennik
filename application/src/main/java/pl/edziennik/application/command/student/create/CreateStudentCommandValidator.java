@@ -8,6 +8,7 @@ import pl.edziennik.domain.role.Role;
 import pl.edziennik.infrastructure.repositories.schoolclass.SchoolClassCommandRepository;
 import pl.edziennik.infrastructure.repositories.student.StudentCommandRepository;
 import pl.edziennik.infrastructure.repositories.user.UserCommandRepository;
+import pl.edziennik.infrastructure.repositories.user.UserQueryRepository;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
@@ -19,6 +20,7 @@ class CreateStudentCommandValidator implements IBaseValidator<CreateStudentComma
     private final StudentCommandRepository studentCommandRepository;
     private final SchoolClassCommandRepository schoolClassCommandRepository;
     private final UserCommandRepository userCommandRepository;
+    private final UserQueryRepository userQueryRepository;
 
     @Override
     public void validate(CreateStudentCommand command, ValidationErrorBuilder errorBuilder) {
@@ -36,7 +38,7 @@ class CreateStudentCommandValidator implements IBaseValidator<CreateStudentComma
                     ErrorCode.OBJECT_ALREADY_EXISTS);
         }
 
-        if (studentCommandRepository.isStudentExistsByPesel(command.pesel(), Role.RoleConst.ROLE_STUDENT.id())) {
+        if (studentCommandRepository.isStudentExistsByPesel(command.pesel(), Role.RoleConst.ROLE_STUDENT.roleName())) {
             errorBuilder.addError(
                     CreateStudentCommand.PESEL,
                     res.of("student.pesel.not.unique", command.pesel()),

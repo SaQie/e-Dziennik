@@ -1,17 +1,31 @@
 package pl.edziennik.application.query.student.getstudent;
 
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
+import pl.edziennik.application.common.dispatcher.exception.BusinessException;
 import pl.edziennik.application.common.dispatcher.query.IQueryHandler;
-import pl.edziennik.infrastructure.repositories.address.AddressCommandRepository;
-import pl.edziennik.infrastructure.repositories.address.AddressQueryRepository;
+import pl.edziennik.common.dto.student.StudentDto;
+import pl.edziennik.infrastructure.repositories.student.StudentQueryRepository;
+import pl.edziennik.infrastructure.spring.ResourceCreator;
 
-class GetStudentQueryHandler implements IQueryHandler<GetStudentQuery,Void> {
+@Component
+@AllArgsConstructor
+class GetStudentQueryHandler implements IQueryHandler<GetStudentQuery, StudentDto> {
 
-    private AddressCommandRepository addressCommandRepository;
-    private  AddressQueryRepository addressQueryRepository;
+    private final StudentQueryRepository studentQueryRepository;
+    private final ResourceCreator res;
 
     @Override
-    public Void handle(GetStudentQuery command) {
+    public StudentDto handle(GetStudentQuery query) {
+        StudentDto studentDto = studentQueryRepository.getStudent(query.studentId());
 
-        return null;
+        if (studentDto == null) {
+            throw new BusinessException(
+                    res.notFoundError(GetStudentQuery.STUDENT_ID, query.studentId())
+            );
+        }
+
+        return studentDto;
+
     }
 }

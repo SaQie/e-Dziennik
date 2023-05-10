@@ -6,13 +6,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
-import pl.edziennik.application.common.mapper.StudentMapper;
 import pl.edziennik.common.valueobject.Password;
+import pl.edziennik.common.valueobject.PersonInformation;
+import pl.edziennik.common.valueobject.id.StudentId;
+import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.role.Role;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.student.Student;
-import pl.edziennik.domain.student.StudentId;
 import pl.edziennik.domain.user.User;
 import pl.edziennik.infrastructure.repositories.role.RoleCommandRepository;
 import pl.edziennik.infrastructure.repositories.school.SchoolCommandRepository;
@@ -33,30 +34,24 @@ class CreateStudentCommandHandler implements ICommandHandler<CreateStudentComman
     @Override
     @Transactional
     public OperationResult handle(CreateStudentCommand command) {
-        Student student = StudentMapper.toEntity(command);
-
         SchoolClass schoolClass = schoolClassCommandRepository.getReferenceById(command.schoolClassId());
         School school = schoolCommandRepository.getReferenceById(command.schoolId());
 
         User user = createUser(command);
+        PersonInformation personInformation = PersonInformation.of(command.firstName(), command.lastName(), command.phoneNumber(),
+                command.pesel());
+        Address address = Address.of(command.address(), command.city(), command.postalCode());
 
-        student.setSchoolClass(schoolClass);
-        student.setSchool(school);
-        student.setUser(user);
-
+        Student student = Student.of(user, school, schoolClass, personInformation, address);
         StudentId studentId = studentCommandRepository.save(student).getStudentId();
-
         return OperationResult.of(studentId);
     }
 
 
     private User createUser(CreateStudentCommand command) {
-        User user = new User(command.username(), command.password(), command.email());
         Role role = roleCommandRepository.getByName(Role.RoleConst.ROLE_STUDENT.roleName());
+        Password encodedPassword = Password.of(passwordEncoder.encode(command.password().value()));
 
-        user.setRole(role);
-        user.setPassword(Password.of(passwordEncoder.encode(command.password().value())));
-
-        return user;
+        return User.of(command.username(), encodedPassword, command.email(), role);
     }
 }

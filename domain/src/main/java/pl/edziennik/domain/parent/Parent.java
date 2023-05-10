@@ -3,23 +3,20 @@ package pl.edziennik.domain.parent;
 import jakarta.persistence.*;
 import lombok.*;
 import pl.edziennik.common.valueobject.PersonInformation;
+import pl.edziennik.common.valueobject.id.ParentId;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.student.Student;
 import pl.edziennik.domain.user.User;
 
 @Entity
 @Getter
-@Setter
+@Setter(AccessLevel.PROTECTED)
 @EqualsAndHashCode
-@NoArgsConstructor
-@IdClass(ParentId.class)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Parent {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "parent_id_seq")
-    @SequenceGenerator(name = "parent_id_seq", sequenceName = "parent_id_seq", allocationSize = 1)
-    @Getter(AccessLevel.NONE)
-    private Long id;
+    @EmbeddedId
+    private ParentId parentId = ParentId.create();
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -36,24 +33,21 @@ public class Parent {
     @JoinColumn(name = "student_id", referencedColumnName = "id")
     private Student student;
 
-    public void setStudent(Student student) {
-        this.student = student;
-        student.setParent(this);
-        student.setHasParentAccount(true);
+
+    public static Parent of(User user, PersonInformation personInformation, Address address, Student student) {
+        Parent parent = of(user, personInformation, address);
+        parent.student = student;
+
+        return parent;
     }
 
-    public void clearStudent() {
-        this.student.setParent(null);
-        this.student = null;
-    }
+    public static Parent of(User user, PersonInformation personInformation, Address address) {
+        Parent parent = new Parent();
+        parent.address = address;
+        parent.personInformation = personInformation;
+        parent.user = user;
 
-    public ParentId getParentId() {
-        return ParentId.wrap(id);
-    }
-
-    public Parent(PersonInformation personInformation, Address address) {
-        this.personInformation = personInformation;
-        this.address = address;
+        return parent;
     }
 
 }

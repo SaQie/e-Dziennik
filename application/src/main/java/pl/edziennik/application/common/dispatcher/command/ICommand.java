@@ -1,6 +1,7 @@
 package pl.edziennik.application.common.dispatcher.command;
 
 
+import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.base.IDispatchable;
 
 /**
@@ -10,5 +11,5 @@ import pl.edziennik.application.common.dispatcher.base.IDispatchable;
  *
  * @param <T> -> Response object
  */
-public interface ICommand<T> extends IDispatchable<T> {
+public interface ICommand<T extends OperationResult> extends IDispatchable<T> {
 }

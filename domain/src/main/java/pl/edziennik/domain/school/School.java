@@ -6,6 +6,7 @@ import pl.edziennik.common.valueobject.Name;
 import pl.edziennik.common.valueobject.Nip;
 import pl.edziennik.common.valueobject.PhoneNumber;
 import pl.edziennik.common.valueobject.Regon;
+import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.schoollevel.SchoolLevel;
@@ -16,18 +17,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
+@Setter(AccessLevel.PROTECTED)
 @EqualsAndHashCode
-@IdClass(SchoolId.class)
 public class School {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "school_id_seq")
-    @SequenceGenerator(name = "school_id_seq", sequenceName = "school_id_seq", allocationSize = 1)
-    @Getter(AccessLevel.NONE)
-    private Long id;
+    @EmbeddedId
+    private SchoolId schoolId = SchoolId.create();
 
     @Embedded
     @AttributeOverrides({
@@ -68,26 +65,17 @@ public class School {
     @OneToMany(mappedBy = "school", orphanRemoval = true)
     private List<Teacher> teachers = new ArrayList<>();
 
-    public School(Name name, Nip nip, Regon regon, PhoneNumber phoneNumber, Address address) {
-        this.name = name;
-        this.nip = nip;
-        this.regon = regon;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
-    }
+    public static School of(Name name, Nip nip, Regon regon, PhoneNumber phoneNumber, Address address,
+                            SchoolLevel schoolLevel) {
+        School school = new School();
+        school.name = name;
+        school.regon = regon;
+        school.address = address;
+        school.phoneNumber = phoneNumber;
+        school.schoolLevel = schoolLevel;
+        school.nip = nip;
 
-    public void addTeacher(Teacher teacher) {
-        teachers.add(teacher);
-        teacher.setSchool(this);
-    }
-
-    public void addStudent(Student student) {
-        students.add(student);
-        student.setSchool(this);
-    }
-
-    public SchoolId getSchoolId() {
-        return SchoolId.wrap(id);
+        return school;
     }
 
 }

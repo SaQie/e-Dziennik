@@ -4,8 +4,8 @@ import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.base.HandledBy;
 import pl.edziennik.application.common.dispatcher.base.ValidatedBy;
 import pl.edziennik.application.common.dispatcher.command.ICommand;
-import pl.edziennik.domain.parent.ParentId;
-import pl.edziennik.domain.student.StudentId;
+import pl.edziennik.common.valueobject.id.ParentId;
+import pl.edziennik.common.valueobject.id.StudentId;
 
 @HandledBy(handler = AssignParentCommandHandler.class)
 @ValidatedBy(validator = AssignParentCommandValidator.class)

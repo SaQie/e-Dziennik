@@ -18,10 +18,17 @@ public class FullName {
         this.value = firstName + " " + lastName;
     }
 
+    private FullName(String value){
+        this.value = value;
+    }
+
     public static FullName of(FirstName firstName, LastName lastName) {
         return new FullName(firstName, lastName);
     }
 
+    public static FullName of(String value){
+        return new FullName(value);
+    }
     @Override
     public String toString() {
         return value;
