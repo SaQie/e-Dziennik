@@ -6,6 +6,8 @@ import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 
+import java.util.Optional;
+
 @RepositoryDefinition(domainClass = SchoolClass.class, idClass = SchoolClassId.class)
 public interface SchoolClassCommandRepository {
 
@@ -15,4 +17,5 @@ public interface SchoolClassCommandRepository {
             "WHERE s.schoolId = :schoolId AND sc.schoolClassId = :schoolClassId")
     boolean isSchoolClassBelongToSchool(SchoolClassId schoolClassId, SchoolId schoolId);
 
+    Optional<SchoolClass> findById(SchoolClassId schoolClassId);
 }

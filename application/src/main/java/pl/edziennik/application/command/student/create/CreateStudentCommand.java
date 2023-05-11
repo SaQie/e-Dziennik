@@ -66,8 +66,8 @@ public record CreateStudentCommand(
     public static final String PESEL = "pesel";
     public static final String ROLE = "role";
     public static final String PHONE_NUMBER = "phoneNumber";
-    public static final String ID_SCHOOL = "idSchool";
-    public static final String ID_SCHOOL_CLASS = "idSchoolClass";
+    public static final String SCHOOL_ID = "schoolId";
+    public static final String SCHOOL_CLASS_ID = "schoolClassId";
     public static final String EMAIL = "email";
 
 }

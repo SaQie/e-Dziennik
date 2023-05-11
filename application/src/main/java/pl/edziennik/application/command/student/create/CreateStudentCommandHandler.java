@@ -44,7 +44,7 @@ class CreateStudentCommandHandler implements ICommandHandler<CreateStudentComman
 
         Student student = Student.of(user, school, schoolClass, personInformation, address);
         StudentId studentId = studentCommandRepository.save(student).getStudentId();
-        return OperationResult.of(studentId);
+        return OperationResult.success(studentId);
     }
 
 

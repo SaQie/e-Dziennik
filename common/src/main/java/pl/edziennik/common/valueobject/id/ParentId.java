@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import pl.edziennik.common.exception.InvalidIdentifierException;
 import pl.edziennik.common.valueobject.Identifier;
 
 import java.io.Serializable;
@@ -30,7 +31,11 @@ public class ParentId implements Serializable, Identifier {
 
     @JsonCreator
     protected ParentId(String value) {
-        this.id = UUID.fromString(value);
+        try {
+            this.id = UUID.fromString(value);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidIdentifierException("Invalid identifier");
+        }
     }
 
     protected ParentId(UUID uuid) {

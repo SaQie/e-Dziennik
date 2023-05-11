@@ -1,11 +1,9 @@
 package pl.edziennik.common.dto.student;
 
 import pl.edziennik.common.valueobject.*;
-import pl.edziennik.common.valueobject.id.ParentId;
-import pl.edziennik.common.valueobject.id.StudentId;
-import pl.edziennik.common.valueobject.id.UserId;
+import pl.edziennik.common.valueobject.id.*;
 
-public record StudentDto(
+public record DetailedStudentDto(
 
         StudentId studentId,
         UserId userId,
@@ -18,7 +16,11 @@ public record StudentDto(
         Pesel pesel,
         PhoneNumber phoneNumber,
         ParentId parentId,
-        FullName parentFullName
+        FullName parentFullName,
+        SchoolId schoolId,
+        Name schoolName,
+        SchoolClassId schoolClassId,
+        Name schoolClassIdName
 
 ) {
 

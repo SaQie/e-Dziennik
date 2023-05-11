@@ -1,14 +1,14 @@
-package pl.edziennik.application.query.student.getstudent;
+package pl.edziennik.application.query.student.detailedstudent;
 
 import pl.edziennik.application.common.dispatcher.base.HandledBy;
 import pl.edziennik.application.common.dispatcher.query.IQuery;
-import pl.edziennik.common.dto.student.StudentDto;
+import pl.edziennik.common.dto.student.DetailedStudentDto;
 import pl.edziennik.common.valueobject.id.StudentId;
 
-@HandledBy(handler = GetStudentQueryHandler.class)
-public record GetStudentQuery(
+@HandledBy(handler = GetDetailedStudentQueryHandler.class)
+public record GetDetailedStudentQuery(
     StudentId studentId
-) implements IQuery<StudentDto> {
+) implements IQuery<DetailedStudentDto> {
 
     public static final String STUDENT_ID = "studentId";
 

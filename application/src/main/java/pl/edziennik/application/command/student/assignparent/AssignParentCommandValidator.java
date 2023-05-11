@@ -6,7 +6,6 @@ import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
 import pl.edziennik.application.common.dispatcher.base.IBaseValidator;
 import pl.edziennik.infrastructure.repositories.parent.ParentCommandRepository;
 import pl.edziennik.infrastructure.repositories.student.StudentCommandRepository;
-import pl.edziennik.infrastructure.spring.ResourceCreator;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
 @Component
@@ -15,7 +14,6 @@ class AssignParentCommandValidator implements IBaseValidator<AssignParentCommand
 
     private final ParentCommandRepository parentCommandRepository;
     private final StudentCommandRepository studentCommandRepository;
-    private final ResourceCreator res;
 
     @Override
     public void validate(AssignParentCommand command, ValidationErrorBuilder errorBuilder) {

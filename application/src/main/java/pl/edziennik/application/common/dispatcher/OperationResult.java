@@ -9,11 +9,11 @@ public record OperationResult(
 ) {
 
 
-    public static OperationResult of(Identifier id) {
-        return new OperationResult(id,true);
+    public static OperationResult success(Identifier id) {
+        return new OperationResult(id, true);
     }
 
-    public static OperationResult success(){
+    public static OperationResult success() {
         return new OperationResult(null, true);
     }
 

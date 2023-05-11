@@ -17,7 +17,7 @@ import pl.edziennik.common.valueobject.id.StudentId;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/api/v1/students/")
+@RequestMapping("/api/v1/students")
 @AllArgsConstructor
 public class StudentCommandController {
 
@@ -38,16 +38,16 @@ public class StudentCommandController {
         return ResponseEntity.created(location).build();
     }
 
-    @DeleteMapping("{studentId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{studentId}")
+    @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Delete specific student")
     public ResponseEntity<Void> deleteStudent(@PathVariable StudentId studentId) {
         dispatcher.callHandler(new DeleteStudentCommand(studentId));
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
-    @PostMapping("{studentId}/parents/{parentId}/assign")
+    @PostMapping("/{studentId}/parents/{parentId}/assign")
     public ResponseEntity<Void> assignParent(@PathVariable StudentId studentId, @PathVariable ParentId parentId) {
         dispatcher.callHandler(new AssignParentCommand(studentId, parentId));
 

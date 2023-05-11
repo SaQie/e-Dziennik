@@ -25,9 +25,16 @@ spring:
 
 logging:
   level:
+    pl.edziennik.application: DEBUG
     org:
       springframework:
         web: DEBUG
+
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        web: DEBUG
 
 
 jwt:
