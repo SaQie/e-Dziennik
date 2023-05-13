@@ -1,6 +1,7 @@
 package pl.edziennik.web.command.admin;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +22,10 @@ public class AdminCommandController {
     private final Dispatcher dispatcher;
 
     @PostMapping()
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Add administration account", description = "Add administration account, that will have all " +
             "permisions to manage application")
-    public ResponseEntity<AdminId> createAdmin(@RequestBody CreateAdminCommand command) {
+    public ResponseEntity<AdminId> createAdmin(@RequestBody @Valid CreateAdminCommand command) {
         OperationResult operationResult = dispatcher.callHandler(command);
 
         URI location = ServletUriComponentsBuilder

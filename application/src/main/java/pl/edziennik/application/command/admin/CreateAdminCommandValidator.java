@@ -11,13 +11,15 @@ import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 @AllArgsConstructor
 class CreateAdminCommandValidator implements IBaseValidator<CreateAdminCommand> {
 
+    public static final String MESSAGE_KEY_ADMIN_ALREADY_EXISTS = "admin.already.exists";
+
     private final AdminCommandRepository adminCommandRepository;
 
     @Override
     public void validate(CreateAdminCommand command, ValidationErrorBuilder errorBuilder) {
         if (adminCommandRepository.isAdminAccountAlreadyExists()) {
             errorBuilder.addError(CreateAdminCommand.USERNAME,
-                    "admin.already.exist",
+                    MESSAGE_KEY_ADMIN_ALREADY_EXISTS,
                     ErrorCode.OBJECT_ALREADY_EXISTS);
         }
     }

@@ -11,7 +11,9 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class Regon {
+
     @JsonValue
+    @org.hibernate.validator.constraints.pl.REGON(message = "{regon.invalid}")
     private final String value;
 
     private Regon(String value) {

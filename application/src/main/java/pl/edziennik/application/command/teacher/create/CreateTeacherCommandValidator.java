@@ -12,6 +12,10 @@ import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 @AllArgsConstructor
 class CreateTeacherCommandValidator implements IBaseValidator<CreateTeacherCommand> {
 
+    public static final String MESSAGE_KEY_USER_ALREADY_EXISTS_BY_EMAIL = "user.already.exists.by.email";
+    public static final String MESSAGE_KEY_TEACHER_PESEL_NOT_UNIQUE = "teacher.pesel.not.unique";
+    public static final String MESSAGE_KEY_USER_ALREADY_EXISTS_BY_USERNAME = "user.already.exists";
+
     private final TeacherCommandRepository teacherCommandRepository;
     private final SchoolCommandRepository schoolCommandRepository;
 
@@ -23,19 +27,19 @@ class CreateTeacherCommandValidator implements IBaseValidator<CreateTeacherComma
                     return null;
                 });
 
-        errorBuilder.flushErrors();
+        errorBuilder.flush();
 
         if (teacherCommandRepository.existsByEmail(command.email())) {
             errorBuilder.addError(
                     CreateTeacherCommand.EMAIL,
-                    "user.already.exists.by.email",
+                    MESSAGE_KEY_USER_ALREADY_EXISTS_BY_EMAIL,
                     ErrorCode.OBJECT_ALREADY_EXISTS,
                     command.email());
         }
         if (teacherCommandRepository.existsByPesel(command.pesel())) {
             errorBuilder.addError(
                     CreateTeacherCommand.PESEL,
-                    "teacher.pesel.not.unique",
+                    MESSAGE_KEY_TEACHER_PESEL_NOT_UNIQUE,
                     ErrorCode.OBJECT_ALREADY_EXISTS,
                     command.pesel()
             );
@@ -43,7 +47,7 @@ class CreateTeacherCommandValidator implements IBaseValidator<CreateTeacherComma
         if (teacherCommandRepository.existsByUsername(command.username())) {
             errorBuilder.addError(
                     CreateTeacherCommand.USERNAME,
-                    "user.already.exists",
+                    MESSAGE_KEY_USER_ALREADY_EXISTS_BY_USERNAME,
                     ErrorCode.OBJECT_ALREADY_EXISTS,
                     command.username());
         }

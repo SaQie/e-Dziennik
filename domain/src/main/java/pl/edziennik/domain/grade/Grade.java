@@ -3,7 +3,7 @@ package pl.edziennik.domain.grade;
 import jakarta.persistence.*;
 import lombok.*;
 import pl.edziennik.common.valueobject.Description;
-import pl.edziennik.common.valueobject.Weigth;
+import pl.edziennik.common.valueobject.Weight;
 import pl.edziennik.common.valueobject.id.GradeId;
 import pl.edziennik.domain.studentsubject.StudentSubject;
 import pl.edziennik.domain.teacher.Teacher;
@@ -21,13 +21,13 @@ public class Grade {
     private GradeId gradeId = GradeId.create();
 
     @Enumerated
-    private GradeConst grade;
+    private pl.edziennik.common.enums.Grade grade = pl.edziennik.common.enums.Grade.ONE;
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "value", column = @Column(name = "weigth"))
+            @AttributeOverride(name = "value", column = @Column(name = "weight"))
     })
-    private Weigth weight;
+    private Weight weight;
 
     @Embedded
     @AttributeOverrides({
@@ -43,8 +43,8 @@ public class Grade {
 
     private LocalDate createdDate;
 
-    public static Grade of(GradeConst gradeConst, Weigth weight, Description description, StudentSubject studentSubject,
-                           Teacher teacher){
+    public static Grade of(pl.edziennik.common.enums.Grade gradeConst, Weight weight, Description description, StudentSubject studentSubject,
+                           Teacher teacher) {
         Grade grade = new Grade();
         grade.createdDate = LocalDate.now();
         grade.teacher = teacher;
@@ -62,31 +62,7 @@ public class Grade {
     }
 
 
-    public enum GradeConst {
 
-        ZERO(0),
-        ONE(1),
-        TWO(2),
-        THREE(3),
-        FOUR(4),
-        FIVE(5),
-        SIX(6);
-
-        public final int grade;
-
-        GradeConst(int grade) {
-            this.grade = grade;
-        }
-
-        public static GradeConst getByRating(int grade) {
-            for (GradeConst ratingConst : GradeConst.values()) {
-                if (ratingConst.grade == grade) {
-                    return ratingConst;
-                }
-            }
-            throw new EntityNotFoundException("Grade " + grade + " not found");
-        }
-    }
 
 
 }

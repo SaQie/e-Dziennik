@@ -3,6 +3,7 @@ package pl.edziennik.common.valueobject;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,8 @@ import lombok.experimental.Accessors;
 public class Email {
 
     @JsonValue
+    @jakarta.validation.constraints.Email(message = "{email.is.not.valid}")
+    @NotEmpty(message = "{email.empty}")
     private final String value;
 
     private Email(String value) {

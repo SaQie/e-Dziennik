@@ -11,7 +11,9 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class Nip {
+
     @JsonValue
+    @org.hibernate.validator.constraints.pl.NIP(message = "{nip.invalid}")
     private final String value;
 
     private Nip(String value) {

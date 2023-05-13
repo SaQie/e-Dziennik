@@ -1,6 +1,7 @@
 package pl.edziennik.web.command.student;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class StudentCommandController {
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Add new student")
-    public ResponseEntity<Void> createStudent(@RequestBody CreateStudentCommand command) {
+    public ResponseEntity<Void> createStudent(@RequestBody @Valid CreateStudentCommand command) {
         OperationResult operationResult = dispatcher.callHandler(command);
 
         URI location = ServletUriComponentsBuilder

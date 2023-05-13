@@ -1,6 +1,8 @@
 package pl.edziennik.application.command.school.create;
 
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.base.HandledBy;
 import pl.edziennik.application.common.dispatcher.base.ValidatedBy;
@@ -11,14 +13,16 @@ import pl.edziennik.common.valueobject.id.SchoolLevelId;
 @HandledBy(handler = CreateSchoolCommandHandler.class)
 @ValidatedBy(validator = CreateSchoolCommandValidator.class)
 public record CreateSchoolCommand(
-        Name name,
-        Address address,
-        PostalCode postalCode,
-        City city,
-        Nip nip,
-        Regon regon,
-        PhoneNumber phoneNumber,
-        SchoolLevelId schoolLevelId
+
+        @Valid @NotNull(message = "{name.empty}") Name name,
+        @Valid @NotNull(message = "{address.empty}") Address address,
+        @Valid @NotNull(message = "{postalCode.empty}") PostalCode postalCode,
+        @Valid @NotNull(message = "{city.empty}") City city,
+        @Valid @NotNull(message = "{nip.invalid}") Nip nip,
+        @Valid @NotNull(message = "{regon.invalid}") Regon regon,
+        @Valid @NotNull(message = "{phone.invalid}") PhoneNumber phoneNumber,
+        @Valid @NotNull(message = "{schoolLevel.empty}") SchoolLevelId schoolLevelId
+
 ) implements ICommand<OperationResult> {
 
     public static final String NAME = "name";

@@ -15,6 +15,11 @@ import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 @AllArgsConstructor
 class CreateStudentCommandValidator implements IBaseValidator<CreateStudentCommand> {
 
+    public static final String MESSAGE_KEY_USER_ALREADY_EXISTS_BY_EMAIL = "user.already.exists.by.email";
+    public static final String MESSAGE_KEY_USER_ALREADY_EXISTS_BY_USERNAME = "user.already.exists";
+    public static final String MESSAGE_KEY_STUDENT_PESEL_NOT_UNIQUE = "student.pesel.not.unique";
+    public static final String MESSAGE_KEY_SCHOOL_CLASS_NOT_BELONGS_TO_SCHOOL = "school.class.not.belong.to.school";
+
     private final StudentCommandRepository studentCommandRepository;
     private final SchoolClassCommandRepository schoolClassCommandRepository;
     private final UserCommandRepository userCommandRepository;
@@ -34,12 +39,12 @@ class CreateStudentCommandValidator implements IBaseValidator<CreateStudentComma
                     return null;
                 });
 
-        errorBuilder.flushErrors();
+        errorBuilder.flush();
 
         if (userCommandRepository.existsByEmail(command.email())) {
             errorBuilder.addError(
                     CreateStudentCommand.EMAIL,
-                    "user.already.exists.by.email",
+                    MESSAGE_KEY_USER_ALREADY_EXISTS_BY_EMAIL,
                     ErrorCode.OBJECT_ALREADY_EXISTS,
                     command.email());
         }
@@ -47,7 +52,7 @@ class CreateStudentCommandValidator implements IBaseValidator<CreateStudentComma
         if (userCommandRepository.existsByUsername(command.username())) {
             errorBuilder.addError(
                     CreateStudentCommand.USERNAME,
-                    "user.already.exists",
+                    MESSAGE_KEY_USER_ALREADY_EXISTS_BY_USERNAME,
                     ErrorCode.OBJECT_ALREADY_EXISTS,
                     command.username());
         }
@@ -55,7 +60,7 @@ class CreateStudentCommandValidator implements IBaseValidator<CreateStudentComma
         if (studentCommandRepository.isStudentExistsByPesel(command.pesel(), Role.RoleConst.ROLE_STUDENT.roleName())) {
             errorBuilder.addError(
                     CreateStudentCommand.PESEL,
-                    "student.pesel.not.unique",
+                    MESSAGE_KEY_STUDENT_PESEL_NOT_UNIQUE,
                     ErrorCode.OBJECT_ALREADY_EXISTS,
                     command.pesel()
             );
@@ -64,7 +69,7 @@ class CreateStudentCommandValidator implements IBaseValidator<CreateStudentComma
         if (!schoolClassCommandRepository.isSchoolClassBelongToSchool(command.schoolClassId(), command.schoolId())) {
             errorBuilder.addError(
                     CreateStudentCommand.SCHOOL_ID,
-                    "school.class.not.belong.to.school",
+                    MESSAGE_KEY_SCHOOL_CLASS_NOT_BELONGS_TO_SCHOOL,
                     ErrorCode.SCHOOL_CLASS_IS_NOT_PART_OF_SCHOOL
             );
         }

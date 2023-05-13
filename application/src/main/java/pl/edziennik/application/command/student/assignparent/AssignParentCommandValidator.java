@@ -12,6 +12,10 @@ import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 @AllArgsConstructor
 class AssignParentCommandValidator implements IBaseValidator<AssignParentCommand> {
 
+    public static final String MESSAGE_KEY_PARENT_ALREADY_HAS_STUDENT = "parent.already.has.student";
+    public static final String MESSAGE_KEY_STUDENT_ALREADY_HAS_PARENT = "student.already.has.parent";
+
+
     private final ParentCommandRepository parentCommandRepository;
     private final StudentCommandRepository studentCommandRepository;
 
@@ -29,12 +33,12 @@ class AssignParentCommandValidator implements IBaseValidator<AssignParentCommand
                     return null;
                 });
 
-        errorBuilder.flushErrors();
+        errorBuilder.flush();
 
         if (parentCommandRepository.hasAlreadyAssignedStudent(command.parentId())) {
             errorBuilder.addError(
                     AssignParentCommand.PARENT_ID,
-                    "parent.already.has.student",
+                    MESSAGE_KEY_PARENT_ALREADY_HAS_STUDENT,
                     ErrorCode.PARENT_HAS_STUDENT
             );
         }
@@ -42,7 +46,7 @@ class AssignParentCommandValidator implements IBaseValidator<AssignParentCommand
         if (studentCommandRepository.hasAlreadyAssignedParent(command.studentId())) {
             errorBuilder.addError(
                     AssignParentCommand.STUDENT_ID,
-                    "student.already.has.parent",
+                    MESSAGE_KEY_STUDENT_ALREADY_HAS_PARENT,
                     ErrorCode.STUDENT_HAS_PARENT
             );
         }

@@ -18,7 +18,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @EqualsAndHashCode
 @NoArgsConstructor
-public class PersonInformation implements Serializable, ValueObject {
+public class PersonInformation implements Serializable {
 
     @Convert(converter = FirstNameAttributeConverter.class)
     private FirstName firstName;

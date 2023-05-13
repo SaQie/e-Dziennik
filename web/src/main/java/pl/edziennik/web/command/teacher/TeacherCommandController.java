@@ -1,6 +1,7 @@
 package pl.edziennik.web.command.teacher;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,9 @@ public class TeacherCommandController {
     private final Dispatcher dispatcher;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Add teacher account")
-    public ResponseEntity<Void> createTeacher(@RequestBody CreateTeacherCommand command) {
+    public ResponseEntity<Void> createTeacher(@RequestBody @Valid CreateTeacherCommand command) {
         OperationResult operationResult = dispatcher.callHandler(command);
 
         URI location = ServletUriComponentsBuilder

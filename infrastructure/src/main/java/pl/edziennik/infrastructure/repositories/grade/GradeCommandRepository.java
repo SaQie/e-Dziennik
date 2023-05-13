@@ -6,4 +6,7 @@ import pl.edziennik.domain.grade.Grade;
 
 @RepositoryDefinition(domainClass = Grade.class, idClass = GradeId.class)
 public interface GradeCommandRepository {
+
+    Grade save(Grade grade);
+
 }

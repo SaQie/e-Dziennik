@@ -1,8 +1,7 @@
 package pl.edziennik.application.command.student.create;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.base.HandledBy;
 import pl.edziennik.application.common.dispatcher.base.ValidatedBy;
@@ -14,46 +13,19 @@ import pl.edziennik.common.valueobject.id.SchoolId;
 @HandledBy(handler = CreateStudentCommandHandler.class)
 @ValidatedBy(validator = CreateStudentCommandValidator.class)
 public record CreateStudentCommand(
-        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-        @NotEmpty(message = "{password.empty}")
-        @Size(min = 5, message = "{password.size}")
-        Password password,
 
-        @NotEmpty(message = "{username.empty}")
-        @Size(min = 4, message = "{username.size}")
-        Username username,
-
-        @NotEmpty(message = "{firstName.empty}")
-        FirstName firstName,
-
-        @NotEmpty(message = "{lastName.empty}")
-        LastName lastName,
-
-        @NotEmpty(message = "{address.empty}")
-        Address address,
-
-        @NotEmpty(message = "{postalCode.empty}")
-        @Size(min = 6, max = 6, message = "{postalCode.size}")
-        PostalCode postalCode,
-
-        @NotEmpty(message = "{city.empty}")
-        City city,
-
-        @org.hibernate.validator.constraints.pl.PESEL(message = "{pesel.invalid}")
-        Pesel pesel,
-
-        @Email(message = "{email.is.not.valid}")
-        @NotEmpty(message = "{email.empty}")
-        pl.edziennik.common.valueobject.Email email,
-
-        @Pattern(regexp = "[\\d]{9}", message = "{phone.invalid}")
-        PhoneNumber phoneNumber,
-
-        @NotNull(message = "{school.empty}")
-        SchoolId schoolId,
-
-        @NotNull(message = "{schoolClass.empty}")
-        SchoolClassId schoolClassId
+        @Valid @NotNull(message = "{password.empty}") Password password,
+        @Valid @NotNull(message = "{username.empty}") Username username,
+        @Valid @NotNull(message = "{firstName.empty}") FirstName firstName,
+        @Valid @NotNull(message = "{lastName.empty}") LastName lastName,
+        @Valid @NotNull(message = "{address.empty}") Address address,
+        @Valid @NotNull(message = "{postalCode.empty}") PostalCode postalCode,
+        @Valid @NotNull(message = "{city.empty}") City city,
+        @Valid @NotNull(message = "{pesel.invalid}") Pesel pesel,
+        @Valid @NotNull(message = "{email.empty}") pl.edziennik.common.valueobject.Email email,
+        @Valid @NotNull(message = "{phone.invalid}") PhoneNumber phoneNumber,
+        @NotNull(message = "{school.empty}") SchoolId schoolId,
+        @NotNull(message = "{schoolClass.empty}") SchoolClassId schoolClassId
 
 ) implements ICommand<OperationResult> {
 

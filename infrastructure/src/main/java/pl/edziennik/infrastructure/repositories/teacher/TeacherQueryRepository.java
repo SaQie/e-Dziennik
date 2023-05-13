@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.RepositoryDefinition;
 import pl.edziennik.common.dto.teacher.DetailedTeacherDto;
+import pl.edziennik.common.dto.teacher.TeacherSubjectsSummaryDto;
 import pl.edziennik.common.dto.teacher.TeacherSummaryDto;
 import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.domain.teacher.Teacher;
@@ -31,4 +32,12 @@ public interface TeacherQueryRepository {
             "JOIN t.user u " +
             "JOIN t.school s ")
     Page<TeacherSummaryDto> findAllWithPagination(Pageable pageable);
+
+    @Query("SELECT NEW " +
+            "pl.edziennik.common.dto.teacher.TeacherSubjectsSummaryDto(s.subjectId, s.name, s.description, sc.schoolClassId, sc.className) " +
+            "FROM Subject s " +
+            "JOIN s.teacher t " +
+            "JOIN s.schoolClass sc " +
+            "WHERE t.teacherId = :teacherId ")
+    Page<TeacherSubjectsSummaryDto> getTeacherSubjectsSummaryWithPagination(Pageable pageable,TeacherId teacherId);
 }

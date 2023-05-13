@@ -44,7 +44,7 @@ public class ValidationErrorBuilder {
         this.errors.add(validationError);
     }
 
-    public void flushErrors() {
+    public void flush() {
         build();
     }
 

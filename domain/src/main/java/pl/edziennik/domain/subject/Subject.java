@@ -27,7 +27,7 @@ public class Subject {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "value", column = @Column(name = "subject_name"))
+            @AttributeOverride(name = "value", column = @Column(name = "name"))
     })
     private Name name;
 
@@ -38,17 +38,11 @@ public class Subject {
     private SchoolClass schoolClass;
 
 
-    public static Subject of(Name subjectName, Description description, SchoolClass schoolClass) {
+    public static Subject of(Name subjectName, Description description, SchoolClass schoolClass, Teacher teacher) {
         Subject subject = new Subject();
         subject.description = description;
         subject.name = subjectName;
         subject.schoolClass = schoolClass;
-
-        return subject;
-    }
-
-    public static Subject of(Name subjectName, Description description, SchoolClass schoolClass, Teacher teacher) {
-        Subject subject = of(subjectName, description, schoolClass);
         subject.teacher = teacher;
 
         return subject;

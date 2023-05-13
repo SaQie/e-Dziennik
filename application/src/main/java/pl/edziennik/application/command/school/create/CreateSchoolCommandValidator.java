@@ -11,6 +11,10 @@ import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 @AllArgsConstructor
 class CreateSchoolCommandValidator implements IBaseValidator<CreateSchoolCommand> {
 
+    public static final String MESSAGE_KEY_SCHOOL_ALREADY_EXISTS = "school.already.exists";
+    public static final String MESSAGE_KEY_SCHOOL_WITH_NIP_ALREADY_EXISTS = "school.with.nip.already.exists";
+    public static final String MESSAGE_KEY_SCHOOL_WITH_REGON_ALREADY_EXISTS = "school.with.regon.already.exists";
+
     private final SchoolCommandRepository schoolCommandRepository;
 
     @Override
@@ -18,7 +22,7 @@ class CreateSchoolCommandValidator implements IBaseValidator<CreateSchoolCommand
         if (schoolCommandRepository.isExistsByName(command.name())) {
             errorBuilder.addError(
                     CreateSchoolCommand.NAME,
-                    "school.already.exists",
+                    MESSAGE_KEY_SCHOOL_ALREADY_EXISTS,
                     ErrorCode.OBJECT_ALREADY_EXISTS,
                     command.name()
             );
@@ -27,7 +31,7 @@ class CreateSchoolCommandValidator implements IBaseValidator<CreateSchoolCommand
         if (schoolCommandRepository.isExistsByNip(command.nip())) {
             errorBuilder.addError(
                     CreateSchoolCommand.NIP,
-                    "school.with.nip.already.exists",
+                    MESSAGE_KEY_SCHOOL_WITH_NIP_ALREADY_EXISTS,
                     ErrorCode.OBJECT_ALREADY_EXISTS,
                     command.nip()
             );
@@ -36,7 +40,7 @@ class CreateSchoolCommandValidator implements IBaseValidator<CreateSchoolCommand
         if (schoolCommandRepository.isExistsByRegon(command.regon())) {
             errorBuilder.addError(
                     CreateSchoolCommand.REGON,
-                    "school.with.regon.already.exists",
+                    MESSAGE_KEY_SCHOOL_WITH_REGON_ALREADY_EXISTS,
                     ErrorCode.OBJECT_ALREADY_EXISTS,
                     command.regon()
             );

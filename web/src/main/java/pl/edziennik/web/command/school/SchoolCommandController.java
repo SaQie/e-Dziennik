@@ -1,6 +1,7 @@
 package pl.edziennik.web.command.school;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +23,9 @@ public class SchoolCommandController {
     private final Dispatcher dispatcher;
 
     @PostMapping()
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create new school")
-    public ResponseEntity<Void> createSchool(@RequestBody CreateSchoolCommand createSchoolCommand) {
+    public ResponseEntity<Void> createSchool(@RequestBody @Valid CreateSchoolCommand createSchoolCommand) {
         OperationResult operationResult = dispatcher.callHandler(createSchoolCommand);
 
         URI location = ServletUriComponentsBuilder

@@ -1,9 +1,7 @@
 package pl.edziennik.application.command.admin;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.base.HandledBy;
 import pl.edziennik.application.common.dispatcher.base.ValidatedBy;
@@ -15,18 +13,9 @@ import pl.edziennik.common.valueobject.Username;
 @ValidatedBy(validator = CreateAdminCommandValidator.class)
 public record CreateAdminCommand(
 
-        @NotEmpty(message = "{username.empty}")
-        @Size(min = 4, message = "{username.size}")
-        Username username,
-
-        @Email(message = "{email.is.not.valid}")
-        @NotEmpty(message = "{email.empty}")
-        pl.edziennik.common.valueobject.Email email,
-
-        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-        @NotEmpty(message = "{password.empty}")
-        @Size(min = 5, message = "{password.size}")
-        Password password
+        @Valid @NotNull(message = "{username.empty}") Username username,
+        @Valid @NotNull(message = "{email.empty}") pl.edziennik.common.valueobject.Email email,
+        @Valid @NotNull(message = "{password.empty}") Password password
 
 ) implements ICommand<OperationResult> {
 

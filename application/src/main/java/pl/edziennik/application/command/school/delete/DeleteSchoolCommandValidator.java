@@ -5,15 +5,20 @@ import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
 import pl.edziennik.application.common.dispatcher.base.IBaseValidator;
 import pl.edziennik.infrastructure.repositories.school.SchoolCommandRepository;
-import pl.edziennik.infrastructure.spring.ResourceCreator;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
 @Component
 @AllArgsConstructor
 class DeleteSchoolCommandValidator implements IBaseValidator<DeleteSchoolCommand> {
 
+    public static final String MESSAGE_KEY_CANNOT_DELETE_SCHOOL_BECAUSE_OF_TEACHER_EXISTS =
+            "cannot.delete.because.of.teacher.exists";
+    public static final String MESSAGE_KEY_CANNOT_DELETE_SCHOOL_BECAUSE_OF_STUDENT_EXISTS =
+            "cannot.delete.because.of.student.exists";
+    public static final String MESSAGE_KEY_CANNOT_DELETE_SCHOOL_BECAUSE_OF_SCHOOL_CLASS_EXISTS =
+            "cannot.delete.because.of.school.class.exists";
+
     private final SchoolCommandRepository schoolCommandRepository;
-    private final ResourceCreator res;
 
     @Override
     public void validate(DeleteSchoolCommand command, ValidationErrorBuilder errorBuilder) {
@@ -23,12 +28,12 @@ class DeleteSchoolCommandValidator implements IBaseValidator<DeleteSchoolCommand
                     return null;
                 });
 
-        errorBuilder.flushErrors();
+        errorBuilder.flush();
 
         if (schoolCommandRepository.isTeacherExistsInSchool(command.schoolId())) {
             errorBuilder.addError(
                     DeleteSchoolCommand.SCHOOL_ID,
-                    res.of("cannot.delete.because.of.teacher.exists"),
+                    MESSAGE_KEY_CANNOT_DELETE_SCHOOL_BECAUSE_OF_TEACHER_EXISTS,
                     ErrorCode.STILL_EXISTS_RELATED_OBJECTS_TO_SCHOOL
             );
         }
@@ -36,7 +41,7 @@ class DeleteSchoolCommandValidator implements IBaseValidator<DeleteSchoolCommand
         if (schoolCommandRepository.isStudentExistsInSchool(command.schoolId())) {
             errorBuilder.addError(
                     DeleteSchoolCommand.SCHOOL_ID,
-                    res.of("cannot.delete.because.of.student.exists"),
+                    MESSAGE_KEY_CANNOT_DELETE_SCHOOL_BECAUSE_OF_STUDENT_EXISTS,
                     ErrorCode.STILL_EXISTS_RELATED_OBJECTS_TO_SCHOOL
             );
         }
@@ -44,7 +49,7 @@ class DeleteSchoolCommandValidator implements IBaseValidator<DeleteSchoolCommand
         if (schoolCommandRepository.isSchoolClassExistsInSchool(command.schoolId())) {
             errorBuilder.addError(
                     DeleteSchoolCommand.SCHOOL_ID,
-                    res.of("cannot.delete.because.of.school.class.exists"),
+                    MESSAGE_KEY_CANNOT_DELETE_SCHOOL_BECAUSE_OF_SCHOOL_CLASS_EXISTS,
                     ErrorCode.STILL_EXISTS_RELATED_OBJECTS_TO_SCHOOL
             );
         }

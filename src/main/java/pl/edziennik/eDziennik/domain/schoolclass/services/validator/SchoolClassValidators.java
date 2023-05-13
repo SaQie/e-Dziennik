@@ -11,7 +11,7 @@ public interface SchoolClassValidators extends AbstractValidator<SchoolClassRequ
 
     String EXCEPTION_MESSAGE_TEACHER_NOT_BELONG_TO_SCHOOL = "teacher.not.belongs.to.school";
     String EXCEPTION_MESSAGE_TEACHER_IS_ALREADY_SUPERVISING_TEACHER = "teacher.is.already.supervising.teacher";
-    String EXCEPTION_MESSAGE_SCHOOL_CLASS_ALREADY_EXIST = "school.class.already.exist";
+    String EXCEPTION_MESSAGE_SCHOOL_CLASS_ALREADY_EXIST = "school.class.already.exists";
 
 
 }

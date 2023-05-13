@@ -43,19 +43,14 @@ public class SchoolClass {
 
     private LocalDate createdDate;
 
-    public static SchoolClass of(Name name, School school) {
+    public static SchoolClass of(Name name, School school, Teacher teacher) {
         SchoolClass schoolClass = new SchoolClass();
         schoolClass.className = name;
         schoolClass.school = school;
         schoolClass.createdDate = LocalDate.now();
-
-        return schoolClass;
-    }
-
-    public static SchoolClass of(Name name, School school, Teacher teacher) {
-        SchoolClass schoolClass = of(name, school);
         schoolClass.teacher = teacher;
 
         return schoolClass;
     }
+
 }

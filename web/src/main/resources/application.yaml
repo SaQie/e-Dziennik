@@ -36,6 +36,11 @@ logging:
 #      springframework:
 #        web: DEBUG
 
+#logging:
+#  level:
+#    root: DEBUG
+
+
 
 jwt:
   secret: testtt

@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
-import pl.edziennik.application.query.student.detailedstudent.GetDetailedStudentQuery;
-import pl.edziennik.application.query.student.studentsummary.GetStudentSummaryQuery;
+import pl.edziennik.application.query.student.detailed.GetDetailedStudentQuery;
+import pl.edziennik.application.query.student.summary.GetStudentSummaryQuery;
 import pl.edziennik.common.dto.PageDto;
 import pl.edziennik.common.dto.student.DetailedStudentDto;
 import pl.edziennik.common.dto.student.StudentSummaryDto;
@@ -31,7 +31,7 @@ public class StudentQueryController {
 
     }
 
-    @GetMapping()
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<PageDto<StudentSummaryDto>> getAllStudents(Pageable pageable) {
         GetStudentSummaryQuery getStudentSummaryQuery = new GetStudentSummaryQuery(pageable);
@@ -40,5 +40,11 @@ public class StudentQueryController {
 
         return ResponseEntity.ok(studentDtoPageDto);
     }
+
+    // FIXME CQRS DOROBIC ENDPOINTY
+
+    // /api/v1/students/{studentId}/subjects/grades <- Student subject list with grades
+    // /api/b1/students/{studentId}/subjects/{subjectId}/grades <- Student specific subject with grades
+
 
 }
