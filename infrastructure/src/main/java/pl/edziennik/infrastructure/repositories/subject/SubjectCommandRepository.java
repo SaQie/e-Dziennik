@@ -40,4 +40,11 @@ public interface SubjectCommandRepository {
     boolean isStudentFromTheSameSchoolClass(StudentId studentId, SubjectId subjectId);
 
     Subject getReferenceById(SubjectId subjectId);
+
+    @Query("SELECT CASE WHEN COUNT(t) = 1 THEN TRUE ELSE FALSE END " +
+            "FROM Subject s " +
+            "JOIN s.teacher t " +
+            "WHERE s.subjectId = :subjectId " +
+            "AND t.teacherId = :teacherId ")
+    boolean isTeacherFromProvidedSubject(TeacherId teacherId, SubjectId subjectId);
 }

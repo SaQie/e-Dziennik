@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -12,7 +13,8 @@ import lombok.experimental.Accessors;
 @Getter
 @Accessors(fluent = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
-public class Email {
+@EqualsAndHashCode(of = "value")
+public class Email implements ValueObject{
 
     @JsonValue
     @jakarta.validation.constraints.Email(message = "{email.is.not.valid}")

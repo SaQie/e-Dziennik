@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.validation.constraints.Pattern;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -11,6 +12,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @Getter
 @Accessors(fluent = true)
+@EqualsAndHashCode(of = "value")
 public class PhoneNumber implements ValueObject{
 
     @JsonValue

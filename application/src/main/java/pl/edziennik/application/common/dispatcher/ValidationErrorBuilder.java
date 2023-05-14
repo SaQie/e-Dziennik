@@ -17,7 +17,7 @@ public class ValidationErrorBuilder {
     private static final String NOT_FOUND_MESSAGE_KEY = "not.found.message";
     private final ResourceCreator res;
 
-    ValidationErrorBuilder(ResourceCreator resourceCreator) {
+    public ValidationErrorBuilder(ResourceCreator resourceCreator) {
         this.res = resourceCreator;
     }
 
@@ -42,6 +42,14 @@ public class ValidationErrorBuilder {
         ValidationError validationError = new ValidationError(field, res.of(NOT_FOUND_MESSAGE_KEY, field),
                 ErrorCode.OBJECT_NOT_EXISTS.errorCode());
         this.errors.add(validationError);
+    }
+
+    public List<ValidationError> getErrors() {
+        return this.errors;
+    }
+
+    public void clear() {
+        this.errors.clear();
     }
 
     public void flush() {

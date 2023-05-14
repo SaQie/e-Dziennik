@@ -29,14 +29,14 @@ class CreateTeacherCommandValidator implements IBaseValidator<CreateTeacherComma
 
         errorBuilder.flush();
 
-        if (teacherCommandRepository.existsByEmail(command.email())) {
+        if (teacherCommandRepository.isExistsByEmail(command.email())) {
             errorBuilder.addError(
                     CreateTeacherCommand.EMAIL,
                     MESSAGE_KEY_USER_ALREADY_EXISTS_BY_EMAIL,
                     ErrorCode.OBJECT_ALREADY_EXISTS,
                     command.email());
         }
-        if (teacherCommandRepository.existsByPesel(command.pesel())) {
+        if (teacherCommandRepository.isExistsByPesel(command.pesel())) {
             errorBuilder.addError(
                     CreateTeacherCommand.PESEL,
                     MESSAGE_KEY_TEACHER_PESEL_NOT_UNIQUE,
@@ -44,7 +44,7 @@ class CreateTeacherCommandValidator implements IBaseValidator<CreateTeacherComma
                     command.pesel()
             );
         }
-        if (teacherCommandRepository.existsByUsername(command.username())) {
+        if (teacherCommandRepository.isExistsByUsername(command.username())) {
             errorBuilder.addError(
                     CreateTeacherCommand.USERNAME,
                     MESSAGE_KEY_USER_ALREADY_EXISTS_BY_USERNAME,

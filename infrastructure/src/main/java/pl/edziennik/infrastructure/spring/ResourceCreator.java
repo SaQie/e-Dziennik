@@ -32,7 +32,7 @@ public class ResourceCreator {
     }
 
     public ValidationError notFoundError(String field, Identifier id) {
-        return new ValidationError(field, of("not.found.message", id.id(), id.getClass().getSimpleName()),
+        return new ValidationError(field, of("not.found.message", id.getClass().getSimpleName()),
                 ErrorCode.OBJECT_NOT_EXISTS.errorCode());
     }
 }

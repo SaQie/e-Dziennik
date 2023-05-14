@@ -16,16 +16,16 @@ public interface TeacherCommandRepository {
     @Query("SELECT CASE WHEN COUNT(t) > 0 THEN TRUE ELSE FALSE END FROM Teacher t " +
             "JOIN t.user u " +
             "WHERE u.email = :email")
-    boolean existsByEmail(Email email);
+    boolean isExistsByEmail(Email email);
 
     @Query("SELECT CASE WHEN COUNT(t) > 0 THEN TRUE ELSE FALSE END FROM Teacher t " +
             "WHERE t.personInformation.pesel = :pesel")
-    boolean existsByPesel(Pesel pesel);
+    boolean isExistsByPesel(Pesel pesel);
 
     @Query("SELECT CASE WHEN COUNT(t) > 0 THEN TRUE ELSE FALSE END FROM Teacher t " +
             "JOIN t.user u " +
             "WHERE u.username = :username")
-    boolean existsByUsername(Username username);
+    boolean isExistsByUsername(Username username);
 
     Teacher save(Teacher teacher);
 

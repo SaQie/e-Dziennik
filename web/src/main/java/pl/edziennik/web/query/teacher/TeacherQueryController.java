@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.application.query.teacher.detailed.GetDetailedTeacherQuery;
+import pl.edziennik.application.query.teacher.detailedsubject.GetTeacherDetailedSubjectQuery;
 import pl.edziennik.application.query.teacher.subjects.GetTeacherSubjectsSummaryQuery;
 import pl.edziennik.application.query.teacher.summary.GetTeacherSummaryQuery;
 import pl.edziennik.common.dto.PageDto;
@@ -57,8 +58,11 @@ public class TeacherQueryController {
     @GetMapping("/{teacherId}/subjects/{subjectId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<TeacherDetailedSubjectDto> getDetailedTeacherSubject(@PathVariable TeacherId teacherId, @PathVariable SubjectId subjectId) {
-        // dokonczyc ten query
-        return null;
+        GetTeacherDetailedSubjectQuery query = new GetTeacherDetailedSubjectQuery(teacherId, subjectId);
+
+        TeacherDetailedSubjectDto dto = dispatcher.callHandler(query);
+
+        return ResponseEntity.ok(dto);
     }
 
 

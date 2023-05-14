@@ -23,6 +23,12 @@ public class Role {
     })
     private Name name;
 
+    public static Role of(Name name) {
+        Role role = new Role();
+        role.name = name;
+
+        return role;
+    }
 
     public enum RoleConst {
         ROLE_ADMIN(Name.of("ROLE_ADMIN")),

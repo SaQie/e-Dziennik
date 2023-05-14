@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -12,6 +13,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Accessors(fluent = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
+@EqualsAndHashCode(of = "value")
 public class Username {
     @JsonValue
     @NotEmpty(message = "{username.empty}")

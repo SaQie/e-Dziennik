@@ -28,7 +28,7 @@ public interface SchoolCommandRepository {
 
     School save(School school);
 
-    Optional<SchoolId> findById(SchoolId schoolId);
+    Optional<School> findById(SchoolId schoolId);
 
     @Query("SELECT CASE WHEN COUNT(t) > 0 THEN TRUE ELSE FALSE END FROM Teacher t " +
             "JOIN t.school s " +

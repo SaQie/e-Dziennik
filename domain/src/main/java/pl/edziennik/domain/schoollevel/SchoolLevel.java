@@ -27,6 +27,14 @@ public class SchoolLevel {
     })
     private Name name;
 
+    public static SchoolLevel of(SchoolLevelId schoolLevelId, Name name) {
+        SchoolLevel schoolLevel = new SchoolLevel();
+        schoolLevel.schoolLevelId = schoolLevelId;
+        schoolLevel.name = name;
+
+        return schoolLevel;
+    }
+
     @OneToMany(mappedBy = "schoolLevel", orphanRemoval = true)
     private final List<School> schools = new ArrayList<>();
 
