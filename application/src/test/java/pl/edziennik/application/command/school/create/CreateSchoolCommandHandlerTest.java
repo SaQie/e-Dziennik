@@ -1,10 +1,10 @@
 package pl.edziennik.application.command.school.create;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import pl.edziennik.application.BaseUnitTest;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.exception.BusinessException;
-import pl.edziennik.application.mock.ResourceCreatorMock;
-import pl.edziennik.application.mock.repositories.SchoolCommandMockRepo;
 import pl.edziennik.application.mock.repositories.SchoolLevelCommandMockRepo;
 import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.SchoolId;
@@ -13,22 +13,17 @@ import pl.edziennik.domain.school.School;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class CreateSchoolCommandHandlerTest {
+class CreateSchoolCommandHandlerTest extends BaseUnitTest {
 
 
-    private final SchoolCommandMockRepo schoolCommandMockRepo;
-    private final SchoolLevelCommandMockRepo schoolLevelCommandMockRepo;
-    private final ResourceCreatorMock resourceCreatorMock;
     private final CreateSchoolCommandHandler commandHandler;
 
     public CreateSchoolCommandHandlerTest() {
-        this.schoolCommandMockRepo = new SchoolCommandMockRepo();
-        this.schoolLevelCommandMockRepo = new SchoolLevelCommandMockRepo();
-        this.resourceCreatorMock = new ResourceCreatorMock();
-        this.commandHandler = new CreateSchoolCommandHandler(schoolLevelCommandMockRepo, schoolCommandMockRepo, resourceCreatorMock);
+        this.commandHandler = new CreateSchoolCommandHandler(schoolLevelCommandRepository,
+                schoolCommandRepository,
+                resourceCreator);
     }
 
 
@@ -52,7 +47,7 @@ class CreateSchoolCommandHandlerTest {
         // then
         assertTrue(operationResult.isSuccess());
 
-        Optional<School> school = schoolCommandMockRepo.findById(SchoolId.of(operationResult.identifier().id()));
+        Optional<School> school = schoolCommandRepository.findById(SchoolId.of(operationResult.identifier().id()));
         assertTrue(school.isPresent());
     }
 
@@ -71,6 +66,8 @@ class CreateSchoolCommandHandlerTest {
 
         // when
         // then
-        assertThrows(BusinessException.class, () -> commandHandler.handle(command));
+        Assertions.assertThatThrownBy(() -> commandHandler.handle(command))
+                .isInstanceOf(BusinessException.class)
+                .hasMessage(assertNotFoundMessage());
     }
 }

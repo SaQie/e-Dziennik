@@ -1,4 +1,4 @@
-package pl.edziennik.application.command.admin;
+package pl.edziennik.application.command.admin.create;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

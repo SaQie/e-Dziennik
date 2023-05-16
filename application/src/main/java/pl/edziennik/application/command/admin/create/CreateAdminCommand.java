@@ -1,4 +1,4 @@
-package pl.edziennik.application.command.admin;
+package pl.edziennik.application.command.admin.create;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

@@ -8,6 +8,8 @@ import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.student.Student;
 import pl.edziennik.domain.subject.Subject;
+import pl.edziennik.infrastructure.repositories.schoolclass.SchoolClassCommandRepository;
+import pl.edziennik.infrastructure.repositories.student.StudentCommandRepository;
 import pl.edziennik.infrastructure.repositories.subject.SubjectCommandRepository;
 
 import java.util.HashMap;
@@ -18,17 +20,15 @@ import java.util.Optional;
 public class SubjectCommandMockRepo implements SubjectCommandRepository {
 
     private final Map<SubjectId, Subject> database;
-    private final SchoolClassCommandMockRepo schoolClassMockRepo;
-    private final StudentCommandMockRepo studentCommandMockRepo;
-    private final SubjectCommandMockRepo subjectCommandMockRepo;
+    private final SchoolClassCommandRepository schoolClassMockRepo;
+    private final StudentCommandRepository studentCommandMockRepo;
 
-    public SubjectCommandMockRepo(SchoolClassCommandMockRepo schoolClassCommandMockRepo,
-                                  StudentCommandMockRepo studentCommandMockRepo,
-                                  SubjectCommandMockRepo subjectCommandMockRepo) {
+    public SubjectCommandMockRepo(SchoolClassCommandRepository schoolClassCommandRepository,
+                                  StudentCommandRepository studentCommandRepository) {
         this.database = new HashMap<>();
-        this.schoolClassMockRepo = schoolClassCommandMockRepo;
-        this.studentCommandMockRepo = studentCommandMockRepo;
-        this.subjectCommandMockRepo = subjectCommandMockRepo;
+        this.schoolClassMockRepo = schoolClassCommandRepository;
+        this.studentCommandMockRepo = studentCommandRepository;
+
     }
 
     @Override
@@ -63,8 +63,7 @@ public class SubjectCommandMockRepo implements SubjectCommandRepository {
     @Override
     public boolean isStudentFromTheSameSchoolClass(StudentId studentId, SubjectId subjectId) {
         Student student = studentCommandMockRepo.getReferenceById(studentId);
-        Subject subject = subjectCommandMockRepo.getReferenceById(subjectId);
-
+        Subject subject = getReferenceById(subjectId);
         return student.getSchoolClass().getSchoolClassId().equals(subject.getSchoolClass().getSchoolClassId());
     }
 
@@ -75,8 +74,7 @@ public class SubjectCommandMockRepo implements SubjectCommandRepository {
 
     @Override
     public boolean isTeacherFromProvidedSubject(TeacherId teacherId, SubjectId subjectId) {
-        Subject subject = subjectCommandMockRepo.getReferenceById(subjectId);
-
+        Subject subject = getReferenceById(subjectId);
         return subject.getTeacher().getTeacherId().equals(teacherId);
     }
 }

@@ -66,7 +66,7 @@ public class SchoolCommandMockRepo implements SchoolCommandRepository {
         if (school == null) {
             return false;
         }
-        return school.getTeachers() != null;
+        return !school.getTeachers().isEmpty();
     }
 
     @Override
@@ -75,7 +75,7 @@ public class SchoolCommandMockRepo implements SchoolCommandRepository {
         if (school == null) {
             return false;
         }
-        return school.getStudents() != null;
+        return !school.getStudents().isEmpty();
     }
 
     @Override
@@ -84,7 +84,7 @@ public class SchoolCommandMockRepo implements SchoolCommandRepository {
         if (school == null) {
             return false;
         }
-        return school.getSchoolClasses() != null;
+        return !school.getSchoolClasses().isEmpty();
     }
 
     @Override

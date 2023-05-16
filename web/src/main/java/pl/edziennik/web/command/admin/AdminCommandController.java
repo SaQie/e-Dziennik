@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pl.edziennik.application.command.admin.CreateAdminCommand;
+import pl.edziennik.application.command.admin.create.CreateAdminCommand;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.common.valueobject.id.AdminId;

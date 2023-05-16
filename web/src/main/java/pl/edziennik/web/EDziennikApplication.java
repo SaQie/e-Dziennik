@@ -19,4 +19,6 @@ public class EDziennikApplication {
         SpringApplication.run(EDziennikApplication.class, args);
     }
 
+
+
 }
