@@ -8,7 +8,6 @@ import pl.edziennik.domain.role.Role;
 import pl.edziennik.infrastructure.repositories.school.SchoolCommandRepository;
 import pl.edziennik.infrastructure.repositories.schoolclass.SchoolClassCommandRepository;
 import pl.edziennik.infrastructure.repositories.student.StudentCommandRepository;
-import pl.edziennik.infrastructure.repositories.user.UserCommandRepository;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
 @Component
@@ -22,7 +21,6 @@ class CreateStudentCommandValidator implements IBaseValidator<CreateStudentComma
 
     private final StudentCommandRepository studentCommandRepository;
     private final SchoolClassCommandRepository schoolClassCommandRepository;
-    private final UserCommandRepository userCommandRepository;
     private final SchoolCommandRepository schoolCommandRepository;
 
     @Override
@@ -41,7 +39,7 @@ class CreateStudentCommandValidator implements IBaseValidator<CreateStudentComma
 
         errorBuilder.flush();
 
-        if (userCommandRepository.existsByEmail(command.email())) {
+        if (studentCommandRepository.existsByEmail(command.email())) {
             errorBuilder.addError(
                     CreateStudentCommand.EMAIL,
                     MESSAGE_KEY_USER_ALREADY_EXISTS_BY_EMAIL,
@@ -49,7 +47,7 @@ class CreateStudentCommandValidator implements IBaseValidator<CreateStudentComma
                     command.email());
         }
 
-        if (userCommandRepository.existsByUsername(command.username())) {
+        if (studentCommandRepository.existsByUsername(command.username())) {
             errorBuilder.addError(
                     CreateStudentCommand.USERNAME,
                     MESSAGE_KEY_USER_ALREADY_EXISTS_BY_USERNAME,

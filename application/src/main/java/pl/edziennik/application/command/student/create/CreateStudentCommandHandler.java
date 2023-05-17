@@ -17,14 +17,14 @@ import pl.edziennik.domain.student.Student;
 import pl.edziennik.domain.user.User;
 import pl.edziennik.infrastructure.repositories.role.RoleCommandRepository;
 import pl.edziennik.infrastructure.repositories.school.SchoolCommandRepository;
-import pl.edziennik.infrastructure.repositories.schoolclass.SchoolClassQueryRepository;
+import pl.edziennik.infrastructure.repositories.schoolclass.SchoolClassCommandRepository;
 import pl.edziennik.infrastructure.repositories.student.StudentCommandRepository;
 
 @Component
 @AllArgsConstructor
 class CreateStudentCommandHandler implements ICommandHandler<CreateStudentCommand, OperationResult> {
 
-    private final SchoolClassQueryRepository schoolClassCommandRepository;
+    private final SchoolClassCommandRepository schoolClassCommandRepository;
     private final SchoolCommandRepository schoolCommandRepository;
     private final StudentCommandRepository studentCommandRepository;
     private final RoleCommandRepository roleCommandRepository;

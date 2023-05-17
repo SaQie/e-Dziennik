@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
+import pl.edziennik.common.valueobject.id.GradeId;
 import pl.edziennik.domain.grade.Grade;
 import pl.edziennik.domain.studentsubject.StudentSubject;
 import pl.edziennik.domain.teacher.Teacher;
@@ -26,8 +27,8 @@ class AssignGradeToStudentSubjectCommandHandler implements ICommandHandler<Assig
 
         Grade grade = Grade.of(command.grade(), command.weight(), command.description(), studentSubject, teacher);
 
-        gradeCommandRepository.save(grade);
+        GradeId gradeId = gradeCommandRepository.save(grade).getGradeId();
 
-        return OperationResult.success();
+        return OperationResult.success(gradeId);
     }
 }

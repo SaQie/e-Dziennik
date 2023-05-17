@@ -14,6 +14,7 @@ import pl.edziennik.domain.role.Role;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.student.Student;
+import pl.edziennik.domain.studentsubject.StudentSubject;
 import pl.edziennik.domain.subject.Subject;
 import pl.edziennik.domain.teacher.Teacher;
 import pl.edziennik.domain.user.User;
@@ -25,6 +26,7 @@ import pl.edziennik.infrastructure.repositories.school.SchoolCommandRepository;
 import pl.edziennik.infrastructure.repositories.schoolclass.SchoolClassCommandRepository;
 import pl.edziennik.infrastructure.repositories.schoollevel.SchoolLevelCommandRepository;
 import pl.edziennik.infrastructure.repositories.student.StudentCommandRepository;
+import pl.edziennik.infrastructure.repositories.studentsubject.StudentSubjectCommandRepository;
 import pl.edziennik.infrastructure.repositories.subject.SubjectCommandRepository;
 import pl.edziennik.infrastructure.repositories.teacher.TeacherCommandRepository;
 import pl.edziennik.infrastructure.repositories.user.UserCommandRepository;
@@ -47,8 +49,10 @@ public class BaseUnitTest {
     protected ResourceCreator resourceCreator;
     protected ValidationErrorBuilder validationErrorBuilder;
     protected PasswordEncoder passwordEncoder;
+    protected StudentSubjectCommandRepository studentSubjectCommandRepository;
 
 
+    protected PersonInformation personInformation;
     protected Address address;
 
     protected BaseUnitTest() {
@@ -65,11 +69,19 @@ public class BaseUnitTest {
         this.validationErrorBuilder = new ValidationErrorBuilder(resourceCreator);
         this.adminCommandRepository = new AdminCommandMockRepo();
         this.roleCommandRepository = new RoleCommandMockRepo();
+        this.studentSubjectCommandRepository = new StudentSubjectMockRepo();
         this.address = Address.of(
                 pl.edziennik.common.valueobject.Address.of(StringUtil.randomIdentifer(5)),
                 City.of(StringUtil.randomIdentifer(5)),
                 PostalCode.of(StringUtil.randomIdentifer(5))
         );
+        this.personInformation = PersonInformation.of(
+                FirstName.of("Test"),
+                LastName.of("Testowy"),
+                PhoneNumber.of("123123123"),
+                Pesel.of("12345678912")
+        );
+
         this.passwordEncoder = new PasswordEncoder() {
             @Override
             public String encode(CharSequence rawPassword) {
@@ -98,6 +110,7 @@ public class BaseUnitTest {
                 Role.of(Name.of(role))
         );
     }
+
 
     protected PersonInformation createPersonInformation(String pesel) {
         return PersonInformation.of(
@@ -160,6 +173,14 @@ public class BaseUnitTest {
         );
     }
 
+    protected Parent createParent(User user, PersonInformation personInformation, Address address, Student student) {
+        return Parent.of(
+                user,
+                personInformation,
+                address,
+                student);
+    }
+
     protected SchoolClass createSchoolClass(String name, School school, Teacher teacher) {
         SchoolClass schoolClass = SchoolClass.of(
                 Name.of(name),
@@ -181,6 +202,27 @@ public class BaseUnitTest {
         return subject;
     }
 
+    protected SchoolClass createSchoolWithSchoolClass() {
+        School school = createSchool("Testowa", "123123123", "123123123", address);
+        school = schoolCommandRepository.save(school);
+
+        User user = createUser("Test", "Test@example.com", RoleCommandMockRepo.TEACHER_ROLE_NAME.value());
+        Teacher teacher = createTeacher(user, school, personInformation, address);
+        teacher = teacherCommandRepository.save(teacher);
+
+        SchoolClass schoolClass = createSchoolClass("1A", school, teacher);
+        schoolClass = schoolClassCommandRepository.save(schoolClass);
+
+        return schoolClass;
+    }
+
+    protected StudentSubject createStudentSubject(Student student, Subject subject) {
+        return StudentSubject.of(
+                student,
+                subject
+        );
+    }
+
     protected School createSchool(String name, String nip, String regon, Address address) {
         return School.of(
                 Name.of(name),
@@ -192,6 +234,16 @@ public class BaseUnitTest {
         );
     }
 
+    protected Student createStudentWithSchoolAndClass(User user, Parent parent) {
+        School school = createSchool("Test", "123123", "123123", address);
+        schoolCommandRepository.save(school);
+        SchoolClass schoolClass = createSchoolClass("Test", school, null);
+        schoolClassCommandRepository.save(schoolClass);
+
+        Student student = createStudent(user, school, schoolClass, personInformation, address, parent);
+        return studentCommandRepository.save(student);
+    }
+
     protected String assertBusinessExceptionMessage(String field, String errorMessage, ErrorCode errorCode) {
         return "Business exception occurred, list of errors: [Field: '" + field + "' ]-[ErrorMessage: '" + errorMessage + "' ]-[ErrorCode: '" + errorCode.errorCode() + "' ]\n";
     }
@@ -201,10 +253,9 @@ public class BaseUnitTest {
         return "Business exception occurred, list of errors: [Field: '" + field + "' ]-[ErrorMessage: 'not.found.message' ]-[ErrorCode: '1000' ]\n";
     }
 
-    protected String assertNotFoundMessage(){
+    protected String assertNotFoundMessage() {
         return "not.found.message";
     }
-
 
 
 }

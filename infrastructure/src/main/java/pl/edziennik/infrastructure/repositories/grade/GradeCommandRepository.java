@@ -9,4 +9,6 @@ public interface GradeCommandRepository {
 
     Grade save(Grade grade);
 
+    Grade getReferenceById(GradeId gradeId);
+
 }

@@ -135,7 +135,7 @@ class CreateSchoolClassCommandValidatorTest extends BaseUnitTest {
         school = schoolCommandRepository.save(school);
 
         User user = createUser("Test", "Test@example.com", RoleCommandMockRepo.TEACHER_ROLE_NAME.value());
-        Teacher teacher = createTeacher(user, school, null, address);
+        Teacher teacher = createTeacher(user, school, personInformation, address);
         teacher = teacherCommandRepository.save(teacher);
 
         SchoolClass schoolClass = createSchoolClass("Test", school, teacher);

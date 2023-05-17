@@ -23,13 +23,13 @@ class AssignParentCommandValidator implements IBaseValidator<AssignParentCommand
     public void validate(AssignParentCommand command, ValidationErrorBuilder errorBuilder) {
         parentCommandRepository.findById(command.parentId())
                 .orElseGet(() -> {
-                    errorBuilder.addNotFoundError(AssignParentCommand.STUDENT_ID);
+                    errorBuilder.addNotFoundError(AssignParentCommand.PARENT_ID);
                     return null;
                 });
 
         studentCommandRepository.findById(command.studentId())
                 .orElseGet(() -> {
-                    errorBuilder.addNotFoundError(AssignParentCommand.PARENT_ID);
+                    errorBuilder.addNotFoundError(AssignParentCommand.STUDENT_ID);
                     return null;
                 });
 
