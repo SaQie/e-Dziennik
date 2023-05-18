@@ -7,24 +7,15 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    container: openjdk:17
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
     steps:
-      - name: Checkup the repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
-      - name: Clean with Maven
+      - name: clean with Maven
         run: mvn clean
       - name: Test with Maven
         run: mvn test --file pom.xml
