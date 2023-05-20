@@ -9,4 +9,5 @@ import java.util.Optional;
 @RepositoryDefinition(domainClass = SchoolLevel.class, idClass = SchoolLevelId.class)
 public interface SchoolLevelCommandRepository {
     Optional<SchoolLevel> findById(SchoolLevelId schoolLevelId);
+
 }

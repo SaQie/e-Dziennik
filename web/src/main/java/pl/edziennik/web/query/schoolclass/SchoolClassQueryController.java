@@ -26,7 +26,7 @@ public class SchoolClassQueryController {
     public ResponseEntity<DetailedSchoolClassDto> getDetailedSchoolClass(@PathVariable SchoolClassId schoolClassId) {
         GetDetailedSchoolClassQuery schoolClassQuery = new GetDetailedSchoolClassQuery(schoolClassId);
 
-        DetailedSchoolClassDto dto = dispatcher.callHandler(schoolClassQuery);
+        DetailedSchoolClassDto dto = dispatcher.dispatch(schoolClassQuery);
 
         return ResponseEntity.ok(dto);
     }
@@ -36,7 +36,7 @@ public class SchoolClassQueryController {
     public ResponseEntity<PageDto<SchoolClassSummaryForSchoolDto>> getSchoolClassSummaryForSchool(@PathVariable SchoolId schoolId, Pageable pageable) {
         GetSchoolClassSummaryForSchoolQuery query = new GetSchoolClassSummaryForSchoolQuery(schoolId, pageable);
 
-        PageDto<SchoolClassSummaryForSchoolDto> dto = dispatcher.callHandler(query);
+        PageDto<SchoolClassSummaryForSchoolDto> dto = dispatcher.dispatch(query);
 
         return ResponseEntity.ok(dto);
     }

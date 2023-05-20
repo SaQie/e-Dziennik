@@ -43,4 +43,6 @@ public interface TeacherCommandRepository {
             "WHERE t.teacherId = :teacherId " +
             "AND s.schoolId = :schoolId ")
     boolean isAssignedToSchool(TeacherId teacherId, SchoolId schoolId);
+
+    Teacher getByTeacherId(TeacherId teacherId);
 }

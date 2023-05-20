@@ -23,13 +23,20 @@ public class SchoolLevel {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "value", column = @Column(name = "name"))
+            @AttributeOverride(name = "value", column = @Column(name = "name", nullable = false))
     })
     private Name name;
 
     public static SchoolLevel of(SchoolLevelId schoolLevelId, Name name) {
         SchoolLevel schoolLevel = new SchoolLevel();
         schoolLevel.schoolLevelId = schoolLevelId;
+        schoolLevel.name = name;
+
+        return schoolLevel;
+    }
+
+    public static SchoolLevel of(Name name) {
+        SchoolLevel schoolLevel = new SchoolLevel();
         schoolLevel.name = name;
 
         return schoolLevel;

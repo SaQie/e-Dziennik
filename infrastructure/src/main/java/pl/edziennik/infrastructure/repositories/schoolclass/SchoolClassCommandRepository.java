@@ -30,4 +30,6 @@ public interface SchoolClassCommandRepository {
     SchoolClass save(SchoolClass schoolClass);
 
     SchoolClass getReferenceById(SchoolClassId schoolClassId);
+
+    SchoolClass getBySchoolClassId(SchoolClassId schoolClassId);
 }

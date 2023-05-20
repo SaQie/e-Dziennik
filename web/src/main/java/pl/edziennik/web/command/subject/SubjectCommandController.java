@@ -25,7 +25,7 @@ public class SubjectCommandController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Add a new subject to school class")
     public ResponseEntity<Void> createSubject(@RequestBody @Valid CreateSubjectCommand command) {
-        OperationResult operationResult = dispatcher.callHandler(command);
+        OperationResult operationResult = dispatcher.dispatch(command);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequestUri()

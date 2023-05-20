@@ -20,7 +20,7 @@ public class Dispatcher {
     private final ValidatorResolver validatorResolver;
     private final ResourceCreator resourceCreator;
 
-    public final <T> T callHandler(final IDispatchable<T> dispatchable) {
+    public final <T> T dispatch(final IDispatchable<T> dispatchable) {
         IBaseHandler<IDispatchable<T>, T> handler = handlerResolver.resolve(dispatchable);
 
         executeValidators(dispatchable);

@@ -19,7 +19,7 @@ public class Admin {
     private AdminId adminId = AdminId.create();
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
 

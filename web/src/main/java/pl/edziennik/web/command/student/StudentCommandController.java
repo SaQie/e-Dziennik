@@ -28,7 +28,7 @@ public class StudentCommandController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Add new student")
     public ResponseEntity<Void> createStudent(@RequestBody @Valid CreateStudentCommand command) {
-        OperationResult operationResult = dispatcher.callHandler(command);
+        OperationResult operationResult = dispatcher.dispatch(command);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequestUri()
@@ -43,14 +43,14 @@ public class StudentCommandController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Delete specific student")
     public ResponseEntity<Void> deleteStudent(@PathVariable StudentId studentId) {
-        dispatcher.callHandler(new DeleteStudentCommand(studentId));
+        dispatcher.dispatch(new DeleteStudentCommand(studentId));
 
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{studentId}/parents/{parentId}/assign")
     public ResponseEntity<Void> assignParent(@PathVariable StudentId studentId, @PathVariable ParentId parentId) {
-        dispatcher.callHandler(new AssignParentCommand(studentId, parentId));
+        dispatcher.dispatch(new AssignParentCommand(studentId, parentId));
 
         return ResponseEntity.noContent().build();
     }

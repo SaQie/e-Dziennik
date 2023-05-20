@@ -23,7 +23,7 @@ public class SubjectManagmentCommandController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Assign a subject to student")
     public ResponseEntity<Void> assignSubjectToStudent(@RequestBody @Valid AssignSubjectToStudentCommand command) {
-        dispatcher.callHandler(command);
+        dispatcher.dispatch(command);
 
         URI location = ServletUriComponentsBuilder
                 .fromPath("/api/v1/students/{studentId}/subjects/{subjectId}/grades")

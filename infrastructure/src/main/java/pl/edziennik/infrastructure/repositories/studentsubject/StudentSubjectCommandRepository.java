@@ -22,4 +22,6 @@ public interface StudentSubjectCommandRepository {
 
 
     StudentSubject getReferenceByStudentStudentIdAndSubjectSubjectId(StudentId studentId, SubjectId subjectId);
+
+    StudentSubject getByStudentStudentIdAndSubjectSubjectId(StudentId studentId, SubjectId subjectId);
 }

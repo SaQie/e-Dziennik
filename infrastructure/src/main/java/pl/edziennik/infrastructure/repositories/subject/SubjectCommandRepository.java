@@ -31,6 +31,8 @@ public interface SubjectCommandRepository {
 
     Optional<Subject> findById(SubjectId subjectId);
 
+    Subject getBySubjectId(SubjectId subjectId);
+
     @Query("SELECT CASE WHEN COUNT(s) = 1 THEN TRUE ELSE FALSE END " +
             "FROM Student s " +
             "JOIN s.schoolClass sc " +

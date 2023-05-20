@@ -28,29 +28,32 @@ public class User {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "value", column = @Column(name = "username"))
+            @AttributeOverride(name = "value", column = @Column(name = "username", nullable = false))
     })
     private Username username;
 
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "value", column = @Column(name = "password"))
+            @AttributeOverride(name = "value", column = @Column(name = "password", nullable = false))
     })
     private Password password;
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "value", column = @Column(name = "email"))
+            @AttributeOverride(name = "value", column = @Column(name = "email", nullable = false))
     })
     private Email email;
 
 
+    @Column(nullable = false)
     private LocalDate createdDate;
+
     private LocalDateTime updatedDate;
+
     private LocalDateTime lastLoginDate;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Role role;
 
     public static User of(Username username, Password password, Email email, Role role) {

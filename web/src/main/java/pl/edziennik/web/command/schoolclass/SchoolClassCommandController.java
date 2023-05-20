@@ -24,7 +24,7 @@ public class SchoolClassCommandController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Add and assign school class to school")
     public ResponseEntity<Void> createSchoolClass(@RequestBody @Valid CreateSchoolClassCommand command) {
-        OperationResult operationResult = dispatcher.callHandler(command);
+        OperationResult operationResult = dispatcher.dispatch(command);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequestUri()

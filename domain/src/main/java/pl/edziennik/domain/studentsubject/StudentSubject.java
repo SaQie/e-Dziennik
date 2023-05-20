@@ -24,10 +24,10 @@ public class StudentSubject {
     @OneToMany(mappedBy = "studentSubject")
     private List<Grade> grades = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Student student;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Subject subject;
 
 

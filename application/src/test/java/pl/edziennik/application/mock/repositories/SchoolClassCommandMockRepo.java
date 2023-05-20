@@ -48,4 +48,9 @@ public class SchoolClassCommandMockRepo implements SchoolClassCommandRepository 
     public SchoolClass getReferenceById(SchoolClassId schoolClassId) {
         return database.get(schoolClassId);
     }
+
+    @Override
+    public SchoolClass getBySchoolClassId(SchoolClassId schoolClassId) {
+        return database.get(schoolClassId);
+    }
 }

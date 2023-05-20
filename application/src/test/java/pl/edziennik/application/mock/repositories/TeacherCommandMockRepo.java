@@ -79,4 +79,9 @@ public class TeacherCommandMockRepo implements TeacherCommandRepository {
         Teacher teacher = database.get(teacherId);
         return teacher.getSchool().getSchoolId().equals(schoolId);
     }
+
+    @Override
+    public Teacher getByTeacherId(TeacherId teacherId) {
+        return database.get(teacherId);
+    }
 }

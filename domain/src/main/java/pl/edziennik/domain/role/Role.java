@@ -19,7 +19,7 @@ public class Role {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "value", column = @Column(name = "name"))
+            @AttributeOverride(name = "value", column = @Column(name = "name", nullable = false))
     })
     private Name name;
 

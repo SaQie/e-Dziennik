@@ -148,9 +148,9 @@ class AssignGradeToStudentSubjectCommandValidatorTest extends BaseUnitTest {
 
         // then
         List<ValidationError> errors = validationErrorBuilder.getErrors();
-        assertEquals(errors.size(), 1);
-        assertEquals(errors.get(0).field(), AssignGradeToStudentSubjectCommand.SUBJECT_ID);
-        assertEquals(errors.get(0).errorMessage(), AssignGradeToStudentSubjectCommandValidator.MESSAGE_KEY_STUDENT_SUBJECT_NOT_EXISTS);
+        assertEquals(1, errors.size());
+        assertEquals(AssignGradeToStudentSubjectCommand.SUBJECT_ID, errors.get(0).field());
+        assertEquals(AssignGradeToStudentSubjectCommandValidator.MESSAGE_KEY_STUDENT_SUBJECT_NOT_EXISTS, errors.get(0).errorMessage());
     }
 
 }

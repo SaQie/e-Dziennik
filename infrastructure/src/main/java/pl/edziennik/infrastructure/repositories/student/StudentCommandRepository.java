@@ -34,6 +34,8 @@ public interface StudentCommandRepository {
 
     Student getReferenceById(StudentId studentId);
 
+    Student getByStudentId(StudentId studentId);
+
 
     @Query("SELECT CASE WHEN COUNT(s) > 0 THEN TRUE ELSE FALSE END " +
             "FROM Student s " +

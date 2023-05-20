@@ -23,7 +23,7 @@ public class GradeManagmentCommandController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Add a grade to student subject")
     public ResponseEntity<Void> addStudentSubjectGrade(@RequestBody @Valid AssignGradeToStudentSubjectCommand command) {
-        dispatcher.callHandler(command);
+        dispatcher.dispatch(command);
 
         URI location = ServletUriComponentsBuilder
                 .fromPath("/api/v1/students/{studentId}/subjects/{subjectId}/grades")

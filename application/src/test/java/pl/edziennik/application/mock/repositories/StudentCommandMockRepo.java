@@ -61,6 +61,11 @@ public class StudentCommandMockRepo implements StudentCommandRepository {
     }
 
     @Override
+    public Student getByStudentId(StudentId studentId) {
+        return database.get(studentId);
+    }
+
+    @Override
     public boolean existsByUsername(Username username) {
         List<Student> students = database.values().stream()
                 .filter(item -> item.getUser().getUsername().equals(username))

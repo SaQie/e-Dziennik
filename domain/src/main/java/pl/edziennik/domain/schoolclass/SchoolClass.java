@@ -25,7 +25,7 @@ public class SchoolClass {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "value", column = @Column(name = "class_name"))
+            @AttributeOverride(name = "value", column = @Column(name = "class_name", nullable = false))
     })
     private Name className;
 
@@ -38,9 +38,10 @@ public class SchoolClass {
     @OneToOne(fetch = FetchType.LAZY)
     private Teacher teacher;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private School school;
 
+    @Column(nullable = false)
     private LocalDate createdDate;
 
     public static SchoolClass of(Name name, School school, Teacher teacher) {

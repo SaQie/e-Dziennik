@@ -26,7 +26,7 @@ public class AdminCommandController {
     @Operation(summary = "Add administration account", description = "Add administration account, that will have all " +
             "permisions to manage application")
     public ResponseEntity<AdminId> createAdmin(@RequestBody @Valid CreateAdminCommand command) {
-        OperationResult operationResult = dispatcher.callHandler(command);
+        OperationResult operationResult = dispatcher.dispatch(command);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequestUri()

@@ -91,4 +91,9 @@ public class SchoolCommandMockRepo implements SchoolCommandRepository {
     public void deleteById(SchoolId schoolId) {
         this.database.remove(schoolId);
     }
+
+    @Override
+    public School getBySchoolId(SchoolId schoolId) {
+        return database.get(schoolId);
+    }
 }

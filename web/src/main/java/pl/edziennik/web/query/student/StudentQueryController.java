@@ -25,7 +25,7 @@ public class StudentQueryController {
     public ResponseEntity<DetailedStudentDto> getStudentById(@PathVariable StudentId studentId) {
         GetDetailedStudentQuery getDetailedStudentQuery = new GetDetailedStudentQuery(studentId);
 
-        DetailedStudentDto detailedStudentDto = dispatcher.callHandler(getDetailedStudentQuery);
+        DetailedStudentDto detailedStudentDto = dispatcher.dispatch(getDetailedStudentQuery);
 
         return ResponseEntity.ok(detailedStudentDto);
 
@@ -36,7 +36,7 @@ public class StudentQueryController {
     public ResponseEntity<PageDto<StudentSummaryDto>> getAllStudents(Pageable pageable) {
         GetStudentSummaryQuery getStudentSummaryQuery = new GetStudentSummaryQuery(pageable);
 
-        PageDto<StudentSummaryDto> studentDtoPageDto = dispatcher.callHandler(getStudentSummaryQuery);
+        PageDto<StudentSummaryDto> studentDtoPageDto = dispatcher.dispatch(getStudentSummaryQuery);
 
         return ResponseEntity.ok(studentDtoPageDto);
     }

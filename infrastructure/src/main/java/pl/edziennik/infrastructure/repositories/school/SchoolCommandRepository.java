@@ -46,4 +46,6 @@ public interface SchoolCommandRepository {
     boolean isSchoolClassExistsInSchool(SchoolId schoolId);
 
     void deleteById(SchoolId schoolId);
+
+    School getBySchoolId(SchoolId schoolId);
 }

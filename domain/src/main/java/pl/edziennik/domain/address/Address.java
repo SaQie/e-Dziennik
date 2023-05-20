@@ -20,19 +20,19 @@ public class Address {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "value", column = @Column(name = "address"))
+            @AttributeOverride(name = "value", column = @Column(name = "address", nullable = false))
     })
     private pl.edziennik.common.valueobject.Address address;
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "value", column = @Column(name = "city"))
+            @AttributeOverride(name = "value", column = @Column(name = "city",nullable = false))
     })
     private City city;
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "value", column = @Column(name = "postal_code"))
+            @AttributeOverride(name = "value", column = @Column(name = "postal_code", nullable = false))
     })
     private PostalCode postalCode;
 

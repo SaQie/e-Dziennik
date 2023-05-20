@@ -27,14 +27,14 @@ public class Subject {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "value", column = @Column(name = "name"))
+            @AttributeOverride(name = "value", column = @Column(name = "name", nullable = false))
     })
     private Name name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Teacher teacher;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private SchoolClass schoolClass;
 
 

@@ -21,26 +21,28 @@ public class Grade {
     private GradeId gradeId = GradeId.create();
 
     @Enumerated
+    @Column(nullable = false)
     private pl.edziennik.common.enums.Grade grade = pl.edziennik.common.enums.Grade.ONE;
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "value", column = @Column(name = "weight"))
+            @AttributeOverride(name = "value", column = @Column(name = "weight", nullable = false))
     })
     private Weight weight;
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "value", column = @Column(name = "description"))
+            @AttributeOverride(name = "value", column = @Column(name = "description", nullable = false))
     })
     private Description description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private StudentSubject studentSubject;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Teacher teacher;
 
+    @Column(nullable = false)
     private LocalDate createdDate;
 
     public static Grade of(pl.edziennik.common.enums.Grade gradeConst, Weight weight, Description description, StudentSubject studentSubject,

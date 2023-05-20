@@ -26,7 +26,7 @@ public class SchoolCommandController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create new school")
     public ResponseEntity<Void> createSchool(@RequestBody @Valid CreateSchoolCommand createSchoolCommand) {
-        OperationResult operationResult = dispatcher.callHandler(createSchoolCommand);
+        OperationResult operationResult = dispatcher.dispatch(createSchoolCommand);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequestUri()
@@ -44,7 +44,7 @@ public class SchoolCommandController {
     public ResponseEntity<Void> deleteSchool(@PathVariable SchoolId schoolId) {
         DeleteSchoolCommand deleteSchoolCommand = new DeleteSchoolCommand(schoolId);
 
-        dispatcher.callHandler(deleteSchoolCommand);
+        dispatcher.dispatch(deleteSchoolCommand);
 
         return ResponseEntity.ok().build();
     }

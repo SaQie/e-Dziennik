@@ -11,4 +11,6 @@ public interface GradeCommandRepository {
 
     Grade getReferenceById(GradeId gradeId);
 
+    Grade getByGradeId(GradeId gradeId);
+
 }

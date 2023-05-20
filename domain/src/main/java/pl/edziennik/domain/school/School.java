@@ -28,32 +28,32 @@ public class School {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "value", column = @Column(name = "name"))
+            @AttributeOverride(name = "value", column = @Column(name = "name", nullable = false))
     })
     private Name name;
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "value", column = @Column(name = "nip"))
+            @AttributeOverride(name = "value", column = @Column(name = "nip", nullable = false))
     })
     private Nip nip;
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "value", column = @Column(name = "regon"))
+            @AttributeOverride(name = "value", column = @Column(name = "regon", nullable = false))
     })
     private Regon regon;
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "value", column = @Column(name = "phone_number"))
+            @AttributeOverride(name = "value", column = @Column(name = "phone_number", nullable = false))
     })
     private PhoneNumber phoneNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, optional = false)
     private Address address;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private SchoolLevel schoolLevel;
 
     @OneToMany(mappedBy = "school", orphanRemoval = true)

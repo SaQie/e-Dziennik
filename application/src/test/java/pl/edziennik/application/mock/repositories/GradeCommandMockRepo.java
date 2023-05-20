@@ -25,4 +25,9 @@ public class GradeCommandMockRepo implements GradeCommandRepository {
     public Grade getReferenceById(GradeId gradeId) {
         return database.get(gradeId);
     }
+
+    @Override
+    public Grade getByGradeId(GradeId gradeId) {
+        return database.get(gradeId);
+    }
 }

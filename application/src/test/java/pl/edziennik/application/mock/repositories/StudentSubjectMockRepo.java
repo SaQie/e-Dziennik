@@ -40,4 +40,16 @@ public class StudentSubjectMockRepo implements StudentSubjectCommandRepository {
         }
         return list.get(0);
     }
+
+    @Override
+    public StudentSubject getByStudentStudentIdAndSubjectSubjectId(StudentId studentId, SubjectId subjectId) {
+        List<StudentSubject> list = database.values().stream()
+                .filter(item -> item.getStudent().getStudentId().equals(studentId))
+                .filter(item -> item.getSubject().getSubjectId().equals(subjectId))
+                .toList();
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
+    }
 }

@@ -24,7 +24,7 @@ public class ParentCommandController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Add a new parent")
     public ResponseEntity<Void> createParent(@RequestBody @Valid CreateParentCommand command) {
-        OperationResult operationResult = dispatcher.callHandler(command);
+        OperationResult operationResult = dispatcher.dispatch(command);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequestUri()

@@ -61,6 +61,11 @@ public class SubjectCommandMockRepo implements SubjectCommandRepository {
     }
 
     @Override
+    public Subject getBySubjectId(SubjectId subjectId) {
+        return database.get(subjectId);
+    }
+
+    @Override
     public boolean isStudentFromTheSameSchoolClass(StudentId studentId, SubjectId subjectId) {
         Student student = studentCommandMockRepo.getReferenceById(studentId);
         Subject subject = getReferenceById(subjectId);
