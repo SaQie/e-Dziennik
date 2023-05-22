@@ -5,6 +5,6 @@ import pl.edziennik.common.valueobject.id.SchoolClassId;
 
 public record SchoolClassSummaryForSchoolDto(
         SchoolClassId schoolClassId,
-        Name schoolName
+        Name schoolClassName
 ) {
 }

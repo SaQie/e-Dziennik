@@ -2,6 +2,7 @@ package pl.edziennik.application.integration;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.command.subjectmanagment.assigntostudent.AssignSubjectToStudentCommand;
 import pl.edziennik.application.common.dispatcher.OperationResult;
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class StudentSubjectIntegrationTest extends BaseIntegrationTest {
 
     @Test
+    @Transactional
     public void shouldAssignSubjectToStudent(){
         // given
         SchoolId schoolId = createSchool("Test", "123123", "1231233");

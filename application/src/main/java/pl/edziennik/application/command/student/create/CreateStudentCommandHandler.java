@@ -34,8 +34,8 @@ class CreateStudentCommandHandler implements ICommandHandler<CreateStudentComman
     @Override
     @Transactional
     public OperationResult handle(CreateStudentCommand command) {
-        SchoolClass schoolClass = schoolClassCommandRepository.getReferenceById(command.schoolClassId());
-        School school = schoolCommandRepository.getReferenceById(command.schoolId());
+        SchoolClass schoolClass = schoolClassCommandRepository.getBySchoolClassId(command.schoolClassId());
+        School school = schoolCommandRepository.getBySchoolId(command.schoolId());
 
         User user = createUser(command);
         PersonInformation personInformation = PersonInformation.of(command.firstName(), command.lastName(), command.phoneNumber(),

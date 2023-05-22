@@ -27,7 +27,7 @@ public interface StudentQueryRepository {
 
 
     @Query(value = "SELECT NEW pl.edziennik.common.dto.student.StudentSummaryDto" +
-            "(s.studentId, u.userId, u.username, sc.schoolId, sc.name)" +
+            "(s.studentId, u.userId, u.username, s.personInformation.fullName ,sc.schoolId, sc.name)" +
             "FROM Student s " +
             "JOIN s.user u " +
             "JOIN s.school sc ", countQuery = "SELECT COUNT(s) from Student s")

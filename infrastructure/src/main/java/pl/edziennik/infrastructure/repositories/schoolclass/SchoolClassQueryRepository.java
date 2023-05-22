@@ -16,9 +16,6 @@ import java.util.List;
 @RepositoryDefinition(domainClass = SchoolClass.class, idClass = SchoolClassId.class)
 public interface SchoolClassQueryRepository {
 
-    SchoolClass getReferenceById(SchoolClassId schoolClassId);
-
-
     @Query("SELECT NEW " +
             "pl.edziennik.common.dto.schoolclass.DetailedSchoolClassDto(sc.schoolClassId, sc.className, t.teacherId, t.personInformation.fullName)" +
             "FROM SchoolClass sc " +

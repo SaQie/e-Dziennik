@@ -7,6 +7,7 @@ import pl.edziennik.application.common.dispatcher.exception.BusinessException;
 import pl.edziennik.common.valueobject.PersonInformation;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.domain.school.School;
+import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.user.User;
 import pl.edziennik.infrastructure.validator.ValidationError;
 
@@ -63,12 +64,11 @@ class DeleteSchoolCommandValidatorTest extends BaseUnitTest {
     public void shouldAddErrorWhenStudentsStillExistsInSchool() {
         // given
         School school = createSchool("School", "123123", "123123", address);
-
         schoolCommandRepository.save(school);
 
         User user = createUser("Kamil", "qweqwe@o2.pl", "TEACHER");
         PersonInformation personInformation = createPersonInformation("123123123");
-        createStudent(user, school, null, personInformation, address);
+        createStudent(user, school, SchoolClass.of(null, null, null), personInformation, address);
 
         DeleteSchoolCommand deleteSchoolCommand = new DeleteSchoolCommand(school.getSchoolId());
 

@@ -9,6 +9,7 @@ import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.domain.parent.Parent;
 import pl.edziennik.domain.school.School;
+import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.student.Student;
 import pl.edziennik.domain.user.User;
 import pl.edziennik.infrastructure.validator.ValidationError;
@@ -57,7 +58,7 @@ class CreateParentCommandValidatorTest extends BaseUnitTest {
         School school = createSchool("Test", "123123", "123123", address);
         User user = createUser("Kamil", "Nowak@o2.pl", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
         Parent parent = createParent(user, null, null);
-        Student student = createStudent(user, school, null, null, null, parent);
+        Student student = createStudent(user, school, SchoolClass.of(null, null, null), null, null, parent);
         student = studentCommandRepository.save(student);
 
         CreateParentCommand command = new CreateParentCommand(

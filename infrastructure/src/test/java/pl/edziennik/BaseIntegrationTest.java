@@ -190,20 +190,20 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         );
     }
 
-    protected void assignGradeToStudentSubject(StudentId studentId, SubjectId subjectId, TeacherId teacherId) {
+    protected void assignGradeToStudentSubject(pl.edziennik.common.enums.Grade grade,StudentId studentId, SubjectId subjectId, TeacherId teacherId) {
         StudentSubject studentSubject = studentSubjectCommandRepository.getReferenceByStudentStudentIdAndSubjectSubjectId(studentId, subjectId);
 
         Teacher teacher = teacherCommandRepository.getReferenceById(teacherId);
 
-        Grade grade = Grade.of(
-                pl.edziennik.common.enums.Grade.SIX,
+        Grade gradeEntity = Grade.of(
+                grade,
                 Weight.of(1),
                 Description.of("asdasd"),
                 studentSubject,
                 teacher
         );
 
-        gradeCommandRepository.save(grade);
+        gradeCommandRepository.save(gradeEntity);
 
     }
 
@@ -217,8 +217,8 @@ public class BaseIntegrationTest extends ContainerEnvironment {
 
         PersonInformation personInformation = getPersonInformation(pesel);
 
-        School school = schoolCommandRepository.getReferenceById(schoolId);
-        SchoolClass schoolClass = schoolClassCommandRepository.getReferenceById(schoolClassId);
+        School school = schoolCommandRepository.getBySchoolId(schoolId);
+        SchoolClass schoolClass = schoolClassCommandRepository.getBySchoolClassId(schoolClassId);
 
         Student student = Student.of(
                 user,

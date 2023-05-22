@@ -53,10 +53,11 @@ public class Student {
         student.schoolClass = schoolClass;
         student.user = user;
 
+        schoolClass.getStudents().add(student);
         return student;
     }
 
-    public void assignParent(Parent parent){
+    public void assignParent(Parent parent) {
         this.parent = parent;
     }
 

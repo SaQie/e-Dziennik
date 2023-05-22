@@ -4,10 +4,12 @@ import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.common.valueobject.*;
-import pl.edziennik.common.valueobject.id.SchoolClassId;
-import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.StudentId;
+import pl.edziennik.domain.school.School;
+import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.student.Student;
+import pl.edziennik.domain.teacher.Teacher;
+import pl.edziennik.domain.user.User;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -28,6 +30,16 @@ class CreateStudentCommandHandlerTest extends BaseUnitTest {
     @Test
     public void shouldCreateStudent(){
         // given
+        School school = createSchool("Test", "1231231", "123123", address);
+        school = schoolCommandRepository.save(school);
+
+        User user = createUser("Test", "test", "test");
+        Teacher teacher = createTeacher(user, school, personInformation, address);
+        teacher = teacherCommandRepository.save(teacher);
+
+        SchoolClass schoolClass = createSchoolClass("test", school, teacher);
+        schoolClass = schoolClassCommandRepository.save(schoolClass);
+
         CreateStudentCommand command = new CreateStudentCommand(
                 Password.of("Test"),
                 Username.of("Test"),
@@ -39,8 +51,8 @@ class CreateStudentCommandHandlerTest extends BaseUnitTest {
                 Pesel.of("12345678912"),
                 Email.of("Test@example.com"),
                 PhoneNumber.of("123123"),
-                SchoolId.create(),
-                SchoolClassId.create()
+                school.getSchoolId(),
+                schoolClass.getSchoolClassId()
         );
 
         // when
