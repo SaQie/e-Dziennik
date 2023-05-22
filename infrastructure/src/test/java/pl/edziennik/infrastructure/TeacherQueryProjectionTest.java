@@ -3,6 +3,7 @@ package pl.edziennik.infrastructure;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.annotation.DirtiesContext;
 import pl.edziennik.BaseIntegrationTest;
 import pl.edziennik.common.dto.teacher.DetailedTeacherDto;
 import pl.edziennik.common.dto.teacher.TeacherSubjectsSummaryDto;
@@ -19,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
+@DirtiesContext
 public class TeacherQueryProjectionTest extends BaseIntegrationTest {
 
     final String expectedSchoolClassName = "1A";
