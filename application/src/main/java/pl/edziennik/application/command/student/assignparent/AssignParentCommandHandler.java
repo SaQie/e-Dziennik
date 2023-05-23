@@ -7,8 +7,8 @@ import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
 import pl.edziennik.domain.parent.Parent;
 import pl.edziennik.domain.student.Student;
-import pl.edziennik.infrastructure.repositories.parent.ParentCommandRepository;
-import pl.edziennik.infrastructure.repositories.student.StudentCommandRepository;
+import pl.edziennik.infrastructure.repository.parent.ParentCommandRepository;
+import pl.edziennik.infrastructure.repository.student.StudentCommandRepository;
 
 @Component
 @AllArgsConstructor

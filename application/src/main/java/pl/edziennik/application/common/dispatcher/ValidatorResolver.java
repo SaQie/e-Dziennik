@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.base.IBaseValidator;
 import pl.edziennik.application.common.dispatcher.base.IDispatchable;
 import pl.edziennik.application.common.dispatcher.base.ValidatedBy;
-import pl.edziennik.application.common.dispatcher.exception.ResolverException;
+import pl.edziennik.infrastructure.spring.exception.ResolverException;
 
 import java.util.Map;
 import java.util.Optional;

@@ -49,3 +49,6 @@ jwt:
     expiration: 4800000
   token:
     prefix: Bearer
+
+application:
+  address: localhost:8080/

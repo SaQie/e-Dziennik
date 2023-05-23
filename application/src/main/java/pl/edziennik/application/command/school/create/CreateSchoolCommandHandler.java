@@ -4,14 +4,14 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
-import pl.edziennik.application.common.dispatcher.exception.BusinessException;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.schoollevel.SchoolLevel;
-import pl.edziennik.infrastructure.repositories.school.SchoolCommandRepository;
-import pl.edziennik.infrastructure.repositories.schoollevel.SchoolLevelCommandRepository;
+import pl.edziennik.infrastructure.repository.school.SchoolCommandRepository;
+import pl.edziennik.infrastructure.repository.schoollevel.SchoolLevelCommandRepository;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
+import pl.edziennik.infrastructure.spring.exception.BusinessException;
 
 @Component
 @AllArgsConstructor

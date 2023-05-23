@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.query.IQueryHandler;
 import pl.edziennik.common.dto.PageDto;
 import pl.edziennik.common.dto.schoolclass.SchoolClassSummaryForSchoolDto;
-import pl.edziennik.infrastructure.repositories.schoolclass.SchoolClassQueryRepository;
+import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassQueryRepository;
 
 @Component
 @AllArgsConstructor

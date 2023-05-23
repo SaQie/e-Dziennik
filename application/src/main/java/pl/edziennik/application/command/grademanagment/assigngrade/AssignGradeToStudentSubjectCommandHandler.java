@@ -8,9 +8,9 @@ import pl.edziennik.common.valueobject.id.GradeId;
 import pl.edziennik.domain.grade.Grade;
 import pl.edziennik.domain.studentsubject.StudentSubject;
 import pl.edziennik.domain.teacher.Teacher;
-import pl.edziennik.infrastructure.repositories.grade.GradeCommandRepository;
-import pl.edziennik.infrastructure.repositories.studentsubject.StudentSubjectCommandRepository;
-import pl.edziennik.infrastructure.repositories.teacher.TeacherCommandRepository;
+import pl.edziennik.infrastructure.repository.grade.GradeCommandRepository;
+import pl.edziennik.infrastructure.repository.studentsubject.StudentSubjectCommandRepository;
+import pl.edziennik.infrastructure.repository.teacher.TeacherCommandRepository;
 
 @Component
 @AllArgsConstructor

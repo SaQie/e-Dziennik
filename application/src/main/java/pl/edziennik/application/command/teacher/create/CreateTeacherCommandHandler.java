@@ -13,9 +13,9 @@ import pl.edziennik.domain.role.Role;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.teacher.Teacher;
 import pl.edziennik.domain.user.User;
-import pl.edziennik.infrastructure.repositories.role.RoleCommandRepository;
-import pl.edziennik.infrastructure.repositories.school.SchoolCommandRepository;
-import pl.edziennik.infrastructure.repositories.teacher.TeacherCommandRepository;
+import pl.edziennik.infrastructure.repository.role.RoleCommandRepository;
+import pl.edziennik.infrastructure.repository.school.SchoolCommandRepository;
+import pl.edziennik.infrastructure.repository.teacher.TeacherCommandRepository;
 
 @Component
 @AllArgsConstructor

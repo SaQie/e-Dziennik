@@ -2,7 +2,7 @@ package pl.edziennik.application.mock.repositories;
 
 import pl.edziennik.common.valueobject.id.GradeId;
 import pl.edziennik.domain.grade.Grade;
-import pl.edziennik.infrastructure.repositories.grade.GradeCommandRepository;
+import pl.edziennik.infrastructure.repository.grade.GradeCommandRepository;
 
 import java.util.HashMap;
 import java.util.Map;

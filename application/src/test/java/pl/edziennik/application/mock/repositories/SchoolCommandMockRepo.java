@@ -5,7 +5,7 @@ import pl.edziennik.common.valueobject.Nip;
 import pl.edziennik.common.valueobject.Regon;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.domain.school.School;
-import pl.edziennik.infrastructure.repositories.school.SchoolCommandRepository;
+import pl.edziennik.infrastructure.repository.school.SchoolCommandRepository;
 
 import java.util.HashMap;
 import java.util.List;

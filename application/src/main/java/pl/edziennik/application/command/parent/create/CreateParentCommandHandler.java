@@ -12,8 +12,8 @@ import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.parent.Parent;
 import pl.edziennik.domain.role.Role;
 import pl.edziennik.domain.user.User;
-import pl.edziennik.infrastructure.repositories.parent.ParentCommandRepository;
-import pl.edziennik.infrastructure.repositories.role.RoleCommandRepository;
+import pl.edziennik.infrastructure.repository.parent.ParentCommandRepository;
+import pl.edziennik.infrastructure.repository.role.RoleCommandRepository;
 
 @Component
 @AllArgsConstructor

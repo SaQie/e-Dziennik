@@ -7,7 +7,7 @@ import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.teacher.Teacher;
-import pl.edziennik.infrastructure.repositories.teacher.TeacherCommandRepository;
+import pl.edziennik.infrastructure.repository.teacher.TeacherCommandRepository;
 
 import java.util.HashMap;
 import java.util.List;

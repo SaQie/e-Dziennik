@@ -3,7 +3,7 @@ package pl.edziennik.application.mock.repositories;
 import pl.edziennik.common.valueobject.Name;
 import pl.edziennik.common.valueobject.id.SchoolLevelId;
 import pl.edziennik.domain.schoollevel.SchoolLevel;
-import pl.edziennik.infrastructure.repositories.schoollevel.SchoolLevelCommandRepository;
+import pl.edziennik.infrastructure.repository.schoollevel.SchoolLevelCommandRepository;
 
 import java.util.HashMap;
 import java.util.Optional;

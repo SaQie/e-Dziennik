@@ -2,8 +2,10 @@ package pl.edziennik.application;
 
 import liquibase.util.StringUtil;
 import org.junit.jupiter.api.BeforeEach;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
+import pl.edziennik.application.mock.ApplicationEventPublisherMock;
 import pl.edziennik.application.mock.ResourceCreatorMock;
 import pl.edziennik.application.mock.repositories.*;
 import pl.edziennik.common.valueobject.*;
@@ -18,22 +20,24 @@ import pl.edziennik.domain.studentsubject.StudentSubject;
 import pl.edziennik.domain.subject.Subject;
 import pl.edziennik.domain.teacher.Teacher;
 import pl.edziennik.domain.user.User;
-import pl.edziennik.infrastructure.repositories.admin.AdminCommandRepository;
-import pl.edziennik.infrastructure.repositories.grade.GradeCommandRepository;
-import pl.edziennik.infrastructure.repositories.parent.ParentCommandRepository;
-import pl.edziennik.infrastructure.repositories.role.RoleCommandRepository;
-import pl.edziennik.infrastructure.repositories.school.SchoolCommandRepository;
-import pl.edziennik.infrastructure.repositories.schoolclass.SchoolClassCommandRepository;
-import pl.edziennik.infrastructure.repositories.schoollevel.SchoolLevelCommandRepository;
-import pl.edziennik.infrastructure.repositories.student.StudentCommandRepository;
-import pl.edziennik.infrastructure.repositories.studentsubject.StudentSubjectCommandRepository;
-import pl.edziennik.infrastructure.repositories.subject.SubjectCommandRepository;
-import pl.edziennik.infrastructure.repositories.teacher.TeacherCommandRepository;
-import pl.edziennik.infrastructure.repositories.user.UserCommandRepository;
+import pl.edziennik.infrastructure.repository.admin.AdminCommandRepository;
+import pl.edziennik.infrastructure.repository.grade.GradeCommandRepository;
+import pl.edziennik.infrastructure.repository.parent.ParentCommandRepository;
+import pl.edziennik.infrastructure.repository.role.RoleCommandRepository;
+import pl.edziennik.infrastructure.repository.school.SchoolCommandRepository;
+import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassCommandRepository;
+import pl.edziennik.infrastructure.repository.schoollevel.SchoolLevelCommandRepository;
+import pl.edziennik.infrastructure.repository.student.StudentCommandRepository;
+import pl.edziennik.infrastructure.repository.studentsubject.StudentSubjectCommandRepository;
+import pl.edziennik.infrastructure.repository.subject.SubjectCommandRepository;
+import pl.edziennik.infrastructure.repository.teacher.TeacherCommandRepository;
+import pl.edziennik.infrastructure.repository.user.UserCommandRepository;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
 public class BaseUnitTest {
+
+    protected ApplicationEventPublisher publisher;
 
     protected GradeCommandRepository gradeCommandRepository;
     protected ParentCommandRepository parentCommandRepository;
@@ -93,13 +97,16 @@ public class BaseUnitTest {
                 return rawPassword.toString().equals(encodedPassword);
             }
         };
+
+        this.publisher = new ApplicationEventPublisherMock();
+
+
     }
 
 
     @BeforeEach
     public void clearValidator() {
         this.validationErrorBuilder.clear();
-
     }
 
     protected User createUser(String username, String email, String role) {

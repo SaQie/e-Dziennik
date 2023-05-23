@@ -15,7 +15,7 @@ import pl.edziennik.common.valueobject.Username;
 import pl.edziennik.domain.user.User;
 import pl.edziennik.infrastructure.authentication.JwtUtils;
 import pl.edziennik.infrastructure.authentication.security.jwt.dto.AuthResponseDto;
-import pl.edziennik.infrastructure.repositories.user.UserQueryRepository;
+import pl.edziennik.infrastructure.repository.user.UserQueryRepository;
 
 import java.io.IOException;
 

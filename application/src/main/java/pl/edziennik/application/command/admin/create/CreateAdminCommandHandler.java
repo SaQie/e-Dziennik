@@ -10,8 +10,8 @@ import pl.edziennik.common.valueobject.id.AdminId;
 import pl.edziennik.domain.admin.Admin;
 import pl.edziennik.domain.role.Role;
 import pl.edziennik.domain.user.User;
-import pl.edziennik.infrastructure.repositories.admin.AdminCommandRepository;
-import pl.edziennik.infrastructure.repositories.role.RoleCommandRepository;
+import pl.edziennik.infrastructure.repository.admin.AdminCommandRepository;
+import pl.edziennik.infrastructure.repository.role.RoleCommandRepository;
 
 @Component
 @AllArgsConstructor

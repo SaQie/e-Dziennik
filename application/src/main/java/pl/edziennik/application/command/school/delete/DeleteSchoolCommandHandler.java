@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
-import pl.edziennik.infrastructure.repositories.school.SchoolCommandRepository;
+import pl.edziennik.infrastructure.repository.school.SchoolCommandRepository;
 
 @Component
 @AllArgsConstructor

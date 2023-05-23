@@ -4,7 +4,7 @@ import pl.edziennik.common.valueobject.Email;
 import pl.edziennik.common.valueobject.Username;
 import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.domain.user.User;
-import pl.edziennik.infrastructure.repositories.user.UserCommandRepository;
+import pl.edziennik.infrastructure.repository.user.UserCommandRepository;
 
 import java.util.HashMap;
 import java.util.List;

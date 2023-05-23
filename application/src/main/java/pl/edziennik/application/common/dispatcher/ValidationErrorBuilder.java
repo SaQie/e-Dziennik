@@ -1,8 +1,8 @@
 package pl.edziennik.application.common.dispatcher;
 
 
-import pl.edziennik.application.common.dispatcher.exception.BusinessException;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
+import pl.edziennik.infrastructure.spring.exception.BusinessException;
 import pl.edziennik.infrastructure.validator.ValidationError;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 

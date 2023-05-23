@@ -22,7 +22,8 @@ class CreateStudentCommandHandlerTest extends BaseUnitTest {
                 schoolCommandRepository,
                 studentCommandRepository,
                 roleCommandRepository,
-                passwordEncoder);
+                passwordEncoder,
+                publisher);
     }
 
 

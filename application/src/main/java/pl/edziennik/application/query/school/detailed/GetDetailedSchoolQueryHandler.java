@@ -2,11 +2,11 @@ package pl.edziennik.application.query.school.detailed;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.exception.BusinessException;
 import pl.edziennik.application.common.dispatcher.query.IQueryHandler;
 import pl.edziennik.common.dto.school.DetailedSchoolDto;
-import pl.edziennik.infrastructure.repositories.school.SchoolQueryRepository;
+import pl.edziennik.infrastructure.repository.school.SchoolQueryRepository;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
+import pl.edziennik.infrastructure.spring.exception.BusinessException;
 
 @Component
 @AllArgsConstructor

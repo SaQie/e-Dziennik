@@ -30,17 +30,17 @@ _____________
 
 </div>
 
-| Description                   |                                            |
-|-------------------------------|--------------------------------------------|
-| **CRUD schools**              | ![#00d1a0](images/School_Building.png)     |
-| **CRUD school classes**       | ![#00d1a0](images/Meeting_Room.png)        |
-| **CRUD students**             | ![#00d1a0](images/Student_Male.png)        |
-| **CRUD teachers**             | ![#00d1a0](images/Teacher.png)             |
-| **CRUD parents**              | ![#00d1a0](images/Family.png)              |
-| **CRUD admins**               | ![#00d1a0](images/Admin_Settings_Male.png) |
-| **CRUD subjects**             | ![#00d1a0](images/Read.png)                |
-| **CRUD grades**               | ![#00d1a0](images/Numbers.png)             |
-| **Dynamic app configuration** | ![#FC0000](images/Services.png)            |
+| Description                   |                                            | Description            |                                 |
+|-------------------------------|--------------------------------------------|------------------------|---------------------------------|
+| **CRUD schools**              | ![#00d1a0](images/School_Building.png)     | **Email confirmation** | ![#00d1a0](images/Received.png) |
+| **CRUD school classes**       | ![#00d1a0](images/Meeting_Room.png)        |                        |                                 |
+| **CRUD students**             | ![#00d1a0](images/Student_Male.png)        |                        |                                 |
+| **CRUD teachers**             | ![#00d1a0](images/Teacher.png)             |                        |                                 |
+| **CRUD parents**              | ![#00d1a0](images/Family.png)              |                        |                                 |
+| **CRUD admins**               | ![#00d1a0](images/Admin_Settings_Male.png) |                        |                                 |
+| **CRUD subjects**             | ![#00d1a0](images/Read.png)                |                        |                                 |
+| **CRUD grades**               | ![#00d1a0](images/Numbers.png)             |                        |                                 |
+| **Dynamic app configuration** | ![#FC0000](images/Services.png)            |                        |                                 |
 
 <div>Dynamic app configuration allows to configure our application through REST-API</div>
 
@@ -54,9 +54,9 @@ Actually project is just a base project for future develop
 
 _________
 
-List of task's I will implements in future in this project:
+List of task's I will implement in future in this project:
 
-* *Add email confirmation* ❌
+* *Add email confirmation* ✅
 * *Add redis cache for configuration* ❌
 * *Add real time client-server chat (student-teacher)* ❌
 * *Add email system inside application* ❌

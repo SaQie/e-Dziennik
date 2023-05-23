@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AuthUserDetails implements UserDetails{
+public class AuthUserDetails implements UserDetails {
 
     private final User user;
 
@@ -51,6 +51,6 @@ public class AuthUserDetails implements UserDetails{
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return user.getIsActive();
     }
 }

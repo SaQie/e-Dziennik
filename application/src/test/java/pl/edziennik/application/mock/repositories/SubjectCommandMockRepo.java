@@ -8,9 +8,9 @@ import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.student.Student;
 import pl.edziennik.domain.subject.Subject;
-import pl.edziennik.infrastructure.repositories.schoolclass.SchoolClassCommandRepository;
-import pl.edziennik.infrastructure.repositories.student.StudentCommandRepository;
-import pl.edziennik.infrastructure.repositories.subject.SubjectCommandRepository;
+import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassCommandRepository;
+import pl.edziennik.infrastructure.repository.student.StudentCommandRepository;
+import pl.edziennik.infrastructure.repository.subject.SubjectCommandRepository;
 
 import java.util.HashMap;
 import java.util.List;

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.query.IQueryHandler;
 import pl.edziennik.common.dto.grade.DetailedGradeDto;
 import pl.edziennik.common.dto.grade.StudentGradesBySubjectDto;
-import pl.edziennik.infrastructure.repositories.grade.GradeQueryRepository;
+import pl.edziennik.infrastructure.repository.grade.GradeQueryRepository;
 
 import java.util.List;
 

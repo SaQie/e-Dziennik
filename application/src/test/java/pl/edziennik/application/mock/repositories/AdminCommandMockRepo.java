@@ -2,7 +2,7 @@ package pl.edziennik.application.mock.repositories;
 
 import pl.edziennik.common.valueobject.id.AdminId;
 import pl.edziennik.domain.admin.Admin;
-import pl.edziennik.infrastructure.repositories.admin.AdminCommandRepository;
+import pl.edziennik.infrastructure.repository.admin.AdminCommandRepository;
 
 import java.util.HashMap;
 import java.util.Map;

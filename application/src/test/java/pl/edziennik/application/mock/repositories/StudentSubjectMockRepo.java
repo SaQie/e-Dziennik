@@ -4,7 +4,7 @@ import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.id.StudentSubjectId;
 import pl.edziennik.common.valueobject.id.SubjectId;
 import pl.edziennik.domain.studentsubject.StudentSubject;
-import pl.edziennik.infrastructure.repositories.studentsubject.StudentSubjectCommandRepository;
+import pl.edziennik.infrastructure.repository.studentsubject.StudentSubjectCommandRepository;
 
 import java.util.HashMap;
 import java.util.List;

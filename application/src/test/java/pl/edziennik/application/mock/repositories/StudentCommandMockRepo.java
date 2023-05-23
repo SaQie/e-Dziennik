@@ -6,7 +6,7 @@ import pl.edziennik.common.valueobject.Pesel;
 import pl.edziennik.common.valueobject.Username;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.domain.student.Student;
-import pl.edziennik.infrastructure.repositories.student.StudentCommandRepository;
+import pl.edziennik.infrastructure.repository.student.StudentCommandRepository;
 
 import java.util.HashMap;
 import java.util.List;

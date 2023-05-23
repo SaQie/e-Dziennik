@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import pl.edziennik.application.common.dispatcher.exception.BusinessException;
 import pl.edziennik.common.exception.InvalidIdentifierException;
+import pl.edziennik.common.exception.InvalidParameterException;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
+import pl.edziennik.infrastructure.spring.exception.BusinessException;
 import pl.edziennik.infrastructure.validator.ValidationError;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
@@ -36,6 +37,14 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ValidationError("Uri identifier", res.of(
                 "invalid.identifier"),
                 ErrorCode.INVALID_IDENTIFIER.errorCode()));
+    }
+
+    @ExceptionHandler(value = InvalidParameterException.class)
+    protected ResponseEntity<ValidationError> handleInvalidParameterException(InvalidParameterException exception,
+                                                                              WebRequest webRequest) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ValidationError("Uri parameter", res.of(
+                "invalid.parameter"),
+                ErrorCode.INVALID_PARAMETER.errorCode()));
     }
 
     @Override

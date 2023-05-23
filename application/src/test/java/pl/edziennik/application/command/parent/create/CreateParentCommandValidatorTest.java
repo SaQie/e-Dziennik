@@ -3,7 +3,6 @@ package pl.edziennik.application.command.parent.create;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
-import pl.edziennik.application.common.dispatcher.exception.BusinessException;
 import pl.edziennik.application.mock.repositories.RoleCommandMockRepo;
 import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.StudentId;
@@ -12,6 +11,7 @@ import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.student.Student;
 import pl.edziennik.domain.user.User;
+import pl.edziennik.infrastructure.spring.exception.BusinessException;
 import pl.edziennik.infrastructure.validator.ValidationError;
 
 import java.util.List;

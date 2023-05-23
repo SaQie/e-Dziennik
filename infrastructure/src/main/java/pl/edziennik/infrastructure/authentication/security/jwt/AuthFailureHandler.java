@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -30,6 +31,10 @@ public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         AuthResponseDto authResponseDto = new AuthResponseDto();
         authResponseDto.setMessage(resourceCreator.of("bad.credentials.message"));
+
+        if (exception instanceof DisabledException){
+            authResponseDto.setMessage(resourceCreator.of("account.disabled"));
+        }
         String jsonObject = new ObjectMapper().writeValueAsString(authResponseDto);
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(jsonObject);

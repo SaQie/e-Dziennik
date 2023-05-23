@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.common.valueobject.*;
@@ -25,39 +26,40 @@ import pl.edziennik.domain.studentsubject.StudentSubject;
 import pl.edziennik.domain.subject.Subject;
 import pl.edziennik.domain.teacher.Teacher;
 import pl.edziennik.domain.user.User;
-import pl.edziennik.infrastructure.repositories.address.AddressCommandRepository;
-import pl.edziennik.infrastructure.repositories.address.AddressQueryRepository;
-import pl.edziennik.infrastructure.repositories.admin.AdminCommandRepository;
-import pl.edziennik.infrastructure.repositories.admin.AdminQueryRepository;
-import pl.edziennik.infrastructure.repositories.grade.GradeCommandRepository;
-import pl.edziennik.infrastructure.repositories.grade.GradeQueryRepository;
-import pl.edziennik.infrastructure.repositories.parent.ParentCommandRepository;
-import pl.edziennik.infrastructure.repositories.parent.ParentQueryRepository;
-import pl.edziennik.infrastructure.repositories.role.RoleCommandRepository;
-import pl.edziennik.infrastructure.repositories.role.RoleQueryRepository;
-import pl.edziennik.infrastructure.repositories.school.SchoolCommandRepository;
-import pl.edziennik.infrastructure.repositories.school.SchoolQueryRepository;
-import pl.edziennik.infrastructure.repositories.schoolclass.SchoolClassCommandRepository;
-import pl.edziennik.infrastructure.repositories.schoolclass.SchoolClassQueryRepository;
-import pl.edziennik.infrastructure.repositories.schoollevel.SchoolLevelCommandRepository;
-import pl.edziennik.infrastructure.repositories.schoollevel.SchoolLevelQueryRepository;
-import pl.edziennik.infrastructure.repositories.setting.SettingCommandRepository;
-import pl.edziennik.infrastructure.repositories.setting.SettingQueryRepository;
-import pl.edziennik.infrastructure.repositories.student.StudentCommandRepository;
-import pl.edziennik.infrastructure.repositories.student.StudentQueryRepository;
-import pl.edziennik.infrastructure.repositories.studentsubject.StudentSubjectCommandRepository;
-import pl.edziennik.infrastructure.repositories.studentsubject.StudentSubjectQueryRepository;
-import pl.edziennik.infrastructure.repositories.subject.SubjectCommandRepository;
-import pl.edziennik.infrastructure.repositories.subject.SubjectQueryRepository;
-import pl.edziennik.infrastructure.repositories.teacher.TeacherCommandRepository;
-import pl.edziennik.infrastructure.repositories.teacher.TeacherQueryRepository;
-import pl.edziennik.infrastructure.repositories.user.UserCommandRepository;
-import pl.edziennik.infrastructure.repositories.user.UserQueryRepository;
+import pl.edziennik.infrastructure.repository.ActivationTokenRepository;
+import pl.edziennik.infrastructure.repository.address.AddressCommandRepository;
+import pl.edziennik.infrastructure.repository.address.AddressQueryRepository;
+import pl.edziennik.infrastructure.repository.admin.AdminCommandRepository;
+import pl.edziennik.infrastructure.repository.admin.AdminQueryRepository;
+import pl.edziennik.infrastructure.repository.grade.GradeCommandRepository;
+import pl.edziennik.infrastructure.repository.grade.GradeQueryRepository;
+import pl.edziennik.infrastructure.repository.parent.ParentCommandRepository;
+import pl.edziennik.infrastructure.repository.parent.ParentQueryRepository;
+import pl.edziennik.infrastructure.repository.role.RoleCommandRepository;
+import pl.edziennik.infrastructure.repository.role.RoleQueryRepository;
+import pl.edziennik.infrastructure.repository.school.SchoolCommandRepository;
+import pl.edziennik.infrastructure.repository.school.SchoolQueryRepository;
+import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassCommandRepository;
+import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassQueryRepository;
+import pl.edziennik.infrastructure.repository.schoollevel.SchoolLevelCommandRepository;
+import pl.edziennik.infrastructure.repository.schoollevel.SchoolLevelQueryRepository;
+import pl.edziennik.infrastructure.repository.setting.SettingCommandRepository;
+import pl.edziennik.infrastructure.repository.setting.SettingQueryRepository;
+import pl.edziennik.infrastructure.repository.student.StudentCommandRepository;
+import pl.edziennik.infrastructure.repository.student.StudentQueryRepository;
+import pl.edziennik.infrastructure.repository.studentsubject.StudentSubjectCommandRepository;
+import pl.edziennik.infrastructure.repository.studentsubject.StudentSubjectQueryRepository;
+import pl.edziennik.infrastructure.repository.subject.SubjectCommandRepository;
+import pl.edziennik.infrastructure.repository.subject.SubjectQueryRepository;
+import pl.edziennik.infrastructure.repository.teacher.TeacherCommandRepository;
+import pl.edziennik.infrastructure.repository.teacher.TeacherQueryRepository;
+import pl.edziennik.infrastructure.repository.user.UserCommandRepository;
+import pl.edziennik.infrastructure.repository.user.UserQueryRepository;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
 
-@EnableJpaRepositories(basePackages = {"pl.edziennik.infrastructure.repositories"})
+@EnableJpaRepositories(basePackages = {"pl.edziennik.infrastructure.repository.*"})
 @EntityScan(basePackages = {"pl.edziennik.domain"})
-@ComponentScan(basePackages = {"pl.edziennik.common", "pl.edziennik.infrastructure.spring", "pl.edziennik.application.*"})
+@ComponentScan(basePackages = {"pl.edziennik.common", "pl.edziennik.infrastructure.spring", "pl.edziennik.application.*", "pl.edziennik.infrastructure.strategy", "pl.edziennik.infrastructure.repository"})
 @SpringBootTest(classes = BaseIntegrationTest.class)
 @AutoConfigureDataJpa
 @Sql(scripts = "/schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -123,6 +125,10 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     protected UserCommandRepository userCommandRepository;
     @Autowired
     protected UserQueryRepository userQueryRepository;
+    @Autowired
+    protected ActivationTokenRepository tokenRepository;
+    @Autowired
+    protected NamedParameterJdbcTemplate jdbcTemplate;
 
     @Autowired
     protected Dispatcher dispatcher;

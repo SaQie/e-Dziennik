@@ -45,6 +45,7 @@ public class User {
     })
     private Email email;
 
+    private Boolean isActive;
 
     @Column(nullable = false)
     private LocalDate createdDate;
@@ -63,8 +64,15 @@ public class User {
         user.email = email;
         user.role = role;
         user.createdDate = LocalDate.now();
+        user.isActive = Boolean.FALSE;
 
         return user;
+    }
+
+    public void activate() {
+        if (Boolean.FALSE.equals(isActive)) {
+            isActive = Boolean.TRUE;
+        }
     }
 
 
