@@ -5,6 +5,7 @@ import pl.edziennik.common.valueobject.Pesel;
 import pl.edziennik.common.valueobject.Username;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.TeacherId;
+import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.teacher.Teacher;
 import pl.edziennik.infrastructure.repository.teacher.TeacherCommandRepository;
@@ -60,6 +61,18 @@ public class TeacherCommandMockRepo implements TeacherCommandRepository {
     @Override
     public Teacher getReferenceById(TeacherId teacherId) {
         return database.get(teacherId);
+    }
+
+    @Override
+    public List<Teacher> getTeachersByUserIds(List<UserId> userIds) {
+        return database.values().stream()
+                .filter(item -> userIds.contains(item.getUser().getUserId()))
+                .toList();
+    }
+
+    @Override
+    public void deleteAll(Iterable<Teacher> teacherIds) {
+        database.clear();
     }
 
     @Override

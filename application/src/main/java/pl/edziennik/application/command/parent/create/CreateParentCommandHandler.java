@@ -1,10 +1,12 @@
 package pl.edziennik.application.command.parent.create;
 
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
+import pl.edziennik.application.events.event.UserAccountCreatedEvent;
 import pl.edziennik.common.valueobject.Password;
 import pl.edziennik.common.valueobject.PersonInformation;
 import pl.edziennik.common.valueobject.id.ParentId;
@@ -22,6 +24,7 @@ class CreateParentCommandHandler implements ICommandHandler<CreateParentCommand,
     private final ParentCommandRepository parentCommandRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleCommandRepository roleCommandRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public OperationResult handle(CreateParentCommand command) {
@@ -33,6 +36,8 @@ class CreateParentCommandHandler implements ICommandHandler<CreateParentCommand,
         Parent parent = Parent.of(user, personInformation, address);
 
         ParentId parentId = parentCommandRepository.save(parent).getParentId();
+
+        eventPublisher.publishEvent(new UserAccountCreatedEvent(user.getUserId()));
 
         return OperationResult.success(parentId);
 

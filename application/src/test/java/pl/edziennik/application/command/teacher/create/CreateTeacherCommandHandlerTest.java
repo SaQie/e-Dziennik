@@ -15,7 +15,7 @@ class CreateTeacherCommandHandlerTest extends BaseUnitTest {
     private final CreateTeacherCommandHandler handler;
 
     public CreateTeacherCommandHandlerTest() {
-        this.handler = new CreateTeacherCommandHandler(teacherCommandRepository, schoolCommandRepository, passwordEncoder, roleCommandRepository);
+        this.handler = new CreateTeacherCommandHandler(teacherCommandRepository, schoolCommandRepository, passwordEncoder, roleCommandRepository, publisher);
     }
 
     @Test

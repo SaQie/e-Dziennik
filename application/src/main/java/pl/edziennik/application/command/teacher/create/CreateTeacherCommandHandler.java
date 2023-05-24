@@ -1,10 +1,12 @@
 package pl.edziennik.application.command.teacher.create;
 
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
+import pl.edziennik.application.events.event.UserAccountCreatedEvent;
 import pl.edziennik.common.valueobject.Password;
 import pl.edziennik.common.valueobject.PersonInformation;
 import pl.edziennik.common.valueobject.id.TeacherId;
@@ -25,6 +27,7 @@ class CreateTeacherCommandHandler implements ICommandHandler<CreateTeacherComman
     private final SchoolCommandRepository schoolCommandRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleCommandRepository roleCommandRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public OperationResult handle(CreateTeacherCommand command) {
@@ -37,6 +40,8 @@ class CreateTeacherCommandHandler implements ICommandHandler<CreateTeacherComman
         Teacher teacher = Teacher.of(user, school, personInformation, address);
 
         TeacherId teacherId = teacherCommandRepository.save(teacher).getTeacherId();
+
+        eventPublisher.publishEvent(new UserAccountCreatedEvent(user.getUserId()));
 
         return OperationResult.success(teacherId);
     }

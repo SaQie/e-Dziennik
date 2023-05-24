@@ -33,7 +33,7 @@ public class ActivationTokenRepository {
             "DELETE FROM email_activation_tokens eac WHERE eac.user_id = :userId";
 
     private static final String DELETE_ACTIVATION_TOKENS =
-            "DELETE FROM email_activation_tokens eac WHERE eac.user_id IN (:userId)";
+            "DELETE FROM email_activation_tokens eac WHERE eac.user_id IN (:userIds)";
 
     private static final String INSERT_ACTIVATION_TOKEN =
             "INSERT INTO email_activation_tokens(user_id, token, expiration_date) VALUES (:userId, :token, :expiration_date) ";

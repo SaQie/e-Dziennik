@@ -3,6 +3,7 @@ package pl.edziennik.application.mock.repositories;
 import pl.edziennik.common.valueobject.Email;
 import pl.edziennik.common.valueobject.Username;
 import pl.edziennik.common.valueobject.id.ParentId;
+import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.domain.parent.Parent;
 import pl.edziennik.infrastructure.repository.parent.ParentCommandRepository;
 
@@ -42,6 +43,18 @@ public class ParentCommandMockRepo implements ParentCommandRepository {
     public Parent save(Parent parent) {
         database.put(parent.getParentId(), parent);
         return database.get(parent.getParentId());
+    }
+
+    @Override
+    public List<Parent> getParentsByUserIds(List<UserId> userIds) {
+        return database.values().stream()
+                .filter(item -> userIds.contains(item.getUser().getUserId()))
+                .toList();
+    }
+
+    @Override
+    public void deleteAll(Iterable<Parent> parentIds) {
+        database.clear();
     }
 
     @Override

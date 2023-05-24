@@ -28,6 +28,7 @@ class CreateAdminCommandHandler implements ICommandHandler<CreateAdminCommand, O
         Password password = Password.of(passwordEncoder.encode(command.password().value()));
         User user = User.of(command.username(), password, command.email(), role);
 
+        user.activate();
         AdminId adminId = adminCommandRepository.save(Admin.of(user)).getAdminId();
         return OperationResult.success(adminId);
     }

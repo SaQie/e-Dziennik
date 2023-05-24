@@ -14,7 +14,7 @@ class CreateParentCommandHandlerTest extends BaseUnitTest {
     private final CreateParentCommandHandler handler;
 
     public CreateParentCommandHandlerTest() {
-        this.handler = new CreateParentCommandHandler(parentCommandRepository, passwordEncoder, roleCommandRepository);
+        this.handler = new CreateParentCommandHandler(parentCommandRepository, passwordEncoder, roleCommandRepository, publisher);
     }
 
 

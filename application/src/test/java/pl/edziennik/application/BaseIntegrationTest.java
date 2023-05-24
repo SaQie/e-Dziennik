@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
@@ -57,9 +58,15 @@ import pl.edziennik.infrastructure.repository.user.UserCommandRepository;
 import pl.edziennik.infrastructure.repository.user.UserQueryRepository;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @EnableJpaRepositories(basePackages = {"pl.edziennik.infrastructure.repository.*"})
 @EntityScan(basePackages = {"pl.edziennik.domain"})
-@ComponentScan(basePackages = {"pl.edziennik.common", "pl.edziennik.infrastructure.spring", "pl.edziennik.application.*", "pl.edziennik.infrastructure.strategy", "pl.edziennik.infrastructure.repository"})
+@ComponentScan(basePackages = {"pl.edziennik.common", "pl.edziennik.infrastructure.spring", "pl.edziennik.application.*",
+        "pl.edziennik.infrastructure.strategy",
+        "pl.edziennik.infrastructure.repository",
+        "pl.edziennik.infrastructure.scheduler"})
 @SpringBootTest(classes = BaseIntegrationTest.class)
 @AutoConfigureDataJpa
 @Sql(scripts = "/schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -294,6 +301,12 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         );
 
         return studentSubjectCommandRepository.save(studentSubject).getStudentSubjectId();
+    }
+
+    protected void assertOneRowExists(String tableName) {
+        Integer integer = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM " + tableName, new MapSqlParameterSource(), Integer.class);
+        assertNotNull(integer);
+        assertEquals(integer, 1);
     }
 
 }

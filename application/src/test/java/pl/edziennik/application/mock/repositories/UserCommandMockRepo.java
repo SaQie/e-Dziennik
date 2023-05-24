@@ -33,4 +33,9 @@ public class UserCommandMockRepo implements UserCommandRepository {
                 .toList();
         return !users.isEmpty();
     }
+
+    @Override
+    public void deleteAll(List<UserId> userIds) {
+        database.clear();
+    }
 }

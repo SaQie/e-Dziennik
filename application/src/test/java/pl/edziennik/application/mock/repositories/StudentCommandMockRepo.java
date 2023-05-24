@@ -5,6 +5,7 @@ import pl.edziennik.common.valueobject.Name;
 import pl.edziennik.common.valueobject.Pesel;
 import pl.edziennik.common.valueobject.Username;
 import pl.edziennik.common.valueobject.id.StudentId;
+import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.domain.student.Student;
 import pl.edziennik.infrastructure.repository.student.StudentCommandRepository;
 
@@ -63,6 +64,18 @@ public class StudentCommandMockRepo implements StudentCommandRepository {
     @Override
     public Student getByStudentId(StudentId studentId) {
         return database.get(studentId);
+    }
+
+    @Override
+    public List<Student> getStudentsByUserIds(List<UserId> userIds) {
+        return database.values().stream()
+                .filter(item -> userIds.contains(item.getUser().getUserId()))
+                .toList();
+    }
+
+    @Override
+    public void deleteAll(Iterable<Student> students) {
+        database.clear();
     }
 
     @Override

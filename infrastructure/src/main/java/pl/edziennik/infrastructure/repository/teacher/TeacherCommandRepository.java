@@ -7,8 +7,10 @@ import pl.edziennik.common.valueobject.Pesel;
 import pl.edziennik.common.valueobject.Username;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.TeacherId;
+import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.domain.teacher.Teacher;
 
+import java.util.List;
 import java.util.Optional;
 
 @RepositoryDefinition(domainClass = Teacher.class, idClass = TeacherId.class)
@@ -32,6 +34,11 @@ public interface TeacherCommandRepository {
     Optional<Teacher> findById(TeacherId teacherId);
 
     Teacher getReferenceById(TeacherId teacherId);
+
+    @Query("SELECT t FROM Teacher t where t.user.userId IN (:userIds)")
+    List<Teacher> getTeachersByUserIds(List<UserId> userIds);
+
+    void deleteAll(Iterable<Teacher> teacherIds);
 
     @Query("SELECT CASE WHEN COUNT(sc) > 0 THEN TRUE ELSE FALSE END FROM SchoolClass sc " +
             "JOIN sc.teacher t " +
