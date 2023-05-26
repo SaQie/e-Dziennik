@@ -53,4 +53,18 @@ public class SchoolClassCommandMockRepo implements SchoolClassCommandRepository 
     public SchoolClass getBySchoolClassId(SchoolClassId schoolClassId) {
         return database.get(schoolClassId);
     }
+
+    @Override
+    public SchoolClass getBySchoolClassIdWithSubjects(SchoolClassId schoolClassId) {
+        return database.get(schoolClassId);
+    }
+
+    @Override
+    public boolean isStudentLimitReached(SchoolClassId schoolClassId) {
+        SchoolClass schoolClass = database.get(schoolClassId);
+        int studentsCount = schoolClass.getStudents().size();
+        Integer maxStudentsSize = schoolClass.getSchoolClassConfiguration().getMaxStudentsSize();
+
+        return studentsCount == maxStudentsSize;
+    }
 }

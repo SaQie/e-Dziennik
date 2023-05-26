@@ -32,4 +32,18 @@ public interface SchoolClassCommandRepository {
     SchoolClass getReferenceById(SchoolClassId schoolClassId);
 
     SchoolClass getBySchoolClassId(SchoolClassId schoolClassId);
+
+    @Query("SELECT sc FROM SchoolClass sc " +
+            "LEFT JOIN FETCH sc.subjects " +
+            "WHERE sc.schoolClassId = :schoolClassId")
+    SchoolClass getBySchoolClassIdWithSubjects(SchoolClassId schoolClassId);
+
+    @Query("SELECT CASE WHEN COUNT(s) >= scc.maxStudentsSize THEN TRUE ELSE FALSE END " +
+            "FROM SchoolClass sc " +
+            "JOIN sc.schoolClassConfiguration scc " +
+            "LEFT JOIN sc.students s " +
+            "WHERE sc.schoolClassId = :schoolClassId " +
+            "GROUP BY scc.maxStudentsSize ")
+    boolean isStudentLimitReached(SchoolClassId schoolClassId);
+
 }

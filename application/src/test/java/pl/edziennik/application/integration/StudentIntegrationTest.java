@@ -12,6 +12,7 @@ import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.id.TeacherId;
+import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.student.Student;
 import pl.edziennik.infrastructure.spring.exception.BusinessException;
 import pl.edziennik.infrastructure.validator.ValidationError;
@@ -27,7 +28,7 @@ public class StudentIntegrationTest extends BaseIntegrationTest {
 
 
     @Test
-    public void shouldCreateStudent(){
+    public void shouldCreateStudent() {
         // given
         SchoolId schoolId = createSchool("Testowa", "123123", "123123");
         TeacherId teacherId = createTeacher("Teacher", "test@example.com", "123123123", schoolId);
@@ -85,7 +86,7 @@ public class StudentIntegrationTest extends BaseIntegrationTest {
             // when
             dispatcher.dispatch(command);
             Assertions.fail("Should throw exception when student with given name or email or pesel already exists");
-        }catch (BusinessException e) {
+        } catch (BusinessException e) {
             // then
             List<ValidationError> errors = e.getErrors();
             assertEquals(3, errors.size());
@@ -95,6 +96,47 @@ public class StudentIntegrationTest extends BaseIntegrationTest {
 
         }
 
+    }
+
+
+    @Test
+    @Transactional
+    public void shouldThrowExceptionIfSchoolClassStudentLimitReached() {
+        // given
+        SchoolId schoolId = createSchool("Test", "123123123", "123123123");
+        TeacherId teacherId = createTeacher("Teacher", "test1@example.com", "129292", schoolId);
+
+        SchoolClassId schoolClassId = createSchoolClass(schoolId, teacherId, "1A");
+        SchoolClass schoolClass = schoolClassCommandRepository.getBySchoolClassId(schoolClassId);
+        schoolClass.getSchoolClassConfiguration().changeMaxStudentsSize(0);
+
+        CreateStudentCommand command = new CreateStudentCommand(
+                Password.of("Test"),
+                Username.of("Test"),
+                FirstName.of("Kamil"),
+                LastName.of("Nowak"),
+                Address.of("Test"),
+                PostalCode.of("123123"),
+                City.of("Nowakowo"),
+                Pesel.of("123123123"),
+                Email.of("test@example.com"),
+                PhoneNumber.of("123123"),
+                schoolId,
+                schoolClassId
+        );
+
+        try {
+            // when
+            dispatcher.dispatch(command);
+            Assertions.fail("Should throw exception if school class student limit reached");
+        } catch (BusinessException e) {
+            // then
+            List<ValidationError> errors = e.getErrors();
+            assertEquals(1, errors.size());
+            assertThat(errors)
+                    .extracting(ValidationError::field)
+                    .containsExactlyInAnyOrder(CreateStudentCommand.SCHOOL_CLASS_ID);
+        }
     }
 
 }

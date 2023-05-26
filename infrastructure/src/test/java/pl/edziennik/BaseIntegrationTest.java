@@ -37,6 +37,8 @@ import pl.edziennik.infrastructure.repository.role.RoleQueryRepository;
 import pl.edziennik.infrastructure.repository.school.SchoolCommandRepository;
 import pl.edziennik.infrastructure.repository.school.SchoolQueryRepository;
 import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassCommandRepository;
+import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassConfigurationCommandRepository;
+import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassConfigurationQueryRepository;
 import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassQueryRepository;
 import pl.edziennik.infrastructure.repository.schoollevel.SchoolLevelCommandRepository;
 import pl.edziennik.infrastructure.repository.schoollevel.SchoolLevelQueryRepository;
@@ -122,6 +124,11 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     protected UserCommandRepository userCommandRepository;
     @Autowired
     protected UserQueryRepository userQueryRepository;
+    @Autowired
+    protected SchoolClassConfigurationCommandRepository schoolClassConfigurationCommandRepository;
+    @Autowired
+    protected SchoolClassConfigurationQueryRepository schoolClassConfigurationQueryRepository;
+
 
     protected SchoolLevelId primarySchoolLevelId;
     protected SchoolLevelId universitySchoolLevelId;
@@ -190,7 +197,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         );
     }
 
-    protected void assignGradeToStudentSubject(pl.edziennik.common.enums.Grade grade,StudentId studentId, SubjectId subjectId, TeacherId teacherId) {
+    protected void assignGradeToStudentSubject(pl.edziennik.common.enums.Grade grade, StudentId studentId, SubjectId subjectId, TeacherId teacherId) {
         StudentSubject studentSubject = studentSubjectCommandRepository.getReferenceByStudentStudentIdAndSubjectSubjectId(studentId, subjectId);
 
         Teacher teacher = teacherCommandRepository.getReferenceById(teacherId);

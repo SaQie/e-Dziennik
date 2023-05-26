@@ -41,6 +41,9 @@ public class SchoolClass {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private School school;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    private SchoolClassConfiguration schoolClassConfiguration;
+
     @Column(nullable = false)
     private LocalDate createdDate;
 
@@ -50,6 +53,7 @@ public class SchoolClass {
         schoolClass.school = school;
         schoolClass.createdDate = LocalDate.now();
         schoolClass.teacher = teacher;
+        schoolClass.schoolClassConfiguration = SchoolClassConfiguration.defaultConfig();
 
         return schoolClass;
     }

@@ -89,14 +89,14 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldAddErrorWhenStudentExistsByUsername(){
+    public void shouldAddErrorWhenStudentExistsByUsername() {
         // given
         User user = createUser("Test", "test@example.com", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
 
         School school = createSchool("Testowa", "123123123", "123123123", address);
         school = schoolCommandRepository.save(school);
 
-        SchoolClass schoolClass = createSchoolClass("Test", school,null);
+        SchoolClass schoolClass = createSchoolClass("Test", school, null);
         schoolClass = schoolClassCommandRepository.save(schoolClass);
 
         Student student = createStudent(user, school, schoolClass, personInformation, address);
@@ -128,14 +128,14 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldAddErrorWhenStudentExistsByEmail(){
+    public void shouldAddErrorWhenStudentExistsByEmail() {
         // given
         User user = createUser("Test1", "Test@example.com", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
 
         School school = createSchool("Testowa", "123123123", "123123123", address);
         school = schoolCommandRepository.save(school);
 
-        SchoolClass schoolClass = createSchoolClass("Test", school,null);
+        SchoolClass schoolClass = createSchoolClass("Test", school, null);
         schoolClass = schoolClassCommandRepository.save(schoolClass);
 
         Student student = createStudent(user, school, schoolClass, personInformation, address);
@@ -157,24 +157,24 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
         );
 
         // when
-        validator.validate(command,validationErrorBuilder);
+        validator.validate(command, validationErrorBuilder);
 
         // then
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
-        assertEquals(errors.get(0).field(),CreateStudentCommand.EMAIL);
+        assertEquals(errors.get(0).field(), CreateStudentCommand.EMAIL);
         assertEquals(errors.get(0).errorMessage(), CreateStudentCommandValidator.MESSAGE_KEY_USER_ALREADY_EXISTS_BY_EMAIL);
     }
 
     @Test
-    public void shouldAddErrorWhenStudentExistsByPesel(){
+    public void shouldAddErrorWhenStudentExistsByPesel() {
         // given
         User user = createUser("Test1", "Test1@example.com", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
 
         School school = createSchool("Testowa", "123123123", "123123123", address);
         school = schoolCommandRepository.save(school);
 
-        SchoolClass schoolClass = createSchoolClass("Test", school,null);
+        SchoolClass schoolClass = createSchoolClass("Test", school, null);
         schoolClass = schoolClassCommandRepository.save(schoolClass);
 
         Student student = createStudent(user, school, schoolClass, personInformation, address);
@@ -196,22 +196,22 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
         );
 
         // when
-        validator.validate(command,validationErrorBuilder);
+        validator.validate(command, validationErrorBuilder);
 
         // then
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
-        assertEquals(errors.get(0).field(),CreateStudentCommand.PESEL);
+        assertEquals(errors.get(0).field(), CreateStudentCommand.PESEL);
         assertEquals(errors.get(0).errorMessage(), CreateStudentCommandValidator.MESSAGE_KEY_STUDENT_PESEL_NOT_UNIQUE);
     }
 
     @Test
-    public void shouldAddErrorWhenSchoolClassNotBelongsToSchool(){
+    public void shouldAddErrorWhenSchoolClassNotBelongsToSchool() {
         // given
         School school = createSchool("FirstSchool", "123123123", "123123123", address);
         school = schoolCommandRepository.save(school);
 
-        SchoolClass schoolClass = createSchoolClass("Test", school,null);
+        SchoolClass schoolClass = createSchoolClass("Test", school, null);
         schoolClass = schoolClassCommandRepository.save(schoolClass);
 
         School secondSchool = createSchool("SecondSchool", "123123123", "123123123", address);
@@ -233,7 +233,7 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
         );
 
         // when
-        validator.validate(command,validationErrorBuilder);
+        validator.validate(command, validationErrorBuilder);
 
         // then
         List<ValidationError> errors = validationErrorBuilder.getErrors();
@@ -242,6 +242,43 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
         assertEquals(errors.get(0).errorMessage(), CreateStudentCommandValidator.MESSAGE_KEY_SCHOOL_CLASS_NOT_BELONGS_TO_SCHOOL);
     }
 
+    @Test
+    public void shouldAddErrorWhenSchoolClassStudentLimitReached() {
+        // given
+        User user = createUser("Test1", "Test1@example.com", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
+
+        School school = createSchool("Testowa", "123123123", "123123123", address);
+        school = schoolCommandRepository.save(school);
+
+        SchoolClass schoolClass = createSchoolClass("Test", school, null);
+        schoolClass = schoolClassCommandRepository.save(schoolClass);
+
+        schoolClass.getSchoolClassConfiguration().changeMaxStudentsSize(0);
+
+        CreateStudentCommand command = new CreateStudentCommand(
+                Password.of("Test"),
+                Username.of("Test"),
+                FirstName.of("Kamil"),
+                LastName.of("Nowak"),
+                Address.of("Test"),
+                PostalCode.of("123123"),
+                City.of("Nowakowo"),
+                Pesel.of("12345678912"),
+                Email.of("Test@example.com"),
+                PhoneNumber.of("123123"),
+                school.getSchoolId(),
+                schoolClass.getSchoolClassId()
+        );
+
+        // when
+        validator.validate(command, validationErrorBuilder);
+
+        // then
+        List<ValidationError> errors = validationErrorBuilder.getErrors();
+        assertEquals(errors.size(), 1);
+        assertEquals(errors.get(0).field(), CreateStudentCommand.SCHOOL_CLASS_ID);
+        assertEquals(errors.get(0).errorMessage(), CreateStudentCommandValidator.MESSAGE_KEY_SCHOOL_CLASS_STUDENT_LIMIT_REACHED);
+    }
 
 
 }

@@ -18,6 +18,7 @@ class CreateStudentCommandValidator implements IBaseValidator<CreateStudentComma
     public static final String MESSAGE_KEY_USER_ALREADY_EXISTS_BY_USERNAME = "user.already.exists";
     public static final String MESSAGE_KEY_STUDENT_PESEL_NOT_UNIQUE = "student.pesel.not.unique";
     public static final String MESSAGE_KEY_SCHOOL_CLASS_NOT_BELONGS_TO_SCHOOL = "school.class.not.belong.to.school";
+    public static final String MESSAGE_KEY_SCHOOL_CLASS_STUDENT_LIMIT_REACHED = "school.class.student.limit.reached";
 
     private final StudentCommandRepository studentCommandRepository;
     private final SchoolClassCommandRepository schoolClassCommandRepository;
@@ -71,5 +72,14 @@ class CreateStudentCommandValidator implements IBaseValidator<CreateStudentComma
                     ErrorCode.SCHOOL_CLASS_IS_NOT_PART_OF_SCHOOL
             );
         }
+
+        if (schoolClassCommandRepository.isStudentLimitReached(command.schoolClassId())) {
+            errorBuilder.addError(
+                    CreateStudentCommand.SCHOOL_CLASS_ID,
+                    MESSAGE_KEY_SCHOOL_CLASS_STUDENT_LIMIT_REACHED,
+                    ErrorCode.LIMIT_REACHED
+            );
+        }
+
     }
 }

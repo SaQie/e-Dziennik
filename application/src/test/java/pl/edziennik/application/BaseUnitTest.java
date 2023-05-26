@@ -26,6 +26,7 @@ import pl.edziennik.infrastructure.repository.parent.ParentCommandRepository;
 import pl.edziennik.infrastructure.repository.role.RoleCommandRepository;
 import pl.edziennik.infrastructure.repository.school.SchoolCommandRepository;
 import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassCommandRepository;
+import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassConfigurationCommandRepository;
 import pl.edziennik.infrastructure.repository.schoollevel.SchoolLevelCommandRepository;
 import pl.edziennik.infrastructure.repository.student.StudentCommandRepository;
 import pl.edziennik.infrastructure.repository.studentsubject.StudentSubjectCommandRepository;
@@ -54,6 +55,7 @@ public class BaseUnitTest {
     protected ValidationErrorBuilder validationErrorBuilder;
     protected PasswordEncoder passwordEncoder;
     protected StudentSubjectCommandRepository studentSubjectCommandRepository;
+    protected SchoolClassConfigurationCommandRepository schoolClassConfigurationCommandRepository;
 
 
     protected PersonInformation personInformation;
@@ -74,6 +76,7 @@ public class BaseUnitTest {
         this.adminCommandRepository = new AdminCommandMockRepo();
         this.roleCommandRepository = new RoleCommandMockRepo();
         this.studentSubjectCommandRepository = new StudentSubjectMockRepo();
+        this.schoolClassConfigurationCommandRepository = new SchoolClassConfigurationCommandMockRepo();
         this.address = Address.of(
                 pl.edziennik.common.valueobject.Address.of(StringUtil.randomIdentifer(5)),
                 City.of(StringUtil.randomIdentifer(5)),
@@ -194,6 +197,7 @@ public class BaseUnitTest {
                 school,
                 teacher
         );
+        schoolClassConfigurationCommandRepository.save(schoolClass.getSchoolClassConfiguration());
         school.getSchoolClasses().add(schoolClass);
         return schoolClass;
     }

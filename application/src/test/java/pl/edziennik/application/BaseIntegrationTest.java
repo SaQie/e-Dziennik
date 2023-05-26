@@ -1,5 +1,6 @@
 package pl.edziennik.application;
 
+import jakarta.persistence.EntityManager;
 import liquibase.util.StringUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
@@ -41,6 +42,7 @@ import pl.edziennik.infrastructure.repository.role.RoleQueryRepository;
 import pl.edziennik.infrastructure.repository.school.SchoolCommandRepository;
 import pl.edziennik.infrastructure.repository.school.SchoolQueryRepository;
 import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassCommandRepository;
+import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassConfigurationCommandRepository;
 import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassQueryRepository;
 import pl.edziennik.infrastructure.repository.schoollevel.SchoolLevelCommandRepository;
 import pl.edziennik.infrastructure.repository.schoollevel.SchoolLevelQueryRepository;
@@ -133,9 +135,13 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     @Autowired
     protected UserQueryRepository userQueryRepository;
     @Autowired
+    protected SchoolClassConfigurationCommandRepository schoolClassConfigurationCommandRepository;
+    @Autowired
     protected ActivationTokenRepository tokenRepository;
     @Autowired
     protected NamedParameterJdbcTemplate jdbcTemplate;
+    @Autowired
+    protected EntityManager entityManager;
 
     @Autowired
     protected Dispatcher dispatcher;
@@ -307,6 +313,12 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         Integer integer = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM " + tableName, new MapSqlParameterSource(), Integer.class);
         assertNotNull(integer);
         assertEquals(integer, 1);
+    }
+
+    protected void assertNoOneRowExists(String tableName){
+        Integer integer = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM " + tableName, new MapSqlParameterSource(), Integer.class);
+        assertNotNull(integer);
+        assertEquals(integer, 0);
     }
 
 }

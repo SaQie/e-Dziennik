@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
+import pl.edziennik.application.events.event.StudentAccountCreatedEvent;
 import pl.edziennik.application.events.event.UserAccountCreatedEvent;
 import pl.edziennik.common.valueobject.Password;
 import pl.edziennik.common.valueobject.PersonInformation;
@@ -50,6 +51,7 @@ class CreateStudentCommandHandler implements ICommandHandler<CreateStudentComman
         StudentId studentId = studentCommandRepository.save(student).getStudentId();
 
         eventPublisher.publishEvent(new UserAccountCreatedEvent(user.getUserId()));
+        eventPublisher.publishEvent(new StudentAccountCreatedEvent(studentId, command.schoolClassId()));
 
         return OperationResult.success(studentId);
     }
