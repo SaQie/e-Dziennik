@@ -33,7 +33,7 @@ public class StudentQueryProjectionTest extends BaseIntegrationTest {
 
     @Test
     @Transactional
-    public void shouldReturnDetailedStudentDto(){
+    public void shouldReturnDetailedStudentDto() {
         // given
         SchoolId schoolId = createSchool(expectedSchoolName, "12312313", "123123123");
         TeacherId teacherId = createTeacher("Test", "test@example.com", "123123123", schoolId);
@@ -46,17 +46,18 @@ public class StudentQueryProjectionTest extends BaseIntegrationTest {
 
         // then
         assertNotNull(dto);
-        assertEquals(dto.username().value(),expectedStudentName);
+        assertEquals(dto.username().value(), expectedStudentName);
         assertEquals(dto.email().value(), expectedStudentEmail);
         assertEquals(dto.schoolClassId(), schoolClassId);
         assertEquals(dto.schoolId(), schoolId);
         assertEquals(dto.fullName(), FullName.of(expectedStudentName + " " + expectedStudentName));
         assertEquals(dto.schoolName().value(), expectedSchoolName);
+        assertEquals(dto.journalNumber().value(), 1);
     }
 
     @Test
     @Transactional
-    public void shouldReturnStudentSummaryDto(){
+    public void shouldReturnStudentSummaryDto() {
         // given
         SchoolId schoolId = createSchool(expectedSchoolName, "12312313", "123123123");
         TeacherId teacherId = createTeacher("Test", "test@example.com", "123123123", schoolId);
@@ -71,19 +72,21 @@ public class StudentQueryProjectionTest extends BaseIntegrationTest {
         // then
         assertNotNull(dtos);
         List<StudentSummaryDto> list = dtos.get().toList();
-        assertEquals(2,list.size());
+        assertEquals(2, list.size());
 
         assertEquals(list.get(0).studentId(), studentId);
-        assertEquals(list.get(0).username().value(),expectedStudentName);
+        assertEquals(list.get(0).username().value(), expectedStudentName);
         assertEquals(list.get(0).schoolId(), schoolId);
         assertEquals(list.get(0).fullName(), FullName.of(expectedStudentName + " " + expectedStudentName));
         assertEquals(list.get(0).schoolName().value(), expectedSchoolName);
+        assertEquals(list.get(0).journalNumber().value(), 1);
 
         assertEquals(list.get(1).studentId(), studentIdSecond);
-        assertEquals(list.get(1).username().value(),expectedSecondStudentName);
+        assertEquals(list.get(1).username().value(), expectedSecondStudentName);
         assertEquals(list.get(1).schoolId(), schoolId);
         assertEquals(list.get(1).fullName(), FullName.of(expectedStudentName + " " + expectedStudentName));
         assertEquals(list.get(1).schoolName().value(), expectedSchoolName);
+        assertEquals(list.get(1).journalNumber().value(), 2);
 
 
     }

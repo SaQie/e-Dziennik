@@ -2,6 +2,7 @@ package pl.edziennik.domain.student;
 
 import jakarta.persistence.*;
 import lombok.*;
+import pl.edziennik.common.valueobject.JournalNumber;
 import pl.edziennik.common.valueobject.PersonInformation;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.domain.address.Address;
@@ -26,6 +27,12 @@ public class Student {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "value", column = @Column(name = "journal_number"))
+    })
+    private JournalNumber journalNumber;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private SchoolClass schoolClass;

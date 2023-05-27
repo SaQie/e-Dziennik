@@ -16,7 +16,7 @@ CREATE TRIGGER student_super_id
     FOR EACH ROW
 EXECUTE FUNCTION update_user_super_id();
 
-CREATE TRIGGER student_super_id
+CREATE TRIGGER admin_super_id
     AFTER INSERT
     ON admin
     FOR EACH ROW

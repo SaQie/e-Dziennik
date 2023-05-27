@@ -51,6 +51,7 @@ public class SchoolClassQueryProjectionTest extends BaseIntegrationTest {
         assertEquals(1,studentsSummary.size());
         assertEquals(studentsSummary.get(0).studentId(), studentId);
         assertEquals(studentsSummary.get(0).fullName().value(), "Test Test");
+        assertEquals(studentsSummary.get(0).journalNumber().value(), 1);
     }
 
     @Test

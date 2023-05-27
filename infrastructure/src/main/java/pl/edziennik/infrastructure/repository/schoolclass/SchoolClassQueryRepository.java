@@ -24,7 +24,7 @@ public interface SchoolClassQueryRepository {
     DetailedSchoolClassDto getSchoolClass(SchoolClassId schoolClassId);
 
     @Query("SELECT NEW " +
-            "pl.edziennik.common.dto.schoolclass.StudentSummaryForSchoolClassDto(s.studentId, s.personInformation.fullName) " +
+            "pl.edziennik.common.dto.schoolclass.StudentSummaryForSchoolClassDto(s.studentId,s.journalNumber, s.personInformation.fullName) " +
             "FROM Student s " +
             "JOIN s.schoolClass sc " +
             "WHERE sc.schoolClassId = :schoolClassId")

@@ -14,6 +14,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.*;
@@ -142,10 +144,13 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     protected NamedParameterJdbcTemplate jdbcTemplate;
     @Autowired
     protected EntityManager entityManager;
-
     @Autowired
     protected Dispatcher dispatcher;
+    @Autowired
+    protected PlatformTransactionManager transactionManager;
 
+
+    protected TransactionTemplate transactionTemplate;
     protected SchoolLevelId primarySchoolLevelId;
     protected SchoolLevelId universitySchoolLevelId;
     protected SchoolLevelId highSchoolLevelId;
@@ -167,6 +172,8 @@ public class BaseIntegrationTest extends ContainerEnvironment {
 
         Mockito.when(resourceCreator.notFoundError(Mockito.anyString(), Mockito.any(Identifier.class)))
                 .thenAnswer(invocation -> invocation.<String>getArgument(0));
+
+        this.transactionTemplate = new TransactionTemplate(transactionManager);
     }
 
     protected SchoolId createSchool(String name, String nip, String regon) {
@@ -315,7 +322,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         assertEquals(integer, 1);
     }
 
-    protected void assertNoOneRowExists(String tableName){
+    protected void assertNoOneRowExists(String tableName) {
         Integer integer = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM " + tableName, new MapSqlParameterSource(), Integer.class);
         assertNotNull(integer);
         assertEquals(integer, 0);

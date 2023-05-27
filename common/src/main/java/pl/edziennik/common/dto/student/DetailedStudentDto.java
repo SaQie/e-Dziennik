@@ -7,6 +7,7 @@ public record DetailedStudentDto(
 
         StudentId studentId,
         UserId userId,
+        JournalNumber journalNumber,
         Username username,
         Email email,
         FullName fullName,

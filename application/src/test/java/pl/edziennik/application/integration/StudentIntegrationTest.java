@@ -55,6 +55,7 @@ public class StudentIntegrationTest extends BaseIntegrationTest {
         // then
         Student student = studentCommandRepository.getByStudentId(StudentId.of(operationResult.identifier().id()));
         assertNotNull(student);
+        assertNotNull(student.getJournalNumber());
     }
 
     @Test
@@ -137,6 +138,48 @@ public class StudentIntegrationTest extends BaseIntegrationTest {
                     .extracting(ValidationError::field)
                     .containsExactlyInAnyOrder(CreateStudentCommand.SCHOOL_CLASS_ID);
         }
+    }
+
+    @Test
+//    @Transactional
+    public void shouldAutomaticallyAssignJournalNumberAfterSave() {
+        // given
+        SchoolId schoolId = createSchool("Test", "123123123", "123123123");
+        TeacherId teacherId = createTeacher("Teacher", "test1@example.com", "129292", schoolId);
+        TeacherId teacherIdSecond = createTeacher("Teacher2", "test2@example.com", "123123123", schoolId);
+        SchoolClassId schoolClassId = createSchoolClass(schoolId, teacherId, "1A");
+        SchoolClassId schoolClassIdSecond = createSchoolClass(schoolId, teacherIdSecond, "2A");
+
+        // when
+
+        // create students for first school class
+        StudentId studentIdFirst = transactionTemplate.execute(result -> createStudent("Test", "test@o2.pl", "123123122", schoolId, schoolClassId));
+        StudentId studentIdSecond = transactionTemplate.execute(result -> createStudent("Test2", "test2@o2.pl", "123123123", schoolId, schoolClassId));
+
+        // create students for second school class
+        StudentId studentIdThird = transactionTemplate.execute(result -> createStudent("Test3", "test3@o2.pl", "123123124", schoolId, schoolClassIdSecond));
+        StudentId studentIdFourth = transactionTemplate.execute(result -> createStudent("Test4", "test4@o2.pl", "123123125", schoolId, schoolClassIdSecond));
+
+
+        // then
+        Student student = studentCommandRepository.getByStudentId(studentIdFirst);
+        assertNotNull(student);
+        assertEquals(student.getJournalNumber().value(), 1);
+
+        student = studentCommandRepository.getByStudentId(studentIdSecond);
+        assertNotNull(student);
+        assertEquals(student.getJournalNumber().value(), 2);
+
+
+        // Again journal number is one because every school class has their own sequence
+        student = studentCommandRepository.getByStudentId(studentIdThird);
+        assertNotNull(student);
+        assertEquals(student.getJournalNumber().value(), 1);
+
+
+        student = studentCommandRepository.getByStudentId(studentIdFourth);
+        assertNotNull(student);
+        assertEquals(student.getJournalNumber().value(), 2);
     }
 
 }
