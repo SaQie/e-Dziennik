@@ -1,5 +1,6 @@
-package pl.edziennik.common.dto.grade;
+package pl.edziennik.common.dto.grade.bysubject;
 
+import pl.edziennik.common.dto.grade.DetailedGradeDto;
 import pl.edziennik.common.valueobject.FullName;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.id.StudentSubjectId;

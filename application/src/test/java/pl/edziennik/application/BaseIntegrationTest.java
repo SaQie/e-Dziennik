@@ -228,7 +228,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         Grade grade = Grade.of(
                 pl.edziennik.common.enums.Grade.SIX,
                 Weight.of(1),
-                Description.of("asdasd"),
+                Description.of("StudentAllSubjectGradesToPdfDocumentGeneratorStrategy"),
                 studentSubject,
                 teacher
         );

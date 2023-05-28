@@ -6,9 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.application.query.subject.detailed.GetDetailedSubjectQuery;
-import pl.edziennik.application.query.subject.specificstudentgrades.GetGradesOfSpecificStudentBySubject;
-import pl.edziennik.application.query.subject.studentsgrades.GetStudentsGradesBySubjectQuery;
-import pl.edziennik.common.dto.grade.StudentGradesBySubjectDto;
+import pl.edziennik.application.query.subject.specificstudentgrades.GetGradesOfSpecificStudentBySubjectQuery;
+import pl.edziennik.application.query.subject.studentsgrades.all.GetAllSubjectsGradesOfSpecificStudentQuery;
+import pl.edziennik.application.query.subject.studentsgrades.bysubject.GetStudentsGradesBySubjectQuery;
+import pl.edziennik.common.dto.grade.allsubjects.StudentAllSubjectsGradesHeaderDto;
+import pl.edziennik.common.dto.grade.bysubject.StudentGradesBySubjectDto;
 import pl.edziennik.common.dto.subject.DetailedSubjectDto;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.id.SubjectId;
@@ -45,9 +47,19 @@ public class SubjectQueryController {
     @GetMapping("/{subjectId}/students/{studentId}/grades")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<StudentGradesBySubjectDto> getGradesOfSpecificStudentBySubject(@PathVariable SubjectId subjectId, @PathVariable StudentId studentId) {
-        GetGradesOfSpecificStudentBySubject query = new GetGradesOfSpecificStudentBySubject(subjectId, studentId);
+        GetGradesOfSpecificStudentBySubjectQuery query = new GetGradesOfSpecificStudentBySubjectQuery(subjectId, studentId);
 
         StudentGradesBySubjectDto dto = dispatcher.dispatch(query);
+
+        return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping("/students/{studentId}/grades")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<StudentAllSubjectsGradesHeaderDto> getAllSubjectsGradesOfSpecificStudent(@PathVariable StudentId studentId) {
+        GetAllSubjectsGradesOfSpecificStudentQuery query = new GetAllSubjectsGradesOfSpecificStudentQuery(studentId);
+
+        StudentAllSubjectsGradesHeaderDto dto = dispatcher.dispatch(query);
 
         return ResponseEntity.ok(dto);
     }

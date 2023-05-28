@@ -1,10 +1,10 @@
-package pl.edziennik.application.query.subject.studentsgrades;
+package pl.edziennik.application.query.subject.studentsgrades.bysubject;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.query.IQueryHandler;
 import pl.edziennik.common.dto.grade.DetailedGradeDto;
-import pl.edziennik.common.dto.grade.StudentGradesBySubjectDto;
+import pl.edziennik.common.dto.grade.bysubject.StudentGradesBySubjectDto;
 import pl.edziennik.infrastructure.repository.grade.GradeQueryRepository;
 
 import java.util.List;
@@ -18,7 +18,7 @@ class GetStudentsGradesBySubjectQueryHandler implements IQueryHandler<GetStudent
     @Override
     public List<StudentGradesBySubjectDto> handle(GetStudentsGradesBySubjectQuery query) {
         List<StudentGradesBySubjectDto> studentsBySubjectDto = gradeQueryRepository.getStudentsGradesBySubjectDto(query.subjectId());
-        List<DetailedGradeDto> detailedStudentSubjectDto = gradeQueryRepository.getDetailedStudentSubjectDto(query.subjectId());
+        List<DetailedGradeDto> detailedStudentSubjectDto = gradeQueryRepository.getDetailedGradeDto(query.subjectId());
 
 
         return studentsBySubjectDto.stream()

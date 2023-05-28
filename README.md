@@ -30,17 +30,17 @@ _____________
 
 </div>
 
-| Description                   |                                            | Description            |                                 |
-|-------------------------------|--------------------------------------------|------------------------|---------------------------------|
-| **CRUD schools**              | ![#00d1a0](images/School_Building.png)     | **Email confirmation** | ![#00d1a0](images/Received.png) |
-| **CRUD school classes**       | ![#00d1a0](images/Meeting_Room.png)        |                        |                                 |
-| **CRUD students**             | ![#00d1a0](images/Student_Male.png)        |                        |                                 |
-| **CRUD teachers**             | ![#00d1a0](images/Teacher.png)             |                        |                                 |
-| **CRUD parents**              | ![#00d1a0](images/Family.png)              |                        |                                 |
-| **CRUD admins**               | ![#00d1a0](images/Admin_Settings_Male.png) |                        |                                 |
-| **CRUD subjects**             | ![#00d1a0](images/Read.png)                |                        |                                 |
-| **CRUD grades**               | ![#00d1a0](images/Numbers.png)             |                        |                                 |
-| **Dynamic app configuration** | ![#FC0000](images/Services.png)            |                        |                                 |
+| Description                   |                                             | Description               |                                       |
+|-------------------------------|---------------------------------------------|---------------------------|---------------------------------------|
+| **Schools option**            | ![#00d1a0](images/School_Building.png)      | **Email confirmation**    | ![#00d1a0](images/Received.png)       |
+| **School classes option**     | ![#00d1a0](images/Meeting_Room.png)         | **Document generator**    | ![#00d1a0](images/PDF.png)            |
+| **Students option**           | ![#00d1a0](images/Student_Male.png)         | **Internationalization**  | ![#00d1a0](images/Language_Skill.png) |
+| **Teachers option**           | ![#00d1a0](images/Teacher.png)              |                           |                                       |
+| **Parents option**            | ![#00d1a0](images/Family.png)               |                           |                                       |
+| **Admins option**             | ![#00d1a0](images/Admin_Settings_Male.png)  |                           |                                       |
+| **Subjects option**           | ![#00d1a0](images/Read.png)                 |                           |                                       |
+| **Grades option**             | ![#00d1a0](images/Numbers.png)              |                           |                                       |
+| **Dynamic app configuration** | ![#FC0000](images/Services.png)             |                           |                                       |
 
 <div>Dynamic app configuration allows to configure our application through REST-API</div>
 
@@ -60,7 +60,7 @@ List of task's I will implement in future in this project:
 * *Add redis cache for configuration* ❌
 * *Add real time client-server chat (student-teacher)* ❌
 * *Add email system inside application* ❌
-* *Add exports student grades to PDF* ❌
+* *Add exports student grades to PDF* ✅
 * *Add homeworks that can be sent to teacher* ❌
 * *Add notes system per student inside application* ❌
 * *Add dashboard that shows recently added grades* ❌
@@ -97,6 +97,7 @@ _____
 * Docker
 * Maven
 * GitHub with GitHub Workflows
+* TestContainers
 
 # 🗾 Architecture look
 ___

@@ -205,7 +205,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         Grade gradeEntity = Grade.of(
                 grade,
                 Weight.of(1),
-                Description.of("asdasd"),
+                Description.of("StudentAllSubjectGradesToPdfDocumentGeneratorStrategy"),
                 studentSubject,
                 teacher
         );
