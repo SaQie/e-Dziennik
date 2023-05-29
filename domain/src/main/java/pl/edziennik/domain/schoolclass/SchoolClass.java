@@ -47,6 +47,9 @@ public class SchoolClass {
     @Column(nullable = false)
     private LocalDate createdDate;
 
+    @Version
+    private Long version;
+
     public static SchoolClass of(Name name, School school, Teacher teacher) {
         SchoolClass schoolClass = new SchoolClass();
         schoolClass.className = name;

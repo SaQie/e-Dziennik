@@ -3,6 +3,7 @@ package pl.edziennik.domain.schoolclass;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Version;
 import lombok.*;
 import pl.edziennik.common.valueobject.id.SchoolClassConfigurationId;
 
@@ -19,6 +20,9 @@ public class SchoolClassConfiguration {
     private Integer maxStudentsSize;
 
     private Boolean autoAssignSubjects;
+
+    @Version
+    private Long version;
 
     public static SchoolClassConfiguration defaultConfig() {
         SchoolClassConfiguration classConfiguration = new SchoolClassConfiguration();

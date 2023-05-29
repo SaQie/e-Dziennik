@@ -36,6 +36,9 @@ public class Address {
     })
     private PostalCode postalCode;
 
+    @Version
+    private Long version;
+
 
     public static Address of(pl.edziennik.common.valueobject.Address address, City city, PostalCode postalCode){
         Address addressEntity = new Address();

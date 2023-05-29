@@ -22,6 +22,9 @@ public class Admin {
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
+    @Version
+    private Long version;
+
 
     public static Admin of(User user){
         Admin admin = new Admin();

@@ -37,6 +37,9 @@ public class Subject {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private SchoolClass schoolClass;
 
+    @Version
+    private Long version;
+
 
     public static Subject of(Name subjectName, Description description, SchoolClass schoolClass, Teacher teacher) {
         Subject subject = new Subject();

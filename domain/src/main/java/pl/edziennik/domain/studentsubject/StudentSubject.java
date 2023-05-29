@@ -30,6 +30,9 @@ public class StudentSubject {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Subject subject;
 
+    @Version
+    private Long version;
+
 
     public static StudentSubject of(Student student, Subject subject) {
         StudentSubject studentSubject = new StudentSubject();

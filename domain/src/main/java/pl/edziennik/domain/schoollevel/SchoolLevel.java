@@ -27,6 +27,9 @@ public class SchoolLevel {
     })
     private Name name;
 
+    @Version
+    private Long version;
+
     public static SchoolLevel of(SchoolLevelId schoolLevelId, Name name) {
         SchoolLevel schoolLevel = new SchoolLevel();
         schoolLevel.schoolLevelId = schoolLevelId;

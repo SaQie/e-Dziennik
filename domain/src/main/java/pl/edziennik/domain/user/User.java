@@ -54,8 +54,11 @@ public class User {
 
     private LocalDateTime lastLoginDate;
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Role role;
+
+    @Version
+    private Long version;
 
     public static User of(Username username, Password password, Email email, Role role) {
         User user = new User();

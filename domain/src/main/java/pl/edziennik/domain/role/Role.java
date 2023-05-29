@@ -23,6 +23,9 @@ public class Role {
     })
     private Name name;
 
+    @Version
+    private Long version;
+
     public static Role of(Name name) {
         Role role = new Role();
         role.name = name;

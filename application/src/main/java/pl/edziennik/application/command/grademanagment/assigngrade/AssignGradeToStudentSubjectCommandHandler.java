@@ -2,6 +2,7 @@ package pl.edziennik.application.command.grademanagment.assigngrade;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
 import pl.edziennik.common.valueobject.id.GradeId;
@@ -21,6 +22,7 @@ class AssignGradeToStudentSubjectCommandHandler implements ICommandHandler<Assig
     private final GradeCommandRepository gradeCommandRepository;
 
     @Override
+    @Transactional
     public OperationResult handle(AssignGradeToStudentSubjectCommand command) {
         StudentSubject studentSubject = studentSubjectCommandRepository.getReferenceByStudentStudentIdAndSubjectSubjectId(command.studentId(), command.subjectId());
         Teacher teacher = teacherCommandRepository.getReferenceById(command.teacherId());

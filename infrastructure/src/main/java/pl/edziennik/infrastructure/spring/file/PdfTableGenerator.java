@@ -19,6 +19,9 @@ import java.util.List;
 @Slf4j
 public class PdfTableGenerator {
 
+    private static final int MARGIN_DOWN = 15;
+    private static final int MARGIN_RIGHT = 120;
+
     private final List<String> columns = new ArrayList<>();
     private final List<String> rows = new ArrayList<>();
     private String docTitle;
@@ -59,9 +62,6 @@ public class PdfTableGenerator {
             document.addPage(page);
             PDPageContentStream contentStream = new PDPageContentStream(document, page);
 
-            int marginDown = 15;
-            int marginRight = 120;
-
             int pageHeight = (int) page.getTrimBox().getHeight();
             int width = (int) page.getTrimBox().getWidth();
 
@@ -91,12 +91,12 @@ public class PdfTableGenerator {
                 contentStream.endText();
 
                 contentStream.beginText();
-                contentStream.newLineAtOffset(initX + marginRight, initY);
+                contentStream.newLineAtOffset(initX + MARGIN_RIGHT, initY);
                 contentStream.setFont(PDType1Font.COURIER, 8);
                 contentStream.showText(leftParamValues.get(i));
                 contentStream.endText();
 
-                initY -= marginDown;
+                initY -= MARGIN_DOWN;
             }
 
             // set columns
@@ -146,10 +146,10 @@ public class PdfTableGenerator {
 
                 contentStream.beginText();
                 contentStream.setFont(PDType1Font.COURIER, 10);
-                contentStream.newLineAtOffset(initX + marginRight, initY - cellHeight + 10);
+                contentStream.newLineAtOffset(initX + MARGIN_RIGHT, initY - cellHeight + 10);
                 contentStream.showText(rightFooterParamValues.get(i));
                 contentStream.endText();
-                initY -= marginDown;
+                initY -= MARGIN_DOWN;
             }
 
             contentStream.stroke();
@@ -162,7 +162,6 @@ public class PdfTableGenerator {
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("error");
         }
 
         return outputStream.toByteArray();

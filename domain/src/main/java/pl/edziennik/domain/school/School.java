@@ -65,6 +65,9 @@ public class School {
     @OneToMany(mappedBy = "school", orphanRemoval = true)
     private List<Teacher> teachers = new ArrayList<>();
 
+    @Version
+    private Long version;
+
     public static School of(Name name, Nip nip, Regon regon, PhoneNumber phoneNumber, Address address,
                             SchoolLevel schoolLevel) {
         School school = new School();

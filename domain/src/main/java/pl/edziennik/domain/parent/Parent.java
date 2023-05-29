@@ -25,13 +25,16 @@ public class Parent {
     @Embedded
     private PersonInformation personInformation;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
     private Address address;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "student_id", referencedColumnName = "id")
     private Student student;
+
+    @Version
+    private Long version;
 
 
     public static Parent of(User user, PersonInformation personInformation, Address address, Student student) {

@@ -48,8 +48,6 @@ import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassConfigurati
 import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassQueryRepository;
 import pl.edziennik.infrastructure.repository.schoollevel.SchoolLevelCommandRepository;
 import pl.edziennik.infrastructure.repository.schoollevel.SchoolLevelQueryRepository;
-import pl.edziennik.infrastructure.repository.setting.SettingCommandRepository;
-import pl.edziennik.infrastructure.repository.setting.SettingQueryRepository;
 import pl.edziennik.infrastructure.repository.student.StudentCommandRepository;
 import pl.edziennik.infrastructure.repository.student.StudentQueryRepository;
 import pl.edziennik.infrastructure.repository.studentsubject.StudentSubjectCommandRepository;
@@ -113,10 +111,6 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     @Autowired
     protected SchoolLevelQueryRepository schoolLevelQueryRepository;
     @Autowired
-    protected SettingQueryRepository settingQueryRepository;
-    @Autowired
-    protected SettingCommandRepository settingCommandRepository;
-    @Autowired
     protected StudentCommandRepository studentCommandRepository;
     @Autowired
     protected StudentQueryRepository studentQueryRepository;
@@ -149,11 +143,16 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     @Autowired
     protected PlatformTransactionManager transactionManager;
 
-
     protected TransactionTemplate transactionTemplate;
     protected SchoolLevelId primarySchoolLevelId;
     protected SchoolLevelId universitySchoolLevelId;
     protected SchoolLevelId highSchoolLevelId;
+
+    protected Role teacherRole;
+    protected Role studentRole;
+    protected Role parentRole;
+    protected Role adminRole;
+
 
     protected final Address address = Address.of(
             pl.edziennik.common.valueobject.Address.of("Test"),
@@ -166,6 +165,11 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         this.primarySchoolLevelId = schoolLevelQueryRepository.getByName(Name.of("PRIMARY"));
         this.universitySchoolLevelId = schoolLevelQueryRepository.getByName(Name.of("UNIVERSITY"));
         this.highSchoolLevelId = schoolLevelQueryRepository.getByName(Name.of("HIGH"));
+
+        this.teacherRole = roleCommandRepository.getByName(Role.RoleConst.ROLE_TEACHER.roleName());
+        this.studentRole = roleCommandRepository.getByName(Role.RoleConst.ROLE_STUDENT.roleName());
+        this.parentRole = roleCommandRepository.getByName(Role.RoleConst.ROLE_PARENT.roleName());
+        this.adminRole = roleCommandRepository.getByName(Role.RoleConst.ROLE_ADMIN.roleName());
 
         Mockito.when(resourceCreator.of(Mockito.anyString(), Mockito.any())).thenAnswer(invocation -> invocation.<String>getArgument(0));
         Mockito.when(resourceCreator.of(Mockito.anyString())).thenAnswer(invocation -> invocation.<String>getArgument(0));
@@ -182,7 +186,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                 Nip.of(nip),
                 Regon.of(regon),
                 PhoneNumber.of(StringUtil.randomIdentifer(5)),
-                address,
+                createAddress(),
                 schoolLevelCommandRepository.findById(primarySchoolLevelId).get()
         );
 
@@ -194,8 +198,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                 Username.of(username),
                 Password.of(StringUtil.randomIdentifer(5)),
                 Email.of(email),
-                Role.of(Name.of("ROLE_TEACHER"))
-        );
+                teacherRole);
 
         School school = schoolCommandRepository.getReferenceById(schoolId);
 
@@ -205,7 +208,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                 user,
                 school,
                 personInformation,
-                address
+                createAddress()
         );
 
         return teacherCommandRepository.save(teacher).getTeacherId();
@@ -242,7 +245,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                 Username.of(username),
                 Password.of(StringUtil.randomIdentifer(5)),
                 Email.of(email),
-                Role.of(Name.of("ROLE_STUDENT"))
+                studentRole
         );
 
         PersonInformation personInformation = getPersonInformation(pesel);
@@ -255,7 +258,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                 school,
                 schoolClass,
                 personInformation,
-                address);
+                createAddress());
 
         return studentCommandRepository.save(student).getStudentId();
     }
@@ -281,7 +284,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                 Username.of(username),
                 Password.of(StringUtil.randomIdentifer(5)),
                 Email.of(email),
-                Role.of(Name.of("ROLE_ADMIN"))
+                adminRole
         );
 
         Admin admin = Admin.of(user);
@@ -326,6 +329,13 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         Integer integer = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM " + tableName, new MapSqlParameterSource(), Integer.class);
         assertNotNull(integer);
         assertEquals(integer, 0);
+    }
+
+    private Address createAddress() {
+        return Address.of(
+                pl.edziennik.common.valueobject.Address.of("Test"),
+                City.of("Test"),
+                PostalCode.of("12-123"));
     }
 
 }

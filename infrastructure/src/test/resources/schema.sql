@@ -1,11 +1,11 @@
-INSERT INTO school_level(id, name) values (gen_random_uuid(), 'UNIVERSITY');
-INSERT INTO school_level(id, name) values (gen_random_uuid(), 'PRIMARY');
-INSERT INTO school_level(id, name) values (gen_random_uuid(), 'HIGH');
+INSERT INTO school_level(id, name, version) values (gen_random_uuid(), 'UNIVERSITY', 1);
+INSERT INTO school_level(id, name, version) values (gen_random_uuid(), 'PRIMARY', 1);
+INSERT INTO school_level(id, name, version) values (gen_random_uuid(), 'HIGH', 1);
 
-INSERT INTO role(id, name) VALUES (gen_random_uuid(), 'ROLE_ADMIN');
-INSERT INTO role(id, name) VALUES (gen_random_uuid(), 'ROLE_STUDENT');
-INSERT INTO role(id, name) VALUES (gen_random_uuid(), 'ROLE_PARENT');
-INSERT INTO role(id, name) VALUES (gen_random_uuid(), 'ROLE_TEACHER');
+INSERT INTO role(id, name, version) VALUES (gen_random_uuid(), 'ROLE_ADMIN', 1);
+INSERT INTO role(id, name, version) VALUES (gen_random_uuid(), 'ROLE_STUDENT', 1);
+INSERT INTO role(id, name, version) VALUES (gen_random_uuid(), 'ROLE_PARENT', 1);
+INSERT INTO role(id, name, version) VALUES (gen_random_uuid(), 'ROLE_TEACHER', 1);
 
 CREATE TABLE IF NOT EXISTS email_activation_tokens
 (

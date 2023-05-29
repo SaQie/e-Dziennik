@@ -29,9 +29,12 @@ public class Teacher {
     @Column(nullable = false)
     private PersonInformation personInformation;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
     private Address address;
+
+    @Version
+    private Long version;
 
 
     public static Teacher of(User user, School school, PersonInformation personInformation, Address address) {

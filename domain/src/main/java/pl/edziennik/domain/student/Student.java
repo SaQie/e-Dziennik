@@ -43,12 +43,15 @@ public class Student {
     @Embedded
     private PersonInformation personInformation;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
     private Address address;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
     private Parent parent;
+
+    @Version
+    private Long version;
 
 
     public static Student of(User user, School school, SchoolClass schoolClass, PersonInformation personInformation,

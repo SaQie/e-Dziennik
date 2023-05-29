@@ -47,7 +47,7 @@ class CreateTeacherCommandHandler implements ICommandHandler<CreateTeacherComman
     }
 
     private User createUser(CreateTeacherCommand command) {
-        Role role = roleCommandRepository.getByName(Role.RoleConst.ROLE_STUDENT.roleName());
+        Role role = roleCommandRepository.getByName(Role.RoleConst.ROLE_TEACHER.roleName());
         Password encodedPassword = Password.of(passwordEncoder.encode(command.password().value()));
 
         return User.of(command.username(), encodedPassword, command.email(), role);

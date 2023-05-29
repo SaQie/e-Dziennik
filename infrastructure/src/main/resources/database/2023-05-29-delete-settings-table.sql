@@ -1,0 +1,3 @@
+TRUNCATE TABLE app_settings CASCADE;
+
+DROP TABLE IF EXISTS app_settings;

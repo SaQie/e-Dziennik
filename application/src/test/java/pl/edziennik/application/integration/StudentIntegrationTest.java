@@ -141,7 +141,6 @@ public class StudentIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
-//    @Transactional
     public void shouldAutomaticallyAssignJournalNumberAfterSave() {
         // given
         SchoolId schoolId = createSchool("Test", "123123123", "123123123");
