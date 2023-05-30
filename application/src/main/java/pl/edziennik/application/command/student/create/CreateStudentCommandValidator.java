@@ -8,6 +8,7 @@ import pl.edziennik.domain.role.Role;
 import pl.edziennik.infrastructure.repository.school.SchoolCommandRepository;
 import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassCommandRepository;
 import pl.edziennik.infrastructure.repository.student.StudentCommandRepository;
+import pl.edziennik.infrastructure.repository.user.UserCommandRepository;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
 @Component
@@ -23,39 +24,53 @@ class CreateStudentCommandValidator implements IBaseValidator<CreateStudentComma
     private final StudentCommandRepository studentCommandRepository;
     private final SchoolClassCommandRepository schoolClassCommandRepository;
     private final SchoolCommandRepository schoolCommandRepository;
+    private final UserCommandRepository userCommandRepository;
 
     @Override
     public void validate(CreateStudentCommand command, ValidationErrorBuilder errorBuilder) {
-        schoolCommandRepository.findById(command.schoolId())
-                .orElseGet(() -> {
-                    errorBuilder.addNotFoundError(CreateStudentCommand.SCHOOL_ID);
-                    return null;
-                });
-
-        schoolClassCommandRepository.findById(command.schoolClassId())
-                .orElseGet(() -> {
-                    errorBuilder.addNotFoundError(CreateStudentCommand.SCHOOL_CLASS_ID);
-                    return null;
-                });
+        checkSchoolExists(command, errorBuilder);
+        checkSchoolClassExists(command, errorBuilder);
 
         errorBuilder.flush();
 
-        if (studentCommandRepository.existsByEmail(command.email())) {
-            errorBuilder.addError(
-                    CreateStudentCommand.EMAIL,
-                    MESSAGE_KEY_USER_ALREADY_EXISTS_BY_EMAIL,
-                    ErrorCode.OBJECT_ALREADY_EXISTS,
-                    command.email());
-        }
+        checkUserWithEmailExists(command, errorBuilder);
+        checkUserWithUsernameExists(command, errorBuilder);
+        checkStudentWithPeselExists(command, errorBuilder);
+        checkSchoolClassBelongToSchool(command, errorBuilder);
+        checkSchoolClassStudentLimit(command, errorBuilder);
 
-        if (studentCommandRepository.existsByUsername(command.username())) {
-            errorBuilder.addError(
-                    CreateStudentCommand.USERNAME,
-                    MESSAGE_KEY_USER_ALREADY_EXISTS_BY_USERNAME,
-                    ErrorCode.OBJECT_ALREADY_EXISTS,
-                    command.username());
-        }
+    }
 
+    /**
+     * Check if school class student limit reached
+     */
+    private void checkSchoolClassStudentLimit(CreateStudentCommand command, ValidationErrorBuilder errorBuilder) {
+        if (schoolClassCommandRepository.isStudentLimitReached(command.schoolClassId())) {
+            errorBuilder.addError(
+                    CreateStudentCommand.SCHOOL_CLASS_ID,
+                    MESSAGE_KEY_SCHOOL_CLASS_STUDENT_LIMIT_REACHED,
+                    ErrorCode.LIMIT_REACHED
+            );
+        }
+    }
+
+    /**
+     * Check if given school class belong to given school
+     */
+    private void checkSchoolClassBelongToSchool(CreateStudentCommand command, ValidationErrorBuilder errorBuilder) {
+        if (!schoolClassCommandRepository.isSchoolClassBelongToSchool(command.schoolClassId(), command.schoolId())) {
+            errorBuilder.addError(
+                    CreateStudentCommand.SCHOOL_ID,
+                    MESSAGE_KEY_SCHOOL_CLASS_NOT_BELONGS_TO_SCHOOL,
+                    ErrorCode.SCHOOL_CLASS_IS_NOT_PART_OF_SCHOOL
+            );
+        }
+    }
+
+    /**
+     * Check if student with given pesel already exists
+     */
+    private void checkStudentWithPeselExists(CreateStudentCommand command, ValidationErrorBuilder errorBuilder) {
         if (studentCommandRepository.isStudentExistsByPesel(command.pesel(), Role.RoleConst.ROLE_STUDENT.roleName())) {
             errorBuilder.addError(
                     CreateStudentCommand.PESEL,
@@ -64,22 +79,53 @@ class CreateStudentCommandValidator implements IBaseValidator<CreateStudentComma
                     command.pesel()
             );
         }
+    }
 
-        if (!schoolClassCommandRepository.isSchoolClassBelongToSchool(command.schoolClassId(), command.schoolId())) {
+    /**
+     * Check if user with given username already exists
+     */
+    private void checkUserWithUsernameExists(CreateStudentCommand command, ValidationErrorBuilder errorBuilder) {
+        if (userCommandRepository.existsByUsername(command.username())) {
             errorBuilder.addError(
-                    CreateStudentCommand.SCHOOL_ID,
-                    MESSAGE_KEY_SCHOOL_CLASS_NOT_BELONGS_TO_SCHOOL,
-                    ErrorCode.SCHOOL_CLASS_IS_NOT_PART_OF_SCHOOL
-            );
+                    CreateStudentCommand.USERNAME,
+                    MESSAGE_KEY_USER_ALREADY_EXISTS_BY_USERNAME,
+                    ErrorCode.OBJECT_ALREADY_EXISTS,
+                    command.username());
         }
+    }
 
-        if (schoolClassCommandRepository.isStudentLimitReached(command.schoolClassId())) {
+    /**
+     * Check if user with given email address already exists
+     */
+    private void checkUserWithEmailExists(CreateStudentCommand command, ValidationErrorBuilder errorBuilder) {
+        if (userCommandRepository.existsByEmail(command.email())) {
             errorBuilder.addError(
-                    CreateStudentCommand.SCHOOL_CLASS_ID,
-                    MESSAGE_KEY_SCHOOL_CLASS_STUDENT_LIMIT_REACHED,
-                    ErrorCode.LIMIT_REACHED
-            );
+                    CreateStudentCommand.EMAIL,
+                    MESSAGE_KEY_USER_ALREADY_EXISTS_BY_EMAIL,
+                    ErrorCode.OBJECT_ALREADY_EXISTS,
+                    command.email());
         }
+    }
 
+    /**
+     * Check if school class with given id exists
+     */
+    private void checkSchoolClassExists(CreateStudentCommand command, ValidationErrorBuilder errorBuilder) {
+        schoolClassCommandRepository.findById(command.schoolClassId())
+                .orElseGet(() -> {
+                    errorBuilder.addNotFoundError(CreateStudentCommand.SCHOOL_CLASS_ID);
+                    return null;
+                });
+    }
+
+    /**
+     * Check if school with given id exists
+     */
+    private void checkSchoolExists(CreateStudentCommand command, ValidationErrorBuilder errorBuilder) {
+        schoolCommandRepository.findById(command.schoolId())
+                .orElseGet(() -> {
+                    errorBuilder.addNotFoundError(CreateStudentCommand.SCHOOL_ID);
+                    return null;
+                });
     }
 }

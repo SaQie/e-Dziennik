@@ -17,6 +17,13 @@ class CreateAdminCommandValidator implements IBaseValidator<CreateAdminCommand> 
 
     @Override
     public void validate(CreateAdminCommand command, ValidationErrorBuilder errorBuilder) {
+        checkAdminAccountAlreadyExists(errorBuilder);
+    }
+
+    /**
+     * Check admin account already exists in system (only one can exists)
+     */
+    private void checkAdminAccountAlreadyExists(ValidationErrorBuilder errorBuilder) {
         if (adminCommandRepository.isAdminAccountAlreadyExists()) {
             errorBuilder.addError(CreateAdminCommand.USERNAME,
                     MESSAGE_KEY_ADMIN_ALREADY_EXISTS,

@@ -15,6 +15,8 @@ class CreateSubjectCommandValidator implements IBaseValidator<CreateSubjectComma
 
     public static final String MESSAGE_KEY_SUBJECT_ALREADY_EXISTS = "subject.already.exist";
     public static final String MESSAGE_KEY_TEACHER_IS_FROM_ANOTHER_SCHOOL = "subject.teacher.is.from.another.school";
+    public static final String MESSAGE_KEY_ACCOUNT_INACTIVE = "account.inactive";
+
 
     private final SubjectCommandRepository subjectCommandRepository;
     private final TeacherCommandRepository teacherCommandRepository;
@@ -22,20 +24,47 @@ class CreateSubjectCommandValidator implements IBaseValidator<CreateSubjectComma
 
     @Override
     public void validate(CreateSubjectCommand command, ValidationErrorBuilder errorBuilder) {
-        teacherCommandRepository.findById(command.teacherId())
-                .orElseGet(() -> {
-                    errorBuilder.addNotFoundError(CreateSubjectCommand.TEACHER_ID);
-                    return null;
-                });
-
-        schoolClassCommandRepository.findById(command.schoolClassId())
-                .orElseGet(() -> {
-                    errorBuilder.addNotFoundError(CreateSubjectCommand.SCHOOL_CLASS_ID);
-                    return null;
-                });
+        checkTeacherExists(command, errorBuilder);
+        checkSchoolClassExists(command, errorBuilder);
 
         errorBuilder.flush();
 
+        checkSubjectExistsByName(command, errorBuilder);
+        checkTeacherAccountIsActive(command, errorBuilder);
+        checkTeacherIsFromTheSameSchoolClass(command, errorBuilder);
+
+    }
+
+    /**
+     * Check if teacher account is active
+     */
+    private void checkTeacherAccountIsActive(CreateSubjectCommand command, ValidationErrorBuilder errorBuilder) {
+        if (teacherCommandRepository.isTeacherAccountNotActive(command.teacherId())) {
+            errorBuilder.addError(
+                    CreateSubjectCommand.TEACHER_ID,
+                    MESSAGE_KEY_ACCOUNT_INACTIVE,
+                    ErrorCode.ACCOUNT_INACTIVE
+            );
+        }
+    }
+
+    /**
+     * Check if teacher is from the same given school class
+     */
+    private void checkTeacherIsFromTheSameSchoolClass(CreateSubjectCommand command, ValidationErrorBuilder errorBuilder) {
+        if (!subjectCommandRepository.isTeacherFromTheSameSchool(command.schoolClassId(), command.teacherId())) {
+            errorBuilder.addError(
+                    CreateSubjectCommand.TEACHER_ID,
+                    MESSAGE_KEY_TEACHER_IS_FROM_ANOTHER_SCHOOL,
+                    ErrorCode.ANOTHER_SCHOOL
+            );
+        }
+    }
+
+    /**
+     * Check subject exists in given school class with given name
+     */
+    private void checkSubjectExistsByName(CreateSubjectCommand command, ValidationErrorBuilder errorBuilder) {
         if (subjectCommandRepository.existsByName(command.name(), command.schoolClassId())) {
             errorBuilder.addError(
                     CreateSubjectCommand.NAME,
@@ -44,14 +73,28 @@ class CreateSubjectCommandValidator implements IBaseValidator<CreateSubjectComma
                     command.name()
             );
         }
+    }
 
-        if (!subjectCommandRepository.isTeacherFromTheSameSchool(command.schoolClassId(), command.teacherId())) {
-            errorBuilder.addError(
-                    CreateSubjectCommand.TEACHER_ID,
-                    MESSAGE_KEY_TEACHER_IS_FROM_ANOTHER_SCHOOL,
-                    ErrorCode.ANOTHER_SCHOOL
-            );
-        }
 
+    /**
+     * Check school Class with given id exists
+     */
+    private void checkSchoolClassExists(CreateSubjectCommand command, ValidationErrorBuilder errorBuilder) {
+        schoolClassCommandRepository.findById(command.schoolClassId())
+                .orElseGet(() -> {
+                    errorBuilder.addNotFoundError(CreateSubjectCommand.SCHOOL_CLASS_ID);
+                    return null;
+                });
+    }
+
+    /**
+     * Check teacher with given id exists
+     */
+    private void checkTeacherExists(CreateSubjectCommand command, ValidationErrorBuilder errorBuilder) {
+        teacherCommandRepository.findById(command.teacherId())
+                .orElseGet(() -> {
+                    errorBuilder.addNotFoundError(CreateSubjectCommand.TEACHER_ID);
+                    return null;
+                });
     }
 }

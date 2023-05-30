@@ -21,7 +21,7 @@ class CreateTeacherCommandValidatorTest extends BaseUnitTest {
     private final CreateTeacherCommandValidator validator;
 
     public CreateTeacherCommandValidatorTest() {
-        this.validator = new CreateTeacherCommandValidator(teacherCommandRepository, schoolCommandRepository);
+        this.validator = new CreateTeacherCommandValidator(teacherCommandRepository, schoolCommandRepository, userCommandRepository);
     }
 
     @Test
@@ -151,5 +151,4 @@ class CreateTeacherCommandValidatorTest extends BaseUnitTest {
         assertEquals(errors.get(0).field(), CreateTeacherCommand.PESEL);
         assertEquals(errors.get(0).errorMessage(), CreateTeacherCommandValidator.MESSAGE_KEY_TEACHER_PESEL_NOT_UNIQUE);
     }
-
 }

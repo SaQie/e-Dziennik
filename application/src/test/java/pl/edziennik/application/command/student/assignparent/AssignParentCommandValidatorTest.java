@@ -76,9 +76,11 @@ class AssignParentCommandValidatorTest extends BaseUnitTest {
     public void shouldAddErrorWhenParentAlreadyHasAssignedStudent() {
         // given
         User user = createUser("Test", "Test@example.com", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
+        user.activate();
         Student student = createStudentWithSchoolAndClass(user, null);
 
         User parentUser = createUser("Test2", "Test2@example.com", RoleCommandMockRepo.PARENT_ROLE_NAME.value());
+        parentUser.activate();
         Parent parent = createParent(parentUser, personInformation, address, student);
         parent = parentCommandRepository.save(parent);
 
@@ -101,10 +103,12 @@ class AssignParentCommandValidatorTest extends BaseUnitTest {
     public void shouldAddErrorWhenStudentAlreadyHasAssignedParent() {
         // given
         User parentUser = createUser("Test2", "Test2@example.com", RoleCommandMockRepo.PARENT_ROLE_NAME.value());
+        parentUser.activate();
         Parent parent = createParent(parentUser, personInformation, address);
         parentCommandRepository.save(parent);
 
         User user = createUser("Test", "Test@example.com", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
+        user.activate();
         Student student = createStudentWithSchoolAndClass(user, parent);
 
 
@@ -122,4 +126,58 @@ class AssignParentCommandValidatorTest extends BaseUnitTest {
         assertEquals(errors.get(0).field(), AssignParentCommand.STUDENT_ID);
         assertEquals(errors.get(0).errorMessage(), AssignParentCommandValidator.MESSAGE_KEY_STUDENT_ALREADY_HAS_PARENT);
     }
+
+    @Test
+    public void shouldAddErrorWhenParentAccountIsInactive(){
+        // given
+        User user = createUser("Test1", "test2@o2.pl", RoleCommandMockRepo.PARENT_ROLE_NAME.value());
+        Parent parent = createParent(user, personInformation, address);
+        parentCommandRepository.save(parent);
+
+        user = createUser("Test", "Test@example.com", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
+        user.activate();
+        Student student = createStudentWithSchoolAndClass(user, null);
+
+        AssignParentCommand command = new AssignParentCommand(
+                student.getStudentId(),
+                parent.getParentId()
+        );
+
+        // when
+        validator.validate(command, validationErrorBuilder);
+
+        // then
+        List<ValidationError> errors = validationErrorBuilder.getErrors();
+        assertEquals(errors.size(), 1);
+        assertEquals(errors.get(0).field(), AssignParentCommand.PARENT_ID);
+        assertEquals(errors.get(0).errorMessage(), AssignParentCommandValidator.MESSAGE_KEY_ACCOUNT_INACTIVE);
+    }
+
+    @Test
+    public void shouldAddErrorWhenStudentAccountIsInactive(){
+        // given
+        User user = createUser("Test1", "test2@o2.pl", RoleCommandMockRepo.PARENT_ROLE_NAME.value());
+        user.activate();
+        Parent parent = createParent(user, personInformation, address);
+        parentCommandRepository.save(parent);
+
+        user = createUser("Test", "Test@example.com", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
+        Student student = createStudentWithSchoolAndClass(user, null);
+
+        AssignParentCommand command = new AssignParentCommand(
+                student.getStudentId(),
+                parent.getParentId()
+        );
+
+        // when
+        validator.validate(command, validationErrorBuilder);
+
+        // then
+        List<ValidationError> errors = validationErrorBuilder.getErrors();
+        assertEquals(errors.size(), 1);
+        assertEquals(errors.get(0).field(), AssignParentCommand.STUDENT_ID);
+        assertEquals(errors.get(0).errorMessage(), AssignParentCommandValidator.MESSAGE_KEY_ACCOUNT_INACTIVE);
+    }
+
+
 }

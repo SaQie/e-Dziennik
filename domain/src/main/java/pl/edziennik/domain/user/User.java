@@ -78,6 +78,12 @@ public class User {
         }
     }
 
+    public void unactivate() {
+        if (Boolean.TRUE.equals(isActive)) {
+            isActive = Boolean.FALSE;
+        }
+    }
+
 
     @PreUpdate
     protected void onUpdate() {

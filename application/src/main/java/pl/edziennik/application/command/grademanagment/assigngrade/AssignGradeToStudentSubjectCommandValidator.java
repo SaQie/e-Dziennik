@@ -15,6 +15,7 @@ import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 class AssignGradeToStudentSubjectCommandValidator implements IBaseValidator<AssignGradeToStudentSubjectCommand> {
 
     public static final String MESSAGE_KEY_STUDENT_SUBJECT_NOT_EXISTS = "student.subject.not.exists";
+    public static final String MESSAGE_KEY_ACCOUNT_INACTIVE = "account.inactive";
 
     private final StudentSubjectCommandRepository studentSubjectCommandRepository;
     private final StudentCommandRepository studentCommandRepository;
@@ -23,26 +24,49 @@ class AssignGradeToStudentSubjectCommandValidator implements IBaseValidator<Assi
 
     @Override
     public void validate(AssignGradeToStudentSubjectCommand command, ValidationErrorBuilder errorBuilder) {
-        studentCommandRepository.findById(command.studentId())
-                .orElseGet(() -> {
-                    errorBuilder.addNotFoundError(AssignGradeToStudentSubjectCommand.STUDENT_ID);
-                    return null;
-                });
-
-        subjectCommandRepository.findById(command.subjectId())
-                .orElseGet(() -> {
-                    errorBuilder.addNotFoundError(AssignGradeToStudentSubjectCommand.SUBJECT_ID);
-                    return null;
-                });
-
-        teacherCommandRepository.findById(command.teacherId())
-                .orElseGet(() -> {
-                    errorBuilder.addNotFoundError(AssignGradeToStudentSubjectCommand.TEACHER_ID);
-                    return null;
-                });
+        checkStudentExists(command, errorBuilder);
+        checkSubjectExists(command, errorBuilder);
+        checkTeacherExists(command, errorBuilder);
 
         errorBuilder.flush();
 
+        checkTeacherAccountIsActive(command, errorBuilder);
+        checkStudentAccountIsActive(command, errorBuilder);
+        checkStudentIsAssignedToSubject(command, errorBuilder);
+
+
+    }
+
+    /**
+     *  Check given student account is active
+     */
+    private void checkStudentAccountIsActive(AssignGradeToStudentSubjectCommand command, ValidationErrorBuilder errorBuilder) {
+        if (studentCommandRepository.isStudentAccountNotActive(command.studentId())) {
+            errorBuilder.addError(
+                    AssignGradeToStudentSubjectCommand.STUDENT_ID,
+                    MESSAGE_KEY_ACCOUNT_INACTIVE,
+                    ErrorCode.ACCOUNT_INACTIVE
+            );
+        }
+    }
+
+    /**
+     * Check given teacher account is active
+     */
+    private void checkTeacherAccountIsActive(AssignGradeToStudentSubjectCommand command, ValidationErrorBuilder errorBuilder) {
+        if (teacherCommandRepository.isTeacherAccountNotActive(command.teacherId())) {
+            errorBuilder.addError(
+                    AssignGradeToStudentSubjectCommand.TEACHER_ID,
+                    MESSAGE_KEY_ACCOUNT_INACTIVE,
+                    ErrorCode.ACCOUNT_INACTIVE
+            );
+        }
+    }
+
+    /**
+     * Check student is assigned to given subject
+     */
+    private void checkStudentIsAssignedToSubject(AssignGradeToStudentSubjectCommand command, ValidationErrorBuilder errorBuilder) {
         if (!studentSubjectCommandRepository.isStudentAlreadyAssignedToSubject(command.studentId(), command.subjectId())) {
             errorBuilder.addError(
                     AssignGradeToStudentSubjectCommand.SUBJECT_ID,
@@ -50,6 +74,38 @@ class AssignGradeToStudentSubjectCommandValidator implements IBaseValidator<Assi
                     ErrorCode.NOT_ASSIGNED_TO_SUBJECT
             );
         }
+    }
 
+    /**
+     * Check teacher with given id exists
+     */
+    private void checkTeacherExists(AssignGradeToStudentSubjectCommand command, ValidationErrorBuilder errorBuilder) {
+        teacherCommandRepository.findById(command.teacherId())
+                .orElseGet(() -> {
+                    errorBuilder.addNotFoundError(AssignGradeToStudentSubjectCommand.TEACHER_ID);
+                    return null;
+                });
+    }
+
+    /**
+     * Check subject with given id exists
+     */
+    private void checkSubjectExists(AssignGradeToStudentSubjectCommand command, ValidationErrorBuilder errorBuilder) {
+        subjectCommandRepository.findById(command.subjectId())
+                .orElseGet(() -> {
+                    errorBuilder.addNotFoundError(AssignGradeToStudentSubjectCommand.SUBJECT_ID);
+                    return null;
+                });
+    }
+
+    /**
+     * Check student with given id exists
+     */
+    private void checkStudentExists(AssignGradeToStudentSubjectCommand command, ValidationErrorBuilder errorBuilder) {
+        studentCommandRepository.findById(command.studentId())
+                .orElseGet(() -> {
+                    errorBuilder.addNotFoundError(AssignGradeToStudentSubjectCommand.STUDENT_ID);
+                    return null;
+                });
     }
 }

@@ -200,6 +200,8 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                 Email.of(email),
                 teacherRole);
 
+        user.activate();
+
         School school = schoolCommandRepository.getReferenceById(schoolId);
 
         PersonInformation personInformation = getPersonInformation(pesel);
@@ -247,6 +249,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                 Email.of(email),
                 studentRole
         );
+        user.activate();
 
         PersonInformation personInformation = getPersonInformation(pesel);
 

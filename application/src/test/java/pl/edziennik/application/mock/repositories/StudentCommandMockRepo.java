@@ -1,9 +1,7 @@
 package pl.edziennik.application.mock.repositories;
 
-import pl.edziennik.common.valueobject.Email;
 import pl.edziennik.common.valueobject.Name;
 import pl.edziennik.common.valueobject.Pesel;
-import pl.edziennik.common.valueobject.Username;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.domain.student.Student;
@@ -79,18 +77,13 @@ public class StudentCommandMockRepo implements StudentCommandRepository {
     }
 
     @Override
-    public boolean existsByUsername(Username username) {
-        List<Student> students = database.values().stream()
-                .filter(item -> item.getUser().getUsername().equals(username))
-                .toList();
-        return !students.isEmpty();
+    public boolean isStudentAccountNotActive(StudentId studentId) {
+        Student student = database.get(studentId);
+        if (student == null) {
+            return true;
+        }
+        return !student.getUser().getIsActive();
     }
 
-    @Override
-    public boolean existsByEmail(Email email) {
-        List<Student> students = database.values().stream()
-                .filter(item -> item.getUser().getEmail().equals(email))
-                .toList();
-        return !students.isEmpty();
-    }
+
 }

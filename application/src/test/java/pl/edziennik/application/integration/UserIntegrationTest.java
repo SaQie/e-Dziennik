@@ -35,7 +35,7 @@ public class UserIntegrationTest extends BaseIntegrationTest {
                 PostalCode.of("123123"),
                 City.of("Nowakowo"),
                 Pesel.of("123123123"),
-                Email.of("test@example.com"),
+                Email.of("test1@example.com"),
                 PhoneNumber.of("123123"),
                 schoolId,
                 schoolClassId
@@ -68,7 +68,7 @@ public class UserIntegrationTest extends BaseIntegrationTest {
                 PostalCode.of("123123"),
                 City.of("Nowakowo"),
                 Pesel.of("123123123"),
-                Email.of("test@example.com"),
+                Email.of("test1@example.com"),
                 PhoneNumber.of("123123"),
                 schoolId,
                 schoolClassId

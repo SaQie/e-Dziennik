@@ -38,4 +38,10 @@ public class UserCommandMockRepo implements UserCommandRepository {
     public void deleteAll(List<UserId> userIds) {
         database.clear();
     }
+
+    @Override
+    public User save(User user) {
+        this.database.put(user.getUserId(), user);
+        return database.get(user.getUserId());
+    }
 }

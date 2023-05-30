@@ -15,6 +15,7 @@ class AssignSubjectToStudentCommandValidator implements IBaseValidator<AssignSub
 
     public static final String MESSAGE_KEY_SUBJECT_IS_FROM_ANOTHER_SCHOOL_CLASS = "student.assign.subject.from.another.class";
     public static final String MESSAGE_KEY_STUDENT_STUDENT_ALREADY_ASSIGNED_TO_SUBJECT = "student.subject.already.exists";
+    public static final String MESSAGE_KEY_ACCOUNT_INACTIVE = "account.inactive";
 
     private final SubjectCommandRepository subjectCommandRepository;
     private final StudentCommandRepository studentCommandRepository;
@@ -22,28 +23,20 @@ class AssignSubjectToStudentCommandValidator implements IBaseValidator<AssignSub
 
     @Override
     public void validate(AssignSubjectToStudentCommand command, ValidationErrorBuilder errorBuilder) {
-        subjectCommandRepository.findById(command.subjectId())
-                .orElseGet(() -> {
-                    errorBuilder.addNotFoundError(AssignSubjectToStudentCommand.SUBJECT_ID);
-                    return null;
-                });
-
-        studentCommandRepository.findById(command.studentId())
-                .orElseGet(() -> {
-                    errorBuilder.addNotFoundError(AssignSubjectToStudentCommand.STUDENT_ID);
-                    return null;
-                });
+        checkSubjectExists(command, errorBuilder);
+        checkStudentExists(command, errorBuilder);
 
         errorBuilder.flush();
 
-        if (!subjectCommandRepository.isStudentFromTheSameSchoolClass(command.studentId(), command.subjectId())) {
-            errorBuilder.addError(
-                    AssignSubjectToStudentCommand.STUDENT_ID,
-                    MESSAGE_KEY_SUBJECT_IS_FROM_ANOTHER_SCHOOL_CLASS,
-                    ErrorCode.ANOTHER_SCHOOL
-            );
-        }
+        checkStudentAccountIsActive(command, errorBuilder);
+        checkStudentIsFromTheSameSchoolClassAsSubject(command, errorBuilder);
+        checkStudentIsAlreadyAssignedToSubject(command, errorBuilder);
+    }
 
+    /**
+     * Check student is already assigned to provided subject
+     */
+    private void checkStudentIsAlreadyAssignedToSubject(AssignSubjectToStudentCommand command, ValidationErrorBuilder errorBuilder) {
         if (studentSubjectCommandRepository.isStudentAlreadyAssignedToSubject(command.studentId(), command.subjectId())) {
             errorBuilder.addError(
                     AssignSubjectToStudentCommand.SUBJECT_ID,
@@ -51,5 +44,53 @@ class AssignSubjectToStudentCommandValidator implements IBaseValidator<AssignSub
                     ErrorCode.OBJECT_ALREADY_EXISTS
             );
         }
+    }
+
+    /**
+     * Check student is from the same school class as subject
+     */
+    private void checkStudentIsFromTheSameSchoolClassAsSubject(AssignSubjectToStudentCommand command, ValidationErrorBuilder errorBuilder) {
+        if (!subjectCommandRepository.isStudentFromTheSameSchoolClass(command.studentId(), command.subjectId())) {
+            errorBuilder.addError(
+                    AssignSubjectToStudentCommand.STUDENT_ID,
+                    MESSAGE_KEY_SUBJECT_IS_FROM_ANOTHER_SCHOOL_CLASS,
+                    ErrorCode.ANOTHER_SCHOOL
+            );
+        }
+    }
+
+    /**
+     * Check student account is active
+     */
+    private void checkStudentAccountIsActive(AssignSubjectToStudentCommand command, ValidationErrorBuilder errorBuilder) {
+        if (studentCommandRepository.isStudentAccountNotActive(command.studentId())) {
+            errorBuilder.addError(
+                    AssignSubjectToStudentCommand.STUDENT_ID,
+                    MESSAGE_KEY_ACCOUNT_INACTIVE,
+                    ErrorCode.ACCOUNT_INACTIVE
+            );
+        }
+    }
+
+    /**
+     * Check student with given id exists
+     */
+    private void checkStudentExists(AssignSubjectToStudentCommand command, ValidationErrorBuilder errorBuilder) {
+        studentCommandRepository.findById(command.studentId())
+                .orElseGet(() -> {
+                    errorBuilder.addNotFoundError(AssignSubjectToStudentCommand.STUDENT_ID);
+                    return null;
+                });
+    }
+
+    /**
+     * Check subject with given id exists
+     */
+    private void checkSubjectExists(AssignSubjectToStudentCommand command, ValidationErrorBuilder errorBuilder) {
+        subjectCommandRepository.findById(command.subjectId())
+                .orElseGet(() -> {
+                    errorBuilder.addNotFoundError(AssignSubjectToStudentCommand.SUBJECT_ID);
+                    return null;
+                });
     }
 }

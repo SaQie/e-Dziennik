@@ -77,6 +77,7 @@ class CreateSchoolClassCommandValidatorTest extends BaseUnitTest {
         secondSchool = schoolCommandRepository.save(secondSchool);
 
         User user = createUser("Test", "Test@example.com", RoleCommandMockRepo.TEACHER_ROLE_NAME.value());
+        user.activate();
         Teacher teacher = createTeacher(user, secondSchool, null, address);
         teacher = teacherCommandRepository.save(teacher);
 
@@ -105,6 +106,7 @@ class CreateSchoolClassCommandValidatorTest extends BaseUnitTest {
         school = schoolCommandRepository.save(school);
 
         User user = createUser("Test", "Test@example.com", RoleCommandMockRepo.TEACHER_ROLE_NAME.value());
+        user.activate();
         Teacher teacher = createTeacher(user, school, null, address);
         teacher = teacherCommandRepository.save(teacher);
 
@@ -135,6 +137,7 @@ class CreateSchoolClassCommandValidatorTest extends BaseUnitTest {
         school = schoolCommandRepository.save(school);
 
         User user = createUser("Test", "Test@example.com", RoleCommandMockRepo.TEACHER_ROLE_NAME.value());
+        user.activate();
         Teacher teacher = createTeacher(user, school, personInformation, address);
         teacher = teacherCommandRepository.save(teacher);
 
@@ -148,13 +151,39 @@ class CreateSchoolClassCommandValidatorTest extends BaseUnitTest {
         );
 
         // when
-        validator.validate(command,validationErrorBuilder);
+        validator.validate(command, validationErrorBuilder);
 
         // then
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), CreateSchoolClassCommand.CLASS_NAME);
         assertEquals(errors.get(0).errorMessage(), CreateSchoolClassCommandValidator.MESSAGE_KEY_SCHOOL_CLASS_ALREADY_EXISTS);
+    }
+
+    @Test
+    public void shouldAddErrorWhenTeacherIsInactive() {
+        // given
+        School school = createSchool("first", "123123123", "123123123", address);
+        school = schoolCommandRepository.save(school);
+
+        User user = createUser("Test", "Test@example.com", RoleCommandMockRepo.TEACHER_ROLE_NAME.value());
+        Teacher teacher = createTeacher(user, school, personInformation, address);
+        teacher = teacherCommandRepository.save(teacher);
+
+        CreateSchoolClassCommand command = new CreateSchoolClassCommand(
+                Name.of("Test"),
+                teacher.getTeacherId(),
+                school.getSchoolId()
+        );
+
+        // when
+        Assertions.assertThatThrownBy(() -> validator.validate(command, validationErrorBuilder))
+                .isInstanceOf(BusinessException.class)
+                .hasMessage(
+                        assertBusinessExceptionMessage(
+                                CreateSchoolClassCommand.TEACHER_ID,
+                                CreateSchoolClassCommandValidator.MESSAGE_KEY_ACCOUNT_INACTIVE,
+                                ErrorCode.ACCOUNT_INACTIVE));
     }
 
 }

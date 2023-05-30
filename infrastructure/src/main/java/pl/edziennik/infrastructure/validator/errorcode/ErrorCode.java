@@ -16,7 +16,8 @@ public enum ErrorCode {
     NOT_ASSIGNED_TO_SUBJECT(1100),
     INVALID_ACTIVATION_TOKEN(1110),
     INVALID_PARAMETER(1120),
-    LIMIT_REACHED(1130);
+    LIMIT_REACHED(1130),
+    ACCOUNT_INACTIVE(1140);
 
     private final Integer errorCode;
 

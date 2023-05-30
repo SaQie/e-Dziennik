@@ -79,6 +79,7 @@ class AssignSubjectToStudentCommandValidatorTest extends BaseUnitTest {
     public void shouldAddErrorWhenStudentIsFromDifferentSchoolClassThanSubject() {
         // given
         User user = createUser("Test", "Test@example.com", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
+        user.activate();
         Student student = createStudentWithSchoolAndClass(user, null);
 
         School school = createSchool("Testowa1", "12344242", "24242323", address);
@@ -115,6 +116,7 @@ class AssignSubjectToStudentCommandValidatorTest extends BaseUnitTest {
         schoolClass = schoolClassCommandRepository.save(schoolClass);
 
         User user = createUser("Test", "Test@example.com", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
+        user.activate();
         Student student = createStudent(user, school, schoolClass, personInformation, address);
         student = studentCommandRepository.save(student);
 
@@ -138,5 +140,36 @@ class AssignSubjectToStudentCommandValidatorTest extends BaseUnitTest {
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), AssignSubjectToStudentCommand.SUBJECT_ID);
         assertEquals(errors.get(0).errorMessage(), AssignSubjectToStudentCommandValidator.MESSAGE_KEY_STUDENT_STUDENT_ALREADY_ASSIGNED_TO_SUBJECT);
+    }
+
+    @Test
+    public void shouldAddErrorWhenStudentAccountIsInactive() {
+// given
+        School school = createSchool("Testowa1", "12344242", "24242323", address);
+        school = schoolCommandRepository.save(school);
+
+        SchoolClass schoolClass = createSchoolClass("Testowa4", school, null);
+        schoolClass = schoolClassCommandRepository.save(schoolClass);
+
+        User user = createUser("Test", "Test@example.com", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
+        Student student = createStudent(user, school, schoolClass, personInformation, address);
+        student = studentCommandRepository.save(student);
+
+        Subject subject = createSubject("Testowy", null, schoolClass);
+        subject = subjectCommandRepository.save(subject);
+
+        AssignSubjectToStudentCommand command = new AssignSubjectToStudentCommand(
+                student.getStudentId(),
+                subject.getSubjectId()
+        );
+
+        // when
+        validator.validate(command, validationErrorBuilder);
+
+        // then
+        List<ValidationError> errors = validationErrorBuilder.getErrors();
+        assertEquals(errors.size(), 1);
+        assertEquals(errors.get(0).field(), AssignSubjectToStudentCommand.STUDENT_ID);
+        assertEquals(errors.get(0).errorMessage(), AssignSubjectToStudentCommandValidator.MESSAGE_KEY_ACCOUNT_INACTIVE);
     }
 }

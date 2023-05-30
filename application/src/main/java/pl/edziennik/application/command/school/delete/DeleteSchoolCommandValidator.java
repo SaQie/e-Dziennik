@@ -22,30 +22,18 @@ class DeleteSchoolCommandValidator implements IBaseValidator<DeleteSchoolCommand
 
     @Override
     public void validate(DeleteSchoolCommand command, ValidationErrorBuilder errorBuilder) {
-        schoolCommandRepository.findById(command.schoolId())
-                .orElseGet(() -> {
-                    errorBuilder.addNotFoundError(DeleteSchoolCommand.SCHOOL_ID);
-                    return null;
-                });
-
+        checkSchoolExists(command, errorBuilder);
         errorBuilder.flush();
 
-        if (schoolCommandRepository.isTeacherExistsInSchool(command.schoolId())) {
-            errorBuilder.addError(
-                    DeleteSchoolCommand.SCHOOL_ID,
-                    MESSAGE_KEY_CANNOT_DELETE_SCHOOL_BECAUSE_OF_TEACHER_EXISTS,
-                    ErrorCode.STILL_EXISTS_RELATED_OBJECTS_TO_SCHOOL
-            );
-        }
+        checkTeacherExistsInSchool(command, errorBuilder);
+        checkStudentExistsInSchool(command, errorBuilder);
+        checkSchoolClassExistsInSchool(command, errorBuilder);
+    }
 
-        if (schoolCommandRepository.isStudentExistsInSchool(command.schoolId())) {
-            errorBuilder.addError(
-                    DeleteSchoolCommand.SCHOOL_ID,
-                    MESSAGE_KEY_CANNOT_DELETE_SCHOOL_BECAUSE_OF_STUDENT_EXISTS,
-                    ErrorCode.STILL_EXISTS_RELATED_OBJECTS_TO_SCHOOL
-            );
-        }
-
+    /**
+     * Check school given to delete still have school classes
+     */
+    private void checkSchoolClassExistsInSchool(DeleteSchoolCommand command, ValidationErrorBuilder errorBuilder) {
         if (schoolCommandRepository.isSchoolClassExistsInSchool(command.schoolId())) {
             errorBuilder.addError(
                     DeleteSchoolCommand.SCHOOL_ID,
@@ -53,5 +41,44 @@ class DeleteSchoolCommandValidator implements IBaseValidator<DeleteSchoolCommand
                     ErrorCode.STILL_EXISTS_RELATED_OBJECTS_TO_SCHOOL
             );
         }
+    }
+
+    /**
+     * Check school given to delete still have assigned students
+     */
+    private void checkStudentExistsInSchool(DeleteSchoolCommand command, ValidationErrorBuilder errorBuilder) {
+        if (schoolCommandRepository.isStudentExistsInSchool(command.schoolId())) {
+            errorBuilder.addError(
+                    DeleteSchoolCommand.SCHOOL_ID,
+                    MESSAGE_KEY_CANNOT_DELETE_SCHOOL_BECAUSE_OF_STUDENT_EXISTS,
+                    ErrorCode.STILL_EXISTS_RELATED_OBJECTS_TO_SCHOOL
+            );
+        }
+    }
+
+
+    /**
+     * Check school given to delete still have assigned teachers
+     */
+    private void checkTeacherExistsInSchool(DeleteSchoolCommand command, ValidationErrorBuilder errorBuilder) {
+        if (schoolCommandRepository.isTeacherExistsInSchool(command.schoolId())) {
+            errorBuilder.addError(
+                    DeleteSchoolCommand.SCHOOL_ID,
+                    MESSAGE_KEY_CANNOT_DELETE_SCHOOL_BECAUSE_OF_TEACHER_EXISTS,
+                    ErrorCode.STILL_EXISTS_RELATED_OBJECTS_TO_SCHOOL
+            );
+        }
+    }
+
+
+    /**
+     * Check school with given name already exists
+     */
+    private void checkSchoolExists(DeleteSchoolCommand command, ValidationErrorBuilder errorBuilder) {
+        schoolCommandRepository.findById(command.schoolId())
+                .orElseGet(() -> {
+                    errorBuilder.addNotFoundError(DeleteSchoolCommand.SCHOOL_ID);
+                    return null;
+                });
     }
 }

@@ -2,8 +2,6 @@ package pl.edziennik.infrastructure.repository.parent;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.RepositoryDefinition;
-import pl.edziennik.common.valueobject.Email;
-import pl.edziennik.common.valueobject.Username;
 import pl.edziennik.common.valueobject.id.ParentId;
 import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.domain.parent.Parent;
@@ -31,16 +29,10 @@ public interface ParentCommandRepository {
 
     void deleteAll(Iterable<Parent> parentIds);
 
-    @Query("SELECT CASE WHEN COUNT(p) > 0 THEN TRUE ELSE FALSE END " +
+    @Query("SELECT CASE WHEN COUNT(p) > 1 THEN TRUE ELSE FALSE END " +
             "FROM Parent p " +
             "JOIN p.user u " +
-            "WHERE u.email = :email")
-    boolean existsByEmail(Email email);
-
-
-    @Query("SELECT CASE WHEN COUNT(p) > 0 THEN TRUE ELSE FALSE END " +
-            "FROM Parent p " +
-            "JOIN p.user u " +
-            "WHERE u.username = :username")
-    boolean existsByUsername(Username username);
+            "WHERE p.parentId = :parentId " +
+            "AND u.isActive = false")
+    boolean isParentAccountNotActive(ParentId parentId);
 }

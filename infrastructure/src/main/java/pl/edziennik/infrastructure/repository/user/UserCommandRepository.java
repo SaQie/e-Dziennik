@@ -21,5 +21,9 @@ public interface UserCommandRepository {
     @Modifying
     void deleteAll(List<UserId> userIds);
 
+    default User save(User user) {
+        throw new UnsupportedOperationException();
+    }
+
 
 }

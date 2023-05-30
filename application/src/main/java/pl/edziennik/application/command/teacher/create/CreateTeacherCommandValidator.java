@@ -6,6 +6,7 @@ import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
 import pl.edziennik.application.common.dispatcher.base.IBaseValidator;
 import pl.edziennik.infrastructure.repository.school.SchoolCommandRepository;
 import pl.edziennik.infrastructure.repository.teacher.TeacherCommandRepository;
+import pl.edziennik.infrastructure.repository.user.UserCommandRepository;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
 @Component
@@ -18,24 +19,36 @@ class CreateTeacherCommandValidator implements IBaseValidator<CreateTeacherComma
 
     private final TeacherCommandRepository teacherCommandRepository;
     private final SchoolCommandRepository schoolCommandRepository;
+    private final UserCommandRepository userCommandRepository;
 
     @Override
     public void validate(CreateTeacherCommand command, ValidationErrorBuilder errorBuilder) {
-        schoolCommandRepository.findById(command.schoolId())
-                .orElseGet(() -> {
-                    errorBuilder.addNotFoundError(CreateTeacherCommand.SCHOOL_ID);
-                    return null;
-                });
+        checkSchoolExists(command, errorBuilder);
 
         errorBuilder.flush();
 
-        if (teacherCommandRepository.isExistsByEmail(command.email())) {
+        checkUserByEmailAlreadyExists(command, errorBuilder);
+        checkUserByUsernameAlreadyExists(command, errorBuilder);
+        checkTeacherByPeselAlreadyExists(command, errorBuilder);
+    }
+
+    /**
+     * Check if user with given username already exists
+     */
+    private void checkUserByUsernameAlreadyExists(CreateTeacherCommand command, ValidationErrorBuilder errorBuilder) {
+        if (userCommandRepository.existsByUsername(command.username())) {
             errorBuilder.addError(
-                    CreateTeacherCommand.EMAIL,
-                    MESSAGE_KEY_USER_ALREADY_EXISTS_BY_EMAIL,
+                    CreateTeacherCommand.USERNAME,
+                    MESSAGE_KEY_USER_ALREADY_EXISTS_BY_USERNAME,
                     ErrorCode.OBJECT_ALREADY_EXISTS,
-                    command.email());
+                    command.username());
         }
+    }
+
+    /**
+     * Check if teacher with given pesel already exists
+     */
+    private void checkTeacherByPeselAlreadyExists(CreateTeacherCommand command, ValidationErrorBuilder errorBuilder) {
         if (teacherCommandRepository.isExistsByPesel(command.pesel())) {
             errorBuilder.addError(
                     CreateTeacherCommand.PESEL,
@@ -44,12 +57,29 @@ class CreateTeacherCommandValidator implements IBaseValidator<CreateTeacherComma
                     command.pesel()
             );
         }
-        if (teacherCommandRepository.isExistsByUsername(command.username())) {
+    }
+
+    /**
+     * Check if user with given email already exists
+     */
+    private void checkUserByEmailAlreadyExists(CreateTeacherCommand command, ValidationErrorBuilder errorBuilder) {
+        if (userCommandRepository.existsByEmail(command.email())) {
             errorBuilder.addError(
-                    CreateTeacherCommand.USERNAME,
-                    MESSAGE_KEY_USER_ALREADY_EXISTS_BY_USERNAME,
+                    CreateTeacherCommand.EMAIL,
+                    MESSAGE_KEY_USER_ALREADY_EXISTS_BY_EMAIL,
                     ErrorCode.OBJECT_ALREADY_EXISTS,
-                    command.username());
+                    command.email());
         }
+    }
+
+    /**
+     * Check if school with given id exists
+     */
+    private void checkSchoolExists(CreateTeacherCommand command, ValidationErrorBuilder errorBuilder) {
+        schoolCommandRepository.findById(command.schoolId())
+                .orElseGet(() -> {
+                    errorBuilder.addNotFoundError(CreateTeacherCommand.SCHOOL_ID);
+                    return null;
+                });
     }
 }

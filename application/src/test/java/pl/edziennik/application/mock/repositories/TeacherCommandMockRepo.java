@@ -1,8 +1,6 @@
 package pl.edziennik.application.mock.repositories;
 
-import pl.edziennik.common.valueobject.Email;
 import pl.edziennik.common.valueobject.Pesel;
-import pl.edziennik.common.valueobject.Username;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.common.valueobject.id.UserId;
@@ -23,13 +21,6 @@ public class TeacherCommandMockRepo implements TeacherCommandRepository {
         this.database = new HashMap<>();
     }
 
-    @Override
-    public boolean isExistsByEmail(Email email) {
-        List<Teacher> teachers = database.values().stream()
-                .filter(item -> item.getUser().getEmail().equals(email))
-                .toList();
-        return !teachers.isEmpty();
-    }
 
     @Override
     public boolean isExistsByPesel(Pesel pesel) {
@@ -39,13 +30,6 @@ public class TeacherCommandMockRepo implements TeacherCommandRepository {
         return !teachers.isEmpty();
     }
 
-    @Override
-    public boolean isExistsByUsername(Username username) {
-        List<Teacher> teachers = database.values().stream()
-                .filter(item -> item.getUser().getUsername().equals(username))
-                .toList();
-        return !teachers.isEmpty();
-    }
 
     @Override
     public Teacher save(Teacher teacher) {
@@ -96,5 +80,14 @@ public class TeacherCommandMockRepo implements TeacherCommandRepository {
     @Override
     public Teacher getByTeacherId(TeacherId teacherId) {
         return database.get(teacherId);
+    }
+
+    @Override
+    public boolean isTeacherAccountNotActive(TeacherId teacherId) {
+        Teacher teacher = database.get(teacherId);
+        if (teacher == null) {
+            return true;
+        }
+        return !teacher.getUser().getIsActive();
     }
 }

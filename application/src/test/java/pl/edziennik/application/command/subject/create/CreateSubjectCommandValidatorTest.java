@@ -83,6 +83,7 @@ class CreateSubjectCommandValidatorTest extends BaseUnitTest {
         school = schoolCommandRepository.save(school);
 
         User user = createUser("Test", "Test@example.com", RoleCommandMockRepo.TEACHER_ROLE_NAME.value());
+        user.activate();
         Teacher teacher = createTeacher(user, school, personInformation, address);
         teacher = teacherCommandRepository.save(teacher);
 
@@ -116,6 +117,7 @@ class CreateSubjectCommandValidatorTest extends BaseUnitTest {
         School school = schoolClass.getSchool();
 
         User user = createUser("Test", "Test@example.com", RoleCommandMockRepo.TEACHER_ROLE_NAME.value());
+        user.activate();
         Teacher teacher = createTeacher(user, school, personInformation, address);
         teacher = teacherCommandRepository.save(teacher);
 
@@ -137,6 +139,32 @@ class CreateSubjectCommandValidatorTest extends BaseUnitTest {
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), CreateSubjectCommand.TEACHER_ID);
         assertEquals(errors.get(0).errorMessage(), CreateSubjectCommandValidator.MESSAGE_KEY_TEACHER_IS_FROM_ANOTHER_SCHOOL);
+    }
+
+    @Test
+    public void shouldAddErroWhenTeacherAccountIsInactive() {
+        // given
+        SchoolClass schoolClass = createSchoolWithSchoolClass();
+        School school = schoolClass.getSchool();
+        Teacher teacher = schoolClass.getTeacher();
+        User user = teacher.getUser();
+        user.unactivate();
+
+        CreateSubjectCommand command = new CreateSubjectCommand(
+                Name.of("Test"),
+                Description.of("Test"),
+                teacher.getTeacherId(),
+                schoolClass.getSchoolClassId()
+        );
+
+        // when
+        validator.validate(command, validationErrorBuilder);
+
+        // then
+        List<ValidationError> errors = validationErrorBuilder.getErrors();
+        assertEquals(errors.size(), 1);
+        assertEquals(errors.get(0).field(), CreateSubjectCommand.TEACHER_ID);
+        assertEquals(errors.get(0).errorMessage(), CreateSubjectCommandValidator.MESSAGE_KEY_ACCOUNT_INACTIVE);
     }
 
 

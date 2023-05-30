@@ -25,7 +25,7 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
     public CreateStudentCommandValidatorTest() {
         this.validator = new CreateStudentCommandValidator(studentCommandRepository,
                 schoolClassCommandRepository,
-                schoolCommandRepository);
+                schoolCommandRepository, userCommandRepository);
     }
 
     @Test

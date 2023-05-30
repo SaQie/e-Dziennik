@@ -57,14 +57,14 @@ public class StudentSubjectIntegrationTest extends BaseIntegrationTest {
 
         CreateStudentCommand command = new CreateStudentCommand(
                 Password.of("Test"),
-                Username.of("Test"),
+                Username.of("Test1"),
                 FirstName.of("Kamil"),
                 LastName.of("Nowak"),
                 Address.of("Test"),
                 PostalCode.of("123123"),
                 City.of("Nowakowo"),
                 Pesel.of("123123123"),
-                Email.of("test@example.com"),
+                Email.of("test1@example.com"),
                 PhoneNumber.of("123123"),
                 schoolId,
                 schoolClassId
@@ -94,14 +94,14 @@ public class StudentSubjectIntegrationTest extends BaseIntegrationTest {
 
         CreateStudentCommand command = new CreateStudentCommand(
                 Password.of("Test"),
-                Username.of("Test"),
+                Username.of("Test1"),
                 FirstName.of("Kamil"),
                 LastName.of("Nowak"),
                 Address.of("Test"),
                 PostalCode.of("123123"),
                 City.of("Nowakowo"),
                 Pesel.of("123123123"),
-                Email.of("test@example.com"),
+                Email.of("test1@example.com"),
                 PhoneNumber.of("123123"),
                 schoolId,
                 schoolClassId

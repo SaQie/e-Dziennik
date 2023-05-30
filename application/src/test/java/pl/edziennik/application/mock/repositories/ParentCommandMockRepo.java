@@ -1,7 +1,5 @@
 package pl.edziennik.application.mock.repositories;
 
-import pl.edziennik.common.valueobject.Email;
-import pl.edziennik.common.valueobject.Username;
 import pl.edziennik.common.valueobject.id.ParentId;
 import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.domain.parent.Parent;
@@ -58,18 +56,12 @@ public class ParentCommandMockRepo implements ParentCommandRepository {
     }
 
     @Override
-    public boolean existsByEmail(Email email) {
-        List<Parent> parents = database.values().stream()
-                .filter(item -> item.getUser().getEmail().equals(email))
-                .toList();
-        return !parents.isEmpty();
+    public boolean isParentAccountNotActive(ParentId parentId) {
+        Parent parent = database.get(parentId);
+        if (parent == null) {
+            return true;
+        }
+        return !parent.getUser().getIsActive();
     }
 
-    @Override
-    public boolean existsByUsername(Username username) {
-        List<Parent> parents = database.values().stream()
-                .filter(item -> item.getUser().getUsername().equals(username))
-                .toList();
-        return !parents.isEmpty();
-    }
 }

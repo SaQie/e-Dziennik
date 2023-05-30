@@ -23,7 +23,7 @@ class CreateParentCommandValidatorTest extends BaseUnitTest {
     private final CreateParentCommandValidator validator;
 
     public CreateParentCommandValidatorTest() {
-        this.validator = new CreateParentCommandValidator(parentCommandRepository, studentCommandRepository);
+        this.validator = new CreateParentCommandValidator(studentCommandRepository, userCommandRepository);
     }
 
     @Test
@@ -57,13 +57,14 @@ class CreateParentCommandValidatorTest extends BaseUnitTest {
         // given
         School school = createSchool("Test", "123123", "123123", address);
         User user = createUser("Kamil", "Nowak@o2.pl", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
+        user.activate();
         Parent parent = createParent(user, null, null);
         Student student = createStudent(user, school, SchoolClass.of(null, null, null), null, null, parent);
         student = studentCommandRepository.save(student);
 
         CreateParentCommand command = new CreateParentCommand(
                 Password.of("Test"),
-                Username.of("Kamil"),
+                Username.of("Kamil1"),
                 FirstName.of("Nowak"),
                 LastName.of("Test"),
                 Address.of("TEST"),

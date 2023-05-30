@@ -113,12 +113,15 @@ public class BaseUnitTest {
     }
 
     protected User createUser(String username, String email, String role) {
-        return User.of(
+        User user = User.of(
                 Username.of(username),
                 Password.of(StringUtil.randomIdentifer(5)),
                 Email.of(email),
                 Role.of(Name.of(role))
         );
+
+        userCommandRepository.save(user);
+        return user;
     }
 
 
@@ -218,6 +221,7 @@ public class BaseUnitTest {
         school = schoolCommandRepository.save(school);
 
         User user = createUser("Test", "Test@example.com", RoleCommandMockRepo.TEACHER_ROLE_NAME.value());
+        user.activate();
         Teacher teacher = createTeacher(user, school, personInformation, address);
         teacher = teacherCommandRepository.save(teacher);
 

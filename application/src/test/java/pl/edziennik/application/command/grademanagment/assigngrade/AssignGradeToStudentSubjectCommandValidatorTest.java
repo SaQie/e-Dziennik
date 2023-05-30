@@ -13,6 +13,7 @@ import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.student.Student;
+import pl.edziennik.domain.studentsubject.StudentSubject;
 import pl.edziennik.domain.subject.Subject;
 import pl.edziennik.domain.teacher.Teacher;
 import pl.edziennik.domain.user.User;
@@ -128,6 +129,7 @@ class AssignGradeToStudentSubjectCommandValidatorTest extends BaseUnitTest {
         Teacher teacher = schoolClass.getTeacher();
 
         User user = createUser("Testowy", "Test1@example.com", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
+        user.activate();
         Student student = createStudent(user, school, schoolClass, personInformation, address);
         student = studentCommandRepository.save(student);
 
@@ -151,6 +153,86 @@ class AssignGradeToStudentSubjectCommandValidatorTest extends BaseUnitTest {
         assertEquals(1, errors.size());
         assertEquals(AssignGradeToStudentSubjectCommand.SUBJECT_ID, errors.get(0).field());
         assertEquals(AssignGradeToStudentSubjectCommandValidator.MESSAGE_KEY_STUDENT_SUBJECT_NOT_EXISTS, errors.get(0).errorMessage());
+    }
+
+    @Test
+    public void shouldAddErrorWhenTeacherAccountIsInactive() {
+        // given
+        SchoolClass schoolClass = createSchoolWithSchoolClass();
+        School school = schoolClass.getSchool();
+        Teacher teacher = schoolClass.getTeacher();
+        User user = teacher.getUser();
+        user.unactivate();
+
+        user = createUser("Testowy", "Test1@example.com", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
+        user.activate();
+        Student student = createStudent(user, school, schoolClass, personInformation, address);
+        student = studentCommandRepository.save(student);
+
+        Subject subject = createSubject("Przyroda", teacher, schoolClass);
+        subject = subjectCommandRepository.save(subject);
+
+        StudentSubject studentSubject = createStudentSubject(student, subject);
+        studentSubject = studentSubjectCommandRepository.save(studentSubject);
+
+        AssignGradeToStudentSubjectCommand command = new AssignGradeToStudentSubjectCommand(
+                student.getStudentId(),
+                subject.getSubjectId(),
+                Grade.ONE,
+                Weight.of(5),
+                Description.of("Test"),
+                teacher.getTeacherId()
+        );
+
+        // when
+        validator.validate(command, validationErrorBuilder);
+
+        // then
+        List<ValidationError> errors = validationErrorBuilder.getErrors();
+        assertEquals(1, errors.size());
+        assertEquals(AssignGradeToStudentSubjectCommand.TEACHER_ID, errors.get(0).field());
+        assertEquals(AssignGradeToStudentSubjectCommandValidator.MESSAGE_KEY_ACCOUNT_INACTIVE, errors.get(0).errorMessage());
+
+
+    }
+
+
+    @Test
+    public void shouldAddErrorWhenStudentAccountIsInactive() {
+        // given
+        SchoolClass schoolClass = createSchoolWithSchoolClass();
+        School school = schoolClass.getSchool();
+        Teacher teacher = schoolClass.getTeacher();
+
+        User user = createUser("Testowy", "Test1@example.com", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
+        Student student = createStudent(user, school, schoolClass, personInformation, address);
+        student = studentCommandRepository.save(student);
+
+        Subject subject = createSubject("Przyroda", teacher, schoolClass);
+        subject = subjectCommandRepository.save(subject);
+
+        StudentSubject studentSubject = createStudentSubject(student, subject);
+        studentSubject = studentSubjectCommandRepository.save(studentSubject);
+
+        AssignGradeToStudentSubjectCommand command = new AssignGradeToStudentSubjectCommand(
+                student.getStudentId(),
+                subject.getSubjectId(),
+                Grade.ONE,
+                Weight.of(5),
+                Description.of("Test"),
+                teacher.getTeacherId()
+        );
+
+        // when
+        validator.validate(command, validationErrorBuilder);
+
+        // then
+        List<ValidationError> errors = validationErrorBuilder.getErrors();
+        assertEquals(1, errors.size());
+        assertEquals(AssignGradeToStudentSubjectCommand.STUDENT_ID, errors.get(0).field());
+        assertEquals(AssignGradeToStudentSubjectCommandValidator.MESSAGE_KEY_ACCOUNT_INACTIVE, errors.get(0).errorMessage());
+
+
     }
 
 }

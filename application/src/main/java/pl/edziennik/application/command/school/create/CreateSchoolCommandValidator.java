@@ -19,15 +19,29 @@ class CreateSchoolCommandValidator implements IBaseValidator<CreateSchoolCommand
 
     @Override
     public void validate(CreateSchoolCommand command, ValidationErrorBuilder errorBuilder) {
-        if (schoolCommandRepository.isExistsByName(command.name())) {
+        checkSchoolExistsByName(command, errorBuilder);
+        checkSchoolExistsByNip(command, errorBuilder);
+        checkSchoolExistsByRegon(command, errorBuilder);
+    }
+
+    /**
+     * Check school with given regon already exists
+     */
+    private void checkSchoolExistsByRegon(CreateSchoolCommand command, ValidationErrorBuilder errorBuilder) {
+        if (schoolCommandRepository.isExistsByRegon(command.regon())) {
             errorBuilder.addError(
-                    CreateSchoolCommand.NAME,
-                    MESSAGE_KEY_SCHOOL_ALREADY_EXISTS,
+                    CreateSchoolCommand.REGON,
+                    MESSAGE_KEY_SCHOOL_WITH_REGON_ALREADY_EXISTS,
                     ErrorCode.OBJECT_ALREADY_EXISTS,
-                    command.name()
+                    command.regon()
             );
         }
+    }
 
+    /**
+     * Check school with given nip already exists
+     */
+    private void checkSchoolExistsByNip(CreateSchoolCommand command, ValidationErrorBuilder errorBuilder) {
         if (schoolCommandRepository.isExistsByNip(command.nip())) {
             errorBuilder.addError(
                     CreateSchoolCommand.NIP,
@@ -36,13 +50,18 @@ class CreateSchoolCommandValidator implements IBaseValidator<CreateSchoolCommand
                     command.nip()
             );
         }
+    }
 
-        if (schoolCommandRepository.isExistsByRegon(command.regon())) {
+    /**
+     * Check school with given name already exists
+     */
+    private void checkSchoolExistsByName(CreateSchoolCommand command, ValidationErrorBuilder errorBuilder) {
+        if (schoolCommandRepository.isExistsByName(command.name())) {
             errorBuilder.addError(
-                    CreateSchoolCommand.REGON,
-                    MESSAGE_KEY_SCHOOL_WITH_REGON_ALREADY_EXISTS,
+                    CreateSchoolCommand.NAME,
+                    MESSAGE_KEY_SCHOOL_ALREADY_EXISTS,
                     ErrorCode.OBJECT_ALREADY_EXISTS,
-                    command.regon()
+                    command.name()
             );
         }
     }

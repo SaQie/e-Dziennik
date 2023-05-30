@@ -50,5 +50,4 @@ public class GradeIntegrationTest extends BaseIntegrationTest {
         assertEquals(grade.getTeacher().getTeacherId(), teacherId);
     }
 
-
 }

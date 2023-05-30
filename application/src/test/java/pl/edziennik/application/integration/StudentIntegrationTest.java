@@ -43,7 +43,7 @@ public class StudentIntegrationTest extends BaseIntegrationTest {
                 PostalCode.of("123123"),
                 City.of("Nowakowo"),
                 Pesel.of("123123123"),
-                Email.of("test@example.com"),
+                Email.of("test1@example.com"),
                 PhoneNumber.of("123123"),
                 schoolId,
                 schoolClassId
@@ -139,6 +139,7 @@ public class StudentIntegrationTest extends BaseIntegrationTest {
                     .containsExactlyInAnyOrder(CreateStudentCommand.SCHOOL_CLASS_ID);
         }
     }
+
 
     @Test
     public void shouldAutomaticallyAssignJournalNumberAfterSave() {
