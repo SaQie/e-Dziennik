@@ -9,6 +9,7 @@ import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.domain.user.User;
 
 import java.util.List;
+import java.util.Optional;
 
 @RepositoryDefinition(domainClass = User.class, idClass = UserId.class)
 public interface UserCommandRepository {
@@ -21,9 +22,10 @@ public interface UserCommandRepository {
     @Modifying
     void deleteAll(List<UserId> userIds);
 
-    default User save(User user) {
-        throw new UnsupportedOperationException();
-    }
+    Optional<User> findById(UserId userId);
+
+    User save(User user);
 
 
+    User getUserByUserId(UserId userId);
 }

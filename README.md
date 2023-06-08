@@ -9,7 +9,7 @@ _____________
     Note this project is still in develop state
     <br/>
     <br/>
-    <a href="https://github.com/SaQie/e-Dziennik-desktop"><strong>Move to client »</strong></a>
+    <a href="https://github.com/SaQie/e-Dziennik-desktop"><strong>Move to client (D) » </strong></a>     <a href="https://github.com/SaQie/"><strong>Move to client (W) »</strong></a>
     <br/>
     <a href="https://github.com/SaQie/e-Dziennik/issues"><strike>Explore the docs</strike></a>
     .
@@ -26,7 +26,7 @@ _____________
 _____________
 
 <div>
-    This project is a backend server for <a href="https://github.com/SaQie/e-Dziennik-desktop"><b>client</b></a> that consume REST API for receiving a data. That is a full school managment application that allows you to do this kind of operations at the moment (02.05.2023)
+    This project is a backend server for <a href="https://github.com/SaQie/e-Dziennik-desktop"><b>client(D)</b></a> <a href="https://github.com/SaQie/"><b>client(W)</b></a> that consume REST API for receiving a data. That is a full school managment application that allows you to do this kind of operations at the moment (02.05.2023)
 
 </div>
 
@@ -76,7 +76,7 @@ ___
 - *(24/03/2023) Change persistence layer to Spring Data Jpa repositories*
   - I decided to change my persistence layer, due to i had a lot of problems with DAO pattern (Pagination, transactions etc.)
 - *(06/05/2023) Changed architecture layer to CQRS, check <strong>[Architecture Look »](#-architecture-look)</strong>*
-
+- *(31/05/2023)* I decided to temporarily stop developing client desktop application and instead start developing Angular web client 
 
 # 👨‍💻 Tech stack
 

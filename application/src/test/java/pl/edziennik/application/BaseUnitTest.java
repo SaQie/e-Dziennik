@@ -124,6 +124,18 @@ public class BaseUnitTest {
         return user;
     }
 
+    protected User createUser(String username, String email, String role, String password) {
+        User user = User.of(
+                Username.of(username),
+                Password.of(password),
+                Email.of(email),
+                Role.of(Name.of(role))
+        );
+
+        userCommandRepository.save(user);
+        return user;
+    }
+
 
     protected PersonInformation createPersonInformation(String pesel) {
         return PersonInformation.of(

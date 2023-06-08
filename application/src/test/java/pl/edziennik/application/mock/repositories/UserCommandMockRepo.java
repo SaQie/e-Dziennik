@@ -9,6 +9,7 @@ import pl.edziennik.infrastructure.repository.user.UserCommandRepository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class UserCommandMockRepo implements UserCommandRepository {
 
@@ -40,8 +41,18 @@ public class UserCommandMockRepo implements UserCommandRepository {
     }
 
     @Override
+    public Optional<User> findById(UserId userId) {
+        return Optional.ofNullable(database.get(userId));
+    }
+
+    @Override
     public User save(User user) {
         this.database.put(user.getUserId(), user);
         return database.get(user.getUserId());
+    }
+
+    @Override
+    public User getUserByUserId(UserId userId) {
+        return database.get(userId);
     }
 }

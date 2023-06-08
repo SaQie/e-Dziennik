@@ -84,6 +84,20 @@ public class User {
         }
     }
 
+    public void changeUserData(Username username, Email email) {
+        if (username != null) {
+            this.username = username;
+        }
+
+        if (email != null) {
+            this.email = email;
+        }
+    }
+
+    public void changePassword(Password password) {
+        this.password = password;
+    }
+
 
     @PreUpdate
     protected void onUpdate() {

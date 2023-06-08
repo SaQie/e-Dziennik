@@ -17,7 +17,8 @@ public enum ErrorCode {
     INVALID_ACTIVATION_TOKEN(1110),
     INVALID_PARAMETER(1120),
     LIMIT_REACHED(1130),
-    ACCOUNT_INACTIVE(1140);
+    ACCOUNT_INACTIVE(1140),
+    PASSWORD_INCORRECT(1150);
 
     private final Integer errorCode;
 

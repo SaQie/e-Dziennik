@@ -1,1 +1,0 @@
-CREATE UNIQUE INDEX idx_subject_namsch ON subject(name, school_class_id);
