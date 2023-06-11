@@ -7,6 +7,11 @@ import pl.edziennik.common.dto.grade.bysubject.StudentGradesBySubjectDto;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.id.SubjectId;
 
+/**
+ * A query used for getting the student's subject grades (Grades only from one subject)
+ * <br>
+ * <b>Return DTO: {@link StudentGradesBySubjectDto}</b>
+ */
 @HandledBy(handler = GetGradesOfSpecificStudentBySubjectHandler.class)
 public record GetGradesOfSpecificStudentBySubjectQuery(
         @NotNull SubjectId subjectId,

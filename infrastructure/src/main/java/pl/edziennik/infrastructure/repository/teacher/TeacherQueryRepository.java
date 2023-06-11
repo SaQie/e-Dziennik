@@ -15,7 +15,7 @@ public interface TeacherQueryRepository {
 
     @Query("SELECT NEW " +
             "pl.edziennik.common.dto.teacher.DetailedTeacherDto(t.teacherId, u.username, u.email," +
-            " t.personInformation.fullName, a.address, a.postalCode, a.city, t.personInformation.pesel," +
+            " t.personInformation.fullName, a.address, a.postalCode, a.city, u.pesel," +
             "t.personInformation.phoneNumber, s.schoolId, s.name) " +
             "FROM Teacher t " +
             "JOIN t.user u " +

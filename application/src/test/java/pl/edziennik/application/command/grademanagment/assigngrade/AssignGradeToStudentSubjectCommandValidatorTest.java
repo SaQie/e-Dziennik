@@ -152,7 +152,7 @@ class AssignGradeToStudentSubjectCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(1, errors.size());
         assertEquals(AssignGradeToStudentSubjectCommand.SUBJECT_ID, errors.get(0).field());
-        assertEquals(AssignGradeToStudentSubjectCommandValidator.MESSAGE_KEY_STUDENT_SUBJECT_NOT_EXISTS, errors.get(0).errorMessage());
+        assertEquals(AssignGradeToStudentSubjectCommandValidator.MESSAGE_KEY_STUDENT_SUBJECT_NOT_EXISTS, errors.get(0).message());
     }
 
     @Test
@@ -191,7 +191,7 @@ class AssignGradeToStudentSubjectCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(1, errors.size());
         assertEquals(AssignGradeToStudentSubjectCommand.TEACHER_ID, errors.get(0).field());
-        assertEquals(AssignGradeToStudentSubjectCommandValidator.MESSAGE_KEY_ACCOUNT_INACTIVE, errors.get(0).errorMessage());
+        assertEquals(AssignGradeToStudentSubjectCommandValidator.MESSAGE_KEY_ACCOUNT_INACTIVE, errors.get(0).message());
 
 
     }
@@ -230,7 +230,7 @@ class AssignGradeToStudentSubjectCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(1, errors.size());
         assertEquals(AssignGradeToStudentSubjectCommand.STUDENT_ID, errors.get(0).field());
-        assertEquals(AssignGradeToStudentSubjectCommandValidator.MESSAGE_KEY_ACCOUNT_INACTIVE, errors.get(0).errorMessage());
+        assertEquals(AssignGradeToStudentSubjectCommandValidator.MESSAGE_KEY_ACCOUNT_INACTIVE, errors.get(0).message());
 
 
     }

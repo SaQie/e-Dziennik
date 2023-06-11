@@ -1,5 +1,6 @@
 package pl.edziennik.infrastructure.authentication.security.jwt;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,12 +32,12 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         UsernamePasswordAuthenticationToken auth = getAuthentication(request, response);
-        if (auth == null){
-            chain.doFilter(request,response);
+        if (auth == null) {
+            chain.doFilter(request, response);
             return;
         }
         SecurityContextHolder.getContext().setAuthentication(auth);
-        chain.doFilter(request,response);
+        chain.doFilter(request, response);
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -48,12 +49,12 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             if (login == null) return null;
             UserDetails userDetails = userDetailsService.loadUserByUsername(login);
             return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, authorities);
-        }catch (Exception e){
+        } catch (TokenExpiredException e) {
             response.setHeader("error", e.getMessage());
             response.setContentType("application/json");
-            response.getWriter().write(e.getMessage());
-            response.getWriter().close();
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("The token has been expired");
+            response.getWriter().close();
             return null;
         }
     }

@@ -157,7 +157,7 @@ class CreateSchoolClassCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), CreateSchoolClassCommand.CLASS_NAME);
-        assertEquals(errors.get(0).errorMessage(), CreateSchoolClassCommandValidator.MESSAGE_KEY_SCHOOL_CLASS_ALREADY_EXISTS);
+        assertEquals(errors.get(0).message(), CreateSchoolClassCommandValidator.MESSAGE_KEY_SCHOOL_CLASS_ALREADY_EXISTS);
     }
 
     @Test

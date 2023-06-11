@@ -9,6 +9,9 @@ import pl.edziennik.application.common.dispatcher.command.ICommand;
 import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.StudentId;
 
+/**
+ * A command used for creating a new parent command
+ */
 @HandledBy(handler = CreateParentCommandHandler.class)
 @ValidatedBy(validator = CreateParentCommandValidator.class)
 public record CreateParentCommand(

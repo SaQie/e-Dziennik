@@ -56,6 +56,6 @@ public class ChangePasswordValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), ChangePasswordCommand.OLD_PASSWORD);
-        assertEquals(errors.get(0).errorMessage(), ChangePasswordCommandValidator.MESSAGE_KEY_OLD_PASSWORD_IS_INCORRECT);
+        assertEquals(errors.get(0).message(), ChangePasswordCommandValidator.MESSAGE_KEY_OLD_PASSWORD_IS_INCORRECT);
     }
 }

@@ -6,6 +6,11 @@ import pl.edziennik.application.common.dispatcher.query.IQuery;
 import pl.edziennik.common.dto.grade.allsubjects.StudentAllSubjectsGradesHeaderDto;
 import pl.edziennik.common.valueobject.id.StudentId;
 
+/**
+ * A Query used for getting all assigned student's subjects with grades
+ * <br>
+ * <b>Return DTO: {@link StudentAllSubjectsGradesHeaderDto}</b>
+ */
 @HandledBy(handler = GetAllSubjectsGradesOfSpecificStudentQueryHandler.class)
 public record GetAllSubjectsGradesOfSpecificStudentQuery(
         @NotNull(message = "${student.empty}") StudentId studentId

@@ -7,7 +7,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import pl.edziennik.common.attribute.*;
+import pl.edziennik.common.attribute.FirstNameAttributeConverter;
+import pl.edziennik.common.attribute.FullNameAttributeConverter;
+import pl.edziennik.common.attribute.LastNameAttributeConverter;
+import pl.edziennik.common.attribute.PhoneNumberAttributeConverter;
 
 import java.io.Serializable;
 
@@ -32,11 +35,8 @@ public class PersonInformation implements Serializable {
     @Convert(converter = PhoneNumberAttributeConverter.class)
     private PhoneNumber phoneNumber;
 
-    @Convert(converter = PeselAttributeConverter.class)
-    private Pesel pesel;
-
-    public static PersonInformation of(FirstName firstName, LastName lastName, PhoneNumber phoneNumber, Pesel pesel) {
-        return new PersonInformation(firstName, lastName, FullName.of(firstName, lastName), phoneNumber, pesel);
+    public static PersonInformation of(FirstName firstName, LastName lastName, PhoneNumber phoneNumber) {
+        return new PersonInformation(firstName, lastName, FullName.of(firstName, lastName), phoneNumber);
     }
 
 

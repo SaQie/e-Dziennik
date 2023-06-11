@@ -3,9 +3,11 @@ package pl.edziennik.web.command.subject;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.application.command.subject.create.CreateSubjectCommand;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
@@ -22,7 +24,6 @@ public class SubjectCommandController {
 
 
     @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Add a new subject to school class")
     public ResponseEntity<Void> createSubject(@RequestBody @Valid CreateSubjectCommand command) {
         OperationResult operationResult = dispatcher.dispatch(command);

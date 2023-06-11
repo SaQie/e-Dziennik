@@ -11,8 +11,6 @@ import pl.edziennik.application.command.schoolclass.changeconfig.ChangeSchoolCla
 import pl.edziennik.application.command.schoolclass.create.CreateSchoolClassCommand;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.query.schoolclass.config.GetSchoolClassConfigSummaryQuery;
-import pl.edziennik.common.dto.schoolclass.config.SchoolClassConfigSummaryDto;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 
 import java.net.URI;
@@ -25,7 +23,6 @@ public class SchoolClassCommandController {
     private final Dispatcher dispatcher;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Add and assign school class to school")
     public ResponseEntity<Void> createSchoolClass(@RequestBody @Valid CreateSchoolClassCommand command) {
         OperationResult operationResult = dispatcher.dispatch(command);
@@ -40,15 +37,6 @@ public class SchoolClassCommandController {
 
     }
 
-    @GetMapping("/{schoolClassId}/configurations")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<SchoolClassConfigSummaryDto> getSchoolClassConfiguration(@PathVariable SchoolClassId schoolClassId) {
-        GetSchoolClassConfigSummaryQuery query = new GetSchoolClassConfigSummaryQuery(schoolClassId);
-
-        SchoolClassConfigSummaryDto dto = dispatcher.dispatch(query);
-
-        return ResponseEntity.ok(dto);
-    }
 
     @PatchMapping("/{schoolClassId}/configurations")
     @ResponseStatus(HttpStatus.NO_CONTENT)

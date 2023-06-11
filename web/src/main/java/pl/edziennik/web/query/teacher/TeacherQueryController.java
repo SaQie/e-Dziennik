@@ -3,7 +3,6 @@ package pl.edziennik.web.query.teacher;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.application.query.teacher.detailed.GetDetailedTeacherQuery;
@@ -24,32 +23,26 @@ public class TeacherQueryController {
 
     @GetMapping("/{teacherId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<DetailedTeacherDto> getTeacherById(@PathVariable TeacherId teacherId) {
+    public DetailedTeacherDto getTeacherById(@PathVariable TeacherId teacherId) {
         GetDetailedTeacherQuery query = new GetDetailedTeacherQuery(teacherId);
 
-        DetailedTeacherDto dto = dispatcher.dispatch(query);
-
-        return ResponseEntity.ok(dto);
+        return dispatcher.dispatch(query);
     }
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<PageDto<TeacherSummaryDto>> getAllTeachers(Pageable pageable) {
+    public PageDto<TeacherSummaryDto> getAllTeachers(Pageable pageable) {
         GetTeacherSummaryQuery query = new GetTeacherSummaryQuery(pageable);
 
-        PageDto<TeacherSummaryDto> dto = dispatcher.dispatch(query);
-
-        return ResponseEntity.ok(dto);
+        return dispatcher.dispatch(query);
     }
 
     @GetMapping("/{teacherId}/subjects")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<PageDto<TeacherSubjectsSummaryDto>> getTeacherSubjectsSummary(@PathVariable TeacherId teacherId, Pageable pageable) {
+    public PageDto<TeacherSubjectsSummaryDto> getTeacherSubjectsSummary(@PathVariable TeacherId teacherId, Pageable pageable) {
         GetTeacherSubjectsSummaryQuery query = new GetTeacherSubjectsSummaryQuery(pageable, teacherId);
 
-        PageDto<TeacherSubjectsSummaryDto> dto = dispatcher.dispatch(query);
-
-        return ResponseEntity.ok(dto);
+        return dispatcher.dispatch(query);
     }
 
 

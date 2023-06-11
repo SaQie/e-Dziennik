@@ -6,6 +6,7 @@ import pl.edziennik.application.common.dispatcher.query.IQueryHandler;
 import pl.edziennik.common.dto.schoolclass.config.SchoolClassConfigSummaryDto;
 import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassConfigurationQueryRepository;
 
+
 @Component
 @AllArgsConstructor
 class GetSchoolClassConfigSummaryQueryHandler implements IQueryHandler<GetSchoolClassConfigSummaryQuery, SchoolClassConfigSummaryDto> {

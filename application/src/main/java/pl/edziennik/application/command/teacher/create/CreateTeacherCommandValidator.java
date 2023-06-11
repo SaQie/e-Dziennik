@@ -49,7 +49,7 @@ class CreateTeacherCommandValidator implements IBaseValidator<CreateTeacherComma
      * Check if teacher with given pesel already exists
      */
     private void checkTeacherByPeselAlreadyExists(CreateTeacherCommand command, ValidationErrorBuilder errorBuilder) {
-        if (teacherCommandRepository.isExistsByPesel(command.pesel())) {
+        if (userCommandRepository.existsByPesel(command.pesel())) {
             errorBuilder.addError(
                     CreateTeacherCommand.PESEL,
                     MESSAGE_KEY_TEACHER_PESEL_NOT_UNIQUE,

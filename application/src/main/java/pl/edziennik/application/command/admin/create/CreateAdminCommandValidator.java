@@ -25,9 +25,11 @@ class CreateAdminCommandValidator implements IBaseValidator<CreateAdminCommand> 
      */
     private void checkAdminAccountAlreadyExists(ValidationErrorBuilder errorBuilder) {
         if (adminCommandRepository.isAdminAccountAlreadyExists()) {
-            errorBuilder.addError(CreateAdminCommand.USERNAME,
+            errorBuilder.addError(
+                    CreateAdminCommand.USERNAME,
                     MESSAGE_KEY_ADMIN_ALREADY_EXISTS,
-                    ErrorCode.OBJECT_ALREADY_EXISTS);
+                    ErrorCode.OBJECT_ALREADY_EXISTS
+            );
         }
     }
 }

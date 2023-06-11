@@ -3,7 +3,6 @@ package pl.edziennik.web.query.student;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.application.query.student.detailed.GetDetailedStudentQuery;
@@ -22,29 +21,18 @@ public class StudentQueryController {
 
     @GetMapping("/{studentId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<DetailedStudentDto> getStudentById(@PathVariable StudentId studentId) {
+    public DetailedStudentDto getStudentById(@PathVariable StudentId studentId) {
         GetDetailedStudentQuery getDetailedStudentQuery = new GetDetailedStudentQuery(studentId);
 
-        DetailedStudentDto detailedStudentDto = dispatcher.dispatch(getDetailedStudentQuery);
-
-        return ResponseEntity.ok(detailedStudentDto);
-
+        return dispatcher.dispatch(getDetailedStudentQuery);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<PageDto<StudentSummaryDto>> getAllStudents(Pageable pageable) {
+    public PageDto<StudentSummaryDto> getAllStudents(Pageable pageable) {
         GetStudentSummaryQuery getStudentSummaryQuery = new GetStudentSummaryQuery(pageable);
 
-        PageDto<StudentSummaryDto> studentDtoPageDto = dispatcher.dispatch(getStudentSummaryQuery);
-
-        return ResponseEntity.ok(studentDtoPageDto);
+        return dispatcher.dispatch(getStudentSummaryQuery);
     }
-
-    // FIXME CQRS DOROBIC ENDPOINTY
-
-    // /api/v1/students/{studentId}/subjects/grades <- Student subject list with grades
-    // /api/b1/students/{studentId}/subjects/{subjectId}/grades <- Student specific subject with grades
-
 
 }

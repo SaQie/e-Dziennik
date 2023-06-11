@@ -10,6 +10,9 @@ import pl.edziennik.application.common.dispatcher.command.ICommand;
 import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.SchoolLevelId;
 
+/**
+ * A command used for creating a new school
+ */
 @HandledBy(handler = CreateSchoolCommandHandler.class)
 @ValidatedBy(validator = CreateSchoolCommandValidator.class)
 public record CreateSchoolCommand(

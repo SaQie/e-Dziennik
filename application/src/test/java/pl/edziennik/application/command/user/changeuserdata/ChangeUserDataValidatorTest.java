@@ -54,7 +54,7 @@ public class ChangeUserDataValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), ChangeUserDataCommand.USERNAME);
-        assertEquals(errors.get(0).errorMessage(), ChangeUserDataCommandValidator.MESSAGE_KEY_USER_ALREADY_EXISTS_BY_USERNAME);
+        assertEquals(errors.get(0).message(), ChangeUserDataCommandValidator.MESSAGE_KEY_USER_ALREADY_EXISTS_BY_USERNAME);
 
     }
 
@@ -73,7 +73,7 @@ public class ChangeUserDataValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), ChangeUserDataCommand.EMAIL);
-        assertEquals(errors.get(0).errorMessage(), ChangeUserDataCommandValidator.MESSAGE_KEY_USER_ALREADY_EXISTS_BY_EMAIL);
+        assertEquals(errors.get(0).message(), ChangeUserDataCommandValidator.MESSAGE_KEY_USER_ALREADY_EXISTS_BY_EMAIL);
     }
 
 }

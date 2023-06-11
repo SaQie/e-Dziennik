@@ -85,8 +85,7 @@ public class BaseUnitTest {
         this.personInformation = PersonInformation.of(
                 FirstName.of("Test"),
                 LastName.of("Testowy"),
-                PhoneNumber.of("123123123"),
-                Pesel.of("12345678912")
+                PhoneNumber.of("123123123")
         );
 
         this.passwordEncoder = new PasswordEncoder() {
@@ -117,6 +116,7 @@ public class BaseUnitTest {
                 Username.of(username),
                 Password.of(StringUtil.randomIdentifer(5)),
                 Email.of(email),
+                Pesel.of(StringUtil.randomIdentifer(11)),
                 Role.of(Name.of(role))
         );
 
@@ -129,6 +129,7 @@ public class BaseUnitTest {
                 Username.of(username),
                 Password.of(password),
                 Email.of(email),
+                Pesel.of(StringUtil.randomIdentifer(11)),
                 Role.of(Name.of(role))
         );
 
@@ -137,12 +138,11 @@ public class BaseUnitTest {
     }
 
 
-    protected PersonInformation createPersonInformation(String pesel) {
+    protected PersonInformation createPersonInformation() {
         return PersonInformation.of(
                 FirstName.of(StringUtil.randomIdentifer(5)),
                 LastName.of(StringUtil.randomIdentifer(5)),
-                PhoneNumber.of(StringUtil.randomIdentifer(5)),
-                Pesel.of(pesel)
+                PhoneNumber.of(StringUtil.randomIdentifer(5))
         );
     }
 

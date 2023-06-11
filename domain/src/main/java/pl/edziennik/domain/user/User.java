@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import pl.edziennik.common.valueobject.Email;
 import pl.edziennik.common.valueobject.Password;
+import pl.edziennik.common.valueobject.Pesel;
 import pl.edziennik.common.valueobject.Username;
 import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.domain.role.Role;
@@ -45,6 +46,12 @@ public class User {
     })
     private Email email;
 
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "value", column = @Column(name = "pesel", nullable = false))
+    })
+    private Pesel pesel;
+
     private Boolean isActive;
 
     @Column(nullable = false)
@@ -60,7 +67,7 @@ public class User {
     @Version
     private Long version;
 
-    public static User of(Username username, Password password, Email email, Role role) {
+    public static User of(Username username, Password password, Email email, Pesel pesel ,Role role) {
         User user = new User();
         user.username = username;
         user.password = password;
@@ -68,6 +75,7 @@ public class User {
         user.role = role;
         user.createdDate = LocalDate.now();
         user.isActive = Boolean.FALSE;
+        user.pesel = pesel;
 
         return user;
     }

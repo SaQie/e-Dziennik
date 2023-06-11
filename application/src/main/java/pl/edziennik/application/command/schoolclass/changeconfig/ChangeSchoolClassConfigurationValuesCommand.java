@@ -7,6 +7,12 @@ import pl.edziennik.application.common.dispatcher.base.HandledBy;
 import pl.edziennik.application.common.dispatcher.command.ICommand;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 
+/**
+ * A command used for changing the existing school class configuration parameters
+ * <br>
+ * <b>maxStudentsSize</b> -> Student limit in the school class <br>
+ * <b>autoAssignSubjects</b> -> Auto assign subjects(from the school class) to student while creating a new student account
+ */
 @HandledBy(handler = ChangeSchoolClassConfigurationValuesCommandHandler.class)
 public record ChangeSchoolClassConfigurationValuesCommand(
 

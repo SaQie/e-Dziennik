@@ -7,6 +7,9 @@ import pl.edziennik.application.common.dispatcher.base.ValidatedBy;
 import pl.edziennik.application.common.dispatcher.command.ICommand;
 import pl.edziennik.common.valueobject.id.SchoolId;
 
+/**
+ * A command used for deleting the existing school
+ */
 @HandledBy(handler = DeleteSchoolCommandHandler.class)
 @ValidatedBy(validator = DeleteSchoolCommandValidator.class)
 public record DeleteSchoolCommand(

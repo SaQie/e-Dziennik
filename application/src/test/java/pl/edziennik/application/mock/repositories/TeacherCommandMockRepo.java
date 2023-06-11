@@ -1,6 +1,5 @@
 package pl.edziennik.application.mock.repositories;
 
-import pl.edziennik.common.valueobject.Pesel;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.common.valueobject.id.UserId;
@@ -21,14 +20,6 @@ public class TeacherCommandMockRepo implements TeacherCommandRepository {
         this.database = new HashMap<>();
     }
 
-
-    @Override
-    public boolean isExistsByPesel(Pesel pesel) {
-        List<Teacher> teachers = database.values().stream()
-                .filter(item -> item.getPersonInformation().pesel().equals(pesel))
-                .toList();
-        return !teachers.isEmpty();
-    }
 
 
     @Override

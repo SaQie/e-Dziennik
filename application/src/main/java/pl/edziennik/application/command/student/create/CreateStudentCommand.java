@@ -10,6 +10,9 @@ import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.SchoolId;
 
+/**
+ * A command used for creating a new student account
+ */
 @HandledBy(handler = CreateStudentCommandHandler.class)
 @ValidatedBy(validator = CreateStudentCommandValidator.class)
 public record CreateStudentCommand(

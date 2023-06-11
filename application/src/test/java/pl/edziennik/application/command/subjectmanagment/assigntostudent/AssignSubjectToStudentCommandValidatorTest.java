@@ -103,7 +103,7 @@ class AssignSubjectToStudentCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), AssignSubjectToStudentCommand.STUDENT_ID);
-        assertEquals(errors.get(0).errorMessage(), AssignSubjectToStudentCommandValidator.MESSAGE_KEY_SUBJECT_IS_FROM_ANOTHER_SCHOOL_CLASS);
+        assertEquals(errors.get(0).message(), AssignSubjectToStudentCommandValidator.MESSAGE_KEY_SUBJECT_IS_FROM_ANOTHER_SCHOOL_CLASS);
     }
 
     @Test
@@ -139,7 +139,7 @@ class AssignSubjectToStudentCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), AssignSubjectToStudentCommand.SUBJECT_ID);
-        assertEquals(errors.get(0).errorMessage(), AssignSubjectToStudentCommandValidator.MESSAGE_KEY_STUDENT_STUDENT_ALREADY_ASSIGNED_TO_SUBJECT);
+        assertEquals(errors.get(0).message(), AssignSubjectToStudentCommandValidator.MESSAGE_KEY_STUDENT_STUDENT_ALREADY_ASSIGNED_TO_SUBJECT);
     }
 
     @Test
@@ -170,6 +170,6 @@ class AssignSubjectToStudentCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), AssignSubjectToStudentCommand.STUDENT_ID);
-        assertEquals(errors.get(0).errorMessage(), AssignSubjectToStudentCommandValidator.MESSAGE_KEY_ACCOUNT_INACTIVE);
+        assertEquals(errors.get(0).message(), AssignSubjectToStudentCommandValidator.MESSAGE_KEY_ACCOUNT_INACTIVE);
     }
 }

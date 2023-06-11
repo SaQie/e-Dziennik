@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.hibernate.validator.constraints.pl.PESEL;
 
 
 @Getter
@@ -14,7 +15,9 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @EqualsAndHashCode(of = "value")
 public class Pesel implements ValueObject{
+
     @JsonValue
+    @PESEL(message = "{pesel.invalid}")
     private final String value;
 
     private Pesel(String value) {

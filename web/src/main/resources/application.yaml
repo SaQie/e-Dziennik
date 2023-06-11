@@ -46,7 +46,7 @@ jwt:
   secret: testtt
   expiration: 3600000
   refresh:
-    expiration: 4800000
+    expiration: 122
   token:
     prefix: Bearer
 

@@ -2,7 +2,6 @@ package pl.edziennik.web.query.subject;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.application.query.subject.detailed.GetDetailedSubjectQuery;
@@ -26,42 +25,34 @@ public class SubjectQueryController {
 
     @GetMapping("/{subjectId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<DetailedSubjectDto> getSubject(@PathVariable SubjectId subjectId) {
+    public DetailedSubjectDto getSubject(@PathVariable SubjectId subjectId) {
         GetDetailedSubjectQuery query = new GetDetailedSubjectQuery(subjectId);
 
-        DetailedSubjectDto dto = dispatcher.dispatch(query);
-
-        return ResponseEntity.ok(dto);
+        return dispatcher.dispatch(query);
     }
 
     @GetMapping("/{subjectId}/students/grades")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<StudentGradesBySubjectDto>> getStudentGradesBySubject(@PathVariable SubjectId subjectId) {
+    public List<StudentGradesBySubjectDto> getStudentGradesBySubject(@PathVariable SubjectId subjectId) {
         GetStudentsGradesBySubjectQuery query = new GetStudentsGradesBySubjectQuery(subjectId);
 
-        List<StudentGradesBySubjectDto> dto = dispatcher.dispatch(query);
-
-        return ResponseEntity.ok(dto);
+        return dispatcher.dispatch(query);
     }
 
     @GetMapping("/{subjectId}/students/{studentId}/grades")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<StudentGradesBySubjectDto> getGradesOfSpecificStudentBySubject(@PathVariable SubjectId subjectId, @PathVariable StudentId studentId) {
+    public StudentGradesBySubjectDto getGradesOfSpecificStudentBySubject(@PathVariable SubjectId subjectId, @PathVariable StudentId studentId) {
         GetGradesOfSpecificStudentBySubjectQuery query = new GetGradesOfSpecificStudentBySubjectQuery(subjectId, studentId);
 
-        StudentGradesBySubjectDto dto = dispatcher.dispatch(query);
-
-        return ResponseEntity.ok(dto);
+        return dispatcher.dispatch(query);
     }
 
     @GetMapping("/students/{studentId}/grades")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<StudentAllSubjectsGradesHeaderDto> getAllSubjectsGradesOfSpecificStudent(@PathVariable StudentId studentId) {
+    public StudentAllSubjectsGradesHeaderDto getAllSubjectsGradesOfSpecificStudent(@PathVariable StudentId studentId) {
         GetAllSubjectsGradesOfSpecificStudentQuery query = new GetAllSubjectsGradesOfSpecificStudentQuery(studentId);
 
-        StudentAllSubjectsGradesHeaderDto dto = dispatcher.dispatch(query);
-
-        return ResponseEntity.ok(dto);
+        return dispatcher.dispatch(query);
     }
 
 

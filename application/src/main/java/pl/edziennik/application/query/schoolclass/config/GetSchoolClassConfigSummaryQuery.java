@@ -6,6 +6,11 @@ import pl.edziennik.application.common.dispatcher.query.IQuery;
 import pl.edziennik.common.dto.schoolclass.config.SchoolClassConfigSummaryDto;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 
+/**
+ * A query used for getting the school class configuration parameter values
+ * <br>
+ * <b>Return DTO: {@link SchoolClassConfigSummaryDto}</b>
+ */
 @HandledBy(handler = GetSchoolClassConfigSummaryQueryHandler.class)
 public record GetSchoolClassConfigSummaryQuery(
 

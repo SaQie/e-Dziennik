@@ -10,6 +10,9 @@ import pl.edziennik.infrastructure.spring.exception.ResolverException;
 
 import java.util.Map;
 
+/**
+ * Class responsible for obtaining the right handler from the command/query class
+ */
 @Component
 @AllArgsConstructor
 @SuppressWarnings("all")

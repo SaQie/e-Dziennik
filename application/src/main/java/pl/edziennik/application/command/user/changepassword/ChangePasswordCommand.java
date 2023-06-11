@@ -9,6 +9,9 @@ import pl.edziennik.application.common.dispatcher.command.ICommand;
 import pl.edziennik.common.valueobject.Password;
 import pl.edziennik.common.valueobject.id.UserId;
 
+/**
+ *  A command used for changing a password to the user account
+ */
 @HandledBy(handler = ChangePasswordCommandHandler.class)
 @ValidatedBy(validator = ChangePasswordCommandValidator.class)
 public record ChangePasswordCommand(

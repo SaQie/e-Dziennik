@@ -2,8 +2,6 @@ package pl.edziennik.infrastructure.repository.student;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.RepositoryDefinition;
-import pl.edziennik.common.valueobject.Name;
-import pl.edziennik.common.valueobject.Pesel;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.domain.student.Student;
@@ -19,12 +17,6 @@ public interface StudentCommandRepository {
     boolean hasAlreadyAssignedParent(StudentId studentId);
 
 
-    @Query("SELECT CASE WHEN COUNT(s) > 0 THEN TRUE ELSE FALSE END FROM Student s " +
-            "JOIN s.personInformation pi " +
-            "JOIN s.user u " +
-            "WHERE pi.pesel = :pesel " +
-            "AND u.role.name = :name")
-    boolean isStudentExistsByPesel(Pesel pesel, Name name);
 
     void delete(Student student);
 

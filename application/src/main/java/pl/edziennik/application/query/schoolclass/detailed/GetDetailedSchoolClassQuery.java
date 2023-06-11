@@ -6,6 +6,11 @@ import pl.edziennik.application.common.dispatcher.query.IQuery;
 import pl.edziennik.common.dto.schoolclass.DetailedSchoolClassDto;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 
+/**
+ * A query used for getting the detailed school class information
+ * <br>
+ * <b>Return DTO: {@link DetailedSchoolClassDto}</b>
+ */
 @HandledBy(handler = GetDetailedSchoolClassQueryHandler.class)
 public record GetDetailedSchoolClassQuery(
 

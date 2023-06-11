@@ -7,8 +7,9 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import pl.edziennik.common.exception.InvalidIdentifierException;
@@ -20,31 +21,34 @@ import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
 import java.util.List;
 
-@ControllerAdvice
+@RestControllerAdvice
 @AllArgsConstructor
 public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
 
     private final ResourceCreator res;
 
     @ExceptionHandler(value = BusinessException.class)
-    protected ResponseEntity<List<ValidationError>> handleBusinessException(BusinessException exception, WebRequest request) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getErrors());
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected List<ValidationError> handleBusinessException(BusinessException exception, WebRequest request) {
+        return exception.getErrors();
     }
 
     @ExceptionHandler(value = InvalidIdentifierException.class)
-    protected ResponseEntity<ValidationError> handleInvalidIdentifierException(InvalidIdentifierException exception,
-                                                                               WebRequest webRequest) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ValidationError("Uri identifier", res.of(
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ValidationError handleInvalidIdentifierException(InvalidIdentifierException exception,
+                                                               WebRequest webRequest) {
+        return new ValidationError("Uri identifier", res.of(
                 "invalid.identifier"),
-                ErrorCode.INVALID_IDENTIFIER.errorCode()));
+                ErrorCode.INVALID_IDENTIFIER.errorCode());
     }
 
     @ExceptionHandler(value = InvalidParameterException.class)
-    protected ResponseEntity<ValidationError> handleInvalidParameterException(InvalidParameterException exception,
-                                                                              WebRequest webRequest) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ValidationError("Uri parameter", res.of(
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ValidationError handleInvalidParameterException(InvalidParameterException exception,
+                                                              WebRequest webRequest) {
+        return new ValidationError("Uri parameter", res.of(
                 "invalid.parameter"),
-                ErrorCode.INVALID_PARAMETER.errorCode()));
+                ErrorCode.INVALID_PARAMETER.errorCode());
     }
 
     @Override

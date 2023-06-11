@@ -8,6 +8,11 @@ import pl.edziennik.common.valueobject.id.SubjectId;
 
 import java.util.List;
 
+/**
+ * A Query used for getting all assigned to the subject student's grades
+ * <br>
+ * <b>Return DTO: {@link StudentGradesBySubjectDto}</b>
+ */
 @HandledBy(handler = GetStudentsGradesBySubjectQueryHandler.class)
 public record GetStudentsGradesBySubjectQuery(
 

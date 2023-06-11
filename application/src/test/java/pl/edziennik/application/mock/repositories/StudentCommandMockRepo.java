@@ -1,7 +1,5 @@
 package pl.edziennik.application.mock.repositories;
 
-import pl.edziennik.common.valueobject.Name;
-import pl.edziennik.common.valueobject.Pesel;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.domain.student.Student;
@@ -27,15 +25,6 @@ public class StudentCommandMockRepo implements StudentCommandRepository {
             return false;
         }
         return student.getParent() != null;
-    }
-
-    @Override
-    public boolean isStudentExistsByPesel(Pesel pesel, Name roleName) {
-        List<Student> students = database.values().stream()
-                .filter(item -> item.getPersonInformation().pesel().equals(pesel)
-                        && item.getUser().getRole().getName().equals(roleName))
-                .toList();
-        return !students.isEmpty();
     }
 
     @Override

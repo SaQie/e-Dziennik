@@ -8,6 +8,9 @@ import pl.edziennik.application.common.dispatcher.command.ICommand;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.id.SubjectId;
 
+/**
+ * A command used for assigning the subject to the student
+ */
 @HandledBy(handler = AssignSubjectToStudentCommandHandler.class)
 @ValidatedBy(validator = AssignSubjectToStudentCommandValidator.class)
 public record AssignSubjectToStudentCommand(

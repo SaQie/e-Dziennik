@@ -30,7 +30,7 @@ class CreateParentCommandHandler implements ICommandHandler<CreateParentCommand,
     public OperationResult handle(CreateParentCommand command) {
         User user = createUser(command);
 
-        PersonInformation personInformation = PersonInformation.of(command.firstName(), command.lastName(), command.phoneNumber(), command.pesel());
+        PersonInformation personInformation = PersonInformation.of(command.firstName(), command.lastName(), command.phoneNumber());
         Address address = Address.of(command.address(), command.city(), command.postalCode());
 
         Parent parent = Parent.of(user, personInformation, address);
@@ -48,6 +48,6 @@ class CreateParentCommandHandler implements ICommandHandler<CreateParentCommand,
 
         Password encodedPassword = Password.of(passwordEncoder.encode(command.password().value()));
 
-        return User.of(command.username(), encodedPassword, command.email(), role);
+        return User.of(command.username(), encodedPassword, command.email(), command.pesel(), role);
     }
 }

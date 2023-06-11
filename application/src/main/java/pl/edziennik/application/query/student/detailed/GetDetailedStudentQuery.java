@@ -6,6 +6,11 @@ import pl.edziennik.application.common.dispatcher.query.IQuery;
 import pl.edziennik.common.dto.student.DetailedStudentDto;
 import pl.edziennik.common.valueobject.id.StudentId;
 
+/**
+ * A query used for getting the detailed student information
+ * <br>
+ * <b>Return DTO: {@link DetailedStudentDto}</b>
+ */
 @HandledBy(handler = GetDetailedStudentQueryHandler.class)
 public record GetDetailedStudentQuery(
 

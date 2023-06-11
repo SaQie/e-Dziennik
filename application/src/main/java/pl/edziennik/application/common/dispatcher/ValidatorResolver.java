@@ -11,6 +11,9 @@ import pl.edziennik.infrastructure.spring.exception.ResolverException;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Class responsible for obtaining the right validator from the command/query class if @ValidatedBy exists
+ */
 @Component
 @AllArgsConstructor
 @SuppressWarnings("all")

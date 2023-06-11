@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pl.edziennik.application.command.address.changeaddress.ChangeAddressCommand;
 import pl.edziennik.application.command.student.assignparent.AssignParentCommand;
 import pl.edziennik.application.command.student.create.CreateStudentCommand;
 import pl.edziennik.application.command.student.delete.DeleteStudentCommand;
@@ -25,7 +26,6 @@ public class StudentCommandController {
     private final Dispatcher dispatcher;
 
     @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Add new student")
     public ResponseEntity<Void> createStudent(@RequestBody @Valid CreateStudentCommand command) {
         OperationResult operationResult = dispatcher.dispatch(command);
@@ -40,12 +40,11 @@ public class StudentCommandController {
     }
 
     @DeleteMapping("/{studentId}")
-    @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Delete specific student")
     public ResponseEntity<Void> deleteStudent(@PathVariable StudentId studentId) {
         dispatcher.dispatch(new DeleteStudentCommand(studentId));
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{studentId}/parents/{parentId}/assign")
@@ -53,6 +52,18 @@ public class StudentCommandController {
         dispatcher.dispatch(new AssignParentCommand(studentId, parentId));
 
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{studentId}/address")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateAddress(@PathVariable StudentId studentId, @RequestBody ChangeAddressCommand command) {
+        command = new ChangeAddressCommand(studentId.id(),
+                command.address(),
+                command.city(),
+                command.postalCode(),
+                ChangeAddressCommand.CommandFor.STUDENT);
+
+        dispatcher.dispatch(command);
     }
 
 }

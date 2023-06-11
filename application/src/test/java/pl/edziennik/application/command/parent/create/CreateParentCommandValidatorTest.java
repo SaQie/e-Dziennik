@@ -83,7 +83,7 @@ class CreateParentCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), CreateParentCommand.STUDENT_ID);
-        assertEquals(errors.get(0).errorMessage(), CreateParentCommandValidator.MESSAGE_KEY_STUDENT_ALREADY_HAS_PARENT);
+        assertEquals(errors.get(0).message(), CreateParentCommandValidator.MESSAGE_KEY_STUDENT_ALREADY_HAS_PARENT);
     }
 
     @Test
@@ -114,7 +114,7 @@ class CreateParentCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), CreateParentCommand.USERNAME);
-        assertEquals(errors.get(0).errorMessage(), CreateParentCommandValidator.MESSAGE_KEY_USER_ALREADY_EXISTS_BY_USERNAME);
+        assertEquals(errors.get(0).message(), CreateParentCommandValidator.MESSAGE_KEY_USER_ALREADY_EXISTS_BY_USERNAME);
 
     }
 
@@ -146,7 +146,7 @@ class CreateParentCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), CreateParentCommand.EMAIL);
-        assertEquals(errors.get(0).errorMessage(), CreateParentCommandValidator.MESSAGE_KEY_USER_ALREADY_EXISTS_BY_EMAIL);
+        assertEquals(errors.get(0).message(), CreateParentCommandValidator.MESSAGE_KEY_USER_ALREADY_EXISTS_BY_EMAIL);
 
 
     }

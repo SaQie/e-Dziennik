@@ -45,7 +45,7 @@ class DeleteSchoolCommandValidatorTest extends BaseUnitTest {
         schoolCommandRepository.save(school);
 
         User user = createUser("Kamil", "qweqwe@o2.pl", "TEACHER");
-        PersonInformation personInformation = createPersonInformation("123123123");
+        PersonInformation personInformation = createPersonInformation();
         createTeacher(user, school, personInformation, address);
 
         DeleteSchoolCommand deleteSchoolCommand = new DeleteSchoolCommand(school.getSchoolId());
@@ -57,7 +57,7 @@ class DeleteSchoolCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(1, errors.size());
         assertEquals(errors.get(0).field(), DeleteSchoolCommand.SCHOOL_ID);
-        assertEquals(errors.get(0).errorMessage(), DeleteSchoolCommandValidator.MESSAGE_KEY_CANNOT_DELETE_SCHOOL_BECAUSE_OF_TEACHER_EXISTS);
+        assertEquals(errors.get(0).message(), DeleteSchoolCommandValidator.MESSAGE_KEY_CANNOT_DELETE_SCHOOL_BECAUSE_OF_TEACHER_EXISTS);
     }
 
     @Test
@@ -67,7 +67,7 @@ class DeleteSchoolCommandValidatorTest extends BaseUnitTest {
         schoolCommandRepository.save(school);
 
         User user = createUser("Kamil", "qweqwe@o2.pl", "TEACHER");
-        PersonInformation personInformation = createPersonInformation("123123123");
+        PersonInformation personInformation = createPersonInformation();
         createStudent(user, school, SchoolClass.of(null, null, null), personInformation, address);
 
         DeleteSchoolCommand deleteSchoolCommand = new DeleteSchoolCommand(school.getSchoolId());
@@ -79,7 +79,7 @@ class DeleteSchoolCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(1, errors.size());
         assertEquals(errors.get(0).field(), DeleteSchoolCommand.SCHOOL_ID);
-        assertEquals(errors.get(0).errorMessage(), DeleteSchoolCommandValidator.MESSAGE_KEY_CANNOT_DELETE_SCHOOL_BECAUSE_OF_STUDENT_EXISTS);
+        assertEquals(errors.get(0).message(), DeleteSchoolCommandValidator.MESSAGE_KEY_CANNOT_DELETE_SCHOOL_BECAUSE_OF_STUDENT_EXISTS);
     }
 
     @Test
@@ -90,7 +90,6 @@ class DeleteSchoolCommandValidatorTest extends BaseUnitTest {
         schoolCommandRepository.save(school);
 
         User user = createUser("Kamil", "qweqwe@o2.pl", "TEACHER");
-        PersonInformation personInformation = createPersonInformation("123123123");
         createSchoolClass("test", school, null);
 
         DeleteSchoolCommand deleteSchoolCommand = new DeleteSchoolCommand(school.getSchoolId());
@@ -102,7 +101,7 @@ class DeleteSchoolCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(1, errors.size());
         assertEquals(errors.get(0).field(), DeleteSchoolCommand.SCHOOL_ID);
-        assertEquals(errors.get(0).errorMessage(), DeleteSchoolCommandValidator.MESSAGE_KEY_CANNOT_DELETE_SCHOOL_BECAUSE_OF_SCHOOL_CLASS_EXISTS);
+        assertEquals(errors.get(0).message(), DeleteSchoolCommandValidator.MESSAGE_KEY_CANNOT_DELETE_SCHOOL_BECAUSE_OF_SCHOOL_CLASS_EXISTS);
     }
 
 }

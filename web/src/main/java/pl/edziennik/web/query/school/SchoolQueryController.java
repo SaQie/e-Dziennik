@@ -3,7 +3,6 @@ package pl.edziennik.web.query.school;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.application.query.school.detailed.GetDetailedSchoolQuery;
@@ -22,22 +21,18 @@ public class SchoolQueryController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<PageDto<SchoolSummaryDto>> getSchoolList(Pageable pageable) {
+    public PageDto<SchoolSummaryDto> getSchoolList(Pageable pageable) {
         GetSchoolSummaryQuery getSchoolSummaryQuery = new GetSchoolSummaryQuery(pageable);
 
-        PageDto<SchoolSummaryDto> schoolSummaryDtoPageDto = dispatcher.dispatch(getSchoolSummaryQuery);
-
-        return ResponseEntity.ok(schoolSummaryDtoPageDto);
+        return dispatcher.dispatch(getSchoolSummaryQuery);
     }
 
     @GetMapping("/{schoolId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<DetailedSchoolDto> getSchool(@PathVariable SchoolId schoolId) {
+    public DetailedSchoolDto getSchool(@PathVariable SchoolId schoolId) {
         GetDetailedSchoolQuery getDetailedSchoolQuery = new GetDetailedSchoolQuery(schoolId);
 
-        DetailedSchoolDto detailedSchoolDto = dispatcher.dispatch(getDetailedSchoolQuery);
-
-        return ResponseEntity.ok(detailedSchoolDto);
+        return dispatcher.dispatch(getDetailedSchoolQuery);
     }
 
 

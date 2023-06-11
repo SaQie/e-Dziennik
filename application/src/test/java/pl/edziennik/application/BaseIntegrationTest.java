@@ -198,6 +198,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                 Username.of(username),
                 Password.of(StringUtil.randomIdentifer(5)),
                 Email.of(email),
+                Pesel.of(pesel),
                 teacherRole);
 
         user.activate();
@@ -220,8 +221,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         return PersonInformation.of(
                 FirstName.of("Test"),
                 LastName.of("qweqwe"),
-                PhoneNumber.of("123123132"),
-                Pesel.of(pesel)
+                PhoneNumber.of("123123132")
         );
     }
 
@@ -247,6 +247,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                 Username.of(username),
                 Password.of(StringUtil.randomIdentifer(5)),
                 Email.of(email),
+                Pesel.of(pesel),
                 studentRole
         );
         user.activate();
@@ -287,6 +288,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                 Username.of(username),
                 Password.of(StringUtil.randomIdentifer(5)),
                 Email.of(email),
+                Pesel.of(StringUtil.randomIdentifer(11)),
                 adminRole
         );
 

@@ -11,6 +11,9 @@ import pl.edziennik.common.valueobject.Name;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.TeacherId;
 
+/**
+ * A command used for creating a new subject in a specific school class
+ */
 @HandledBy(handler = CreateSubjectCommandHandler.class)
 @ValidatedBy(validator = CreateSubjectCommandValidator.class)
 public record CreateSubjectCommand(

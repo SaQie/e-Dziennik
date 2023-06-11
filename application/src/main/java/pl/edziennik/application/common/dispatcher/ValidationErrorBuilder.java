@@ -28,13 +28,13 @@ public class ValidationErrorBuilder {
         return this;
     }
 
-    public void addError(String field, String message, ErrorCode errorCode) {
-        ValidationError validationError = new ValidationError(field, res.of(message), errorCode.errorCode());
+    public void addError(String field, String message, ErrorCode errorCode,Object... objects) {
+        ValidationError validationError = new ValidationError(field, res.of(message,objects), errorCode.errorCode());
         this.errors.add(validationError);
     }
 
-    public void addError(String field, String message, ErrorCode errorCode, Object... objects) {
-        ValidationError validationError = new ValidationError(field, res.of(message, objects), errorCode.errorCode());
+    public void addError(String field, String message, String detail, ErrorCode errorCode, Object... objects) {
+        ValidationError validationError = new ValidationError(field, errorCode.errorCode(), res.of(message,objects), detail);
         this.errors.add(validationError);
     }
 

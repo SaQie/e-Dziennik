@@ -8,6 +8,12 @@ import pl.edziennik.common.dto.PageDto;
 import pl.edziennik.common.dto.schoolclass.SchoolClassSummaryForSchoolDto;
 import pl.edziennik.common.valueobject.id.SchoolId;
 
+
+/**
+ * A query used for getting the paginated school classes list for given school (list contains only part of school class data)
+ * <br>
+ * <b>Return DTO: {@link SchoolClassSummaryForSchoolDto}</b>
+ */
 @HandledBy(handler = GetSchoolClassSummaryForSchoolQueryHandler.class)
 public record GetSchoolClassSummaryForSchoolQuery(
 

@@ -31,8 +31,7 @@ public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         AuthResponseDto authResponseDto = new AuthResponseDto();
         authResponseDto.setMessage(resourceCreator.of("bad.credentials.message"));
-
-        if (exception instanceof DisabledException){
+        if (exception instanceof DisabledException) {
             authResponseDto.setMessage(resourceCreator.of("account.disabled"));
         }
         String jsonObject = new ObjectMapper().writeValueAsString(authResponseDto);

@@ -107,7 +107,7 @@ class CreateSubjectCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), CreateSubjectCommand.NAME);
-        assertEquals(errors.get(0).errorMessage(), CreateSubjectCommandValidator.MESSAGE_KEY_SUBJECT_ALREADY_EXISTS);
+        assertEquals(errors.get(0).message(), CreateSubjectCommandValidator.MESSAGE_KEY_SUBJECT_ALREADY_EXISTS);
     }
 
     @Test
@@ -138,7 +138,7 @@ class CreateSubjectCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), CreateSubjectCommand.TEACHER_ID);
-        assertEquals(errors.get(0).errorMessage(), CreateSubjectCommandValidator.MESSAGE_KEY_TEACHER_IS_FROM_ANOTHER_SCHOOL);
+        assertEquals(errors.get(0).message(), CreateSubjectCommandValidator.MESSAGE_KEY_TEACHER_IS_FROM_ANOTHER_SCHOOL);
     }
 
     @Test
@@ -164,7 +164,7 @@ class CreateSubjectCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), CreateSubjectCommand.TEACHER_ID);
-        assertEquals(errors.get(0).errorMessage(), CreateSubjectCommandValidator.MESSAGE_KEY_ACCOUNT_INACTIVE);
+        assertEquals(errors.get(0).message(), CreateSubjectCommandValidator.MESSAGE_KEY_ACCOUNT_INACTIVE);
     }
 
 

@@ -9,7 +9,9 @@ import pl.edziennik.application.common.dispatcher.command.ICommand;
 import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.SchoolId;
 
-
+/**
+ *  A command used for creating a new teacher
+ */
 @HandledBy(handler = CreateTeacherCommandHandler.class)
 @ValidatedBy(validator = CreateTeacherCommandValidator.class)
 public record CreateTeacherCommand(

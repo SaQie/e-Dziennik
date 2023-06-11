@@ -57,7 +57,7 @@ class CreateTeacherCommandValidatorTest extends BaseUnitTest {
         School school = createSchool("Test", "123123123", "123132123", address);
         school = schoolCommandRepository.save(school);
 
-        PersonInformation personInformation = createPersonInformation("123123123123");
+        PersonInformation personInformation = createPersonInformation();
         Teacher teacher = createTeacher(user, school, personInformation, address);
         teacher = teacherCommandRepository.save(teacher);
 
@@ -81,7 +81,7 @@ class CreateTeacherCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), CreateTeacherCommand.EMAIL);
-        assertEquals(errors.get(0).errorMessage(), CreateTeacherCommandValidator.MESSAGE_KEY_USER_ALREADY_EXISTS_BY_EMAIL);
+        assertEquals(errors.get(0).message(), CreateTeacherCommandValidator.MESSAGE_KEY_USER_ALREADY_EXISTS_BY_EMAIL);
     }
 
     @Test
@@ -91,7 +91,7 @@ class CreateTeacherCommandValidatorTest extends BaseUnitTest {
         School school = createSchool("Test", "123123123", "123132123", address);
         school = schoolCommandRepository.save(school);
 
-        PersonInformation personInformation = createPersonInformation("123123123123");
+        PersonInformation personInformation = createPersonInformation();
         Teacher teacher = createTeacher(user, school, personInformation, address);
         teacher = teacherCommandRepository.save(teacher);
 
@@ -103,7 +103,7 @@ class CreateTeacherCommandValidatorTest extends BaseUnitTest {
                 Address.of("address"),
                 PostalCode.of("12-12"),
                 City.of("Test"),
-                Pesel.of("123123123"),
+                Pesel.of("123123143"),
                 Email.of("xxx@example.com"),
                 PhoneNumber.of("123000000"),
                 school.getSchoolId()
@@ -115,7 +115,7 @@ class CreateTeacherCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), CreateTeacherCommand.USERNAME);
-        assertEquals(errors.get(0).errorMessage(), CreateTeacherCommandValidator.MESSAGE_KEY_USER_ALREADY_EXISTS_BY_USERNAME);
+        assertEquals(errors.get(0).message(), CreateTeacherCommandValidator.MESSAGE_KEY_USER_ALREADY_EXISTS_BY_USERNAME);
     }
 
     @Test
@@ -125,7 +125,7 @@ class CreateTeacherCommandValidatorTest extends BaseUnitTest {
         School school = createSchool("Test", "123123123", "123132123", address);
         school = schoolCommandRepository.save(school);
 
-        PersonInformation personInformation = createPersonInformation("123123123");
+        PersonInformation personInformation = createPersonInformation();
         Teacher teacher = createTeacher(user, school, personInformation, address);
         teacher = teacherCommandRepository.save(teacher);
 
@@ -137,7 +137,7 @@ class CreateTeacherCommandValidatorTest extends BaseUnitTest {
                 Address.of("address"),
                 PostalCode.of("12-12"),
                 City.of("Test"),
-                Pesel.of("123123123"),
+                Pesel.of(user.getPesel().value()),
                 Email.of("test1@example.com"),
                 PhoneNumber.of("123000000"),
                 school.getSchoolId()
@@ -149,6 +149,6 @@ class CreateTeacherCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), CreateTeacherCommand.PESEL);
-        assertEquals(errors.get(0).errorMessage(), CreateTeacherCommandValidator.MESSAGE_KEY_TEACHER_PESEL_NOT_UNIQUE);
+        assertEquals(errors.get(0).message(), CreateTeacherCommandValidator.MESSAGE_KEY_TEACHER_PESEL_NOT_UNIQUE);
     }
 }

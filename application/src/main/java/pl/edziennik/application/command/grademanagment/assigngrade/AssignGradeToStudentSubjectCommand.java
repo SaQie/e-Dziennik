@@ -13,6 +13,11 @@ import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.id.SubjectId;
 import pl.edziennik.common.valueobject.id.TeacherId;
 
+/**
+ * A command used for assigning grades to student's subject
+ * <br>
+ * Available grades see {@link Grade}
+ */
 @HandledBy(handler = AssignGradeToStudentSubjectCommandHandler.class)
 @ValidatedBy(validator = AssignGradeToStudentSubjectCommandValidator.class)
 public record AssignGradeToStudentSubjectCommand(

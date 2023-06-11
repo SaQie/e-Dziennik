@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pl.edziennik.application.command.address.changeaddress.ChangeAddressCommand;
 import pl.edziennik.application.command.school.create.CreateSchoolCommand;
 import pl.edziennik.application.command.school.delete.DeleteSchoolCommand;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
@@ -23,7 +24,6 @@ public class SchoolCommandController {
     private final Dispatcher dispatcher;
 
     @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create new school")
     public ResponseEntity<Void> createSchool(@RequestBody @Valid CreateSchoolCommand createSchoolCommand) {
         OperationResult operationResult = dispatcher.dispatch(createSchoolCommand);
@@ -39,14 +39,24 @@ public class SchoolCommandController {
 
 
     @DeleteMapping("{schoolId}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete specific school")
-    public ResponseEntity<Void> deleteSchool(@PathVariable SchoolId schoolId) {
+    public void deleteSchool(@PathVariable SchoolId schoolId) {
         DeleteSchoolCommand deleteSchoolCommand = new DeleteSchoolCommand(schoolId);
 
         dispatcher.dispatch(deleteSchoolCommand);
+    }
 
-        return ResponseEntity.ok().build();
+    @PutMapping("/{schoolId}/address")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateAddress(@PathVariable SchoolId schoolId, @RequestBody ChangeAddressCommand command) {
+        command = new ChangeAddressCommand(schoolId.id(),
+                command.address(),
+                command.city(),
+                command.postalCode(),
+                ChangeAddressCommand.CommandFor.SCHOOL);
+
+        dispatcher.dispatch(command);
     }
 
 

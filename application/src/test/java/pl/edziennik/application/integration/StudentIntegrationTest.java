@@ -31,7 +31,7 @@ public class StudentIntegrationTest extends BaseIntegrationTest {
     public void shouldCreateStudent() {
         // given
         SchoolId schoolId = createSchool("Testowa", "123123", "123123");
-        TeacherId teacherId = createTeacher("Teacher", "test@example.com", "123123123", schoolId);
+        TeacherId teacherId = createTeacher("Teacher", "test@example.com", "124123123", schoolId);
         SchoolClassId schoolClassId = createSchoolClass(schoolId, teacherId, "1A");
 
         CreateStudentCommand command = new CreateStudentCommand(

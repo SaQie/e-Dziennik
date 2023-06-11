@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
 import pl.edziennik.application.common.dispatcher.base.IBaseValidator;
-import pl.edziennik.domain.role.Role;
 import pl.edziennik.infrastructure.repository.school.SchoolCommandRepository;
 import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassCommandRepository;
 import pl.edziennik.infrastructure.repository.student.StudentCommandRepository;
@@ -71,7 +70,7 @@ class CreateStudentCommandValidator implements IBaseValidator<CreateStudentComma
      * Check if student with given pesel already exists
      */
     private void checkStudentWithPeselExists(CreateStudentCommand command, ValidationErrorBuilder errorBuilder) {
-        if (studentCommandRepository.isStudentExistsByPesel(command.pesel(), Role.RoleConst.ROLE_STUDENT.roleName())) {
+        if (userCommandRepository.existsByPesel(command.pesel())) {
             errorBuilder.addError(
                     CreateStudentCommand.PESEL,
                     MESSAGE_KEY_STUDENT_PESEL_NOT_UNIQUE,

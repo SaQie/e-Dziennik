@@ -14,7 +14,7 @@ public interface StudentQueryRepository {
 
     @Query("SELECT NEW pl.edziennik.common.dto.student.DetailedStudentDto" +
             "(s.studentId, u.userId,s.journalNumber, u.username, u.email, s.personInformation.fullName, a.address, a.postalCode, a.city, " +
-            "s.personInformation.pesel, s.personInformation.phoneNumber, p.parentId, p.personInformation.fullName, " +
+            "u.pesel, s.personInformation.phoneNumber, p.parentId, p.personInformation.fullName, " +
             "sc.schoolId, sc.name, scl.schoolClassId, scl.className )" +
             "FROM Student s " +
             "JOIN s.user u " +

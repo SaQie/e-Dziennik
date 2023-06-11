@@ -96,7 +96,7 @@ class AssignParentCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), AssignParentCommand.PARENT_ID);
-        assertEquals(errors.get(0).errorMessage(), AssignParentCommandValidator.MESSAGE_KEY_PARENT_ALREADY_HAS_STUDENT);
+        assertEquals(errors.get(0).message(), AssignParentCommandValidator.MESSAGE_KEY_PARENT_ALREADY_HAS_STUDENT);
     }
 
     @Test
@@ -124,7 +124,7 @@ class AssignParentCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), AssignParentCommand.STUDENT_ID);
-        assertEquals(errors.get(0).errorMessage(), AssignParentCommandValidator.MESSAGE_KEY_STUDENT_ALREADY_HAS_PARENT);
+        assertEquals(errors.get(0).message(), AssignParentCommandValidator.MESSAGE_KEY_STUDENT_ALREADY_HAS_PARENT);
     }
 
     @Test
@@ -150,7 +150,7 @@ class AssignParentCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), AssignParentCommand.PARENT_ID);
-        assertEquals(errors.get(0).errorMessage(), AssignParentCommandValidator.MESSAGE_KEY_ACCOUNT_INACTIVE);
+        assertEquals(errors.get(0).message(), AssignParentCommandValidator.MESSAGE_KEY_ACCOUNT_INACTIVE);
     }
 
     @Test
@@ -176,7 +176,7 @@ class AssignParentCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), AssignParentCommand.STUDENT_ID);
-        assertEquals(errors.get(0).errorMessage(), AssignParentCommandValidator.MESSAGE_KEY_ACCOUNT_INACTIVE);
+        assertEquals(errors.get(0).message(), AssignParentCommandValidator.MESSAGE_KEY_ACCOUNT_INACTIVE);
     }
 
 

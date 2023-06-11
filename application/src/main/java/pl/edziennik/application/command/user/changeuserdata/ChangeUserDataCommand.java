@@ -9,6 +9,9 @@ import pl.edziennik.common.valueobject.Email;
 import pl.edziennik.common.valueobject.Username;
 import pl.edziennik.common.valueobject.id.UserId;
 
+/**
+ * A Command used for updating basic user data (username, or/and email)
+ */
 @HandledBy(handler = ChangeUserDataCommandHandler.class)
 @ValidatedBy(validator = ChangeUserDataCommandValidator.class)
 public record ChangeUserDataCommand(

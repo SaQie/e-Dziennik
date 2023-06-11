@@ -1,0 +1,8 @@
+ALTER TABLE student
+    DROP COLUMN IF EXISTS pesel;
+ALTER TABLE teacher
+    DROP COLUMN IF EXISTS pesel;
+ALTER TABLE parent
+    DROP COLUMN IF EXISTS pesel;
+
+ALTER TABLE users ADD pesel varchar(11) NOT NULL UNIQUE;

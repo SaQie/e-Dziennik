@@ -34,7 +34,7 @@ class CreateTeacherCommandHandler implements ICommandHandler<CreateTeacherComman
         School school = schoolCommandRepository.getReferenceById(command.schoolId());
         User user = createUser(command);
 
-        PersonInformation personInformation = PersonInformation.of(command.firstName(), command.lastName(), command.phoneNumber(), command.pesel());
+        PersonInformation personInformation = PersonInformation.of(command.firstName(), command.lastName(), command.phoneNumber());
         Address address = Address.of(command.address(), command.city(), command.postalCode());
 
         Teacher teacher = Teacher.of(user, school, personInformation, address);
@@ -50,6 +50,6 @@ class CreateTeacherCommandHandler implements ICommandHandler<CreateTeacherComman
         Role role = roleCommandRepository.getByName(Role.RoleConst.ROLE_TEACHER.roleName());
         Password encodedPassword = Password.of(passwordEncoder.encode(command.password().value()));
 
-        return User.of(command.username(), encodedPassword, command.email(), role);
+        return User.of(command.username(), encodedPassword, command.email(),command.pesel(), role);
     }
 }

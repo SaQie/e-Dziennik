@@ -20,7 +20,7 @@ public class BusinessException extends RuntimeException {
     }
 
     public BusinessException(ValidationError error){
-        super(error.errorMessage());
+        super(error.message());
         this.errors = new ArrayList<>();
         this.errors.add(error);
     }

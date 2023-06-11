@@ -1,6 +1,7 @@
 package pl.edziennik.application.mock.repositories;
 
 import pl.edziennik.common.valueobject.Email;
+import pl.edziennik.common.valueobject.Pesel;
 import pl.edziennik.common.valueobject.Username;
 import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.domain.user.User;
@@ -31,6 +32,14 @@ public class UserCommandMockRepo implements UserCommandRepository {
     public boolean existsByUsername(Username username) {
         List<User> users = database.values().stream()
                 .filter(item -> item.getUsername().equals(username))
+                .toList();
+        return !users.isEmpty();
+    }
+
+    @Override
+    public boolean existsByPesel(Pesel pesel) {
+        List<User> users = database.values().stream()
+                .filter(item -> item.getPesel().equals(pesel))
                 .toList();
         return !users.isEmpty();
     }

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
 import pl.edziennik.common.valueobject.Email;
 import pl.edziennik.common.valueobject.Password;
+import pl.edziennik.common.valueobject.Pesel;
 import pl.edziennik.common.valueobject.Username;
 import pl.edziennik.domain.admin.Admin;
 import pl.edziennik.domain.user.User;
@@ -31,7 +32,8 @@ class CreateAdminCommandValidatorTest extends BaseUnitTest {
         CreateAdminCommand command = new CreateAdminCommand(
                 Username.of("Test"),
                 Email.of("Test@o2.pl"),
-                Password.of("password")
+                Password.of("password"),
+                Pesel.of("12312312311")
         );
 
         // when
@@ -41,6 +43,6 @@ class CreateAdminCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), CreateAdminCommand.USERNAME);
-        assertEquals(errors.get(0).errorMessage(), CreateAdminCommandValidator.MESSAGE_KEY_ADMIN_ALREADY_EXISTS);
+        assertEquals(errors.get(0).message(), CreateAdminCommandValidator.MESSAGE_KEY_ADMIN_ALREADY_EXISTS);
     }
 }

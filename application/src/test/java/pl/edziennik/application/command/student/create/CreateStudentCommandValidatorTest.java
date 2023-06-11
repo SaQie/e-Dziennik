@@ -124,7 +124,7 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), CreateStudentCommand.USERNAME);
-        assertEquals(errors.get(0).errorMessage(), CreateStudentCommandValidator.MESSAGE_KEY_USER_ALREADY_EXISTS_BY_USERNAME);
+        assertEquals(errors.get(0).message(), CreateStudentCommandValidator.MESSAGE_KEY_USER_ALREADY_EXISTS_BY_USERNAME);
     }
 
     @Test
@@ -163,7 +163,7 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), CreateStudentCommand.EMAIL);
-        assertEquals(errors.get(0).errorMessage(), CreateStudentCommandValidator.MESSAGE_KEY_USER_ALREADY_EXISTS_BY_EMAIL);
+        assertEquals(errors.get(0).message(), CreateStudentCommandValidator.MESSAGE_KEY_USER_ALREADY_EXISTS_BY_EMAIL);
     }
 
     @Test
@@ -188,7 +188,7 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
                 Address.of("Test"),
                 PostalCode.of("123123"),
                 City.of("Nowakowo"),
-                Pesel.of("12345678912"),
+                Pesel.of(user.getPesel().value()),
                 Email.of("Test@example.com"),
                 PhoneNumber.of("123123"),
                 school.getSchoolId(),
@@ -202,7 +202,7 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), CreateStudentCommand.PESEL);
-        assertEquals(errors.get(0).errorMessage(), CreateStudentCommandValidator.MESSAGE_KEY_STUDENT_PESEL_NOT_UNIQUE);
+        assertEquals(errors.get(0).message(), CreateStudentCommandValidator.MESSAGE_KEY_STUDENT_PESEL_NOT_UNIQUE);
     }
 
     @Test
@@ -239,7 +239,7 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), CreateStudentCommand.SCHOOL_ID);
-        assertEquals(errors.get(0).errorMessage(), CreateStudentCommandValidator.MESSAGE_KEY_SCHOOL_CLASS_NOT_BELONGS_TO_SCHOOL);
+        assertEquals(errors.get(0).message(), CreateStudentCommandValidator.MESSAGE_KEY_SCHOOL_CLASS_NOT_BELONGS_TO_SCHOOL);
     }
 
     @Test
@@ -277,7 +277,7 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
         List<ValidationError> errors = validationErrorBuilder.getErrors();
         assertEquals(errors.size(), 1);
         assertEquals(errors.get(0).field(), CreateStudentCommand.SCHOOL_CLASS_ID);
-        assertEquals(errors.get(0).errorMessage(), CreateStudentCommandValidator.MESSAGE_KEY_SCHOOL_CLASS_STUDENT_LIMIT_REACHED);
+        assertEquals(errors.get(0).message(), CreateStudentCommandValidator.MESSAGE_KEY_SCHOOL_CLASS_STUDENT_LIMIT_REACHED);
     }
 
 
