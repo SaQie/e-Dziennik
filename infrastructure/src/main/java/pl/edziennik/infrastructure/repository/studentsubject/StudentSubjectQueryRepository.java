@@ -6,4 +6,5 @@ import pl.edziennik.domain.studentsubject.StudentSubject;
 
 @RepositoryDefinition(domainClass = StudentSubject.class, idClass = StudentSubjectId.class)
 public interface StudentSubjectQueryRepository {
+
 }

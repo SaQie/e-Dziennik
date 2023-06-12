@@ -7,6 +7,7 @@ import pl.edziennik.domain.grade.Grade;
 import pl.edziennik.domain.student.Student;
 import pl.edziennik.domain.subject.Subject;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,8 @@ public class StudentSubject {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Subject subject;
 
+    private BigDecimal average;
+
     @Version
     private Long version;
 
@@ -40,6 +43,10 @@ public class StudentSubject {
         studentSubject.subject = subject;
 
         return studentSubject;
+    }
+
+    public void changeAverage(BigDecimal average) {
+        this.average = average;
     }
 
 }

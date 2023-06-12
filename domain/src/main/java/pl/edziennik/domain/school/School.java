@@ -56,6 +56,9 @@ public class School {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private SchoolLevel schoolLevel;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    private SchoolConfiguration schoolConfiguration;
+
     @OneToMany(mappedBy = "school", orphanRemoval = true)
     private List<SchoolClass> schoolClasses = new ArrayList<>();
 
@@ -77,6 +80,7 @@ public class School {
         school.phoneNumber = phoneNumber;
         school.schoolLevel = schoolLevel;
         school.nip = nip;
+        school.schoolConfiguration = SchoolConfiguration.defaultConfig();
 
         return school;
     }

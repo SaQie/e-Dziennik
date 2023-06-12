@@ -25,7 +25,8 @@ class AssignGradeToStudentSubjectCommandHandlerTest extends BaseUnitTest {
     public AssignGradeToStudentSubjectCommandHandlerTest() {
         this.handler = new AssignGradeToStudentSubjectCommandHandler(studentSubjectCommandRepository,
                 teacherCommandRepository,
-                gradeCommandRepository);
+                gradeCommandRepository,
+                publisher);
     }
 
 

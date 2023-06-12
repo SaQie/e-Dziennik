@@ -2,6 +2,9 @@ package pl.edziennik.common.enums;
 
 import pl.edziennik.common.exception.InvalidParameterException;
 
+/**
+ *  Available document types for generating student's subject grades summary
+ */
 public enum DocumentType {
 
     PDF("PDF");

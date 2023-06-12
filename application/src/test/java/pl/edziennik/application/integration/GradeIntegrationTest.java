@@ -10,7 +10,11 @@ import pl.edziennik.common.enums.Grade;
 import pl.edziennik.common.valueobject.Description;
 import pl.edziennik.common.valueobject.Weight;
 import pl.edziennik.common.valueobject.id.*;
+import pl.edziennik.domain.studentsubject.StudentSubject;
 
+import java.math.BigDecimal;
+
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -20,7 +24,7 @@ public class GradeIntegrationTest extends BaseIntegrationTest {
 
     @Test
     @Transactional
-    public void shouldAssignGradeToStudentSubject(){
+    public void shouldAssignGradeToStudentSubject() {
         // given
         SchoolId schoolId = createSchool("Test", "123123", "1231233");
         TeacherId teacherId = createTeacher("Test", "test@example.com", "123123", schoolId);
@@ -48,6 +52,44 @@ public class GradeIntegrationTest extends BaseIntegrationTest {
         assertNotNull(grade);
         assertEquals(grade.getStudentSubject().getStudentSubjectId(), studentSubjectId);
         assertEquals(grade.getTeacher().getTeacherId(), teacherId);
+    }
+
+    @Test
+    public void shouldAssignGradeToStudentSubjectAndRecalculateAverage() {
+        // given
+        SchoolId schoolId = createSchool("Test", "123123", "1231233");
+        TeacherId teacherId = createTeacher("Test", "test@example.com", "123123", schoolId);
+        SchoolClassId schoolClassId = createSchoolClass(schoolId, teacherId, "1A");
+
+        SubjectId subjectId = transactionTemplate.execute(result -> createSubject("Test", schoolClassId, teacherId));
+        StudentId studentId = transactionTemplate.execute(result -> createStudent("Test1", "Test1@example.com", "123123", schoolId, schoolClassId));
+
+        StudentSubjectId studentSubjectId = transactionTemplate.execute(result -> assignStudentToSubject(studentId, subjectId));
+
+        StudentSubject studentSubject = studentSubjectCommandRepository.findById(studentSubjectId).get();
+        assertNull(null, studentSubject.getAverage());
+
+        AssignGradeToStudentSubjectCommand command = new AssignGradeToStudentSubjectCommand(
+                studentId,
+                subjectId,
+                Grade.FOUR,
+                Weight.of(1),
+                Description.of("Test"),
+                teacherId
+        );
+
+        // when
+        OperationResult operationResult = transactionTemplate.execute(result -> dispatcher.dispatch(command));
+
+        // then
+        pl.edziennik.domain.grade.Grade grade = gradeCommandRepository.getByGradeId(GradeId.of(operationResult.identifier().id()));
+        assertNotNull(grade);
+        assertEquals(grade.getStudentSubject().getStudentSubjectId(), studentSubjectId);
+        assertEquals(grade.getTeacher().getTeacherId(), teacherId);
+
+        studentSubject = studentSubjectCommandRepository.findById(studentSubjectId).get();
+        assertEquals(studentSubject.getAverage(), new BigDecimal("4.00"));
+
     }
 
 }

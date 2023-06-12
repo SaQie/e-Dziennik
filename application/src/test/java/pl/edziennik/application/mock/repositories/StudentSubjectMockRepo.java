@@ -3,12 +3,14 @@ package pl.edziennik.application.mock.repositories;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.id.StudentSubjectId;
 import pl.edziennik.common.valueobject.id.SubjectId;
+import pl.edziennik.domain.grade.Grade;
 import pl.edziennik.domain.studentsubject.StudentSubject;
 import pl.edziennik.infrastructure.repository.studentsubject.StudentSubjectCommandRepository;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class StudentSubjectMockRepo implements StudentSubjectCommandRepository {
 
@@ -27,6 +29,16 @@ public class StudentSubjectMockRepo implements StudentSubjectCommandRepository {
     public StudentSubject save(StudentSubject studentSubject) {
         database.put(studentSubject.getStudentSubjectId(), studentSubject);
         return database.get(studentSubject.getStudentSubjectId());
+    }
+
+    @Override
+    public Optional<StudentSubject> findById(StudentSubjectId studentSubjectId) {
+        return Optional.ofNullable(database.get(studentSubjectId));
+    }
+
+    @Override
+    public List<Grade> getStudentSubjectGrades(StudentSubjectId studentSubjectId) {
+        return null;
     }
 
     @Override

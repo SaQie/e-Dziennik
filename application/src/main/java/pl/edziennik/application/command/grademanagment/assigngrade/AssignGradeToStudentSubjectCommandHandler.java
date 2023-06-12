@@ -1,10 +1,12 @@
 package pl.edziennik.application.command.grademanagment.assigngrade;
 
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
+import pl.edziennik.application.events.event.GradeAddedEvent;
 import pl.edziennik.common.valueobject.id.GradeId;
 import pl.edziennik.domain.grade.Grade;
 import pl.edziennik.domain.studentsubject.StudentSubject;
@@ -21,6 +23,8 @@ class AssignGradeToStudentSubjectCommandHandler implements ICommandHandler<Assig
     private final TeacherCommandRepository teacherCommandRepository;
     private final GradeCommandRepository gradeCommandRepository;
 
+    private final ApplicationEventPublisher eventPublisher;
+
     @Override
     @Transactional
     public OperationResult handle(AssignGradeToStudentSubjectCommand command) {
@@ -30,6 +34,8 @@ class AssignGradeToStudentSubjectCommandHandler implements ICommandHandler<Assig
         Grade grade = Grade.of(command.grade(), command.weight(), command.description(), studentSubject, teacher);
 
         GradeId gradeId = gradeCommandRepository.save(grade).getGradeId();
+
+        eventPublisher.publishEvent(new GradeAddedEvent(studentSubject.getStudentSubjectId()));
 
         return OperationResult.success(gradeId);
     }
