@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.application.command.address.changeaddress.ChangeAddressCommand;
+import pl.edziennik.application.command.school.changeconfig.ChangeSchoolConfigurationValuesCommand;
 import pl.edziennik.application.command.school.create.CreateSchoolCommand;
 import pl.edziennik.application.command.school.delete.DeleteSchoolCommand;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
@@ -55,6 +56,14 @@ public class SchoolCommandController {
                 command.city(),
                 command.postalCode(),
                 ChangeAddressCommand.CommandFor.SCHOOL);
+
+        dispatcher.dispatch(command);
+    }
+
+    @PatchMapping("/{schoolId}/configurations")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void changeSchoolConfigurationValues(@RequestBody @Valid ChangeSchoolConfigurationValuesCommand command, @PathVariable SchoolId schoolId) {
+        command = new ChangeSchoolConfigurationValuesCommand(schoolId, command.averageType());
 
         dispatcher.dispatch(command);
     }

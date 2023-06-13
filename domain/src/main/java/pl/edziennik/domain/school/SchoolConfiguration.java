@@ -1,9 +1,6 @@
 package pl.edziennik.domain.school;
 
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import lombok.*;
 import pl.edziennik.common.enums.AverageType;
 import pl.edziennik.common.valueobject.id.SchoolConfigurationId;
@@ -19,6 +16,7 @@ public class SchoolConfiguration {
     private SchoolConfigurationId schoolConfigurationId = SchoolConfigurationId.create();
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "average_type", nullable = false)
     private AverageType averageType;
 
     public static SchoolConfiguration defaultConfig() {

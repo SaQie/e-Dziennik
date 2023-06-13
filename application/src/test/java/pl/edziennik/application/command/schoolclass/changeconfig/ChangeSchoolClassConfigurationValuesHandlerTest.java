@@ -1,13 +1,16 @@
 package pl.edziennik.application.command.schoolclass.changeconfig;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
 import pl.edziennik.application.mock.repositories.RoleCommandMockRepo;
+import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.schoolclass.SchoolClassConfiguration;
 import pl.edziennik.domain.teacher.Teacher;
 import pl.edziennik.domain.user.User;
+import pl.edziennik.infrastructure.spring.exception.BusinessException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,6 +20,24 @@ public class ChangeSchoolClassConfigurationValuesHandlerTest extends BaseUnitTes
 
     public ChangeSchoolClassConfigurationValuesHandlerTest() {
         this.handler = new ChangeSchoolClassConfigurationValuesCommandHandler(resourceCreator, schoolClassCommandRepository, schoolClassConfigurationCommandRepository);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenSchoolClassNotExists(){
+        // given
+        ChangeSchoolClassConfigurationValuesCommand command =
+                new ChangeSchoolClassConfigurationValuesCommand(
+                        SchoolClassId.create(),
+                        50,
+                        Boolean.FALSE
+                );
+
+        // when
+        // then
+        Assertions.assertThatThrownBy(() -> handler.handle(command))
+                .isInstanceOf(BusinessException.class)
+                .hasMessage(assertNotFoundMessage());
+
     }
 
     @Test
