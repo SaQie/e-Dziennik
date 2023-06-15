@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.RepositoryDefinition;
 import pl.edziennik.common.dto.school.DetailedSchoolDto;
 import pl.edziennik.common.dto.school.SchoolSummaryDto;
+import pl.edziennik.common.dto.school.config.SchoolConfigSummaryDto;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.domain.school.School;
 
@@ -28,4 +29,10 @@ public interface SchoolQueryRepository {
             "JOIN s.schoolLevel sl " +
             "WHERE s.schoolId = :schoolId")
     DetailedSchoolDto getSchool(SchoolId schoolId);
+
+    @Query("SELECT NEW " +
+            "pl.edziennik.common.dto.school.config.SchoolConfigSummaryDto(s.schoolId,sc.schoolConfigurationId, sc.averageType) " +
+            "FROM School s " +
+            "JOIN s.schoolConfiguration sc ")
+    SchoolConfigSummaryDto getSchoolConfiguration(SchoolId schoolId);
 }

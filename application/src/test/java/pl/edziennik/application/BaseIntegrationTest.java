@@ -30,7 +30,6 @@ import pl.edziennik.domain.studentsubject.StudentSubject;
 import pl.edziennik.domain.subject.Subject;
 import pl.edziennik.domain.teacher.Teacher;
 import pl.edziennik.domain.user.User;
-import pl.edziennik.infrastructure.repository.ActivationTokenRepository;
 import pl.edziennik.infrastructure.repository.address.AddressCommandRepository;
 import pl.edziennik.infrastructure.repository.address.AddressQueryRepository;
 import pl.edziennik.infrastructure.repository.admin.AdminCommandRepository;
@@ -56,9 +55,12 @@ import pl.edziennik.infrastructure.repository.subject.SubjectCommandRepository;
 import pl.edziennik.infrastructure.repository.subject.SubjectQueryRepository;
 import pl.edziennik.infrastructure.repository.teacher.TeacherCommandRepository;
 import pl.edziennik.infrastructure.repository.teacher.TeacherQueryRepository;
+import pl.edziennik.infrastructure.repository.token.ActivationTokenRepository;
 import pl.edziennik.infrastructure.repository.user.UserCommandRepository;
 import pl.edziennik.infrastructure.repository.user.UserQueryRepository;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
+import pl.edziennik.infrastructure.validator.ValidationError;
+import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -175,7 +177,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         Mockito.when(resourceCreator.of(Mockito.anyString())).thenAnswer(invocation -> invocation.<String>getArgument(0));
 
         Mockito.when(resourceCreator.notFoundError(Mockito.anyString(), Mockito.any(Identifier.class)))
-                .thenAnswer(invocation -> invocation.<String>getArgument(0));
+                .thenAnswer(invocationOnMock -> new ValidationError(invocationOnMock.<String>getArgument(0),"not.found.message", ErrorCode.OBJECT_NOT_EXISTS.errorCode()));
 
         this.transactionTemplate = new TransactionTemplate(transactionManager);
     }

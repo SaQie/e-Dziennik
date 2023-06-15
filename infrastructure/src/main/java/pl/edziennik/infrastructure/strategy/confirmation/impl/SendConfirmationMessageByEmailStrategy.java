@@ -10,7 +10,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 import pl.edziennik.common.valueobject.Token;
 import pl.edziennik.domain.user.User;
-import pl.edziennik.infrastructure.repository.ActivationTokenRepository;
+import pl.edziennik.infrastructure.repository.token.ActivationTokenRepository;
 import pl.edziennik.infrastructure.repository.user.UserQueryRepository;
 import pl.edziennik.infrastructure.strategy.confirmation.SendConfirmationMessageStrategy;
 import pl.edziennik.infrastructure.strategy.confirmation.SendConfirmationMessageStrategyData;

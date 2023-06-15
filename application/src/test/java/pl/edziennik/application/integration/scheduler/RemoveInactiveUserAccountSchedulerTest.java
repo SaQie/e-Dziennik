@@ -14,7 +14,7 @@ import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.domain.teacher.Teacher;
-import pl.edziennik.infrastructure.repository.ActivationTokenRepository;
+import pl.edziennik.infrastructure.repository.token.ActivationTokenRepository;
 import pl.edziennik.infrastructure.scheduler.RemoveInactiveUserAccountsSchedulerTask;
 
 import java.util.List;

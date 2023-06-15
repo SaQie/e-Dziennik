@@ -1,6 +1,5 @@
 package pl.edziennik.web.command.schoolclass;
 
-import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,7 +22,6 @@ public class SchoolClassCommandController {
     private final Dispatcher dispatcher;
 
     @PostMapping
-    @Operation(summary = "Add and assign school class to school")
     public ResponseEntity<Void> createSchoolClass(@RequestBody @Valid CreateSchoolClassCommand command) {
         OperationResult operationResult = dispatcher.dispatch(command);
 

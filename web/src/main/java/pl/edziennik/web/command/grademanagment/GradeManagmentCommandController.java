@@ -1,6 +1,5 @@
 package pl.edziennik.web.command.grademanagment;
 
-import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,6 @@ public class GradeManagmentCommandController {
     private final Dispatcher dispatcher;
 
     @PostMapping
-    @Operation(summary = "Add a grade to student subject")
     public ResponseEntity<Void> addStudentSubjectGrade(@RequestBody @Valid AssignGradeToStudentSubjectCommand command) {
         dispatcher.dispatch(command);
 

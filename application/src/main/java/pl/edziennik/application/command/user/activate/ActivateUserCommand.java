@@ -12,4 +12,7 @@ import pl.edziennik.common.valueobject.Token;
 public record ActivateUserCommand(
         Token token
 ) implements ICommand<OperationResult> {
+
+    public static final String TOKEN = "token";
+
 }

@@ -9,10 +9,10 @@ import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.domain.parent.Parent;
 import pl.edziennik.domain.student.Student;
 import pl.edziennik.domain.teacher.Teacher;
-import pl.edziennik.infrastructure.repository.ActivationTokenRepository;
 import pl.edziennik.infrastructure.repository.parent.ParentCommandRepository;
 import pl.edziennik.infrastructure.repository.student.StudentCommandRepository;
 import pl.edziennik.infrastructure.repository.teacher.TeacherCommandRepository;
+import pl.edziennik.infrastructure.repository.token.ActivationTokenRepository;
 
 import java.util.List;
 

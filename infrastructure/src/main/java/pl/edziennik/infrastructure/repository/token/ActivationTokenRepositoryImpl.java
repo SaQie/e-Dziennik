@@ -1,4 +1,4 @@
-package pl.edziennik.infrastructure.repository;
+package pl.edziennik.infrastructure.repository.token;
 
 import lombok.AllArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @Repository
 @AllArgsConstructor
-public class ActivationTokenRepository {
+class ActivationTokenRepositoryImpl implements ActivationTokenRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final ResourceCreator res;
@@ -38,6 +38,9 @@ public class ActivationTokenRepository {
     private static final String INSERT_ACTIVATION_TOKEN =
             "INSERT INTO email_activation_tokens(user_id, token, expiration_date) VALUES (:userId, :token, :expiration_date) ";
 
+    private static final String CHECK_ACTIVATION_TOKEN_EXP_DATE =
+            "SELECT CASE WHEN COUNT(eac) > 0 THEN TRUE ELSE FALSE END FROM email_activation_tokens eac WHERE eac.token = :token AND eac.expiration_date >= current_date()";
+
     public UserId getUserByActivationToken(Token token) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource("token", token.value());
         try {
@@ -48,6 +51,11 @@ public class ActivationTokenRepository {
                     new ValidationError("token", res.of("token.not.found", token), ErrorCode.INVALID_ACTIVATION_TOKEN.errorCode()
                     ));
         }
+    }
+
+    public boolean checkActivationTokenIsExpired(Token token) {
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource("token", token.value());
+        return jdbcTemplate.queryForObject(CHECK_ACTIVATION_TOKEN_EXP_DATE, parameterSource, Boolean.class);
     }
 
     public void deleteActivationToken(UserId userId) {

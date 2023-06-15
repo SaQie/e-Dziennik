@@ -18,7 +18,7 @@ public class UserCommandController {
 
     private final Dispatcher dispatcher;
 
-    @GetMapping("/activate")
+    @PatchMapping("/activate")
     @ResponseStatus(HttpStatus.OK)
     public void activateUser(@RequestParam(name = "token") String token) {
         ActivateUserCommand command = new ActivateUserCommand(Token.of(token));

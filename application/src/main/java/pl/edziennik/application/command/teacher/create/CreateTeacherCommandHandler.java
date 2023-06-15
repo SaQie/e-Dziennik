@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
 import pl.edziennik.application.events.event.UserAccountCreatedEvent;
@@ -30,6 +31,7 @@ class CreateTeacherCommandHandler implements ICommandHandler<CreateTeacherComman
     private final ApplicationEventPublisher eventPublisher;
 
     @Override
+    @Transactional
     public OperationResult handle(CreateTeacherCommand command) {
         School school = schoolCommandRepository.getReferenceById(command.schoolId());
         User user = createUser(command);
@@ -50,6 +52,6 @@ class CreateTeacherCommandHandler implements ICommandHandler<CreateTeacherComman
         Role role = roleCommandRepository.getByName(Role.RoleConst.ROLE_TEACHER.roleName());
         Password encodedPassword = Password.of(passwordEncoder.encode(command.password().value()));
 
-        return User.of(command.username(), encodedPassword, command.email(),command.pesel(), role);
+        return User.of(command.username(), encodedPassword, command.email(), command.pesel(), role);
     }
 }

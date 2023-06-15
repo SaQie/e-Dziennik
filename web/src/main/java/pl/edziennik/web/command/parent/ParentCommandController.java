@@ -1,6 +1,5 @@
 package pl.edziennik.web.command.parent;
 
-import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,7 +22,6 @@ public class ParentCommandController {
     private final Dispatcher dispatcher;
 
     @PostMapping()
-    @Operation(summary = "Add a new parent")
     public ResponseEntity<Void> createParent(@RequestBody @Valid CreateParentCommand command) {
         OperationResult operationResult = dispatcher.dispatch(command);
 

@@ -67,7 +67,7 @@ public class User {
     @Version
     private Long version;
 
-    public static User of(Username username, Password password, Email email, Pesel pesel ,Role role) {
+    public static User of(Username username, Password password, Email email, Pesel pesel, Role role) {
         User user = new User();
         user.username = username;
         user.password = password;

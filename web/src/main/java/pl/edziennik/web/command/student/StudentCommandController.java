@@ -1,6 +1,5 @@
 package pl.edziennik.web.command.student;
 
-import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,7 +25,6 @@ public class StudentCommandController {
     private final Dispatcher dispatcher;
 
     @PostMapping()
-    @Operation(summary = "Add new student")
     public ResponseEntity<Void> createStudent(@RequestBody @Valid CreateStudentCommand command) {
         OperationResult operationResult = dispatcher.dispatch(command);
 
@@ -40,7 +38,6 @@ public class StudentCommandController {
     }
 
     @DeleteMapping("/{studentId}")
-    @Operation(summary = "Delete specific student")
     public ResponseEntity<Void> deleteStudent(@PathVariable StudentId studentId) {
         dispatcher.dispatch(new DeleteStudentCommand(studentId));
 

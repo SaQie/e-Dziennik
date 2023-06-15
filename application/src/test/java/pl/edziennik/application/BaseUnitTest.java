@@ -32,6 +32,7 @@ import pl.edziennik.infrastructure.repository.student.StudentCommandRepository;
 import pl.edziennik.infrastructure.repository.studentsubject.StudentSubjectCommandRepository;
 import pl.edziennik.infrastructure.repository.subject.SubjectCommandRepository;
 import pl.edziennik.infrastructure.repository.teacher.TeacherCommandRepository;
+import pl.edziennik.infrastructure.repository.token.ActivationTokenRepository;
 import pl.edziennik.infrastructure.repository.user.UserCommandRepository;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
@@ -54,6 +55,7 @@ public class BaseUnitTest {
     protected ResourceCreator resourceCreator;
     protected ValidationErrorBuilder validationErrorBuilder;
     protected PasswordEncoder passwordEncoder;
+    protected ActivationTokenRepository activationTokenRepository;
     protected StudentSubjectCommandRepository studentSubjectCommandRepository;
     protected SchoolClassConfigurationCommandRepository schoolClassConfigurationCommandRepository;
 
@@ -72,6 +74,7 @@ public class BaseUnitTest {
         this.teacherCommandRepository = new TeacherCommandMockRepo();
         this.userCommandRepository = new UserCommandMockRepo();
         this.resourceCreator = new ResourceCreatorMock();
+        this.activationTokenRepository = new ActivationTokenMockRepository();
         this.validationErrorBuilder = new ValidationErrorBuilder(resourceCreator);
         this.adminCommandRepository = new AdminCommandMockRepo();
         this.roleCommandRepository = new RoleCommandMockRepo();

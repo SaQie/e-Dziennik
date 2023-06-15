@@ -1,6 +1,5 @@
 package pl.edziennik.web.command.subject;
 
-import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +23,6 @@ public class SubjectCommandController {
 
 
     @PostMapping()
-    @Operation(summary = "Add a new subject to school class")
     public ResponseEntity<Void> createSubject(@RequestBody @Valid CreateSubjectCommand command) {
         OperationResult operationResult = dispatcher.dispatch(command);
 

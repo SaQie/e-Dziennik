@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
 import pl.edziennik.application.events.event.UserAccountCreatedEvent;
@@ -27,6 +28,7 @@ class CreateParentCommandHandler implements ICommandHandler<CreateParentCommand,
     private final ApplicationEventPublisher eventPublisher;
 
     @Override
+    @Transactional
     public OperationResult handle(CreateParentCommand command) {
         User user = createUser(command);
 

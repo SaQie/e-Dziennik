@@ -1,6 +1,5 @@
 package pl.edziennik.web.command.subjectmanagment;
 
-import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,6 @@ public class SubjectManagmentCommandController {
     private final Dispatcher dispatcher;
 
     @PostMapping
-    @Operation(summary = "Assign a subject to student")
     public ResponseEntity<Void> assignSubjectToStudent(@RequestBody @Valid AssignSubjectToStudentCommand command) {
         dispatcher.dispatch(command);
 

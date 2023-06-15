@@ -1,5 +1,6 @@
 package pl.edziennik.common.valueobject;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import pl.edziennik.common.exception.InvalidParameterException;
@@ -8,6 +9,7 @@ import java.util.UUID;
 
 @Getter
 @Accessors(fluent = true)
+@EqualsAndHashCode(of = "value")
 public class Token {
     private final UUID value;
 
@@ -24,7 +26,7 @@ public class Token {
         }
     }
 
-    public static Token of(UUID uuid){
+    public static Token of(UUID uuid) {
         return new Token(uuid);
     }
 
