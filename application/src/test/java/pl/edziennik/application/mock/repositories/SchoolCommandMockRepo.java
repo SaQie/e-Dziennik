@@ -88,6 +88,13 @@ public class SchoolCommandMockRepo implements SchoolCommandRepository {
     }
 
     @Override
+    public boolean isSchoolHasAssignedDirector(SchoolId schoolId) {
+        School school = database.get(schoolId);
+        if (school == null) return false;
+        return school.getDirector() != null;
+    }
+
+    @Override
     public void deleteById(SchoolId schoolId) {
         this.database.remove(schoolId);
     }

@@ -7,6 +7,7 @@ import pl.edziennik.application.mock.repositories.RoleCommandMockRepo;
 import pl.edziennik.common.valueobject.Address;
 import pl.edziennik.common.valueobject.City;
 import pl.edziennik.common.valueobject.PostalCode;
+import pl.edziennik.domain.director.Director;
 import pl.edziennik.domain.parent.Parent;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.student.Student;
@@ -27,6 +28,7 @@ public class ChangeAddressCommandHandlerTest extends BaseUnitTest {
                 studentCommandRepository,
                 teacherCommandRepository,
                 parentCommandRepository,
+                directorCommandRepository,
                 resourceCreator);
     }
 
@@ -78,6 +80,28 @@ public class ChangeAddressCommandHandlerTest extends BaseUnitTest {
                 .hasMessage(assertNotFoundMessage());
     }
 
+    @Test
+    public void shouldChangeDirectorAddressData() {
+        // given
+        User user = createUser("Test", "test@example.com", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
+        School school = createSchool("test", "123123", "123123", address);
+        Director director = createDirector(user, school, personInformation, address);
+
+        ChangeAddressCommand command = new ChangeAddressCommand(director.getDirectorId().id(),
+                Address.of("Test"),
+                City.of("Test2"),
+                PostalCode.of("11-111"),
+                ChangeAddressCommand.CommandFor.DIRECTOR);
+
+        // when
+        handler.handle(command);
+
+        // then
+        director = directorCommandRepository.getByDirectorId(director.getDirectorId());
+        assertEquals(director.getAddress().getAddress().value(), "Test");
+        assertEquals(director.getAddress().getCity().value(), "Test2");
+        assertEquals(director.getAddress().getPostalCode().value(), "11-111");
+    }
 
     @Test
     public void shouldChangeStudentAddressData() {

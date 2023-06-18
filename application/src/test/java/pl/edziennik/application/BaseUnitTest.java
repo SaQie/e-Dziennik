@@ -11,6 +11,7 @@ import pl.edziennik.application.mock.repositories.*;
 import pl.edziennik.common.valueobject.*;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.admin.Admin;
+import pl.edziennik.domain.director.Director;
 import pl.edziennik.domain.parent.Parent;
 import pl.edziennik.domain.role.Role;
 import pl.edziennik.domain.school.School;
@@ -21,6 +22,7 @@ import pl.edziennik.domain.subject.Subject;
 import pl.edziennik.domain.teacher.Teacher;
 import pl.edziennik.domain.user.User;
 import pl.edziennik.infrastructure.repository.admin.AdminCommandRepository;
+import pl.edziennik.infrastructure.repository.director.DirectorCommandRepository;
 import pl.edziennik.infrastructure.repository.grade.GradeCommandRepository;
 import pl.edziennik.infrastructure.repository.parent.ParentCommandRepository;
 import pl.edziennik.infrastructure.repository.role.RoleCommandRepository;
@@ -52,6 +54,7 @@ public class BaseUnitTest {
     protected UserCommandRepository userCommandRepository;
     protected RoleCommandRepository roleCommandRepository;
     protected AdminCommandRepository adminCommandRepository;
+    protected DirectorCommandRepository directorCommandRepository;
     protected ResourceCreator resourceCreator;
     protected ValidationErrorBuilder validationErrorBuilder;
     protected PasswordEncoder passwordEncoder;
@@ -79,6 +82,7 @@ public class BaseUnitTest {
         this.adminCommandRepository = new AdminCommandMockRepo();
         this.roleCommandRepository = new RoleCommandMockRepo();
         this.studentSubjectCommandRepository = new StudentSubjectMockRepo();
+        this.directorCommandRepository = new DirectorCommandMockRepo();
         this.schoolClassConfigurationCommandRepository = new SchoolClassConfigurationCommandMockRepo();
         this.address = Address.of(
                 pl.edziennik.common.valueobject.Address.of(StringUtil.randomIdentifer(5)),
@@ -127,6 +131,7 @@ public class BaseUnitTest {
         return user;
     }
 
+
     protected User createUser(String username, String email, String role, String password) {
         User user = User.of(
                 Username.of(username),
@@ -159,6 +164,13 @@ public class BaseUnitTest {
 
     protected Admin createAdmin(User user) {
         return Admin.of(user);
+    }
+
+
+    protected Director createDirector(User user, School school, PersonInformation personInformation, Address address) {
+        Director director = Director.of(user, personInformation, address, school);
+        directorCommandRepository.save(director);
+        return director;
     }
 
     protected Teacher createTeacher(User user, School school, PersonInformation personInformation, Address address) {

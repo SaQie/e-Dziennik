@@ -37,7 +37,8 @@ public class Role {
         ROLE_ADMIN(Name.of("ROLE_ADMIN")),
         ROLE_TEACHER(Name.of("ROLE_TEACHER")),
         ROLE_STUDENT(Name.of("ROLE_STUDENT")),
-        ROLE_PARENT(Name.of("ROLE_PARENT"));
+        ROLE_PARENT(Name.of("ROLE_PARENT")),
+        ROLE_DIRECTOR(Name.of("ROLE_DIRECTOR"));
 
         private final Name name;
 

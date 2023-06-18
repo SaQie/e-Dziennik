@@ -14,6 +14,7 @@ public record DetailedSchoolDto(
         Address address,
         PhoneNumber phoneNumber,
         SchoolLevelId schoolLevelId,
-        Name schoolLevelName
+        Name schoolLevelName,
+        FullName directorName
 ) {
 }

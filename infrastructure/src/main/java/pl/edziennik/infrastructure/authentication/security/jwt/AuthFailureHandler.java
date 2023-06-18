@@ -10,7 +10,7 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
-import pl.edziennik.infrastructure.authentication.security.jwt.dto.AuthResponseDto;
+import pl.edziennik.infrastructure.authentication.security.jwt.dto.AuthErrorDto;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
 
 /**
@@ -29,12 +29,12 @@ public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) {
         response.addHeader("Content-Type", "application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        AuthResponseDto authResponseDto = new AuthResponseDto();
-        authResponseDto.setMessage(resourceCreator.of("bad.credentials.message"));
+        String responseText = resourceCreator.of("bad.credentials.message");
         if (exception instanceof DisabledException) {
-            authResponseDto.setMessage(resourceCreator.of("account.disabled"));
+            responseText = resourceCreator.of("account.disabled");
         }
-        String jsonObject = new ObjectMapper().writeValueAsString(authResponseDto);
+        AuthErrorDto errorDto = new AuthErrorDto(responseText);
+        String jsonObject = new ObjectMapper().writeValueAsString(errorDto);
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(jsonObject);
     }

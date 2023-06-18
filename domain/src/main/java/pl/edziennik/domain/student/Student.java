@@ -63,7 +63,9 @@ public class Student {
         student.schoolClass = schoolClass;
         student.user = user;
 
+        school.getStudents().add(student);
         schoolClass.getStudents().add(student);
+
         return student;
     }
 

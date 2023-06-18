@@ -13,6 +13,8 @@ INSERT INTO role(id, name, version)
 VALUES (gen_random_uuid(), 'ROLE_PARENT', 1);
 INSERT INTO role(id, name, version)
 VALUES (gen_random_uuid(), 'ROLE_TEACHER', 1);
+INSERT INTO role(id, name, version)
+VALUES (gen_random_uuid(), 'ROLE_DIRECTOR', 1);
 
 CREATE TABLE IF NOT EXISTS email_activation_tokens
 (

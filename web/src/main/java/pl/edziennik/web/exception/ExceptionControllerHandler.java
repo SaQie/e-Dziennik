@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import pl.edziennik.common.exception.InvalidIdentifierException;
 import pl.edziennik.common.exception.InvalidParameterException;
@@ -33,7 +34,7 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
         return exception.getErrors();
     }
 
-    @ExceptionHandler(value = InvalidIdentifierException.class)
+    @ExceptionHandler(value = {InvalidIdentifierException.class, MethodArgumentTypeMismatchException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ValidationError handleInvalidIdentifierException(InvalidIdentifierException exception,
                                                                WebRequest webRequest) {
@@ -42,9 +43,9 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
                 ErrorCode.INVALID_IDENTIFIER.errorCode());
     }
 
-    @ExceptionHandler(value = InvalidParameterException.class)
+    @ExceptionHandler(value = {InvalidParameterException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected ValidationError handleInvalidParameterException(InvalidParameterException exception,
+    protected ValidationError handleInvalidParameterException(Exception exception,
                                                               WebRequest webRequest) {
         return new ValidationError("Uri parameter", res.of(
                 "invalid.parameter"),
@@ -56,6 +57,7 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
         BindingResult bindingResult = exception.getBindingResult();
         return ResponseEntity.badRequest().body(getValidationErrors(bindingResult));
     }
+
 
     private List<ValidationError> getValidationErrors(BindingResult bindingResult) {
         return bindingResult.getFieldErrors().stream()

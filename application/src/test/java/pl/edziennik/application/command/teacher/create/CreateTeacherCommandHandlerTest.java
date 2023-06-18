@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.common.valueobject.*;
-import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.TeacherId;
+import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.teacher.Teacher;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -19,8 +19,11 @@ class CreateTeacherCommandHandlerTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldCreateTeacher(){
+    public void shouldCreateTeacher() {
         // given
+        School school = createSchool("Test", "1231231", "123123", address);
+        school = schoolCommandRepository.save(school);
+
         CreateTeacherCommand command = new CreateTeacherCommand(
                 Password.of("password"),
                 Username.of("Test"),
@@ -32,7 +35,7 @@ class CreateTeacherCommandHandlerTest extends BaseUnitTest {
                 Pesel.of("123123123"),
                 Email.of("test@example.com"),
                 PhoneNumber.of("123000000"),
-                SchoolId.create()
+                school.getSchoolId()
         );
 
         // when

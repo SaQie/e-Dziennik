@@ -25,11 +25,9 @@ class CreateTeacherCommandValidator implements IBaseValidator<CreateTeacherComma
     public void validate(CreateTeacherCommand command, ValidationErrorBuilder errorBuilder) {
         checkSchoolExists(command, errorBuilder);
 
-        errorBuilder.flush();
-
         checkUserByEmailAlreadyExists(command, errorBuilder);
         checkUserByUsernameAlreadyExists(command, errorBuilder);
-        checkTeacherByPeselAlreadyExists(command, errorBuilder);
+        checkUserByPeselAlreadyExists(command, errorBuilder);
     }
 
     /**
@@ -48,7 +46,7 @@ class CreateTeacherCommandValidator implements IBaseValidator<CreateTeacherComma
     /**
      * Check if teacher with given pesel already exists
      */
-    private void checkTeacherByPeselAlreadyExists(CreateTeacherCommand command, ValidationErrorBuilder errorBuilder) {
+    private void checkUserByPeselAlreadyExists(CreateTeacherCommand command, ValidationErrorBuilder errorBuilder) {
         if (userCommandRepository.existsByPesel(command.pesel())) {
             errorBuilder.addError(
                     CreateTeacherCommand.PESEL,
@@ -81,5 +79,6 @@ class CreateTeacherCommandValidator implements IBaseValidator<CreateTeacherComma
                     errorBuilder.addNotFoundError(CreateTeacherCommand.SCHOOL_ID);
                     return null;
                 });
+        errorBuilder.flush();
     }
 }

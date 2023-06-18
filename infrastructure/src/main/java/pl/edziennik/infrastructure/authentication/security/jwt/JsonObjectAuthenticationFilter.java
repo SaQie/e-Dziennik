@@ -27,10 +27,11 @@ public class JsonObjectAuthenticationFilter extends UsernamePasswordAuthenticati
             }
             AuthCredentials authRequest = objectMapper.readValue(stringBuilder.toString(), AuthCredentials.class);
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword());
-            setDetails(request,token);
+            setDetails(request, token);
             return this.getAuthenticationManager().authenticate(token);
         } catch (IOException e) {
-            throw new IllegalArgumentException(e.getMessage());
+            response.setStatus(400);
+            return null;
         }
     }
 }

@@ -45,6 +45,11 @@ public interface SchoolCommandRepository {
             "WHERE s.schoolId = :schoolId")
     boolean isSchoolClassExistsInSchool(SchoolId schoolId);
 
+    @Query("SELECT CASE WHEN COUNT(s) > 0 THEN TRUE ELSE FALSE END FROM School s " +
+            "WHERE s.director IS NOT NULL " +
+            "AND s.schoolId = :schoolId")
+    boolean isSchoolHasAssignedDirector(SchoolId schoolId);
+
     void deleteById(SchoolId schoolId);
 
     School getBySchoolId(SchoolId schoolId);

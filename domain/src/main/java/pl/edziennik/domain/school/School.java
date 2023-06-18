@@ -8,6 +8,7 @@ import pl.edziennik.common.valueobject.PhoneNumber;
 import pl.edziennik.common.valueobject.Regon;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.domain.address.Address;
+import pl.edziennik.domain.director.Director;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.schoollevel.SchoolLevel;
 import pl.edziennik.domain.student.Student;
@@ -50,6 +51,9 @@ public class School {
     })
     private PhoneNumber phoneNumber;
 
+    @OneToOne(mappedBy = "school", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Director director;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, optional = false)
     private Address address;
 
@@ -83,6 +87,12 @@ public class School {
         school.schoolConfiguration = SchoolConfiguration.defaultConfig();
 
         return school;
+    }
+
+    public void assignDirector(Director director) {
+        if (this.director == null) {
+            this.director = director;
+        }
     }
 
 }

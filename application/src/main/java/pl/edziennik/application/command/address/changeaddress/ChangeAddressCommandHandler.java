@@ -4,15 +4,14 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
-import pl.edziennik.common.valueobject.id.ParentId;
-import pl.edziennik.common.valueobject.id.SchoolId;
-import pl.edziennik.common.valueobject.id.StudentId;
-import pl.edziennik.common.valueobject.id.TeacherId;
+import pl.edziennik.common.valueobject.id.*;
 import pl.edziennik.domain.address.Address;
+import pl.edziennik.domain.director.Director;
 import pl.edziennik.domain.parent.Parent;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.student.Student;
 import pl.edziennik.domain.teacher.Teacher;
+import pl.edziennik.infrastructure.repository.director.DirectorCommandRepository;
 import pl.edziennik.infrastructure.repository.parent.ParentCommandRepository;
 import pl.edziennik.infrastructure.repository.school.SchoolCommandRepository;
 import pl.edziennik.infrastructure.repository.student.StudentCommandRepository;
@@ -28,6 +27,7 @@ class ChangeAddressCommandHandler implements ICommandHandler<ChangeAddressComman
     private final StudentCommandRepository studentCommandRepository;
     private final TeacherCommandRepository teacherCommandRepository;
     private final ParentCommandRepository parentCommandRepository;
+    private final DirectorCommandRepository directorCommandRepository;
     private final ResourceCreator res;
 
     @Override
@@ -37,8 +37,22 @@ class ChangeAddressCommandHandler implements ICommandHandler<ChangeAddressComman
             case SCHOOL -> updateSchoolAddress(command);
             case TEACHER -> updateTeacherAddress(command);
             case STUDENT -> updateStudentAddress(command);
+            case DIRECTOR -> updateDirectorAddress(command);
         }
         return OperationResult.success();
+    }
+
+    private void updateDirectorAddress(ChangeAddressCommand command) {
+        DirectorId directorId = DirectorId.of(command.id());
+
+        Director director = directorCommandRepository.findById(directorId)
+                .orElseThrow(() -> new BusinessException(
+                        res.notFoundError(ChangeAddressCommand.ID, directorId)
+                ));
+
+        fillAddressData(command, director.getAddress());
+
+        directorCommandRepository.save(director);
     }
 
 

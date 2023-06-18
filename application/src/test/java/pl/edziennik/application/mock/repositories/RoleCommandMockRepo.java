@@ -17,11 +17,13 @@ public class RoleCommandMockRepo implements RoleCommandRepository {
     public static final RoleId TEACHER_ROLE = RoleId.create();
     public static final RoleId STUDENT_ROLE = RoleId.create();
     public static final RoleId PARENT_ROLE = RoleId.create();
+    public static final RoleId DIRECTOR_ROLE = RoleId.create();
 
     public static final Name ADMIN_ROLE_NAME = Name.of("ROLE_ADMIN");
     public static final Name STUDENT_ROLE_NAME = Name.of("ROLE_STUDENT");
     public static final Name TEACHER_ROLE_NAME = Name.of("ROLE_TEACHER");
     public static final Name PARENT_ROLE_NAME = Name.of("ROLE_PARENT");
+    public static final Name DIRECTOR_ROLE_NAME = Name.of("ROLE_DIRECTOR");
 
     public RoleCommandMockRepo() {
         this.database = new HashMap<>();
@@ -29,6 +31,7 @@ public class RoleCommandMockRepo implements RoleCommandRepository {
         this.database.put(STUDENT_ROLE, Role.of(STUDENT_ROLE_NAME));
         this.database.put(TEACHER_ROLE, Role.of(TEACHER_ROLE_NAME));
         this.database.put(PARENT_ROLE, Role.of(PARENT_ROLE_NAME));
+        this.database.put(DIRECTOR_ROLE, Role.of(DIRECTOR_ROLE_NAME));
     }
 
 

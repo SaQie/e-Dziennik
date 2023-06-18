@@ -47,13 +47,9 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         String refreshToken = jwtUtils.generateRefreshToken(principal, user.getUserId().id());
 
         AuthResponseDto authResponseDto = new AuthResponseDto();
-        authResponseDto.setUsername(user.getUsername().value());
         authResponseDto.setToken(token);
         authResponseDto.setRefreshToken(refreshToken);
 
-
-        // FIXME : CQRS
-//        service.updateUserLastLoginDate(principal.getUsername());
         setRequiredHeadersAndPrintTokenToUser(response, authResponseDto);
 
     }

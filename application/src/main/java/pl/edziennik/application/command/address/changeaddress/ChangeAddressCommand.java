@@ -31,7 +31,8 @@ public record ChangeAddressCommand(
         SCHOOL,
         STUDENT,
         TEACHER,
-        PARENT;
+        PARENT,
+        DIRECTOR
     }
 
 }

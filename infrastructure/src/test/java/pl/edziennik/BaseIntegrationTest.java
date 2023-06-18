@@ -1,5 +1,6 @@
 package pl.edziennik;
 
+import jakarta.persistence.EntityManager;
 import liquibase.util.StringUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
@@ -11,10 +12,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
 import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.*;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.admin.Admin;
+import pl.edziennik.domain.director.Director;
 import pl.edziennik.domain.grade.Grade;
 import pl.edziennik.domain.role.Role;
 import pl.edziennik.domain.school.School;
@@ -28,6 +32,8 @@ import pl.edziennik.infrastructure.repository.address.AddressCommandRepository;
 import pl.edziennik.infrastructure.repository.address.AddressQueryRepository;
 import pl.edziennik.infrastructure.repository.admin.AdminCommandRepository;
 import pl.edziennik.infrastructure.repository.admin.AdminQueryRepository;
+import pl.edziennik.infrastructure.repository.director.DirectorCommandRepository;
+import pl.edziennik.infrastructure.repository.director.DirectorQueryRepository;
 import pl.edziennik.infrastructure.repository.grade.GradeCommandRepository;
 import pl.edziennik.infrastructure.repository.grade.GradeQueryRepository;
 import pl.edziennik.infrastructure.repository.parent.ParentCommandRepository;
@@ -115,6 +121,10 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     @Autowired
     protected TeacherCommandRepository teacherCommandRepository;
     @Autowired
+    protected DirectorCommandRepository directorCommandRepository;
+    @Autowired
+    protected DirectorQueryRepository directorQueryRepository;
+    @Autowired
     protected UserCommandRepository userCommandRepository;
     @Autowired
     protected UserQueryRepository userQueryRepository;
@@ -122,8 +132,13 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     protected SchoolClassConfigurationCommandRepository schoolClassConfigurationCommandRepository;
     @Autowired
     protected SchoolClassConfigurationQueryRepository schoolClassConfigurationQueryRepository;
+    @Autowired
+    protected PlatformTransactionManager transactionManager;
 
+    @Autowired
+    protected EntityManager entityManager;
 
+    protected TransactionTemplate transactionTemplate;
     protected SchoolLevelId primarySchoolLevelId;
     protected SchoolLevelId universitySchoolLevelId;
     protected SchoolLevelId highSchoolLevelId;
@@ -132,6 +147,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     protected Role studentRole;
     protected Role parentRole;
     protected Role adminRole;
+    protected Role directorRole;
 
     protected final Address address = Address.of(
             pl.edziennik.common.valueobject.Address.of("Test"),
@@ -149,6 +165,9 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         this.studentRole = roleCommandRepository.getByName(Role.RoleConst.ROLE_STUDENT.roleName());
         this.parentRole = roleCommandRepository.getByName(Role.RoleConst.ROLE_PARENT.roleName());
         this.adminRole = roleCommandRepository.getByName(Role.RoleConst.ROLE_ADMIN.roleName());
+        this.directorRole = roleCommandRepository.getByName(Role.RoleConst.ROLE_DIRECTOR.roleName());
+
+        this.transactionTemplate = new TransactionTemplate(transactionManager);
 
         Mockito.when(resourceCreator.of(Mockito.anyString(), Mockito.any())).thenAnswer(invocation -> invocation.<String>getArgument(0));
         Mockito.when(resourceCreator.of(Mockito.anyString())).thenAnswer(invocation -> invocation.<String>getArgument(0));
@@ -170,27 +189,54 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         return schoolCommandRepository.save(school).getSchoolId();
     }
 
+    public DirectorId createDirector(String username, String email, String pesel, SchoolId schoolId) {
+        return transactionTemplate.execute((result) -> {
+            User user = User.of(
+                    Username.of(username),
+                    Password.of(StringUtil.randomIdentifer(5)),
+                    Email.of(email),
+                    Pesel.of(pesel),
+                    teacherRole
+            );
+
+            School school = schoolCommandRepository.getReferenceById(schoolId);
+
+            PersonInformation personInformation = getPersonInformation(pesel);
+
+            Director director = Director.of(
+                    user,
+                    personInformation,
+                    createAddress(),
+                    school
+            );
+
+            return directorCommandRepository.save(director).getDirectorId();
+        });
+    }
+
     public TeacherId createTeacher(String username, String email, String pesel, SchoolId schoolId) {
-        User user = User.of(
-                Username.of(username),
-                Password.of(StringUtil.randomIdentifer(5)),
-                Email.of(email),
-                Pesel.of(pesel),
-                teacherRole
-        );
+        return transactionTemplate.execute((result) -> {
+            User user = User.of(
+                    Username.of(username),
+                    Password.of(StringUtil.randomIdentifer(5)),
+                    Email.of(email),
+                    Pesel.of(pesel),
+                    teacherRole
+            );
 
-        School school = schoolCommandRepository.getReferenceById(schoolId);
+            School school = schoolCommandRepository.getReferenceById(schoolId);
 
-        PersonInformation personInformation = getPersonInformation(pesel);
+            PersonInformation personInformation = getPersonInformation(pesel);
 
-        Teacher teacher = Teacher.of(
-                user,
-                school,
-                personInformation,
-                createAddress()
-        );
+            Teacher teacher = Teacher.of(
+                    user,
+                    school,
+                    personInformation,
+                    createAddress()
+            );
 
-        return teacherCommandRepository.save(teacher).getTeacherId();
+            return teacherCommandRepository.save(teacher).getTeacherId();
+        });
     }
 
     private PersonInformation getPersonInformation(String pesel) {

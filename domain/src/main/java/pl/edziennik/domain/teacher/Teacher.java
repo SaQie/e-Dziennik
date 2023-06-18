@@ -43,6 +43,7 @@ public class Teacher {
         teacher.address = address;
         teacher.personInformation = personInformation;
         teacher.user = user;
+        school.getTeachers().add(teacher);
 
         return teacher;
     }

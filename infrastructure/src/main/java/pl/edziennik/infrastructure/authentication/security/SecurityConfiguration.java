@@ -16,7 +16,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import pl.edziennik.infrastructure.authentication.AuthUserDetailsService;
 import pl.edziennik.infrastructure.authentication.JwtUtils;
 import pl.edziennik.infrastructure.authentication.security.jwt.*;
-import pl.edziennik.infrastructure.authentication.security.jwt.dto.AuthResponseDto;
+import pl.edziennik.infrastructure.authentication.security.jwt.dto.AuthErrorDto;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
 
 import java.io.IOException;
@@ -121,9 +121,8 @@ public class SecurityConfiguration {
     }
 
     private void prepareBasicResponse(HttpServletRequest request, HttpServletResponse response, String accessDeniedMessage) throws URISyntaxException, IOException {
-        AuthResponseDto authResponseDto = new AuthResponseDto();
-        authResponseDto.setMessage(accessDeniedMessage);
-        String jsonObject = new ObjectMapper().writeValueAsString(authResponseDto);
+        AuthErrorDto errorDto = new AuthErrorDto(accessDeniedMessage);
+        String jsonObject = new ObjectMapper().writeValueAsString(errorDto);
         response.getWriter().write(jsonObject);
     }
 
