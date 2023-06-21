@@ -9,11 +9,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 @Getter
 @Accessors(fluent = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @EqualsAndHashCode(of = "value")
-public class Address  implements ValueObject{
+public class Address  implements ValueObject, Serializable {
     @JsonValue
     @NotEmpty(message = "{address.empty}")
     private final String value;

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -43,11 +44,12 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
                 ErrorCode.INVALID_IDENTIFIER.errorCode());
     }
 
+
     @ExceptionHandler(value = {InvalidParameterException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ValidationError handleInvalidParameterException(Exception exception,
                                                               WebRequest webRequest) {
-        return new ValidationError("Uri parameter", res.of(
+        return new ValidationError("URI_PARAMETER", res.of(
                 "invalid.parameter"),
                 ErrorCode.INVALID_PARAMETER.errorCode());
     }
@@ -56,6 +58,16 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         BindingResult bindingResult = exception.getBindingResult();
         return ResponseEntity.badRequest().body(getValidationErrors(bindingResult));
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        String parameterName = exception.getParameterName();
+        ValidationError error = new ValidationError("URI_PARAMETER",
+                ErrorCode.MISSING_PARAMETER.errorCode(),
+                res.of("missing.uri.parameter", parameterName),
+                "Try to use ?" + parameterName + "=" + exception.getParameterType() + " at the end of the url parameter");
+        return ResponseEntity.badRequest().body(error);
     }
 
 

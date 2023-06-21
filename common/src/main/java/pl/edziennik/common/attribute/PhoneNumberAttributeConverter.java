@@ -2,8 +2,10 @@ package pl.edziennik.common.attribute;
 
 
 import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 import pl.edziennik.common.valueobject.PhoneNumber;
 
+@Converter(autoApply = true)
 public class PhoneNumberAttributeConverter implements AttributeConverter<PhoneNumber, String> {
     @Override
     public String convertToDatabaseColumn(PhoneNumber phoneNumber) {

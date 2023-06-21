@@ -5,7 +5,8 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-
+  cache:
+    type: redis
   jpa:
     properties:
       hibernate:
@@ -15,8 +16,8 @@ spring:
       ddl-auto: none
     show-sql: true
   datasource:
-    #    url: jdbc:postgresql://postgres:5432/diary_db -- for docker
-    url: jdbc:postgresql://localhost:5432/diary_db # -- localhost
+    url: jdbc:postgresql://postgres:5432/diary_db #-- for docker
+    #url: jdbc:postgresql://localhost:5432/diary_db # -- localhost
     username: postgres
     password: admin
   liquibase:
@@ -29,6 +30,10 @@ logging:
     org:
       springframework:
         web: DEBUG
+
+redis:
+  host: 127.0.0.1
+  port: 6379
 
 #logging:
 #  level:

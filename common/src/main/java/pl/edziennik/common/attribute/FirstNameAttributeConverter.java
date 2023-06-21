@@ -1,8 +1,10 @@
 package pl.edziennik.common.attribute;
 
 import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 import pl.edziennik.common.valueobject.FirstName;
 
+@Converter(autoApply = true)
 public class FirstNameAttributeConverter implements AttributeConverter<FirstName, String> {
     @Override
     public String convertToDatabaseColumn(FirstName firstName) {

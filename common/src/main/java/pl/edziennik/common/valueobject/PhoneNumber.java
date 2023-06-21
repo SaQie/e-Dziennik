@@ -9,11 +9,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @Getter
 @Accessors(fluent = true)
 @EqualsAndHashCode(of = "value")
-public class PhoneNumber implements ValueObject{
+public class PhoneNumber implements ValueObject, Serializable {
 
     @JsonValue
     @Pattern(regexp = "[\\d]{9}", message = "{phone.invalid}")

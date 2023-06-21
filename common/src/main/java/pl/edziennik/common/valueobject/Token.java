@@ -5,12 +5,13 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 import pl.edziennik.common.exception.InvalidParameterException;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @Getter
 @Accessors(fluent = true)
 @EqualsAndHashCode(of = "value")
-public class Token {
+public class Token implements Serializable {
     private final UUID value;
 
     private Token(UUID value) {

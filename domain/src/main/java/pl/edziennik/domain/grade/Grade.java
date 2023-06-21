@@ -2,7 +2,6 @@ package pl.edziennik.domain.grade;
 
 import jakarta.persistence.*;
 import lombok.*;
-import pl.edziennik.common.attribute.GradeAttributeConverter;
 import pl.edziennik.common.valueobject.Description;
 import pl.edziennik.common.valueobject.Weight;
 import pl.edziennik.common.valueobject.id.GradeId;
@@ -21,7 +20,6 @@ public class Grade {
     @EmbeddedId
     private GradeId gradeId = GradeId.create();
 
-    @Convert(converter = GradeAttributeConverter.class)
     @Column(nullable = false)
     private pl.edziennik.common.enums.Grade grade = pl.edziennik.common.enums.Grade.ONE;
 

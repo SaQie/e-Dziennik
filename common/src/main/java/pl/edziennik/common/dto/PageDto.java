@@ -3,10 +3,11 @@ package pl.edziennik.common.dto;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Getter
-public class PageDto<T> {
+public class PageDto<T> implements Serializable {
 
     private final Integer pagesCount;
     private final Integer actualPage;

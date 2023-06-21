@@ -10,11 +10,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 @Getter
 @Accessors(fluent = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @EqualsAndHashCode(of = "value")
-public class Username {
+public class Username implements ValueObject, Serializable {
     @JsonValue
     @NotEmpty(message = "{username.empty}")
     @Size(min = 4, message = "{username.size}")

@@ -3,6 +3,8 @@ package pl.edziennik.common.dto.student;
 import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.*;
 
+import java.io.Serializable;
+
 public record DetailedStudentDto(
 
         StudentId studentId,
@@ -23,6 +25,6 @@ public record DetailedStudentDto(
         SchoolClassId schoolClassId,
         Name schoolClassIdName
 
-) {
+) implements Serializable {
 
 }

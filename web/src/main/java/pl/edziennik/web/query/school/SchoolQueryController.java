@@ -1,6 +1,7 @@
 package pl.edziennik.web.query.school;
 
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,9 @@ public class SchoolQueryController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @Cacheable("schools")
     public PageDto<SchoolSummaryDto> getSchoolList(Pageable pageable) {
+        System.out.println("Pobieram z db");
         GetSchoolSummaryQuery getSchoolSummaryQuery = new GetSchoolSummaryQuery(pageable);
 
         return dispatcher.dispatch(getSchoolSummaryQuery);
@@ -31,6 +34,7 @@ public class SchoolQueryController {
 
     @GetMapping("/{schoolId}")
     @ResponseStatus(HttpStatus.OK)
+    @Cacheable(value= "schools", key="#schoolId.id()")
     public DetailedSchoolDto getSchool(@PathVariable SchoolId schoolId) {
         GetDetailedSchoolQuery getDetailedSchoolQuery = new GetDetailedSchoolQuery(schoolId);
 

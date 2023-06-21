@@ -63,7 +63,7 @@ public class SecurityConfiguration {
                     try {
                         auth
                                 .requestMatchers("/api/teachers/*").hasRole("ADMIN")
-                                .requestMatchers("/api/v1/schools").hasRole("ADMIN")
+//                                .requestMatchers("/api/v1/schools").hasRole("ADMIN")
                                 .requestMatchers("/api/students/").permitAll()
                                 .requestMatchers("/api/schoolclasses/").permitAll()
                                 .requestMatchers("/api/**").permitAll()

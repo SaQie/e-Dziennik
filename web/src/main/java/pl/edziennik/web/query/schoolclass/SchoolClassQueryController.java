@@ -30,9 +30,9 @@ public class SchoolClassQueryController {
         return dispatcher.dispatch(schoolClassQuery);
     }
 
-    @GetMapping("/schools/{schoolId}")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public PageDto<SchoolClassSummaryForSchoolDto> getSchoolClassSummaryForSchool(@PathVariable SchoolId schoolId, Pageable pageable) {
+    public PageDto<SchoolClassSummaryForSchoolDto> getSchoolClassSummaryForSchool(@RequestParam SchoolId schoolId, Pageable pageable) {
         GetSchoolClassSummaryForSchoolQuery query = new GetSchoolClassSummaryForSchoolQuery(schoolId, pageable);
 
         return dispatcher.dispatch(query);

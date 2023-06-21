@@ -5,6 +5,8 @@ import pl.edziennik.common.valueobject.Name;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.SchoolLevelId;
 
+import java.io.Serializable;
+
 public record SchoolSummaryDto(
 
         SchoolId schoolId,
@@ -13,6 +15,6 @@ public record SchoolSummaryDto(
         Name schoolLevelName,
         FullName directorName
 
-) {
+) implements Serializable {
 
 }
