@@ -57,7 +57,7 @@ _________
 List of task's I will implement in future in this project:
 
 * *Add email confirmation* ✅
-* *Add redis cache for configuration* ❌
+* *Add redis cache for configuration* ✅
 * *Add real time client-server chat (student-teacher)* ❌
 * *Add email system inside application* ❌
 * *Add exports student grades to PDF* ✅
@@ -98,6 +98,7 @@ _____
 * Maven
 * GitHub with GitHub Workflows
 * TestContainers
+* Redis
 
 # 🗾 Architecture look
 ___

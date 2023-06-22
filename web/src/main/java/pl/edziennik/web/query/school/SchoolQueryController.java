@@ -24,9 +24,8 @@ public class SchoolQueryController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @Cacheable("schools")
+    @Cacheable(value = "schools", key = "#root.method.name")
     public PageDto<SchoolSummaryDto> getSchoolList(Pageable pageable) {
-        System.out.println("Pobieram z db");
         GetSchoolSummaryQuery getSchoolSummaryQuery = new GetSchoolSummaryQuery(pageable);
 
         return dispatcher.dispatch(getSchoolSummaryQuery);
@@ -34,7 +33,6 @@ public class SchoolQueryController {
 
     @GetMapping("/{schoolId}")
     @ResponseStatus(HttpStatus.OK)
-    @Cacheable(value= "schools", key="#schoolId.id()")
     public DetailedSchoolDto getSchool(@PathVariable SchoolId schoolId) {
         GetDetailedSchoolQuery getDetailedSchoolQuery = new GetDetailedSchoolQuery(schoolId);
 

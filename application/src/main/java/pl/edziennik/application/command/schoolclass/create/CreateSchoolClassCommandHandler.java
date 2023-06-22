@@ -1,6 +1,7 @@
 package pl.edziennik.application.command.schoolclass.create;
 
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
@@ -21,6 +22,7 @@ class CreateSchoolClassCommandHandler implements ICommandHandler<CreateSchoolCla
     private final SchoolClassCommandRepository schoolClassCommandRepository;
 
     @Override
+    @CacheEvict(allEntries = true, value = "schoolClasses")
     public OperationResult handle(CreateSchoolClassCommand command) {
         Teacher teacher = teacherCommandRepository.getReferenceById(command.teacherId());
         School school = schoolCommandRepository.getReferenceById(command.schoolId());

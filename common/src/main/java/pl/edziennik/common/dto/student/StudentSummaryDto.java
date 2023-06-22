@@ -8,6 +8,8 @@ import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.id.UserId;
 
+import java.io.Serializable;
+
 public record StudentSummaryDto(
 
         StudentId studentId,
@@ -18,6 +20,6 @@ public record StudentSummaryDto(
         SchoolId schoolId,
         Name schoolName
 
-) {
+) implements Serializable {
 
 }

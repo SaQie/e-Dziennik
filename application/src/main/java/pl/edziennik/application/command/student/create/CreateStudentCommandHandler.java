@@ -1,6 +1,7 @@
 package pl.edziennik.application.command.student.create;
 
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -38,6 +39,7 @@ class CreateStudentCommandHandler implements ICommandHandler<CreateStudentComman
 
     @Override
     @Transactional
+    @CacheEvict(allEntries = true, value = "students")
     public OperationResult handle(CreateStudentCommand command) {
         SchoolClass schoolClass = schoolClassCommandRepository.getBySchoolClassId(command.schoolClassId());
         School school = schoolCommandRepository.getBySchoolId(command.schoolId());
