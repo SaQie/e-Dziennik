@@ -44,6 +44,12 @@ public class JwtController {
         setRequiredHeaders(response, refreshToken.substring("Bearer ".length()), token);
     }
 
+    @PostMapping("/jwt/validate")
+    public boolean validateToken(HttpServletRequest request) {
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+        return jwtService.isTokenValid(token);
+    }
+
     private void setRequiredHeaders(HttpServletResponse response, String refreshToken, String token) throws IOException {
         response.addHeader("Authorization", "Bearer " + token);
         response.addHeader("RefreshToken", refreshToken);

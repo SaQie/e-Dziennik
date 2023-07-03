@@ -102,6 +102,17 @@ public class JwtUtils {
         return token == null || !token.startsWith(tokenPrefix);
     }
 
+    public boolean isTokenValid(String token) {
+        boolean tokenNotExist = isTokenNotExist(token);
+        if (!tokenNotExist) {
+            JWT.require(Algorithm.HMAC256(secretKey))
+                    .build()
+                    .verify(token.replace(tokenPrefix + " ", ""));
+            return true;
+        }
+        return false;
+    }
+
     public Collection<SimpleGrantedAuthority> getRolesFromTokenIfNeeded(String token) {
         String[] roles = JWT.require(Algorithm.HMAC256(secretKey))
                 .build()

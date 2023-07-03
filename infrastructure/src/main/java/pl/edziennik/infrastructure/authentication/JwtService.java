@@ -14,8 +14,8 @@ public class JwtService {
     private final JwtUtils jwtUtils;
     private final AuthUserDetailsService authUserDetailsService;
 
-    public String validateRefreshTokenAndReturnNew(String refreshToken){
-        if (jwtUtils.isTokenNotExist(refreshToken)){
+    public String validateRefreshTokenAndReturnNew(String refreshToken) {
+        if (jwtUtils.isTokenNotExist(refreshToken)) {
             throw new RuntimeException("refresh token is missing");
         }
         Map<String, String> jwtData = jwtUtils.getDataFromToken(refreshToken);
@@ -27,6 +27,10 @@ public class JwtService {
         UUID id = UUID.fromString(jwtData.get("id"));
         UUID superId = UUID.fromString(jwtData.get("superId"));
         return jwtUtils.generateJwtToken(userDetails, id, superId);
+    }
+
+    public boolean isTokenValid(String token) {
+        return jwtUtils.isTokenValid(token);
     }
 
 }
