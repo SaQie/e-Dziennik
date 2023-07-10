@@ -1,6 +1,7 @@
 package pl.edziennik.application.command.parent.create;
 
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -29,6 +30,7 @@ class CreateParentCommandHandler implements ICommandHandler<CreateParentCommand,
 
     @Override
     @Transactional
+    @CacheEvict(allEntries = true, value = "parents")
     public OperationResult handle(CreateParentCommand command) {
         User user = createUser(command);
 

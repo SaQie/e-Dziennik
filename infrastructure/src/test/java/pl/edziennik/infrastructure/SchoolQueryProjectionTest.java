@@ -60,10 +60,10 @@ public class SchoolQueryProjectionTest extends BaseIntegrationTest {
         List<SchoolSummaryDto> list = dto.get().toList();
         assertEquals(list.size(), 2);
 
-        assertEquals(list.get(0).schoolId(), schoolIdSecond);
+        assertEquals(list.get(0).schoolId().id(), schoolIdSecond.id());
         assertEquals(list.get(0).schoolLevelId(), primarySchoolLevelId);
 
-        assertEquals(list.get(1).schoolId(), schoolId);
+        assertEquals(list.get(1).schoolId().id(), schoolId.id());
         assertEquals(list.get(1).schoolLevelId(), primarySchoolLevelId);
     }
 

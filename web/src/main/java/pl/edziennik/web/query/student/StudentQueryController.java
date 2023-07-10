@@ -1,7 +1,6 @@
 package pl.edziennik.web.query.student;
 
 import lombok.AllArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +29,6 @@ public class StudentQueryController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @Cacheable(value = "students", key = "#root.method.name")
     public PageDto<StudentSummaryDto> getAllStudents(Pageable pageable) {
         GetStudentSummaryQuery getStudentSummaryQuery = new GetStudentSummaryQuery(pageable);
 

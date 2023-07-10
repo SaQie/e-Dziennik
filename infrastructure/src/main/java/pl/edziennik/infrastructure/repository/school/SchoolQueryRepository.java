@@ -18,7 +18,8 @@ public interface SchoolQueryRepository {
             "pl.edziennik.common.dto.school.SchoolSummaryDto(s.schoolId, s.name, sl.schoolLevelId, sl.name, d.personInformation.fullName) " +
             "FROM School s " +
             "LEFT JOIN s.director d " +
-            "JOIN s.schoolLevel sl")
+            "JOIN s.schoolLevel sl " +
+            "ORDER BY s.schoolId")
     Page<SchoolSummaryDto> findAllWithPagination(Pageable pageable);
 
 

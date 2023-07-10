@@ -1,6 +1,7 @@
 package pl.edziennik.application.command.school.delete;
 
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
@@ -13,6 +14,7 @@ class DeleteSchoolCommandHandler implements ICommandHandler<DeleteSchoolCommand,
     private final SchoolCommandRepository schoolCommandRepository;
 
     @Override
+    @CacheEvict(allEntries = true, value = "schools")
     public OperationResult handle(DeleteSchoolCommand command) {
         schoolCommandRepository.deleteById(command.schoolId());
 

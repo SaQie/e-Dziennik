@@ -1,6 +1,7 @@
 package pl.edziennik.application.command.subject.create;
 
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
@@ -21,6 +22,7 @@ class CreateSubjectCommandHandler implements ICommandHandler<CreateSubjectComman
     private final TeacherCommandRepository teacherCommandRepository;
 
     @Override
+    @CacheEvict(allEntries = true, value = "subjects")
     public OperationResult handle(CreateSubjectCommand command) {
         SchoolClass schoolClass = schoolClassCommandRepository.getReferenceById(command.schoolClassId());
         Teacher teacher = teacherCommandRepository.getReferenceById(command.teacherId());
@@ -29,7 +31,6 @@ class CreateSubjectCommandHandler implements ICommandHandler<CreateSubjectComman
 
         SubjectId subjectId = subjectCommandRepository.save(subject).getSubjectId();
 
-        // FIXME: CQRS -> Handler -> po dodaniu przedmiotu do klasy, wyslij event ktory doda do wszystkich studentow z klasy ten przedmiot
         return OperationResult.success(subjectId);
     }
 }

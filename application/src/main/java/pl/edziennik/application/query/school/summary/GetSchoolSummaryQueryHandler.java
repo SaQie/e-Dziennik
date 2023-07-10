@@ -1,6 +1,7 @@
 package pl.edziennik.application.query.school.summary;
 
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.query.IQueryHandler;
@@ -15,6 +16,7 @@ class GetSchoolSummaryQueryHandler implements IQueryHandler<GetSchoolSummaryQuer
     private final SchoolQueryRepository schoolQueryRepository;
 
     @Override
+    @Cacheable(value = "schools", key = "#root.method.name")
     public PageDto<SchoolSummaryDto> handle(GetSchoolSummaryQuery command) {
         Page<SchoolSummaryDto> dtos = schoolQueryRepository.findAllWithPagination(command.pageable());
 

@@ -1,6 +1,7 @@
 package pl.edziennik.application.command.director.create;
 
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,7 @@ class CreateDirectorCommandHandler implements ICommandHandler<CreateDirectorComm
 
     @Override
     @Transactional
+    @CacheEvict(allEntries = true, value = "directors")
     public OperationResult handle(CreateDirectorCommand command) {
         School school = schoolCommandRepository.getReferenceById(command.schoolId());
         User user = createUser(command);

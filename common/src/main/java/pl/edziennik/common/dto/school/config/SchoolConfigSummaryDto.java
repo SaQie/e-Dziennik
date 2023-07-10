@@ -4,9 +4,11 @@ import pl.edziennik.common.enums.AverageType;
 import pl.edziennik.common.valueobject.id.SchoolConfigurationId;
 import pl.edziennik.common.valueobject.id.SchoolId;
 
+import java.io.Serializable;
+
 public record SchoolConfigSummaryDto(
         SchoolId schoolId,
         SchoolConfigurationId schoolConfigurationId,
         AverageType averageType
-) {
+) implements Serializable {
 }
