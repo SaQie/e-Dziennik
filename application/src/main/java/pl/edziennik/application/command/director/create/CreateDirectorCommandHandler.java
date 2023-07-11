@@ -10,6 +10,7 @@ import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
 import pl.edziennik.common.valueobject.Password;
 import pl.edziennik.common.valueobject.PersonInformation;
 import pl.edziennik.common.valueobject.id.DirectorId;
+import pl.edziennik.common.valueobject.id.RoleId;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.director.Director;
 import pl.edziennik.domain.role.Role;
@@ -47,7 +48,7 @@ class CreateDirectorCommandHandler implements ICommandHandler<CreateDirectorComm
 
 
     private User createUser(CreateDirectorCommand command) {
-        Role role = roleCommandRepository.getByName(Role.RoleConst.ROLE_DIRECTOR.roleName());
+        Role role = roleCommandRepository.getByRoleId(RoleId.PredefinedRow.ROLE_DIRECTOR);
         Password encodedPassword = Password.of(passwordEncoder.encode(command.password().value()));
 
         return User.of(command.username(), encodedPassword, command.email(), command.pesel(), role);

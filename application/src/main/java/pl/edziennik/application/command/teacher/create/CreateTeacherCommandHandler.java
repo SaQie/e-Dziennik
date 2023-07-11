@@ -11,6 +11,7 @@ import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
 import pl.edziennik.application.events.event.UserAccountCreatedEvent;
 import pl.edziennik.common.valueobject.Password;
 import pl.edziennik.common.valueobject.PersonInformation;
+import pl.edziennik.common.valueobject.id.RoleId;
 import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.role.Role;
@@ -51,7 +52,7 @@ class CreateTeacherCommandHandler implements ICommandHandler<CreateTeacherComman
     }
 
     private User createUser(CreateTeacherCommand command) {
-        Role role = roleCommandRepository.getByName(Role.RoleConst.ROLE_TEACHER.roleName());
+        Role role = roleCommandRepository.getByRoleId(RoleId.PredefinedRow.ROLE_TEACHER);
         Password encodedPassword = Password.of(passwordEncoder.encode(command.password().value()));
 
         return User.of(command.username(), encodedPassword, command.email(), command.pesel(), role);

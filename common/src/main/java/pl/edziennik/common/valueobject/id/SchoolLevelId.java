@@ -50,4 +50,12 @@ public class SchoolLevelId implements Serializable, Identifier {
         return new SchoolLevelId(value);
     }
 
+    public static class PredefinedRow {
+
+        public static final SchoolLevelId PRIMARY_SCHOOL = SchoolLevelId.of("ff131a86-1f42-11ee-be56-0242ac120002");
+        public static final SchoolLevelId HIGH_SCHOOL = SchoolLevelId.of("ff131d60-1f42-11ee-be56-0242ac120002");
+        public static final SchoolLevelId UNIVERSITY = SchoolLevelId.of("ff1330f2-1f42-11ee-be56-0242ac120002");
+
+    }
+
 }

@@ -12,6 +12,7 @@ import pl.edziennik.application.events.event.StudentAccountCreatedEvent;
 import pl.edziennik.application.events.event.UserAccountCreatedEvent;
 import pl.edziennik.common.valueobject.Password;
 import pl.edziennik.common.valueobject.PersonInformation;
+import pl.edziennik.common.valueobject.id.RoleId;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.role.Role;
@@ -59,7 +60,7 @@ class CreateStudentCommandHandler implements ICommandHandler<CreateStudentComman
 
 
     private User createUser(CreateStudentCommand command) {
-        Role role = roleCommandRepository.getByName(Role.RoleConst.ROLE_STUDENT.roleName());
+        Role role = roleCommandRepository.getByRoleId(RoleId.PredefinedRow.ROLE_STUDENT);
         Password encodedPassword = Password.of(passwordEncoder.encode(command.password().value()));
 
         return User.of(command.username(), encodedPassword, command.email(), command.pesel(),role);

@@ -112,17 +112,17 @@ ALTER TABLE grade
 INSERT
 INTO ROLE(id,
           name)
-VALUES (gen_random_uuid(),
+VALUES ('5c1b7dae-1f43-11ee-be56-0242ac120002',
         'ROLE_ADMIN'),
-       (gen_random_uuid(),
+       ('5c1b80d8-1f43-11ee-be56-0242ac120002',
         'ROLE_TEACHER'),
-       (gen_random_uuid(),
+       ('5c1b82fe-1f43-11ee-be56-0242ac120002',
         'ROLE_STUDENT');
 
 ALTER TABLE teacher
     ADD role_id uuid REFERENCES ROLE (id);
 
 INSERT INTO school_level(id, name)
-values (gen_random_uuid(), 'PRIMARY SCHOOL'),
-       (gen_random_uuid(), 'HIGH SCHOOL'),
-       (gen_random_uuid(), 'UNIVERSITY');
+values ('ff131a86-1f42-11ee-be56-0242ac120002', 'PRIMARY SCHOOL'),
+       ('ff131d60-1f42-11ee-be56-0242ac120002', 'HIGH SCHOOL'),
+       ('ff1330f2-1f42-11ee-be56-0242ac120002', 'UNIVERSITY');

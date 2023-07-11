@@ -28,7 +28,6 @@ public class RoleId implements Serializable, Identifier {
         return new RoleId(UUID.randomUUID());
     }
 
-
     @JsonCreator
     protected RoleId(String value) {
         try {
@@ -46,8 +45,18 @@ public class RoleId implements Serializable, Identifier {
         return new RoleId(uuid);
     }
 
-    public static RoleId of(String value){
+    public static RoleId of(String value) {
         return new RoleId(value);
+    }
+
+    public static class PredefinedRow {
+
+        public static final RoleId ROLE_ADMIN = RoleId.of("5c1b7dae-1f43-11ee-be56-0242ac120002");
+        public static final RoleId ROLE_TEACHER = RoleId.of("5c1b80d8-1f43-11ee-be56-0242ac120002");
+        public static final RoleId ROLE_STUDENT = RoleId.of("5c1b82fe-1f43-11ee-be56-0242ac120002");
+        public static final RoleId ROLE_PARENT = RoleId.of("5c1b848e-1f43-11ee-be56-0242ac120002");
+        public static final RoleId ROLE_DIRECTOR = RoleId.of("5c1b8650-1f43-11ee-be56-0242ac120002");
+
     }
 
 }

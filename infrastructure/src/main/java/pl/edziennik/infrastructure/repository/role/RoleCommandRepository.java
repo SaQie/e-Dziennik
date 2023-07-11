@@ -12,4 +12,6 @@ public interface RoleCommandRepository{
     @Query("SELECT r FROM Role r where r.name = :name")
     Role getByName(Name name);
 
+    Role getByRoleId(RoleId roleId);
+
 }

@@ -15,7 +15,7 @@ ALTER TABLE school
     ADD COLUMN director_id uuid UNIQUE;
 
 insert into ROLE(id, name)
-VALUES (gen_random_uuid(), 'ROLE_DIRECTOR');
+VALUES ('5c1b8650-1f43-11ee-be56-0242ac120002', 'ROLE_DIRECTOR');
 
 
 CREATE TRIGGER director_super_id

@@ -13,12 +13,6 @@ public class RoleCommandMockRepo implements RoleCommandRepository {
 
     private final Map<RoleId, Role> database;
 
-    public static final RoleId ADMIN_ROLE = RoleId.create();
-    public static final RoleId TEACHER_ROLE = RoleId.create();
-    public static final RoleId STUDENT_ROLE = RoleId.create();
-    public static final RoleId PARENT_ROLE = RoleId.create();
-    public static final RoleId DIRECTOR_ROLE = RoleId.create();
-
     public static final Name ADMIN_ROLE_NAME = Name.of("ROLE_ADMIN");
     public static final Name STUDENT_ROLE_NAME = Name.of("ROLE_STUDENT");
     public static final Name TEACHER_ROLE_NAME = Name.of("ROLE_TEACHER");
@@ -27,11 +21,11 @@ public class RoleCommandMockRepo implements RoleCommandRepository {
 
     public RoleCommandMockRepo() {
         this.database = new HashMap<>();
-        this.database.put(ADMIN_ROLE, Role.of(ADMIN_ROLE_NAME));
-        this.database.put(STUDENT_ROLE, Role.of(STUDENT_ROLE_NAME));
-        this.database.put(TEACHER_ROLE, Role.of(TEACHER_ROLE_NAME));
-        this.database.put(PARENT_ROLE, Role.of(PARENT_ROLE_NAME));
-        this.database.put(DIRECTOR_ROLE, Role.of(DIRECTOR_ROLE_NAME));
+        this.database.put(RoleId.PredefinedRow.ROLE_ADMIN, Role.of(RoleId.PredefinedRow.ROLE_ADMIN, ADMIN_ROLE_NAME));
+        this.database.put(RoleId.PredefinedRow.ROLE_STUDENT, Role.of(RoleId.PredefinedRow.ROLE_STUDENT, STUDENT_ROLE_NAME));
+        this.database.put(RoleId.PredefinedRow.ROLE_TEACHER, Role.of(RoleId.PredefinedRow.ROLE_TEACHER, TEACHER_ROLE_NAME));
+        this.database.put(RoleId.PredefinedRow.ROLE_PARENT, Role.of(RoleId.PredefinedRow.ROLE_PARENT, PARENT_ROLE_NAME));
+        this.database.put(RoleId.PredefinedRow.ROLE_DIRECTOR, Role.of(RoleId.PredefinedRow.ROLE_DIRECTOR, DIRECTOR_ROLE_NAME));
     }
 
 
@@ -44,5 +38,10 @@ public class RoleCommandMockRepo implements RoleCommandRepository {
             return null;
         }
         return roles.get(0);
+    }
+
+    @Override
+    public Role getByRoleId(RoleId roleId) {
+        return database.get(roleId);
     }
 }

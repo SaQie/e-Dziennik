@@ -11,6 +11,7 @@ import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.common.enums.AverageType;
 import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.SchoolId;
+import pl.edziennik.common.valueobject.id.SchoolLevelId;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.infrastructure.spring.exception.BusinessException;
 import pl.edziennik.infrastructure.validator.ValidationError;
@@ -34,7 +35,7 @@ public class SchoolIntegrationTest extends BaseIntegrationTest {
                 Nip.of("9999999"),
                 Regon.of("9999999"),
                 PhoneNumber.of("qweqew"),
-                primarySchoolLevelId);
+                SchoolLevelId.PredefinedRow.PRIMARY_SCHOOL);
 
         // when
         OperationResult operationResult = dispatcher.dispatch(command);
@@ -57,7 +58,7 @@ public class SchoolIntegrationTest extends BaseIntegrationTest {
                 Nip.of("9999999"),
                 Regon.of("9999999"),
                 PhoneNumber.of("qweqew"),
-                primarySchoolLevelId);
+                SchoolLevelId.PredefinedRow.PRIMARY_SCHOOL);
 
         try {
             // when

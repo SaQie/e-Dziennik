@@ -10,6 +10,7 @@ import pl.edziennik.common.dto.school.SchoolSummaryDto;
 import pl.edziennik.common.dto.school.config.SchoolConfigSummaryDto;
 import pl.edziennik.common.enums.AverageType;
 import pl.edziennik.common.valueobject.id.SchoolId;
+import pl.edziennik.common.valueobject.id.SchoolLevelId;
 
 import java.util.List;
 
@@ -60,11 +61,11 @@ public class SchoolQueryProjectionTest extends BaseIntegrationTest {
         List<SchoolSummaryDto> list = dto.get().toList();
         assertEquals(list.size(), 2);
 
-        assertEquals(list.get(0).schoolId().id(), schoolIdSecond.id());
-        assertEquals(list.get(0).schoolLevelId(), primarySchoolLevelId);
+        assertEquals(list.get(0).schoolId().id(), schoolId.id());
+        assertEquals(list.get(0).schoolLevelId(), SchoolLevelId.PredefinedRow.PRIMARY_SCHOOL);
 
-        assertEquals(list.get(1).schoolId().id(), schoolId.id());
-        assertEquals(list.get(1).schoolLevelId(), primarySchoolLevelId);
+        assertEquals(list.get(1).schoolId().id(), schoolIdSecond.id());
+        assertEquals(list.get(1).schoolLevelId(), SchoolLevelId.PredefinedRow.PRIMARY_SCHOOL);
     }
 
     @Test

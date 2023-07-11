@@ -153,9 +153,6 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     protected PlatformTransactionManager transactionManager;
 
     protected TransactionTemplate transactionTemplate;
-    protected SchoolLevelId primarySchoolLevelId;
-    protected SchoolLevelId universitySchoolLevelId;
-    protected SchoolLevelId highSchoolLevelId;
 
     protected Role teacherRole;
     protected Role studentRole;
@@ -172,15 +169,11 @@ public class BaseIntegrationTest extends ContainerEnvironment {
 
     @BeforeEach
     public void assignValues() {
-        this.primarySchoolLevelId = schoolLevelQueryRepository.getByName(Name.of("PRIMARY"));
-        this.universitySchoolLevelId = schoolLevelQueryRepository.getByName(Name.of("UNIVERSITY"));
-        this.highSchoolLevelId = schoolLevelQueryRepository.getByName(Name.of("HIGH"));
-
-        this.teacherRole = roleCommandRepository.getByName(Role.RoleConst.ROLE_TEACHER.roleName());
-        this.studentRole = roleCommandRepository.getByName(Role.RoleConst.ROLE_STUDENT.roleName());
-        this.parentRole = roleCommandRepository.getByName(Role.RoleConst.ROLE_PARENT.roleName());
-        this.adminRole = roleCommandRepository.getByName(Role.RoleConst.ROLE_ADMIN.roleName());
-        this.directorRole = roleCommandRepository.getByName(Role.RoleConst.ROLE_DIRECTOR.roleName());
+        this.teacherRole = roleCommandRepository.getByRoleId(RoleId.PredefinedRow.ROLE_TEACHER);
+        this.studentRole = roleCommandRepository.getByRoleId(RoleId.PredefinedRow.ROLE_STUDENT);
+        this.parentRole = roleCommandRepository.getByRoleId(RoleId.PredefinedRow.ROLE_PARENT);
+        this.adminRole = roleCommandRepository.getByRoleId(RoleId.PredefinedRow.ROLE_ADMIN);
+        this.directorRole = roleCommandRepository.getByRoleId(RoleId.PredefinedRow.ROLE_DIRECTOR);
 
 
         Mockito.when(resourceCreator.of(Mockito.anyString(), Mockito.any())).thenAnswer(invocation -> invocation.<String>getArgument(0));
@@ -199,7 +192,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                 Regon.of(regon),
                 PhoneNumber.of(StringUtil.randomIdentifer(5)),
                 createAddress(),
-                schoolLevelCommandRepository.findById(primarySchoolLevelId).get()
+                schoolLevelCommandRepository.findById(SchoolLevelId.PredefinedRow.PRIMARY_SCHOOL).get()
         );
 
         return schoolCommandRepository.save(school).getSchoolId();

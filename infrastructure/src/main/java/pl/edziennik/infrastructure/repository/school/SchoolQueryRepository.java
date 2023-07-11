@@ -19,7 +19,7 @@ public interface SchoolQueryRepository {
             "FROM School s " +
             "LEFT JOIN s.director d " +
             "JOIN s.schoolLevel sl " +
-            "ORDER BY s.schoolId")
+            "ORDER BY s.name ")
     Page<SchoolSummaryDto> findAllWithPagination(Pageable pageable);
 
 

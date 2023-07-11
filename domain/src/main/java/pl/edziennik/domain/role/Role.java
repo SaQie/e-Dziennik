@@ -33,23 +33,12 @@ public class Role {
         return role;
     }
 
-    public enum RoleConst {
-        ROLE_ADMIN(Name.of("ROLE_ADMIN")),
-        ROLE_TEACHER(Name.of("ROLE_TEACHER")),
-        ROLE_STUDENT(Name.of("ROLE_STUDENT")),
-        ROLE_PARENT(Name.of("ROLE_PARENT")),
-        ROLE_DIRECTOR(Name.of("ROLE_DIRECTOR"));
+    public static Role of(RoleId roleId,Name name) {
+        Role role = new Role();
+        role.name = name;
+        role.roleId = roleId;
 
-        private final Name name;
-
-        RoleConst(Name name) {
-            this.name = name;
-        }
-
-        public Name roleName() {
-            return name;
-        }
-
+        return role;
     }
 
 }

@@ -12,6 +12,7 @@ import pl.edziennik.application.events.event.UserAccountCreatedEvent;
 import pl.edziennik.common.valueobject.Password;
 import pl.edziennik.common.valueobject.PersonInformation;
 import pl.edziennik.common.valueobject.id.ParentId;
+import pl.edziennik.common.valueobject.id.RoleId;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.parent.Parent;
 import pl.edziennik.domain.role.Role;
@@ -48,7 +49,7 @@ class CreateParentCommandHandler implements ICommandHandler<CreateParentCommand,
     }
 
     private User createUser(CreateParentCommand command) {
-        Role role = roleCommandRepository.getByName(Role.RoleConst.ROLE_PARENT.roleName());
+        Role role = roleCommandRepository.getByRoleId(RoleId.PredefinedRow.ROLE_PARENT);
 
         Password encodedPassword = Password.of(passwordEncoder.encode(command.password().value()));
 

@@ -27,6 +27,9 @@ public class SchoolLevel {
     })
     private Name name;
 
+    @OneToMany(mappedBy = "schoolLevel", orphanRemoval = true)
+    private final List<School> schools = new ArrayList<>();
+
     @Version
     private Long version;
 
@@ -43,24 +46,6 @@ public class SchoolLevel {
         schoolLevel.name = name;
 
         return schoolLevel;
-    }
-
-    @OneToMany(mappedBy = "schoolLevel", orphanRemoval = true)
-    private final List<School> schools = new ArrayList<>();
-
-    public enum SchoolLevelConst {
-
-        PRIMARY_SCHOOL("Szkoła podstawowa", 1L),
-        HIGH_SCHOOL("Szkoła średnia", 2L),
-        UNIVERSITY("Studia", 3L);
-
-        private final Long id;
-        private final String name;
-
-        SchoolLevelConst(String name, Long id) {
-            this.id = id;
-            this.name = name;
-        }
     }
 
 }

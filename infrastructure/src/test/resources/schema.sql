@@ -1,11 +1,12 @@
-INSERT INTO school_level(id, name, version) values (gen_random_uuid(), 'UNIVERSITY', 1);
-INSERT INTO school_level(id, name, version) values (gen_random_uuid(), 'PRIMARY', 1);
-INSERT INTO school_level(id, name, version) values (gen_random_uuid(), 'HIGH', 1);
+INSERT INTO school_level(id, name, version) values ('ff1330f2-1f42-11ee-be56-0242ac120002', 'UNIVERSITY', 1);
+INSERT INTO school_level(id, name, version) values ('ff131a86-1f42-11ee-be56-0242ac120002', 'PRIMARY SCHOOL', 1);
+INSERT INTO school_level(id, name, version) values ('ff131d60-1f42-11ee-be56-0242ac120002', 'HIGH SCHOOL', 1);
 
-INSERT INTO role(id, name, version) VALUES (gen_random_uuid(), 'ROLE_ADMIN', 1);
-INSERT INTO role(id, name, version) VALUES (gen_random_uuid(), 'ROLE_STUDENT', 1);
-INSERT INTO role(id, name, version) VALUES (gen_random_uuid(), 'ROLE_PARENT', 1);
-INSERT INTO role(id, name, version) VALUES (gen_random_uuid(), 'ROLE_TEACHER', 1);
+INSERT INTO role(id, name, version) VALUES ('5c1b7dae-1f43-11ee-be56-0242ac120002', 'ROLE_ADMIN', 1);
+INSERT INTO role(id, name, version) VALUES ('5c1b82fe-1f43-11ee-be56-0242ac120002', 'ROLE_STUDENT', 1);
+INSERT INTO role(id, name, version) VALUES ('5c1b848e-1f43-11ee-be56-0242ac120002', 'ROLE_PARENT', 1);
+INSERT INTO role(id, name, version) VALUES ('5c1b80d8-1f43-11ee-be56-0242ac120002', 'ROLE_TEACHER', 1);
+INSERT INTO role(id, name, version) VALUES ('5c1b8650-1f43-11ee-be56-0242ac120002', 'ROLE_DIRECTOR', 1);
 
 CREATE TABLE IF NOT EXISTS email_activation_tokens
 (

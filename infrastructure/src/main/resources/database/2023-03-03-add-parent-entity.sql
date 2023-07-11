@@ -1,9 +1,9 @@
 insert into ROLE(id, name)
-VALUES (gen_random_uuid(), 'ROLE_PARENT');
+VALUES ('5c1b848e-1f43-11ee-be56-0242ac120002', 'ROLE_PARENT');
 
 CREATE TABLE PARENT
 (
-    id  uuid PRIMARY KEY DEFAULT gen_random_uuid()
+    id uuid PRIMARY KEY DEFAULT gen_random_uuid()
 );
 
 
@@ -17,7 +17,7 @@ ALTER TABLE PARENT
 
 ALTER TABLE PARENT
     ADD user_id uuid not null unique,
-    ADD FOREIGN KEY (user_id) references users(id);
+    ADD FOREIGN KEY (user_id) references users (id);
 
 ALTER TABLE PARENT
     ADD student_id uuid unique,
@@ -36,7 +36,7 @@ ALTER TABLE STUDENT
 
 ALTER TABLE STUDENT
     ADD parent_id uuid unique,
-    ADD FOREIGN KEY (parent_id) references parent(id);
+    ADD FOREIGN KEY (parent_id) references parent (id);
 
 ALTER TABLE STUDENT
     ADD has_parent_account boolean default false

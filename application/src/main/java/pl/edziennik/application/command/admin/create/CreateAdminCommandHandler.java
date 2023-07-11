@@ -7,6 +7,7 @@ import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
 import pl.edziennik.common.valueobject.Password;
 import pl.edziennik.common.valueobject.id.AdminId;
+import pl.edziennik.common.valueobject.id.RoleId;
 import pl.edziennik.domain.admin.Admin;
 import pl.edziennik.domain.role.Role;
 import pl.edziennik.domain.user.User;
@@ -23,7 +24,7 @@ class CreateAdminCommandHandler implements ICommandHandler<CreateAdminCommand, O
 
     @Override
     public OperationResult handle(CreateAdminCommand command) {
-        Role role = roleCommandRepository.getByName(Role.RoleConst.ROLE_ADMIN.roleName());
+        Role role = roleCommandRepository.getByRoleId(RoleId.PredefinedRow.ROLE_ADMIN);
 
         Password password = Password.of(passwordEncoder.encode(command.password().value()));
         User user = User.of(command.username(), password, command.email(), command.pesel(), role);
