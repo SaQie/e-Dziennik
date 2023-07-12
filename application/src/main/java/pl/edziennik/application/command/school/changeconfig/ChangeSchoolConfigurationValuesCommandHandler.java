@@ -8,6 +8,7 @@ import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.school.SchoolConfiguration;
 import pl.edziennik.infrastructure.repository.school.SchoolCommandRepository;
+import pl.edziennik.infrastructure.repository.school.SchoolConfigurationCommandRepository;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
 import pl.edziennik.infrastructure.spring.exception.BusinessException;
 
@@ -16,6 +17,7 @@ import pl.edziennik.infrastructure.spring.exception.BusinessException;
 class ChangeSchoolConfigurationValuesCommandHandler implements ICommandHandler<ChangeSchoolConfigurationValuesCommand, OperationResult> {
 
     private final SchoolCommandRepository schoolCommandRepository;
+    private final SchoolConfigurationCommandRepository schoolConfigurationCommandRepository;
     private final ResourceCreator res;
 
     @Override
@@ -29,7 +31,7 @@ class ChangeSchoolConfigurationValuesCommandHandler implements ICommandHandler<C
         SchoolConfiguration schoolConfiguration = school.getSchoolConfiguration();
         schoolConfiguration.changeAverageType(command.averageType());
 
-        schoolCommandRepository.save(school);
+        schoolConfigurationCommandRepository.save(schoolConfiguration);
 
         return OperationResult.success();
     }

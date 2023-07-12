@@ -3,6 +3,7 @@ package pl.edziennik.domain.school;
 import jakarta.persistence.*;
 import lombok.*;
 import pl.edziennik.common.enums.AverageType;
+import pl.edziennik.common.properties.SchoolConfigurationProperties;
 import pl.edziennik.common.valueobject.id.SchoolConfigurationId;
 
 @Entity
@@ -19,9 +20,11 @@ public class SchoolConfiguration {
     @Column(name = "average_type", nullable = false)
     private AverageType averageType;
 
-    public static SchoolConfiguration defaultConfig() {
+
+    public static SchoolConfiguration createConfigFromProperties(SchoolConfigurationProperties properties) {
         SchoolConfiguration schoolConfiguration = new SchoolConfiguration();
-        schoolConfiguration.averageType = AverageType.ARITHMETIC;
+
+        schoolConfiguration.averageType = properties.getAverageType();
 
         return schoolConfiguration;
     }

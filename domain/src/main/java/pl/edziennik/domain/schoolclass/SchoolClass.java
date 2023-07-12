@@ -2,6 +2,7 @@ package pl.edziennik.domain.schoolclass;
 
 import jakarta.persistence.*;
 import lombok.*;
+import pl.edziennik.common.properties.SchoolClassConfigurationProperties;
 import pl.edziennik.common.valueobject.Name;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.domain.school.School;
@@ -50,13 +51,14 @@ public class SchoolClass {
     @Version
     private Long version;
 
-    public static SchoolClass of(Name name, School school, Teacher teacher) {
+    public static SchoolClass of(Name name, School school, Teacher teacher, SchoolClassConfigurationProperties properties) {
         SchoolClass schoolClass = new SchoolClass();
         schoolClass.className = name;
         schoolClass.school = school;
         schoolClass.createdDate = LocalDate.now();
         schoolClass.teacher = teacher;
-        schoolClass.schoolClassConfiguration = SchoolClassConfiguration.defaultConfig();
+
+        schoolClass.schoolClassConfiguration = SchoolClassConfiguration.createConfigFromProperties(properties);
 
         return schoolClass;
     }

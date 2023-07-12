@@ -47,7 +47,14 @@ redis:
 #  level:
 #    root: DEBUG
 
+schoolclass:
+  config:
+    maxStudentsSize: 30
+    autoAssignSubjects: true
 
+school:
+  config:
+    averageType: ARITHMETIC
 
 jwt:
   secret: testtt

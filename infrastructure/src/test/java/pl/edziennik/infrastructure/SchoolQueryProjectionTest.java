@@ -7,8 +7,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import pl.edziennik.BaseIntegrationTest;
 import pl.edziennik.common.dto.school.DetailedSchoolDto;
 import pl.edziennik.common.dto.school.SchoolSummaryDto;
-import pl.edziennik.common.dto.school.config.SchoolConfigSummaryDto;
-import pl.edziennik.common.enums.AverageType;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.SchoolLevelId;
 
@@ -68,17 +66,4 @@ public class SchoolQueryProjectionTest extends BaseIntegrationTest {
         assertEquals(list.get(1).schoolLevelId(), SchoolLevelId.PredefinedRow.PRIMARY_SCHOOL);
     }
 
-    @Test
-    public void shouldReturnSchoolConfigurationSummaryDto() {
-        // given
-        SchoolId schoolId = createSchool(expectedSchoolName, expectedNip, expectedRegon);
-
-        // when
-        SchoolConfigSummaryDto dto = schoolQueryRepository.getSchoolConfiguration(schoolId);
-
-        // then
-        assertNotNull(dto);
-        assertEquals(dto.schoolId(), schoolId);
-        assertEquals(dto.averageType(), AverageType.ARITHMETIC);
-    }
 }

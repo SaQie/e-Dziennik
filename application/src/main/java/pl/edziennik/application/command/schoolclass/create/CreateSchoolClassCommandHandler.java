@@ -5,6 +5,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
+import pl.edziennik.common.properties.SchoolClassConfigurationProperties;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.schoolclass.SchoolClass;
@@ -20,6 +21,7 @@ class CreateSchoolClassCommandHandler implements ICommandHandler<CreateSchoolCla
     private final SchoolCommandRepository schoolCommandRepository;
     private final TeacherCommandRepository teacherCommandRepository;
     private final SchoolClassCommandRepository schoolClassCommandRepository;
+    private final SchoolClassConfigurationProperties configurationProperties;
 
     @Override
     @CacheEvict(allEntries = true, value = "schoolClasses")
@@ -27,7 +29,7 @@ class CreateSchoolClassCommandHandler implements ICommandHandler<CreateSchoolCla
         Teacher teacher = teacherCommandRepository.getReferenceById(command.teacherId());
         School school = schoolCommandRepository.getReferenceById(command.schoolId());
 
-        SchoolClass schoolClass = SchoolClass.of(command.className(), school, teacher);
+        SchoolClass schoolClass = SchoolClass.of(command.className(), school, teacher, configurationProperties);
 
         SchoolClassId schoolClassId = schoolClassCommandRepository.save(schoolClass).getSchoolClassId();
 

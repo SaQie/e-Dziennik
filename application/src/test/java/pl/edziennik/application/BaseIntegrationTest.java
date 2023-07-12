@@ -17,6 +17,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
+import pl.edziennik.common.properties.SchoolClassConfigurationProperties;
+import pl.edziennik.common.properties.SchoolConfigurationProperties;
 import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.*;
 import pl.edziennik.domain.address.Address;
@@ -151,6 +153,10 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     protected Dispatcher dispatcher;
     @Autowired
     protected PlatformTransactionManager transactionManager;
+    @Autowired
+    protected SchoolClassConfigurationProperties schoolClassConfigurationProperties;
+    @Autowired
+    protected SchoolConfigurationProperties schoolConfigurationProperties;
 
     protected TransactionTemplate transactionTemplate;
 
@@ -192,7 +198,8 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                 Regon.of(regon),
                 PhoneNumber.of(StringUtil.randomIdentifer(5)),
                 createAddress(),
-                schoolLevelCommandRepository.findById(SchoolLevelId.PredefinedRow.PRIMARY_SCHOOL).get()
+                schoolLevelCommandRepository.findById(SchoolLevelId.PredefinedRow.PRIMARY_SCHOOL).get(),
+                schoolConfigurationProperties
         );
 
         return schoolCommandRepository.save(school).getSchoolId();
@@ -339,7 +346,8 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         SchoolClass schoolClass = SchoolClass.of(
                 Name.of(name),
                 school,
-                teacher
+                teacher,
+                schoolClassConfigurationProperties
         );
 
         return schoolClassCommandRepository.save(schoolClass).getSchoolClassId();

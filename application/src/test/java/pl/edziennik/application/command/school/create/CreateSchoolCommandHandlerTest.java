@@ -23,7 +23,9 @@ class CreateSchoolCommandHandlerTest extends BaseUnitTest {
     public CreateSchoolCommandHandlerTest() {
         this.commandHandler = new CreateSchoolCommandHandler(schoolLevelCommandRepository,
                 schoolCommandRepository,
-                resourceCreator);
+                schoolConfigurationProperties,
+                resourceCreator
+        );
     }
 
 

@@ -15,7 +15,7 @@ public class ChangeSchoolConfigurationValuesHandlerTest extends BaseUnitTest {
     private final ChangeSchoolConfigurationValuesCommandHandler handler;
 
     public ChangeSchoolConfigurationValuesHandlerTest() {
-        this.handler = new ChangeSchoolConfigurationValuesCommandHandler(schoolCommandRepository, resourceCreator);
+        this.handler = new ChangeSchoolConfigurationValuesCommandHandler(schoolCommandRepository, schoolConfigurationCommandRepository, resourceCreator);
     }
 
     @Test

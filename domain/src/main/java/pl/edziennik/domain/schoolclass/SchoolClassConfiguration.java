@@ -5,6 +5,7 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Version;
 import lombok.*;
+import pl.edziennik.common.properties.SchoolClassConfigurationProperties;
 import pl.edziennik.common.valueobject.id.SchoolClassConfigurationId;
 
 @Entity
@@ -24,11 +25,12 @@ public class SchoolClassConfiguration {
     @Version
     private Long version;
 
-    public static SchoolClassConfiguration defaultConfig() {
+    public static SchoolClassConfiguration createConfigFromProperties(SchoolClassConfigurationProperties properties) {
         SchoolClassConfiguration classConfiguration = new SchoolClassConfiguration();
-        classConfiguration.autoAssignSubjects = Boolean.TRUE;
-        classConfiguration.maxStudentsSize = 30;
-        // TODO CQRS -> przemyslec sposob jak uniknac hardkodowania tutaj
+
+        classConfiguration.autoAssignSubjects = properties.getAutoAssignSubjects();
+        classConfiguration.maxStudentsSize = properties.getMaxStudentsSize();
+
         return classConfiguration;
     }
 

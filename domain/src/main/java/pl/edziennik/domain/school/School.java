@@ -2,6 +2,7 @@ package pl.edziennik.domain.school;
 
 import jakarta.persistence.*;
 import lombok.*;
+import pl.edziennik.common.properties.SchoolConfigurationProperties;
 import pl.edziennik.common.valueobject.Name;
 import pl.edziennik.common.valueobject.Nip;
 import pl.edziennik.common.valueobject.PhoneNumber;
@@ -76,7 +77,7 @@ public class School {
     private Long version;
 
     public static School of(Name name, Nip nip, Regon regon, PhoneNumber phoneNumber, Address address,
-                            SchoolLevel schoolLevel) {
+                            SchoolLevel schoolLevel, SchoolConfigurationProperties properties) {
         School school = new School();
         school.name = name;
         school.regon = regon;
@@ -84,7 +85,7 @@ public class School {
         school.phoneNumber = phoneNumber;
         school.schoolLevel = schoolLevel;
         school.nip = nip;
-        school.schoolConfiguration = SchoolConfiguration.defaultConfig();
+        school.schoolConfiguration = SchoolConfiguration.createConfigFromProperties(properties);
 
         return school;
     }

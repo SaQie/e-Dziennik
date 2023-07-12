@@ -14,6 +14,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
+import pl.edziennik.common.properties.SchoolClassConfigurationProperties;
+import pl.edziennik.common.properties.SchoolConfigurationProperties;
 import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.*;
 import pl.edziennik.domain.address.Address;
@@ -41,6 +43,8 @@ import pl.edziennik.infrastructure.repository.parent.ParentQueryRepository;
 import pl.edziennik.infrastructure.repository.role.RoleCommandRepository;
 import pl.edziennik.infrastructure.repository.role.RoleQueryRepository;
 import pl.edziennik.infrastructure.repository.school.SchoolCommandRepository;
+import pl.edziennik.infrastructure.repository.school.SchoolConfigurationCommandRepository;
+import pl.edziennik.infrastructure.repository.school.SchoolConfigurationQueryRepository;
 import pl.edziennik.infrastructure.repository.school.SchoolQueryRepository;
 import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassCommandRepository;
 import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassConfigurationCommandRepository;
@@ -133,7 +137,15 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     @Autowired
     protected SchoolClassConfigurationQueryRepository schoolClassConfigurationQueryRepository;
     @Autowired
+    protected SchoolConfigurationQueryRepository schoolConfigurationQueryRepository;
+    @Autowired
+    protected SchoolConfigurationCommandRepository schoolConfigurationCommandRepository;
+    @Autowired
     protected PlatformTransactionManager transactionManager;
+    @Autowired
+    protected SchoolClassConfigurationProperties schoolClassConfigurationProperties;
+    @Autowired
+    protected SchoolConfigurationProperties schoolConfigurationProperties;
 
     @Autowired
     protected EntityManager entityManager;
@@ -176,7 +188,8 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                 Regon.of(regon),
                 PhoneNumber.of(StringUtil.randomIdentifer(5)),
                 createAddress(),
-                schoolLevelCommandRepository.findById(SchoolLevelId.PredefinedRow.PRIMARY_SCHOOL).get()
+                schoolLevelCommandRepository.findById(SchoolLevelId.PredefinedRow.PRIMARY_SCHOOL).get(),
+                schoolConfigurationProperties
         );
 
         return schoolCommandRepository.save(school).getSchoolId();
@@ -318,7 +331,8 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         SchoolClass schoolClass = SchoolClass.of(
                 Name.of(name),
                 school,
-                teacher
+                teacher,
+                schoolClassConfigurationProperties
         );
 
         return schoolClassCommandRepository.save(schoolClass).getSchoolClassId();

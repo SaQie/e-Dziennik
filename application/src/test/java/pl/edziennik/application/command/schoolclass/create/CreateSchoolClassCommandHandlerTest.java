@@ -16,11 +16,14 @@ class CreateSchoolClassCommandHandlerTest extends BaseUnitTest {
     private final CreateSchoolClassCommandHandler handler;
 
     public CreateSchoolClassCommandHandlerTest() {
-        this.handler = new CreateSchoolClassCommandHandler(schoolCommandRepository, teacherCommandRepository, schoolClassCommandRepository);
+        this.handler = new CreateSchoolClassCommandHandler(schoolCommandRepository,
+                teacherCommandRepository,
+                schoolClassCommandRepository,
+                schoolClassConfigurationProperties);
     }
 
     @Test
-    public void shouldCreateNewSchoolClass(){
+    public void shouldCreateNewSchoolClass() {
         // given
         CreateSchoolClassCommand command = new CreateSchoolClassCommand(
                 Name.of("Test"),

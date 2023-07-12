@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.query.IQueryHandler;
 import pl.edziennik.common.dto.school.config.SchoolConfigSummaryDto;
-import pl.edziennik.infrastructure.repository.school.SchoolQueryRepository;
+import pl.edziennik.infrastructure.repository.school.SchoolConfigurationQueryRepository;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
 import pl.edziennik.infrastructure.spring.exception.BusinessException;
 
@@ -13,11 +13,11 @@ import pl.edziennik.infrastructure.spring.exception.BusinessException;
 class GetSchoolConfigSummaryQueryHandler implements IQueryHandler<GetSchoolConfigSummaryQuery, SchoolConfigSummaryDto> {
 
     private final ResourceCreator res;
-    private final SchoolQueryRepository schoolQueryRepository;
+    private final SchoolConfigurationQueryRepository schoolConfigurationQueryRepository;
 
     @Override
     public SchoolConfigSummaryDto handle(GetSchoolConfigSummaryQuery command) {
-        SchoolConfigSummaryDto dto = schoolQueryRepository.getSchoolConfiguration(command.schoolId());
+        SchoolConfigSummaryDto dto = schoolConfigurationQueryRepository.getSchoolConfiguration(command.schoolId());
 
         if (dto == null) {
             throw new BusinessException(

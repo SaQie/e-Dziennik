@@ -19,14 +19,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories(basePackages = {"pl.edziennik.infrastructure"})
 @EntityScan(basePackages = {"pl.edziennik.domain"})
 @ComponentScan(basePackages = {"pl.edziennik.infrastructure", "pl.edziennik.domain", "pl.edziennik.application",
-        "pl.edziennik.web"})
-@PropertySource("/application.yaml")
+        "pl.edziennik.web", "pl.edziennik.common"})
+@PropertySource("/application.yml")
 public class EDziennikApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(EDziennikApplication.class, args);
     }
-
 
 
 }

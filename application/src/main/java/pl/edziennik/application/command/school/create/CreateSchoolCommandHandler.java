@@ -5,6 +5,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
+import pl.edziennik.common.properties.SchoolConfigurationProperties;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.school.School;
@@ -20,6 +21,7 @@ class CreateSchoolCommandHandler implements ICommandHandler<CreateSchoolCommand,
 
     private final SchoolLevelCommandRepository schoolLevelCommandRepository;
     private final SchoolCommandRepository schoolCommandRepository;
+    private final SchoolConfigurationProperties configurationProperties;
     private final ResourceCreator res;
 
     @Override
@@ -31,7 +33,7 @@ class CreateSchoolCommandHandler implements ICommandHandler<CreateSchoolCommand,
                 ));
 
         Address address = Address.of(command.address(), command.city(), command.postalCode());
-        School school = School.of(command.name(), command.nip(), command.regon(), command.phoneNumber(), address, schoolLevel);
+        School school = School.of(command.name(), command.nip(), command.regon(), command.phoneNumber(), address, schoolLevel, configurationProperties);
 
         SchoolId schoolId = schoolCommandRepository.save(school).getSchoolId();
 

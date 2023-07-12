@@ -8,6 +8,9 @@ import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
 import pl.edziennik.application.mock.ApplicationEventPublisherMock;
 import pl.edziennik.application.mock.ResourceCreatorMock;
 import pl.edziennik.application.mock.repositories.*;
+import pl.edziennik.common.enums.AverageType;
+import pl.edziennik.common.properties.SchoolClassConfigurationProperties;
+import pl.edziennik.common.properties.SchoolConfigurationProperties;
 import pl.edziennik.common.valueobject.*;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.admin.Admin;
@@ -15,7 +18,9 @@ import pl.edziennik.domain.director.Director;
 import pl.edziennik.domain.parent.Parent;
 import pl.edziennik.domain.role.Role;
 import pl.edziennik.domain.school.School;
+import pl.edziennik.domain.school.SchoolConfiguration;
 import pl.edziennik.domain.schoolclass.SchoolClass;
+import pl.edziennik.domain.schoolclass.SchoolClassConfiguration;
 import pl.edziennik.domain.student.Student;
 import pl.edziennik.domain.studentsubject.StudentSubject;
 import pl.edziennik.domain.subject.Subject;
@@ -27,6 +32,7 @@ import pl.edziennik.infrastructure.repository.grade.GradeCommandRepository;
 import pl.edziennik.infrastructure.repository.parent.ParentCommandRepository;
 import pl.edziennik.infrastructure.repository.role.RoleCommandRepository;
 import pl.edziennik.infrastructure.repository.school.SchoolCommandRepository;
+import pl.edziennik.infrastructure.repository.school.SchoolConfigurationCommandRepository;
 import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassCommandRepository;
 import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassConfigurationCommandRepository;
 import pl.edziennik.infrastructure.repository.schoollevel.SchoolLevelCommandRepository;
@@ -61,10 +67,13 @@ public class BaseUnitTest {
     protected ActivationTokenRepository activationTokenRepository;
     protected StudentSubjectCommandRepository studentSubjectCommandRepository;
     protected SchoolClassConfigurationCommandRepository schoolClassConfigurationCommandRepository;
-
-
+    protected SchoolConfigurationCommandRepository schoolConfigurationCommandRepository;
     protected PersonInformation personInformation;
     protected Address address;
+    protected SchoolConfiguration schoolConfiguration;
+    protected SchoolClassConfiguration schoolClassConfiguration;
+    protected SchoolConfigurationProperties schoolConfigurationProperties;
+    protected SchoolClassConfigurationProperties schoolClassConfigurationProperties;
 
     protected BaseUnitTest() {
         this.gradeCommandRepository = new GradeCommandMockRepo();
@@ -84,6 +93,7 @@ public class BaseUnitTest {
         this.studentSubjectCommandRepository = new StudentSubjectMockRepo();
         this.directorCommandRepository = new DirectorCommandMockRepo();
         this.schoolClassConfigurationCommandRepository = new SchoolClassConfigurationCommandMockRepo();
+        this.schoolConfigurationCommandRepository = new SchoolConfigurationCommandMockRepo();
         this.address = Address.of(
                 pl.edziennik.common.valueobject.Address.of(StringUtil.randomIdentifer(5)),
                 City.of(StringUtil.randomIdentifer(5)),
@@ -94,6 +104,20 @@ public class BaseUnitTest {
                 LastName.of("Testowy"),
                 PhoneNumber.of("123123123")
         );
+
+        SchoolConfigurationProperties schoolConfigurationProperties = new SchoolConfigurationProperties();
+        schoolConfigurationProperties.setAverageType(AverageType.ARITHMETIC);
+
+        this.schoolConfigurationProperties = schoolConfigurationProperties;
+
+        SchoolClassConfigurationProperties schoolClassConfigurationProperties = new SchoolClassConfigurationProperties();
+        schoolClassConfigurationProperties.setAutoAssignSubjects(Boolean.TRUE);
+        schoolClassConfigurationProperties.setMaxStudentsSize(30);
+
+        this.schoolClassConfigurationProperties = schoolClassConfigurationProperties;
+
+        this.schoolConfiguration = SchoolConfiguration.createConfigFromProperties(schoolConfigurationProperties);
+        this.schoolClassConfiguration = SchoolClassConfiguration.createConfigFromProperties(schoolClassConfigurationProperties);
 
         this.passwordEncoder = new PasswordEncoder() {
             @Override
@@ -225,7 +249,8 @@ public class BaseUnitTest {
         SchoolClass schoolClass = SchoolClass.of(
                 Name.of(name),
                 school,
-                teacher
+                teacher,
+                schoolClassConfigurationProperties
         );
         schoolClassConfigurationCommandRepository.save(schoolClass.getSchoolClassConfiguration());
         school.getSchoolClasses().add(schoolClass);
@@ -272,7 +297,8 @@ public class BaseUnitTest {
                 Regon.of(regon),
                 PhoneNumber.of(StringUtil.randomIdentifer(5)),
                 address,
-                schoolLevelCommandRepository.findById(SchoolLevelCommandMockRepo.HIGH_SCHOOL_LEVEL_ID).get()
+                schoolLevelCommandRepository.findById(SchoolLevelCommandMockRepo.HIGH_SCHOOL_LEVEL_ID).get(),
+                schoolConfigurationProperties
         );
     }
 

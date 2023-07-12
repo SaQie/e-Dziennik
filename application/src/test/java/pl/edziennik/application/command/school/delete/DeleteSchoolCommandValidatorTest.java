@@ -68,7 +68,7 @@ class DeleteSchoolCommandValidatorTest extends BaseUnitTest {
 
         User user = createUser("Kamil", "qweqwe@o2.pl", "TEACHER");
         PersonInformation personInformation = createPersonInformation();
-        createStudent(user, school, SchoolClass.of(null, null, null), personInformation, address);
+        createStudent(user, school, SchoolClass.of(null, null, null, schoolClassConfigurationProperties), personInformation, address);
 
         DeleteSchoolCommand deleteSchoolCommand = new DeleteSchoolCommand(school.getSchoolId());
 
