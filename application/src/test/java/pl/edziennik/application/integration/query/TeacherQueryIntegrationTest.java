@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.query.teacher.detailed.GetDetailedTeacherQuery;
 import pl.edziennik.application.query.teacher.subjects.GetTeacherSubjectsSummaryQuery;
@@ -44,6 +45,7 @@ public class TeacherQueryIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
+    @Transactional
     public void shouldReturnTeacherSubjectsSummaryUsingQuery() {
         // given
         SchoolId schoolId = createSchool("Test", "123123132", "123123");

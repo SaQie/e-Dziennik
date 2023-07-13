@@ -3,6 +3,7 @@ package pl.edziennik.application.integration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.command.subject.create.CreateSubjectCommand;
 import pl.edziennik.application.common.dispatcher.OperationResult;
@@ -26,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class SubjectIntegrationTest extends BaseIntegrationTest {
 
     @Test
+    @Transactional
     public void shouldCreateSubject() {
         // given
         SchoolId schoolId = createSchool("Test", "123123", "123123");
@@ -49,6 +51,7 @@ public class SubjectIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
+    @Transactional
     public void shouldThrowExceptionWhenSubjectWithGivenNameAlreadyExistsInSchoolClass() {
         // given
         SchoolId schoolId = createSchool("Test", "1213123", "123123");
@@ -80,6 +83,7 @@ public class SubjectIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
+    @Transactional
     public void shouldThrowExceptionWhenTeacherFromGivenSubjectIsNotFromTheSameSchoolAsSubject() {
         // given
         SchoolId schoolId = createSchool("Test", "1213123", "123123");

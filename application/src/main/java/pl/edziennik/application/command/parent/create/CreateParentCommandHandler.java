@@ -34,15 +34,19 @@ class CreateParentCommandHandler implements ICommandHandler<CreateParentCommand,
     @CacheEvict(allEntries = true, value = "parents")
     public OperationResult handle(CreateParentCommand command) {
         User user = createUser(command);
+        PersonInformation personInformation = createPersonInformation(command);
+        Address address = createAddress(command);
 
-        PersonInformation personInformation = PersonInformation.of(command.firstName(), command.lastName(), command.phoneNumber());
-        Address address = Address.of(command.address(), command.city(), command.postalCode());
-
-        Parent parent = Parent.of(user, personInformation, address);
+        Parent parent = Parent.builder()
+                .user(user)
+                .personInformation(personInformation)
+                .address(address)
+                .build();
 
         ParentId parentId = parentCommandRepository.save(parent).getParentId();
 
-        eventPublisher.publishEvent(new UserAccountCreatedEvent(user.getUserId()));
+        UserAccountCreatedEvent event = new UserAccountCreatedEvent(user.getUserId());
+        eventPublisher.publishEvent(event);
 
         return OperationResult.success(parentId);
 
@@ -51,8 +55,30 @@ class CreateParentCommandHandler implements ICommandHandler<CreateParentCommand,
     private User createUser(CreateParentCommand command) {
         Role role = roleCommandRepository.getByRoleId(RoleId.PredefinedRow.ROLE_PARENT);
 
-        Password encodedPassword = Password.of(passwordEncoder.encode(command.password().value()));
+        Password password = Password.of(passwordEncoder.encode(command.password().value()));
 
-        return User.of(command.username(), encodedPassword, command.email(), command.pesel(), role);
+        return User.builder()
+                .username(command.username())
+                .password(password)
+                .email(command.email())
+                .pesel(command.pesel())
+                .role(role)
+                .build();
+    }
+
+    private PersonInformation createPersonInformation(CreateParentCommand command) {
+        return PersonInformation.builder()
+                .firstName(command.firstName())
+                .lastName(command.lastName())
+                .phoneNumber(command.phoneNumber())
+                .build();
+    }
+
+    private Address createAddress(CreateParentCommand command) {
+        return Address.builder()
+                .address(command.address())
+                .city(command.city())
+                .postalCode(command.postalCode())
+                .build();
     }
 }

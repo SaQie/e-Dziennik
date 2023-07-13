@@ -102,8 +102,8 @@ public class TeacherQueryProjectionTest extends BaseIntegrationTest {
         SchoolClassId schoolClassId = createSchoolClass(schoolId, teacherId, expectedSchoolClassName);
         SchoolClassId schoolClassIdSecond = createSchoolClass(schoolId, teacherId, expectedSchoolClassNameSecond);
 
-        SubjectId subjectId = createSubject(expectedSubjectName, schoolClassId, teacherId);
-        SubjectId subjectIdSecond = createSubject(expectedSubjectNameSecond, schoolClassIdSecond, teacherId);
+        SubjectId subjectId = transactionTemplate.execute((x) -> createSubject(expectedSubjectName, schoolClassId, teacherId));
+        SubjectId subjectIdSecond = transactionTemplate.execute((x) -> createSubject(expectedSubjectNameSecond, schoolClassIdSecond, teacherId));
 
         // when
         Page<TeacherSubjectsSummaryDto> dtos = teacherQueryRepository.getTeacherSubjectsSummaryWithPagination(

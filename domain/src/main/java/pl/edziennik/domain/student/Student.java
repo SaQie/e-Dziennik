@@ -17,6 +17,7 @@ import pl.edziennik.domain.user.User;
 @Getter
 @Setter(AccessLevel.PROTECTED)
 @EqualsAndHashCode
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Student {
 
     @EmbeddedId
@@ -54,9 +55,11 @@ public class Student {
     private Long version;
 
 
+    @Builder
     public static Student of(User user, School school, SchoolClass schoolClass, PersonInformation personInformation,
                              Address address) {
         Student student = new Student();
+
         student.address = address;
         student.personInformation = personInformation;
         student.school = school;

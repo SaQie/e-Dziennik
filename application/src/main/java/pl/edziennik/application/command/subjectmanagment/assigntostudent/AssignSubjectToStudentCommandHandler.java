@@ -24,7 +24,10 @@ class AssignSubjectToStudentCommandHandler implements ICommandHandler<AssignSubj
         Subject subject = subjectCommandRepository.getReferenceById(command.subjectId());
         Student student = studentCommandRepository.getReferenceById(command.studentId());
 
-        StudentSubject studentSubject = StudentSubject.of(student, subject);
+        StudentSubject studentSubject = StudentSubject.builder()
+                .subject(subject)
+                .student(student)
+                .build();
 
         studentSubjectCommandRepository.save(studentSubject);
 

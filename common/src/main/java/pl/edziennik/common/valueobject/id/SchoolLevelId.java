@@ -3,6 +3,8 @@ package pl.edziennik.common.valueobject.id;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -22,6 +24,7 @@ import java.util.UUID;
 public class SchoolLevelId implements Serializable, Identifier {
 
     @JsonValue
+    @NotNull
     private final UUID id;
 
     public static SchoolLevelId create() {
@@ -29,7 +32,7 @@ public class SchoolLevelId implements Serializable, Identifier {
     }
 
     @JsonCreator
-    protected SchoolLevelId(String value) {
+    protected SchoolLevelId(@NotEmpty String value) {
         try {
             this.id = UUID.fromString(value);
         } catch (IllegalArgumentException e) {
@@ -42,11 +45,11 @@ public class SchoolLevelId implements Serializable, Identifier {
     }
 
 
-    public static SchoolLevelId of(UUID uuid) {
+    public static SchoolLevelId of(@NotNull UUID uuid) {
         return new SchoolLevelId(uuid);
     }
 
-    public static SchoolLevelId of(String value) {
+    public static SchoolLevelId of(@NotEmpty String value) {
         return new SchoolLevelId(value);
     }
 

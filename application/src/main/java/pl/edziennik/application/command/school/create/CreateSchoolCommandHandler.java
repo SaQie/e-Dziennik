@@ -32,11 +32,29 @@ class CreateSchoolCommandHandler implements ICommandHandler<CreateSchoolCommand,
                         res.notFoundError(CreateSchoolCommand.SCHOOL_LEVEL_ID, command.schoolLevelId())
                 ));
 
-        Address address = Address.of(command.address(), command.city(), command.postalCode());
-        School school = School.of(command.name(), command.nip(), command.regon(), command.phoneNumber(), address, schoolLevel, configurationProperties);
+        Address address = createAddress(command);
+
+        School school = School.builder()
+                .name(command.name())
+                .nip(command.nip())
+                .regon(command.regon())
+                .phoneNumber(command.phoneNumber())
+                .address(address)
+                .schoolLevel(schoolLevel)
+                .properties(configurationProperties)
+                .build();
 
         SchoolId schoolId = schoolCommandRepository.save(school).getSchoolId();
 
         return OperationResult.success(schoolId);
     }
+
+    private Address createAddress(CreateSchoolCommand command) {
+        return Address.builder()
+                .address(command.address())
+                .city(command.city())
+                .postalCode(command.postalCode())
+                .build();
+    }
+
 }

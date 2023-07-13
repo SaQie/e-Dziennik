@@ -12,6 +12,7 @@ import pl.edziennik.domain.user.User;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter(AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
 public class Director {
 
@@ -37,14 +38,17 @@ public class Director {
     @Version
     private Long version;
 
+    @Builder
     public static Director of(User user, PersonInformation personInformation, Address address, School school) {
         Director director = new Director();
+
         director.school = school;
         director.address = address;
         director.personInformation = personInformation;
         director.user = user;
 
         school.assignDirector(director);
+
         return director;
     }
 }

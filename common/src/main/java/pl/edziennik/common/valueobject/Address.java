@@ -25,7 +25,7 @@ public class Address  implements ValueObject, Serializable {
     }
 
     @JsonCreator
-    public static Address of(String value) {
+    public static Address of(@NotEmpty String value) {
         return new Address(value);
     }
 

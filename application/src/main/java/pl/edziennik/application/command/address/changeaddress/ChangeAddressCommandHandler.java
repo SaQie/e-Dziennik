@@ -111,8 +111,8 @@ class ChangeAddressCommandHandler implements ICommandHandler<ChangeAddressComman
     }
 
     private void fillAddressData(ChangeAddressCommand command, Address address) {
-        address.setCity(command.city());
-        address.setPostalCode(command.postalCode());
-        address.setAddress(command.address());
+        address.changeCity(command.city());
+        address.changePostalCode(command.postalCode());
+        address.changeAddress(command.address());
     }
 }

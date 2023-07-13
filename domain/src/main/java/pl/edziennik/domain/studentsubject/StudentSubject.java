@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter(AccessLevel.PROTECTED)
@@ -36,9 +36,10 @@ public class StudentSubject {
     @Version
     private Long version;
 
-
+    @Builder
     public static StudentSubject of(Student student, Subject subject) {
         StudentSubject studentSubject = new StudentSubject();
+
         studentSubject.student = student;
         studentSubject.subject = subject;
 

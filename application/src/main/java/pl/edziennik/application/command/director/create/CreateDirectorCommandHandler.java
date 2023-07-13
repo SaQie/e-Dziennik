@@ -34,12 +34,17 @@ class CreateDirectorCommandHandler implements ICommandHandler<CreateDirectorComm
     @CacheEvict(allEntries = true, value = "directors")
     public OperationResult handle(CreateDirectorCommand command) {
         School school = schoolCommandRepository.getReferenceById(command.schoolId());
+
         User user = createUser(command);
+        PersonInformation personInformation = createPersonInformation(command);
+        Address address = createAddress(command);
 
-        PersonInformation personInformation = PersonInformation.of(command.firstName(), command.lastName(), command.phoneNumber());
-        Address address = Address.of(command.address(), command.city(), command.postalCode());
-
-        Director director = Director.of(user, personInformation, address, school);
+        Director director = Director.builder()
+                .address(address)
+                .personInformation(personInformation)
+                .school(school)
+                .user(user)
+                .build();
 
         DirectorId directorId = directorCommandRepository.save(director).getDirectorId();
 
@@ -49,9 +54,31 @@ class CreateDirectorCommandHandler implements ICommandHandler<CreateDirectorComm
 
     private User createUser(CreateDirectorCommand command) {
         Role role = roleCommandRepository.getByRoleId(RoleId.PredefinedRow.ROLE_DIRECTOR);
-        Password encodedPassword = Password.of(passwordEncoder.encode(command.password().value()));
+        Password password = Password.of(passwordEncoder.encode(command.password().value()));
 
-        return User.of(command.username(), encodedPassword, command.email(), command.pesel(), role);
+        return User.builder()
+                .username(command.username())
+                .password(password)
+                .email(command.email())
+                .pesel(command.pesel())
+                .role(role)
+                .build();
+    }
+
+    private PersonInformation createPersonInformation(CreateDirectorCommand command) {
+        return PersonInformation.builder()
+                .firstName(command.firstName())
+                .lastName(command.lastName())
+                .phoneNumber(command.phoneNumber())
+                .build();
+    }
+
+    private Address createAddress(CreateDirectorCommand command) {
+        return Address.builder()
+                .address(command.address())
+                .city(command.city())
+                .postalCode(command.postalCode())
+                .build();
     }
 
 }

@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter(AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
 public class Grade {
 
@@ -47,9 +48,11 @@ public class Grade {
     @Version
     private Long version;
 
+    @Builder
     public static Grade of(pl.edziennik.common.enums.Grade gradeConst, Weight weight, Description description, StudentSubject studentSubject,
                            Teacher teacher) {
         Grade grade = new Grade();
+
         grade.createdDate = LocalDate.now();
         grade.teacher = teacher;
         grade.description = description;

@@ -25,7 +25,7 @@ public class SubjectQueryProjectionTest extends BaseIntegrationTest {
         SchoolId schoolId = createSchool("Test", "123123", "123123");
         TeacherId teacherId = createTeacher("Test", "test@example.com", "123123123", schoolId);
         SchoolClassId schoolClassId = createSchoolClass(schoolId,teacherId, expectedSchoolClassName);
-        SubjectId subjectId = createSubject(expectedSubjectName, schoolClassId, teacherId);
+        SubjectId subjectId = transactionTemplate.execute((x) -> createSubject(expectedSubjectName, schoolClassId, teacherId));
 
         // when
         DetailedSubjectDto dto = subjectQueryRepository.getSubject(subjectId);

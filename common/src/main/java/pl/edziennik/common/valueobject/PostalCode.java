@@ -28,7 +28,7 @@ public class PostalCode implements ValueObject, Serializable {
     }
 
     @JsonCreator
-    public static PostalCode of(String value) {
+    public static PostalCode of(@NotEmpty String value) {
         return new PostalCode(value);
     }
 

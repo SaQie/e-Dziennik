@@ -70,7 +70,6 @@ public class Dispatcher {
                         log.error("Error during validate " + dispatchable.getClass().getSimpleName());
                     }
                     validationErrorBuilder.build();
-
                 });
     }
 

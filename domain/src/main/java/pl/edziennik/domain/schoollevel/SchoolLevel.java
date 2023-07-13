@@ -1,10 +1,7 @@
 package pl.edziennik.domain.schoollevel;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import pl.edziennik.common.valueobject.Name;
 import pl.edziennik.common.valueobject.id.SchoolLevelId;
 import pl.edziennik.domain.school.School;
@@ -16,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class SchoolLevel {
 
     @EmbeddedId
@@ -33,16 +31,11 @@ public class SchoolLevel {
     @Version
     private Long version;
 
+    @Builder
     public static SchoolLevel of(SchoolLevelId schoolLevelId, Name name) {
         SchoolLevel schoolLevel = new SchoolLevel();
+
         schoolLevel.schoolLevelId = schoolLevelId;
-        schoolLevel.name = name;
-
-        return schoolLevel;
-    }
-
-    public static SchoolLevel of(Name name) {
-        SchoolLevel schoolLevel = new SchoolLevel();
         schoolLevel.name = name;
 
         return schoolLevel;

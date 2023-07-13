@@ -148,7 +148,7 @@ public class BaseUnitTest {
                 Password.of(StringUtil.randomIdentifer(5)),
                 Email.of(email),
                 Pesel.of(StringUtil.randomIdentifer(11)),
-                Role.of(Name.of(role))
+                createRole(Name.of(role))
         );
 
         userCommandRepository.save(user);
@@ -162,7 +162,7 @@ public class BaseUnitTest {
                 Password.of(password),
                 Email.of(email),
                 Pesel.of(StringUtil.randomIdentifer(11)),
-                Role.of(Name.of(role))
+                createRole(Name.of(role))
         );
 
         userCommandRepository.save(user);
@@ -230,11 +230,11 @@ public class BaseUnitTest {
     }
 
     protected Parent createParent(User user, PersonInformation personInformation, Address address) {
-        return Parent.of(
-                user,
-                personInformation,
-                address
-        );
+        return Parent.builder()
+                .user(user)
+                .personInformation(personInformation)
+                .address(address)
+                .build();
     }
 
     protected Parent createParent(User user, PersonInformation personInformation, Address address, Student student) {
@@ -325,5 +325,9 @@ public class BaseUnitTest {
         return "not.found.message";
     }
 
-
+    private Role createRole(Name name) {
+        return Role.builder()
+                .name(name)
+                .build();
+    }
 }

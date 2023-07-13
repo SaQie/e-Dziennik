@@ -13,6 +13,7 @@ import pl.edziennik.domain.user.User;
 @Setter(AccessLevel.PROTECTED)
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Parent {
 
     @EmbeddedId
@@ -37,18 +38,14 @@ public class Parent {
     private Long version;
 
 
+    @Builder
     public static Parent of(User user, PersonInformation personInformation, Address address, Student student) {
-        Parent parent = of(user, personInformation, address);
-        parent.student = student;
-
-        return parent;
-    }
-
-    public static Parent of(User user, PersonInformation personInformation, Address address) {
         Parent parent = new Parent();
+
         parent.address = address;
         parent.personInformation = personInformation;
         parent.user = user;
+        parent.student = student;
 
         return parent;
     }

@@ -37,24 +37,53 @@ class CreateTeacherCommandHandler implements ICommandHandler<CreateTeacherComman
     @CacheEvict(allEntries = true, value = "teachers")
     public OperationResult handle(CreateTeacherCommand command) {
         School school = schoolCommandRepository.getReferenceById(command.schoolId());
+
         User user = createUser(command);
+        PersonInformation personInformation = createPersonInformation(command);
+        Address address = createAddress(command);
 
-        PersonInformation personInformation = PersonInformation.of(command.firstName(), command.lastName(), command.phoneNumber());
-        Address address = Address.of(command.address(), command.city(), command.postalCode());
-
-        Teacher teacher = Teacher.of(user, school, personInformation, address);
+        Teacher teacher = Teacher.builder()
+                .user(user)
+                .school(school)
+                .personInformation(personInformation)
+                .address(address)
+                .build();
 
         TeacherId teacherId = teacherCommandRepository.save(teacher).getTeacherId();
 
-        eventPublisher.publishEvent(new UserAccountCreatedEvent(user.getUserId()));
+        UserAccountCreatedEvent accountCreatedEvent = new UserAccountCreatedEvent(user.getUserId());
+        eventPublisher.publishEvent(accountCreatedEvent);
 
         return OperationResult.success(teacherId);
     }
 
     private User createUser(CreateTeacherCommand command) {
         Role role = roleCommandRepository.getByRoleId(RoleId.PredefinedRow.ROLE_TEACHER);
-        Password encodedPassword = Password.of(passwordEncoder.encode(command.password().value()));
+        Password password = Password.of(passwordEncoder.encode(command.password().value()));
 
-        return User.of(command.username(), encodedPassword, command.email(), command.pesel(), role);
+        return User.builder()
+                .role(role)
+                .pesel(command.pesel())
+                .username(command.username())
+                .password(password)
+                .email(command.email())
+                .build();
+    }
+
+    private PersonInformation createPersonInformation(CreateTeacherCommand command) {
+        return PersonInformation.builder()
+                .firstName(command.firstName())
+                .lastName(command.lastName())
+                .phoneNumber(command.phoneNumber())
+                .build();
+    }
+
+
+    private Address createAddress(CreateTeacherCommand command) {
+        return Address.builder()
+                .address(command.address())
+                .city(command.city())
+                .postalCode(command.postalCode())
+                .build();
     }
 }

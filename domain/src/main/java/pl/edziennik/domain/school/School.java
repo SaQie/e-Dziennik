@@ -22,6 +22,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter(AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
 public class School {
 
@@ -76,9 +77,11 @@ public class School {
     @Version
     private Long version;
 
+    @Builder
     public static School of(Name name, Nip nip, Regon regon, PhoneNumber phoneNumber, Address address,
                             SchoolLevel schoolLevel, SchoolConfigurationProperties properties) {
         School school = new School();
+
         school.name = name;
         school.regon = regon;
         school.address = address;

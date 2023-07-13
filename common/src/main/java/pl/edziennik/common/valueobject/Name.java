@@ -26,7 +26,7 @@ public class Name implements ValueObject , Serializable {
     }
 
     @JsonCreator
-    public static Name of(String value) {
+    public static Name of(@NotEmpty String value) {
         return new Name(value);
     }
 

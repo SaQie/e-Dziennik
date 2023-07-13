@@ -2,6 +2,7 @@ package pl.edziennik.common.valueobject;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,7 +25,7 @@ public class Description implements ValueObject, Serializable {
     }
 
     @JsonCreator
-    public static Description of(String value) {
+    public static Description of(@NotNull String value) {
         return new Description(value);
     }
 

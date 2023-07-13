@@ -26,7 +26,7 @@ public class City implements ValueObject, Serializable {
     }
 
     @JsonCreator
-    public static City of(String value) {
+    public static City of(@NotEmpty String value) {
         return new City(value);
     }
 

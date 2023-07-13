@@ -2,6 +2,7 @@ package pl.edziennik.common.valueobject;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import java.io.Serializable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @EqualsAndHashCode(of = "value")
 public class Weight implements Serializable {
+
     @JsonValue
     private final Integer value;
 
@@ -23,7 +25,7 @@ public class Weight implements Serializable {
     }
 
     @JsonCreator
-    public static Weight of(Integer value) {
+    public static Weight of(@NotNull Integer value) {
         return new Weight(value);
     }
 

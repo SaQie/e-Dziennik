@@ -28,7 +28,7 @@ public class Email implements ValueObject, Serializable {
     }
 
     @JsonCreator
-    public static Email of(String value) {
+    public static Email of(@NotEmpty String value) {
         return new Email(value);
     }
 

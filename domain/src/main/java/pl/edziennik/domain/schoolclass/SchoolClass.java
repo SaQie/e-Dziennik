@@ -19,6 +19,7 @@ import java.util.List;
 @Getter
 @Setter(AccessLevel.PROTECTED)
 @EqualsAndHashCode
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class SchoolClass {
 
     @EmbeddedId
@@ -51,12 +52,14 @@ public class SchoolClass {
     @Version
     private Long version;
 
+    @Builder
     public static SchoolClass of(Name name, School school, Teacher teacher, SchoolClassConfigurationProperties properties) {
         SchoolClass schoolClass = new SchoolClass();
+
         schoolClass.className = name;
         schoolClass.school = school;
-        schoolClass.createdDate = LocalDate.now();
         schoolClass.teacher = teacher;
+        schoolClass.createdDate = LocalDate.now();
 
         schoolClass.schoolClassConfiguration = SchoolClassConfiguration.createConfigFromProperties(properties);
 

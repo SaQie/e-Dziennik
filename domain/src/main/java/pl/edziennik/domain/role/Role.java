@@ -1,10 +1,7 @@
 package pl.edziennik.domain.role;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import pl.edziennik.common.valueobject.Name;
 import pl.edziennik.common.valueobject.id.RoleId;
 
@@ -12,6 +9,7 @@ import pl.edziennik.common.valueobject.id.RoleId;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Role {
 
     @EmbeddedId
@@ -26,15 +24,10 @@ public class Role {
     @Version
     private Long version;
 
-    public static Role of(Name name) {
+    @Builder
+    public static Role of(RoleId roleId, Name name) {
         Role role = new Role();
-        role.name = name;
 
-        return role;
-    }
-
-    public static Role of(RoleId roleId,Name name) {
-        Role role = new Role();
         role.name = name;
         role.roleId = roleId;
 

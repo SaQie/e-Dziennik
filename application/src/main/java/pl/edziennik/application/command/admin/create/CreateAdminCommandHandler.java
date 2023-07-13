@@ -24,13 +24,26 @@ class CreateAdminCommandHandler implements ICommandHandler<CreateAdminCommand, O
 
     @Override
     public OperationResult handle(CreateAdminCommand command) {
+        User user = createUser(command);
+
+        user.activate();
+
+        AdminId adminId = adminCommandRepository.save(Admin.of(user)).getAdminId();
+
+        return OperationResult.success(adminId);
+    }
+
+    private User createUser(CreateAdminCommand command) {
         Role role = roleCommandRepository.getByRoleId(RoleId.PredefinedRow.ROLE_ADMIN);
 
         Password password = Password.of(passwordEncoder.encode(command.password().value()));
-        User user = User.of(command.username(), password, command.email(), command.pesel(), role);
 
-        user.activate();
-        AdminId adminId = adminCommandRepository.save(Admin.of(user)).getAdminId();
-        return OperationResult.success(adminId);
+        return User.builder()
+                .username(command.username())
+                .password(password)
+                .email(command.email())
+                .pesel(command.pesel())
+                .role(role)
+                .build();
     }
 }

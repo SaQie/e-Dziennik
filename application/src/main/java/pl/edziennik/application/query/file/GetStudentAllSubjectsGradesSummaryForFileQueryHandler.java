@@ -28,19 +28,26 @@ class GetStudentAllSubjectsGradesSummaryForFileQueryHandler
 
         List<DetailedGradeForFileDto> grades = gradeQueryRepository.getDetailedGradeForFileDto(command.studentId());
 
-        subjects = subjects.stream()
-                .map(subject -> new StudentAllSubjectsSummaryForFileDto(subject, grades.stream()
-                        .filter(grade -> grade.studentSubjectId().equals(subject.studentSubjectId()))
-                        .toList()))
-                .toList();
+        subjects = connectSubjectListWithTheirGrades(subjects, grades);
 
         DocumentGeneratorStrategy generatorStrategy = generatorStrategies.stream()
                 .filter(strategy -> strategy.forType(command.documentType()))
-                .findFirst().orElseThrow(() ->
-                        new IllegalArgumentException("File generation strategy not found"));
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("File generation strategy not found"));
 
         StudentAllSubjectsGradesHeaderForFileDto dto = new StudentAllSubjectsGradesHeaderForFileDto(header, subjects);
 
         return generatorStrategy.generateDocument(dto);
+    }
+
+    /**
+     * Method for connect list of subjects with their grades (every subject has many grades)
+     */
+    private static List<StudentAllSubjectsSummaryForFileDto> connectSubjectListWithTheirGrades(List<StudentAllSubjectsSummaryForFileDto> subjects, List<DetailedGradeForFileDto> grades) {
+        return subjects.stream()
+                .map(subject -> new StudentAllSubjectsSummaryForFileDto(subject, grades.stream()
+                        .filter(grade -> grade.studentSubjectId().equals(subject.studentSubjectId()))
+                        .toList()))
+                .toList();
     }
 }

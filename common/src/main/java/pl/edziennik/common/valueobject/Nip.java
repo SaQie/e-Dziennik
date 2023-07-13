@@ -2,6 +2,7 @@ package pl.edziennik.common.valueobject;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -25,7 +26,7 @@ public class Nip implements ValueObject, Serializable {
     }
 
     @JsonCreator
-    public static Nip of(String value) {
+    public static Nip of(@NotEmpty String value) {
         return new Nip(value);
     }
 

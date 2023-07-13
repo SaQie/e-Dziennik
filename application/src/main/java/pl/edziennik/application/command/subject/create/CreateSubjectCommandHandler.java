@@ -3,6 +3,7 @@ package pl.edziennik.application.command.subject.create;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
 import pl.edziennik.common.valueobject.id.SubjectId;
@@ -22,12 +23,18 @@ class CreateSubjectCommandHandler implements ICommandHandler<CreateSubjectComman
     private final TeacherCommandRepository teacherCommandRepository;
 
     @Override
+    @Transactional
     @CacheEvict(allEntries = true, value = "subjects")
     public OperationResult handle(CreateSubjectCommand command) {
         SchoolClass schoolClass = schoolClassCommandRepository.getReferenceById(command.schoolClassId());
         Teacher teacher = teacherCommandRepository.getReferenceById(command.teacherId());
 
-        Subject subject = Subject.of(command.name(), command.description(), schoolClass, teacher);
+        Subject subject = Subject.builder()
+                .schoolClass(schoolClass)
+                .description(command.description())
+                .teacher(teacher)
+                .subjectName(command.name())
+                .build();
 
         SubjectId subjectId = subjectCommandRepository.save(subject).getSubjectId();
 

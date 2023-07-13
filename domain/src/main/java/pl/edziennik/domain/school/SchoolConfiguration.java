@@ -11,6 +11,7 @@ import pl.edziennik.common.valueobject.id.SchoolConfigurationId;
 @Getter
 @Setter(AccessLevel.PROTECTED)
 @EqualsAndHashCode
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class SchoolConfiguration {
 
     @EmbeddedId

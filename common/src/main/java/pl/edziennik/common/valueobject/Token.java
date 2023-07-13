@@ -1,5 +1,7 @@
 package pl.edziennik.common.valueobject;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -12,13 +14,14 @@ import java.util.UUID;
 @Accessors(fluent = true)
 @EqualsAndHashCode(of = "value")
 public class Token implements Serializable {
+
     private final UUID value;
 
     private Token(UUID value) {
         this.value = value;
     }
 
-    public static Token of(String token) {
+    public static Token of(@NotEmpty String token) {
         try {
             UUID uuid = UUID.fromString(token);
             return new Token(uuid);
@@ -27,7 +30,7 @@ public class Token implements Serializable {
         }
     }
 
-    public static Token of(UUID uuid) {
+    public static Token of(@NotNull UUID uuid) {
         return new Token(uuid);
     }
 

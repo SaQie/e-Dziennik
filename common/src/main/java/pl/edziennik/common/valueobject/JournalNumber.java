@@ -2,6 +2,7 @@ package pl.edziennik.common.valueobject;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,6 +19,7 @@ import java.util.Objects;
 public class JournalNumber implements Serializable {
 
     @JsonValue
+    @NotNull
     private final Integer value;
 
     private JournalNumber(Integer value) {
@@ -25,7 +27,7 @@ public class JournalNumber implements Serializable {
     }
 
     @JsonCreator
-    public static JournalNumber of(Integer value) {
+    public static JournalNumber of(@NotNull Integer value) {
         return new JournalNumber(value);
     }
 

@@ -27,6 +27,7 @@ public class SubjectQueryIntegrationTest extends BaseIntegrationTest {
 
 
     @Test
+    @Transactional
     public void shouldReturnDetailedSubjectUsingQuery() {
         // given
         SchoolId schoolId = createSchool("Test", "123123", "123123");

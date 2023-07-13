@@ -13,6 +13,7 @@ import pl.edziennik.domain.teacher.Teacher;
 @Getter
 @Setter(AccessLevel.PROTECTED)
 @EqualsAndHashCode
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Subject {
 
 
@@ -41,12 +42,16 @@ public class Subject {
     private Long version;
 
 
+    @Builder
     public static Subject of(Name subjectName, Description description, SchoolClass schoolClass, Teacher teacher) {
         Subject subject = new Subject();
+
         subject.description = description;
         subject.name = subjectName;
         subject.schoolClass = schoolClass;
         subject.teacher = teacher;
+
+        schoolClass.getSubjects().add(subject);
 
         return subject;
     }

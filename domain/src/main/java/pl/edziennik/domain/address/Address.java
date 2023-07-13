@@ -8,10 +8,9 @@ import pl.edziennik.common.valueobject.id.AddressId;
 
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
 @EqualsAndHashCode
 public class Address {
 
@@ -26,7 +25,7 @@ public class Address {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "value", column = @Column(name = "city",nullable = false))
+            @AttributeOverride(name = "value", column = @Column(name = "city", nullable = false))
     })
     private City city;
 
@@ -40,11 +39,26 @@ public class Address {
     private Long version;
 
 
-    public static Address of(pl.edziennik.common.valueobject.Address address, City city, PostalCode postalCode){
+    @Builder
+    public static Address of(pl.edziennik.common.valueobject.Address address, City city, PostalCode postalCode) {
         Address addressEntity = new Address();
-        addressEntity.setAddress(address);
-        addressEntity.setCity(city);
-        addressEntity.setPostalCode(postalCode);
+
+        addressEntity.city = city;
+        addressEntity.address = address;
+        addressEntity.postalCode = postalCode;
+
         return addressEntity;
+    }
+
+    public void changeCity(City city) {
+        this.city = city;
+    }
+
+    public void changePostalCode(PostalCode postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public void changeAddress(pl.edziennik.common.valueobject.Address address) {
+        this.address = address;
     }
 }

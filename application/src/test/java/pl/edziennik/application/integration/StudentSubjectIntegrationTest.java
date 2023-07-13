@@ -53,7 +53,7 @@ public class StudentSubjectIntegrationTest extends BaseIntegrationTest {
 
         SchoolClassId schoolClassId = createSchoolClass(schoolId, teacherId, "1A");
 
-        createSubject("Test", schoolClassId, teacherId);
+        transactionTemplate.execute((x) -> createSubject("Test", schoolClassId, teacherId));
 
         CreateStudentCommand command = new CreateStudentCommand(
                 Password.of("Test"),
@@ -78,6 +78,7 @@ public class StudentSubjectIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
+    @Transactional
     public void shouldNotAutomaticallyAssignSubjectFromSchoolClassToStudentIfSchoolClassConfigurationParameterIsFalse() {
         // given
         SchoolId schoolId = createSchool("Test", "123123", "1231233");

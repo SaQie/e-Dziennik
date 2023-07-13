@@ -2,6 +2,7 @@ package pl.edziennik.common.valueobject;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -26,7 +27,7 @@ public class PhoneNumber implements ValueObject, Serializable {
     }
 
     @JsonCreator
-    public static PhoneNumber of(String value) {
+    public static PhoneNumber of(@NotEmpty String value) {
         return new PhoneNumber(value);
     }
 

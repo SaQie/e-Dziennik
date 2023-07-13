@@ -67,15 +67,17 @@ public class User {
     @Version
     private Long version;
 
+    @Builder
     public static User of(Username username, Password password, Email email, Pesel pesel, Role role) {
         User user = new User();
+
         user.username = username;
         user.password = password;
         user.email = email;
         user.role = role;
+        user.pesel = pesel;
         user.createdDate = LocalDate.now();
         user.isActive = Boolean.FALSE;
-        user.pesel = pesel;
 
         return user;
     }

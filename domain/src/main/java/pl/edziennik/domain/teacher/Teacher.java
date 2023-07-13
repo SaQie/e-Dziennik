@@ -10,6 +10,7 @@ import pl.edziennik.domain.user.User;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Setter(AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode
@@ -37,12 +38,15 @@ public class Teacher {
     private Long version;
 
 
+    @Builder
     public static Teacher of(User user, School school, PersonInformation personInformation, Address address) {
         Teacher teacher = new Teacher();
+
         teacher.school = school;
         teacher.address = address;
         teacher.personInformation = personInformation;
         teacher.user = user;
+
         school.getTeachers().add(teacher);
 
         return teacher;

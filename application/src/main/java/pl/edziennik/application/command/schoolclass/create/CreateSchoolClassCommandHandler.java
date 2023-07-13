@@ -29,7 +29,12 @@ class CreateSchoolClassCommandHandler implements ICommandHandler<CreateSchoolCla
         Teacher teacher = teacherCommandRepository.getReferenceById(command.teacherId());
         School school = schoolCommandRepository.getReferenceById(command.schoolId());
 
-        SchoolClass schoolClass = SchoolClass.of(command.className(), school, teacher, configurationProperties);
+        SchoolClass schoolClass = SchoolClass.builder()
+                .name(command.className())
+                .school(school)
+                .teacher(teacher)
+                .properties(configurationProperties)
+                .build();
 
         SchoolClassId schoolClassId = schoolClassCommandRepository.save(schoolClass).getSchoolClassId();
 

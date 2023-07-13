@@ -28,7 +28,7 @@ public class Password implements ValueObject, Serializable {
     }
 
     @JsonCreator
-    public static Password of(String value) {
+    public static Password of(@NotEmpty String value) {
         return new Password(value);
     }
 

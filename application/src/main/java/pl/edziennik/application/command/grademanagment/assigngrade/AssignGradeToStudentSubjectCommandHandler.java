@@ -31,11 +31,18 @@ class AssignGradeToStudentSubjectCommandHandler implements ICommandHandler<Assig
         StudentSubject studentSubject = studentSubjectCommandRepository.getReferenceByStudentStudentIdAndSubjectSubjectId(command.studentId(), command.subjectId());
         Teacher teacher = teacherCommandRepository.getReferenceById(command.teacherId());
 
-        Grade grade = Grade.of(command.grade(), command.weight(), command.description(), studentSubject, teacher);
+        Grade grade = Grade.builder()
+                .gradeConst(command.grade())
+                .weight(command.weight())
+                .description(command.description())
+                .studentSubject(studentSubject)
+                .teacher(teacher)
+                .build();
 
         GradeId gradeId = gradeCommandRepository.save(grade).getGradeId();
 
-        eventPublisher.publishEvent(new GradeAddedEvent(studentSubject.getStudentSubjectId()));
+        GradeAddedEvent event = new GradeAddedEvent(studentSubject.getStudentSubjectId());
+        eventPublisher.publishEvent(event);
 
         return OperationResult.success(gradeId);
     }

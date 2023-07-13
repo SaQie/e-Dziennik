@@ -1,18 +1,16 @@
 package pl.edziennik.domain.admin;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pl.edziennik.common.valueobject.id.AdminId;
 import pl.edziennik.domain.user.User;
 
 @Entity
 @Getter
-@Setter
+@Setter(AccessLevel.PROTECTED)
 @EqualsAndHashCode
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Admin {
 
     @EmbeddedId
@@ -26,8 +24,10 @@ public class Admin {
     private Long version;
 
 
+    @Builder
     public static Admin of(User user){
         Admin admin = new Admin();
+
         admin.user = user;
 
         return admin;
