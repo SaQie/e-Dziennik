@@ -24,7 +24,7 @@
         <dependency>
             <groupId>pl.edziennik.common</groupId>
             <artifactId>common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${common.version}</version>
         </dependency>
     </dependencies>
 
