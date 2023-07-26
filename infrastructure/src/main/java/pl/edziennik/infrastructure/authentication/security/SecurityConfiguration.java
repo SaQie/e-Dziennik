@@ -96,7 +96,6 @@ public class SecurityConfiguration {
         return http.build();
     }
 
-
     @Bean
     public JsonObjectAuthenticationFilter authenticationFilter() {
         JsonObjectAuthenticationFilter jsonFilter = new JsonObjectAuthenticationFilter();
