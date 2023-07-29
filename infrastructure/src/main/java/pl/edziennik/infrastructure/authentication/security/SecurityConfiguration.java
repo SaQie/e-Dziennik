@@ -44,8 +44,7 @@ public class SecurityConfiguration {
 
 
     public SecurityConfiguration(AuthUserDetailsService authUserDetailsService, AuthSuccessHandler successHandler,
-                                 AuthFailureHandler failureHandler, AuthLogoutHandler logoutHandler
-    ) {
+                                 AuthFailureHandler failureHandler, AuthLogoutHandler logoutHandler) {
         this.authUserDetailsService = authUserDetailsService;
         this.successHandler = successHandler;
         this.failureHandler = failureHandler;
@@ -77,7 +76,7 @@ public class SecurityConfiguration {
                                 .and()
                                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                                 .and()
-                                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/").addLogoutHandler(logoutHandler)
+                                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).addLogoutHandler(logoutHandler)
                                 .and()
                                 .addFilter(authenticationFilter())
                                 .addFilter(new JwtAuthorizationFilter(authenticationManager, authUserDetailsService, jwtUtils))

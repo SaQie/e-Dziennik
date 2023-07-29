@@ -77,6 +77,7 @@ public class ChatMessage {
         chatMessage.recipientName = recipientName;
         chatMessage.recipientId = recipientId;
         chatMessage.messageStatus = messageStatus;
+        chatMessage.date = LocalDateTime.now();
 
         return chatMessage;
 

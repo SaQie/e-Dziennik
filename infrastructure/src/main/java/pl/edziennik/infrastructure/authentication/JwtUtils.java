@@ -75,8 +75,8 @@ public class JwtUtils {
         return (UserDetails) authentication.getPrincipal();
     }
 
-    public Map<String, String> getDataFromToken(String token) {
-        Map<String, String> jwtData = new HashMap<>();
+    public Map<String, Object> getDataFromToken(String token) {
+        Map<String, Object> jwtData = new HashMap<>();
         String login = JWT.require(Algorithm.HMAC256(secretKey))
                 .build()
                 .verify(token.replace(tokenPrefix + " ", ""))
@@ -94,6 +94,12 @@ public class JwtUtils {
                 .verify(token.replace(tokenPrefix + " ", ""))
                 .getClaim("superId").asString();
         jwtData.put("superId", superId);
+
+        Date expirationDate = JWT.require(Algorithm.HMAC256(secretKey))
+                .build()
+                .verify(token.replace(tokenPrefix + " ", ""))
+                .getExpiresAt();
+        jwtData.put("expirationDate", expirationDate);
 
         return jwtData;
     }

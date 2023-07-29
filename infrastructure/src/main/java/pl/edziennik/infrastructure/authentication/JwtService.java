@@ -18,14 +18,14 @@ public class JwtService {
         if (jwtUtils.isTokenNotExist(refreshToken)) {
             throw new RuntimeException("refresh token is missing");
         }
-        Map<String, String> jwtData = jwtUtils.getDataFromToken(refreshToken);
-        String username = jwtData.get("username");
+        Map<String, Object> jwtData = jwtUtils.getDataFromToken(refreshToken);
+        String username = (String) jwtData.get("username");
         if (username == null) {
             throw new RuntimeException("login is missing");
         }
         UserDetails userDetails = authUserDetailsService.loadUserByUsername(username);
-        UUID id = UUID.fromString(jwtData.get("id"));
-        UUID superId = UUID.fromString(jwtData.get("superId"));
+        UUID id = UUID.fromString((String) jwtData.get("id"));
+        UUID superId = UUID.fromString((String) jwtData.get("superId"));
         return jwtUtils.generateJwtToken(userDetails, id, superId);
     }
 

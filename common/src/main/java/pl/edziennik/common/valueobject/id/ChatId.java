@@ -8,31 +8,46 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import pl.edziennik.common.exception.InvalidIdentifierException;
+import pl.edziennik.common.valueobject.Identifier;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 @Embeddable
 @Getter
 @Accessors(fluent = true)
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
-public class ChatId implements Serializable {
+public class ChatId implements Serializable, Identifier {
 
     @JsonValue
-    private final String id;
+    private final UUID id;
 
     @JsonCreator
     protected ChatId(String value) {
-        this.id = value;
+        try {
+            this.id = UUID.fromString(value);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidIdentifierException("Invalid identifier");
+        }
     }
 
-    protected ChatId(RecipientId recipientId, SenderId senderId) {
-        this.id = String.format("%s_%s", recipientId.id(), senderId.id());
+    protected ChatId(UUID uuid) {
+        this.id = uuid;
     }
 
 
-    public static ChatId of(RecipientId recipientId, SenderId senderId) {
-        return new ChatId(recipientId, senderId);
+    public static ChatId create() {
+        return new ChatId(UUID.randomUUID());
+    }
+
+    public static ChatId of(UUID id) {
+        return new ChatId(id);
+    }
+
+    public static ChatId of(String value) {
+        return new ChatId(value);
     }
 
 }

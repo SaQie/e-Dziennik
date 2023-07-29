@@ -38,12 +38,12 @@ public class ChatRoom {
 
 
     @Builder
-    public static ChatRoom of(SenderId senderId, RecipientId recipientId) {
+    public static ChatRoom of(SenderId senderId, RecipientId recipientId, ChatId chatId) {
         ChatRoom chatRoom = new ChatRoom();
 
         chatRoom.senderId = senderId;
         chatRoom.recipientId = recipientId;
-        chatRoom.chatId = ChatId.of(recipientId, senderId);
+        chatRoom.chatId = chatId;
 
         return chatRoom;
     }

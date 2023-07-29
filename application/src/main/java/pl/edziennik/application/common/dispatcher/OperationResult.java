@@ -8,7 +8,6 @@ public record OperationResult(
         boolean isSuccess
 ) {
 
-
     public static OperationResult success(Identifier id) {
         return new OperationResult(id, true);
     }

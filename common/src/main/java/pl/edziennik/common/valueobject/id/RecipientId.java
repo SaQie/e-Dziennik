@@ -50,4 +50,8 @@ public class RecipientId implements Serializable, Identifier {
         return new RecipientId(value);
     }
 
+    public static RecipientId convert(SenderId senderId) {
+        return new RecipientId(senderId.id());
+    }
+
 }
