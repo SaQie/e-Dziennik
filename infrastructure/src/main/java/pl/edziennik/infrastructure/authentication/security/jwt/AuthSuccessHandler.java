@@ -14,14 +14,10 @@ import org.springframework.stereotype.Component;
 import pl.edziennik.common.valueobject.Username;
 import pl.edziennik.domain.user.User;
 import pl.edziennik.infrastructure.authentication.JwtUtils;
-import pl.edziennik.infrastructure.authentication.security.LoggedUser;
 import pl.edziennik.infrastructure.authentication.security.jwt.dto.AuthResponseDto;
 import pl.edziennik.infrastructure.repository.user.UserQueryRepository;
-import pl.edziennik.infrastructure.spring.cache.SpringCacheService;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.Map;
 
 /**
  * Handler for success login
@@ -32,9 +28,6 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     @Autowired
     private UserQueryRepository repository;
-
-    @Autowired
-    private SpringCacheService springCacheService;
 
     @Autowired
     private JwtUtils jwtUtils;
@@ -59,13 +52,7 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
         setRequiredHeadersAndPrintTokenToUser(response, authResponseDto);
 
-        Map<String, Object> dataFromToken = jwtUtils.getDataFromToken(token);
-        String id = (String) dataFromToken.get("id");
-        Date expirationDate = (Date) dataFromToken.get("expirationDate");
-
-        LoggedUser loggedUser = new LoggedUser(id, expirationDate);
-
-        springCacheService.addLoggedUser(loggedUser);
+        jwtUtils.insertLoggedUserToCache(token);
 
     }
 

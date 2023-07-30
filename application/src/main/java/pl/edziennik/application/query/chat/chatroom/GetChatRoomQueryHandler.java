@@ -1,4 +1,4 @@
-package pl.edziennik.application.query.chat;
+package pl.edziennik.application.query.chat.chatroom;
 
 
 import lombok.AllArgsConstructor;

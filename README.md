@@ -30,17 +30,17 @@ _____________
 
 </div>
 
-| Description                   |                                             | Description               |                                       |
-|-------------------------------|---------------------------------------------|---------------------------|---------------------------------------|
-| **Schools option**            | ![#00d1a0](images/School_Building.png)      | **Email confirmation**    | ![#00d1a0](images/Received.png)       |
-| **School classes option**     | ![#00d1a0](images/Meeting_Room.png)         | **Document generator**    | ![#00d1a0](images/PDF.png)            |
-| **Students option**           | ![#00d1a0](images/Student_Male.png)         | **Internationalization**  | ![#00d1a0](images/Language_Skill.png) |
-| **Teachers option**           | ![#00d1a0](images/Teacher.png)              |                           |                                       |
-| **Parents option**            | ![#00d1a0](images/Family.png)               |                           |                                       |
-| **Admins option**             | ![#00d1a0](images/Admin_Settings_Male.png)  |                           |                                       |
-| **Subjects option**           | ![#00d1a0](images/Read.png)                 |                           |                                       |
-| **Grades option**             | ![#00d1a0](images/Numbers.png)              |                           |                                       |
-| **Dynamic app configuration** | ![#FC0000](images/Services.png)             |                           |                                       |
+| Description                   |                                            | Description              |                                       |
+|-------------------------------|--------------------------------------------|--------------------------|---------------------------------------|
+| **Schools option**            | ![#00d1a0](images/School_Building.png)     | **Email confirmation**   | ![#00d1a0](images/Received.png)       |
+| **School classes option**     | ![#00d1a0](images/Meeting_Room.png)        | **Document generator**   | ![#00d1a0](images/PDF.png)            |
+| **Students option**           | ![#00d1a0](images/Student_Male.png)        | **Internationalization** | ![#00d1a0](images/Language_Skill.png) |
+| **Teachers option**           | ![#00d1a0](images/Teacher.png)             | **Real-Time Chat**       | ![#00d1a0](images/WeChat.png)         |
+| **Parents option**            | ![#00d1a0](images/Family.png)              |                          |                                       |
+| **Admins option**             | ![#00d1a0](images/Admin_Settings_Male.png) |                          |                                       |
+| **Subjects option**           | ![#00d1a0](images/Read.png)                |                          |                                       |
+| **Grades option**             | ![#00d1a0](images/Numbers.png)             |                          |                                       |
+| **Dynamic app configuration** | ![#FC0000](images/Services.png)            |                          |                                       |
 
 <div>Dynamic app configuration allows to configure our application through REST-API</div>
 
@@ -58,7 +58,7 @@ List of task's I will implement in future in this project:
 
 * *Add email confirmation* ✅
 * *Add redis cache for configuration* ✅
-* *Add real time client-server chat (student-teacher)* ❌
+* *Add real time client-server chat (student-teacher)* ✅
 * *Add email system inside application* ❌
 * *Add exports student grades to PDF* ✅
 * *Add homeworks that can be sent to teacher* ❌
@@ -77,6 +77,7 @@ ___
   - I decided to change my persistence layer, due to i had a lot of problems with DAO pattern (Pagination, transactions etc.)
 - *(06/05/2023) Changed architecture layer to CQRS, check <strong>[Architecture Look »](#-architecture-look)</strong>*
 - *(31/05/2023)* I decided to temporarily stop developing client desktop application and instead start developing Angular web client 
+- *(30/07/2023)* My first face to WebSocket's - implemented a new one-to-one chat with message history | check <strong>[Chat »](#-chat---how-it-works)</strong>
 
 # 👨‍💻 Tech stack
 
@@ -99,6 +100,7 @@ _____
 * GitHub with GitHub Workflows
 * TestContainers
 * Redis
+* WebSockets
 
 # 🗾 Architecture look
 ___
@@ -107,6 +109,11 @@ ___
 *Architecture look is available in a picture below:*
 
 ![#FC0000](images/CQRS_architecture.png)
+
+# 💬 Chat - How it works
+___
+
+![#FC0000](images/one-to-one-chat.png)
 
 #  🖥️ How to run
 

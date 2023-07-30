@@ -10,6 +10,7 @@ public record LoggedUserDto(
         Name username,
         FullName fullName,
         Name roleName
+
 ) {
 
 }

@@ -9,11 +9,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Component;
 import pl.edziennik.infrastructure.authentication.JwtUtils;
-import pl.edziennik.infrastructure.authentication.security.LoggedUser;
-import pl.edziennik.infrastructure.spring.cache.SpringCacheService;
-
-import java.util.Date;
-import java.util.Map;
 
 
 /**
@@ -22,9 +17,6 @@ import java.util.Map;
 @Component
 @Slf4j
 public class AuthLogoutHandler implements LogoutHandler {
-
-    @Autowired
-    private SpringCacheService springCacheService;
 
     @Autowired
     private JwtUtils jwtUtils;
@@ -38,13 +30,7 @@ public class AuthLogoutHandler implements LogoutHandler {
             return;
         }
 
-        Map<String, Object> dataFromToken = jwtUtils.getDataFromToken(token);
-        String id = (String) dataFromToken.get("id");
-        Date expirationDate = (Date) dataFromToken.get("expirationDate");
-
-        LoggedUser loggedUser = new LoggedUser(id, expirationDate);
-
-        springCacheService.deleteLoggedUser(loggedUser);
-
+        jwtUtils.deleteLoggedUserFromCache(token);
     }
+
 }

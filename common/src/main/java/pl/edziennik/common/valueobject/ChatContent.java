@@ -19,7 +19,7 @@ public class ChatContent implements ValueObject, Serializable {
 
 
     @JsonValue
-    @NotEmpty(message = "{address.empty}")
+    @NotEmpty(message = "{field.empty}")
     private final String value;
 
     private ChatContent(String value) {

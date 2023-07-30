@@ -66,8 +66,8 @@ import pl.edziennik.infrastructure.spring.ResourceCreator;
 
 @EnableJpaRepositories(basePackages = {"pl.edziennik.infrastructure.repository"})
 @EntityScan(basePackages = {"pl.edziennik.domain"})
-@ComponentScan(basePackages = {"pl.edziennik.common", "pl.edziennik.infrastructure.spring", "pl.edziennik.application.*"})
-@SpringBootTest(classes = BaseIntegrationTest.class)
+@ComponentScan(basePackages = {"pl.edziennik.common", "pl.edziennik.infrastructure.spring", "pl.edziennik.infrastructure.spring.cache.*", "pl.edziennik.application.*"})
+@SpringBootTest(classes = {BaseIntegrationTest.class, RedisCacheTestConfig.class})
 @AutoConfigureDataJpa
 @Sql(scripts = "/schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(scripts = "/clearDb.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)

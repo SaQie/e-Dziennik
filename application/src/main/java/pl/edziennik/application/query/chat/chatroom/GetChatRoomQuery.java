@@ -1,4 +1,4 @@
-package pl.edziennik.application.query.chat;
+package pl.edziennik.application.query.chat.chatroom;
 
 import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.base.HandledBy;

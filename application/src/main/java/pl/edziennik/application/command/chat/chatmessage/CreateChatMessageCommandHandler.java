@@ -1,4 +1,4 @@
-package pl.edziennik.application.command.chat;
+package pl.edziennik.application.command.chat.chatmessage;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -20,16 +20,15 @@ class CreateChatMessageCommandHandler implements ICommandHandler<CreateChatMessa
 
     @Override
     public OperationResult handle(CreateChatMessageCommand command) {
-        ChatMessage chatMessage = command.chatMessage();
         MessageStatus messageStatus = messageStatusQueryRepository.getByMessageStatusId(MessageStatusId.PredefinedRow.DELIVERED);
 
         ChatMessage entity = ChatMessage.builder()
-                .recipientId(chatMessage.getRecipientId())
-                .senderId(chatMessage.getSenderId())
-                .chatContent(chatMessage.getChatContent())
-                .senderName(chatMessage.getSenderName())
-                .recipientName(chatMessage.getRecipientName())
-                .chatId(chatMessage.getChatId())
+                .recipientId(command.recipientId())
+                .senderId(command.senderId())
+                .chatContent(command.chatContent())
+                .senderName(command.senderName())
+                .recipientName(command.recipientName())
+                .chatId(command.chatId())
                 .messageStatus(messageStatus)
                 .build();
 

@@ -1,4 +1,4 @@
-package pl.edziennik.application.command.chat;
+package pl.edziennik.application.command.chat.chatroom;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,6 @@ class CreateChatRoomCommandHandler implements ICommandHandler<CreateChatRoomComm
     public OperationResult handle(CreateChatRoomCommand command) {
         ChatId chatId = ChatId.create();
 
-        // Todo nie wiem czy to ma sens, do przemyslenia pozniej czy trzeba zpisywac recipienta i sendera na odwrot tez
         ChatRoom recipientChatRoom = ChatRoom.builder()
                 .recipientId(command.recipientId())
                 .senderId(command.senderId())
@@ -36,7 +35,6 @@ class CreateChatRoomCommandHandler implements ICommandHandler<CreateChatRoomComm
 
         commandRepository.save(recipientChatRoom);
         commandRepository.save(senderChatRoom);
-
 
         return OperationResult.success(chatId);
     }

@@ -2,12 +2,15 @@ package pl.edziennik.infrastructure.authentication;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import pl.edziennik.infrastructure.authentication.security.LoggedUser;
+import pl.edziennik.infrastructure.spring.cache.SpringCacheService;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -32,6 +35,9 @@ public class JwtUtils {
 
     @Value("${jwt.token.prefix}")
     private String tokenPrefix;
+
+    @Autowired
+    private SpringCacheService springCacheService;
 
     public String generateJwtToken(UserDetails userDetails, UUID id, UUID superId) {
         return generateTokenFromUsername(userDetails, id, superId);
@@ -138,5 +144,25 @@ public class JwtUtils {
                 .build()
                 .verify(token.replace(tokenPrefix + " ", ""))
                 .getSubject();
+    }
+
+    public void deleteLoggedUserFromCache(String token) {
+        LoggedUser loggedUser = createLoggedUser(token);
+
+        springCacheService.deleteLoggedUser(loggedUser);
+    }
+
+    public void insertLoggedUserToCache(String token) {
+        LoggedUser loggedUser = createLoggedUser(token);
+
+        springCacheService.addLoggedUser(loggedUser);
+    }
+
+    private LoggedUser createLoggedUser(String token) {
+        Map<String, Object> dataFromToken = getDataFromToken(token);
+        String id = (String) dataFromToken.get("id");
+        Date expirationDate = (Date) dataFromToken.get("expirationDate");
+
+        return new LoggedUser(expirationDate, id);
     }
 }

@@ -61,7 +61,7 @@ public class ChatMessage {
     @Column(nullable = false)
     private LocalDateTime date;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "message_status_id", referencedColumnName = "id", nullable = false)
     private MessageStatus messageStatus;
 
