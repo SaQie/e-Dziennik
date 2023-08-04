@@ -19,10 +19,10 @@ public class CalculateWeightedAverageOfGradesStrategy implements CalculateAverag
     public CalculateAverageOfGradesStrategyOutput calculateAverage(CalculateAverageOfGradesStrategyInput input) {
         double gradesSum = input.grades().stream()
                 .mapToDouble(grade -> {
-                    if (grade.getWeight().value() == 0) {
-                        return grade.getGrade().decimalGrade;
+                    if (grade.weight().value() == 0) {
+                        return grade.grade().decimalGrade;
                     }
-                    return (grade.getGrade().decimalGrade * grade.getWeight().value());
+                    return (grade.grade().decimalGrade * grade.weight().value());
                 })
                 .sum();
 

@@ -50,11 +50,12 @@ public class GradeIntegrationTest extends BaseIntegrationTest {
         // then
         pl.edziennik.domain.grade.Grade grade = gradeCommandRepository.getByGradeId(GradeId.of(operationResult.identifier().id()));
         assertNotNull(grade);
-        assertEquals(grade.getStudentSubject().getStudentSubjectId(), studentSubjectId);
-        assertEquals(grade.getTeacher().getTeacherId(), teacherId);
+        assertEquals(grade.studentSubject().studentSubjectId(), studentSubjectId);
+        assertEquals(grade.teacher().teacherId(), teacherId);
     }
 
     @Test
+    @Transactional
     public void shouldAssignGradeToStudentSubjectAndRecalculateAverage() {
         // given
         SchoolId schoolId = createSchool("Test", "123123", "1231233");
@@ -67,7 +68,7 @@ public class GradeIntegrationTest extends BaseIntegrationTest {
         StudentSubjectId studentSubjectId = transactionTemplate.execute(result -> assignStudentToSubject(studentId, subjectId));
 
         StudentSubject studentSubject = studentSubjectCommandRepository.findById(studentSubjectId).get();
-        assertNull(null, studentSubject.getAverage());
+        assertNull(null, studentSubject.average());
 
         AssignGradeToStudentSubjectCommand command = new AssignGradeToStudentSubjectCommand(
                 studentId,
@@ -84,11 +85,12 @@ public class GradeIntegrationTest extends BaseIntegrationTest {
         // then
         pl.edziennik.domain.grade.Grade grade = gradeCommandRepository.getByGradeId(GradeId.of(operationResult.identifier().id()));
         assertNotNull(grade);
-        assertEquals(grade.getStudentSubject().getStudentSubjectId(), studentSubjectId);
-        assertEquals(grade.getTeacher().getTeacherId(), teacherId);
+        StudentSubjectId studentSubjectIdSecond = transactionTemplate.execute((i) -> grade.studentSubject().studentSubjectId());
+        assertEquals(studentSubjectIdSecond, studentSubjectId);
+        assertEquals(grade.teacher().teacherId(), teacherId);
 
         studentSubject = studentSubjectCommandRepository.findById(studentSubjectId).get();
-        assertEquals(studentSubject.getAverage(), new BigDecimal("4.00"));
+        assertEquals(studentSubject.average(), new BigDecimal("4.00"));
 
     }
 

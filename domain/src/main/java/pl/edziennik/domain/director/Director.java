@@ -2,6 +2,7 @@ package pl.edziennik.domain.director;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
 import pl.edziennik.common.valueobject.PersonInformation;
 import pl.edziennik.common.valueobject.id.DirectorId;
 import pl.edziennik.domain.address.Address;
@@ -11,6 +12,7 @@ import pl.edziennik.domain.user.User;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Accessors(fluent = true)
 @Setter(AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode

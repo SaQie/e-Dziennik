@@ -35,7 +35,7 @@ public class GradeEventListener {
                         res.notFoundError(GradeAddedEvent.STUDENT_SUBJECT_ID, event.studentSubjectId())
                 ));
 
-        AverageType averageType = studentSubject.getStudent().getSchool().getSchoolConfiguration().getAverageType();
+        AverageType averageType = studentSubject.student().school().schoolConfiguration().averageType();
 
         List<Grade> grades = studentSubjectCommandRepository.getStudentSubjectGrades(event.studentSubjectId());
 

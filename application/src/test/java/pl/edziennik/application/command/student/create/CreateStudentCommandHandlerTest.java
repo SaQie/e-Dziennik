@@ -52,8 +52,8 @@ class CreateStudentCommandHandlerTest extends BaseUnitTest {
                 Pesel.of("12345678912"),
                 Email.of("Test@example.com"),
                 PhoneNumber.of("123123"),
-                school.getSchoolId(),
-                schoolClass.getSchoolClassId()
+                school.schoolId(),
+                schoolClass.schoolClassId()
         );
 
         // when

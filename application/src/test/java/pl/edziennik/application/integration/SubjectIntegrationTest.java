@@ -47,7 +47,7 @@ public class SubjectIntegrationTest extends BaseIntegrationTest {
         // then
         Subject subject = subjectCommandRepository.getBySubjectId(SubjectId.of(operationResult.identifier().id()));
         assertNotNull(subject);
-        assertEquals(subject.getSchoolClass().getSchoolClassId(), schoolClassId);
+        assertEquals(subject.schoolClass().schoolClassId(), schoolClassId);
     }
 
     @Test

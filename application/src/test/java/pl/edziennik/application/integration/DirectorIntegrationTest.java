@@ -47,7 +47,7 @@ public class DirectorIntegrationTest extends BaseIntegrationTest {
         Director director = directorCommandRepository.getByDirectorId(DirectorId.of(operationResult.identifier().id()));
         Assertions.assertNotNull(director);
         School school = schoolCommandRepository.getBySchoolId(schoolId);
-        assertEquals(school.getDirector().getDirectorId(), director.getDirectorId());
+        assertEquals(school.director().directorId(), director.directorId());
     }
 
     @Test

@@ -50,7 +50,7 @@ class ChangeAddressCommandHandler implements ICommandHandler<ChangeAddressComman
                         res.notFoundError(ChangeAddressCommand.ID, directorId)
                 ));
 
-        fillAddressData(command, director.getAddress());
+        fillAddressData(command, director.address());
 
         directorCommandRepository.save(director);
     }
@@ -64,7 +64,7 @@ class ChangeAddressCommandHandler implements ICommandHandler<ChangeAddressComman
                         res.notFoundError(ChangeAddressCommand.ID, studentId)
                 ));
 
-        fillAddressData(command, student.getAddress());
+        fillAddressData(command, student.address());
 
         studentCommandRepository.save(student);
 
@@ -79,7 +79,7 @@ class ChangeAddressCommandHandler implements ICommandHandler<ChangeAddressComman
                         res.notFoundError(ChangeAddressCommand.ID, teacherId)
                 ));
 
-        fillAddressData(command, teacher.getAddress());
+        fillAddressData(command, teacher.address());
 
         teacherCommandRepository.save(teacher);
     }
@@ -92,7 +92,7 @@ class ChangeAddressCommandHandler implements ICommandHandler<ChangeAddressComman
                         res.notFoundError(ChangeAddressCommand.ID, schoolId)
                 ));
 
-        fillAddressData(command, student.getAddress());
+        fillAddressData(command, student.address());
 
         schoolCommandRepository.save(student);
     }
@@ -105,7 +105,7 @@ class ChangeAddressCommandHandler implements ICommandHandler<ChangeAddressComman
                         res.notFoundError(ChangeAddressCommand.ID, parentId)
                 ));
 
-        fillAddressData(command, parent.getAddress());
+        fillAddressData(command, parent.address());
 
         parentCommandRepository.save(parent);
     }

@@ -25,14 +25,14 @@ class CreateSubjectCommandHandlerTest extends BaseUnitTest {
     public void shouldCreateSubject(){
         // given
         SchoolClass schoolClass = createSchoolWithSchoolClass();
-        School school = schoolClass.getSchool();
-        Teacher teacher = schoolClass.getTeacher();
+        School school = schoolClass.school();
+        Teacher teacher = schoolClass.teacher();
 
         CreateSubjectCommand command = new CreateSubjectCommand(
                 Name.of("Przyroda"),
                 Description.of("Test"),
-                teacher.getTeacherId(),
-                schoolClass.getSchoolClassId()
+                teacher.teacherId(),
+                schoolClass.schoolClassId()
         );
 
         // when

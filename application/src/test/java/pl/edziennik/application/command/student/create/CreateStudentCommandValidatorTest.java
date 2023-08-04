@@ -49,7 +49,7 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
                 Email.of("Test@example.com"),
                 PhoneNumber.of("123123"),
                 SchoolId.create(),
-                schoolClass.getSchoolClassId()
+                schoolClass.schoolClassId()
         );
 
         // when
@@ -76,7 +76,7 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
                 Pesel.of("99999999999"),
                 Email.of("Test@example.com"),
                 PhoneNumber.of("123123"),
-                school.getSchoolId(),
+                school.schoolId(),
                 SchoolClassId.create()
         );
 
@@ -113,8 +113,8 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
                 Pesel.of("99999999999"),
                 Email.of("Test@example.com"),
                 PhoneNumber.of("123123"),
-                school.getSchoolId(),
-                schoolClass.getSchoolClassId()
+                school.schoolId(),
+                schoolClass.schoolClassId()
         );
 
         // when
@@ -152,8 +152,8 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
                 Pesel.of("99999999999"),
                 Email.of("Test@example.com"),
                 PhoneNumber.of("123123"),
-                school.getSchoolId(),
-                schoolClass.getSchoolClassId()
+                school.schoolId(),
+                schoolClass.schoolClassId()
         );
 
         // when
@@ -188,11 +188,11 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
                 Address.of("Test"),
                 PostalCode.of("123123"),
                 City.of("Nowakowo"),
-                Pesel.of(user.getPesel().value()),
+                Pesel.of(user.pesel().value()),
                 Email.of("Test@example.com"),
                 PhoneNumber.of("123123"),
-                school.getSchoolId(),
-                schoolClass.getSchoolClassId()
+                school.schoolId(),
+                schoolClass.schoolClassId()
         );
 
         // when
@@ -228,8 +228,8 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
                 Pesel.of("12345678912"),
                 Email.of("Test@example.com"),
                 PhoneNumber.of("123123"),
-                secondSchool.getSchoolId(),
-                schoolClass.getSchoolClassId()
+                secondSchool.schoolId(),
+                schoolClass.schoolClassId()
         );
 
         // when
@@ -253,7 +253,7 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
         SchoolClass schoolClass = createSchoolClass("Test", school, null);
         schoolClass = schoolClassCommandRepository.save(schoolClass);
 
-        schoolClass.getSchoolClassConfiguration().changeMaxStudentsSize(0);
+        schoolClass.schoolClassConfiguration().changeMaxStudentsSize(0);
 
         CreateStudentCommand command = new CreateStudentCommand(
                 Password.of("Test"),
@@ -266,8 +266,8 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
                 Pesel.of("12345678912"),
                 Email.of("Test@example.com"),
                 PhoneNumber.of("123123"),
-                school.getSchoolId(),
-                schoolClass.getSchoolClassId()
+                school.schoolId(),
+                schoolClass.schoolClassId()
         );
 
         // when

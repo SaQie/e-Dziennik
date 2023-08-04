@@ -2,6 +2,7 @@ package pl.edziennik.domain.parent;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
 import pl.edziennik.common.valueobject.PersonInformation;
 import pl.edziennik.common.valueobject.id.ParentId;
 import pl.edziennik.domain.address.Address;
@@ -12,6 +13,7 @@ import pl.edziennik.domain.user.User;
 @Getter
 @Setter(AccessLevel.PROTECTED)
 @EqualsAndHashCode
+@Accessors(fluent = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Parent {

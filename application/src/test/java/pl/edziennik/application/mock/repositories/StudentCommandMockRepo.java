@@ -24,12 +24,12 @@ public class StudentCommandMockRepo implements StudentCommandRepository {
         if (student == null) {
             return false;
         }
-        return student.getParent() != null;
+        return student.parent() != null;
     }
 
     @Override
     public void delete(Student student) {
-        database.remove(student.getStudentId());
+        database.remove(student.studentId());
     }
 
     @Override
@@ -39,8 +39,8 @@ public class StudentCommandMockRepo implements StudentCommandRepository {
 
     @Override
     public Student save(Student student) {
-        database.put(student.getStudentId(), student);
-        return database.get(student.getStudentId());
+        database.put(student.studentId(), student);
+        return database.get(student.studentId());
     }
 
     @Override
@@ -56,7 +56,7 @@ public class StudentCommandMockRepo implements StudentCommandRepository {
     @Override
     public List<Student> getStudentsByUserIds(List<UserId> userIds) {
         return database.values().stream()
-                .filter(item -> userIds.contains(item.getUser().getUserId()))
+                .filter(item -> userIds.contains(item.user().userId()))
                 .toList();
     }
 
@@ -71,7 +71,7 @@ public class StudentCommandMockRepo implements StudentCommandRepository {
         if (student == null) {
             return true;
         }
-        return !student.getUser().getIsActive();
+        return !student.user().isActive();
     }
 
 

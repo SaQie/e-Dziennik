@@ -32,7 +32,7 @@ public class RoleCommandMockRepo implements RoleCommandRepository {
     @Override
     public Role getByName(Name role) {
         List<Role> roles = database.values().stream()
-                .filter(item -> item.getName().equals(role))
+                .filter(item -> item.name().equals(role))
                 .toList();
         if (roles.isEmpty()) {
             return null;

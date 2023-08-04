@@ -204,7 +204,7 @@ public class BaseUnitTest {
                 personInformation,
                 address
         );
-        school.getTeachers().add(teacher);
+        school.teachers().add(teacher);
         return teacher;
     }
 
@@ -216,9 +216,9 @@ public class BaseUnitTest {
                 personInformation,
                 address
         );
-        school.getStudents().add(student);
+        school.students().add(student);
         if (schoolClass != null) {
-            schoolClass.getStudents().add(student);
+            schoolClass.students().add(student);
         }
         return student;
     }
@@ -252,8 +252,8 @@ public class BaseUnitTest {
                 teacher,
                 schoolClassConfigurationProperties
         );
-        schoolClassConfigurationCommandRepository.save(schoolClass.getSchoolClassConfiguration());
-        school.getSchoolClasses().add(schoolClass);
+        schoolClassConfigurationCommandRepository.save(schoolClass.schoolClassConfiguration());
+        school.schoolClasses().add(schoolClass);
         return schoolClass;
     }
 
@@ -264,7 +264,7 @@ public class BaseUnitTest {
                 schoolClass,
                 teacher
         );
-        schoolClass.getSubjects().add(subject);
+        schoolClass.subjects().add(subject);
         return subject;
     }
 

@@ -2,6 +2,7 @@ package pl.edziennik.domain.studentsubject;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
 import pl.edziennik.common.valueobject.id.StudentSubjectId;
 import pl.edziennik.domain.grade.Grade;
 import pl.edziennik.domain.student.Student;
@@ -17,6 +18,7 @@ import java.util.List;
 @Getter
 @Setter(AccessLevel.PROTECTED)
 @EqualsAndHashCode
+@Accessors(fluent = true)
 public class StudentSubject {
 
     @EmbeddedId

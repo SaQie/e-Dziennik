@@ -22,13 +22,13 @@ class DeleteSchoolCommandHandlerTest extends BaseUnitTest {
         School school = createSchool("Test", "123123", "123123", address);
         school = schoolCommandRepository.save(school);
 
-        assertNotNull(schoolCommandRepository.getReferenceById(school.getSchoolId()));
+        assertNotNull(schoolCommandRepository.getReferenceById(school.schoolId()));
 
         // when
-        schoolCommandRepository.deleteById(school.getSchoolId());
+        schoolCommandRepository.deleteById(school.schoolId());
 
         // then
-        assertNull(schoolCommandRepository.getReferenceById(school.getSchoolId()));
+        assertNull(schoolCommandRepository.getReferenceById(school.schoolId()));
     }
 
 

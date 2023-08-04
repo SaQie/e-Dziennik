@@ -2,6 +2,7 @@ package pl.edziennik.domain.school;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
 import pl.edziennik.common.enums.AverageType;
 import pl.edziennik.common.properties.SchoolConfigurationProperties;
 import pl.edziennik.common.valueobject.id.SchoolConfigurationId;
@@ -11,6 +12,7 @@ import pl.edziennik.common.valueobject.id.SchoolConfigurationId;
 @Getter
 @Setter(AccessLevel.PROTECTED)
 @EqualsAndHashCode
+@Accessors(fluent = true)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class SchoolConfiguration {
 

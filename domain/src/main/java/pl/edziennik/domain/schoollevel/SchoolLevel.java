@@ -2,6 +2,7 @@ package pl.edziennik.domain.schoollevel;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
 import pl.edziennik.common.valueobject.Name;
 import pl.edziennik.common.valueobject.id.SchoolLevelId;
 import pl.edziennik.domain.school.School;
@@ -13,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode
+@Accessors(fluent = true)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class SchoolLevel {
 

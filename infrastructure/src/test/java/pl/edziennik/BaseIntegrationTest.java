@@ -192,7 +192,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                 schoolConfigurationProperties
         );
 
-        return schoolCommandRepository.save(school).getSchoolId();
+        return schoolCommandRepository.save(school).schoolId();
     }
 
     public DirectorId createDirector(String username, String email, String pesel, SchoolId schoolId) {
@@ -216,7 +216,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                     school
             );
 
-            return directorCommandRepository.save(director).getDirectorId();
+            return directorCommandRepository.save(director).directorId();
         });
     }
 
@@ -241,7 +241,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                     createAddress()
             );
 
-            return teacherCommandRepository.save(teacher).getTeacherId();
+            return teacherCommandRepository.save(teacher).teacherId();
         });
     }
 
@@ -291,7 +291,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                 personInformation,
                 createAddress());
 
-        return studentCommandRepository.save(student).getStudentId();
+        return studentCommandRepository.save(student).studentId();
     }
 
     protected SubjectId createSubject(String name, SchoolClassId schoolClassId, TeacherId teacherId) {
@@ -307,7 +307,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                 teacher
         );
 
-        return subjectCommandRepository.save(subject).getSubjectId();
+        return subjectCommandRepository.save(subject).subjectId();
     }
 
     protected AdminId createAdmin(String username, String email) {
@@ -321,7 +321,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
 
         Admin admin = Admin.of(user);
 
-        return adminCommandRepository.save(admin).getAdminId();
+        return adminCommandRepository.save(admin).adminId();
     }
 
     protected SchoolClassId createSchoolClass(SchoolId schoolId, TeacherId teacherId, String name) {
@@ -335,7 +335,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                 schoolClassConfigurationProperties
         );
 
-        return schoolClassCommandRepository.save(schoolClass).getSchoolClassId();
+        return schoolClassCommandRepository.save(schoolClass).schoolClassId();
     }
 
     protected StudentSubjectId assignStudentToSubject(StudentId studentId, SubjectId subjectId) {
@@ -349,7 +349,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                 subject
         );
 
-        return studentSubjectCommandRepository.save(studentSubject).getStudentSubjectId();
+        return studentSubjectCommandRepository.save(studentSubject).studentSubjectId();
     }
 
     private Address createAddress() {

@@ -36,7 +36,7 @@ public class SendConfirmationMessageByEmailStrategy implements SendConfirmationM
 
         String mailViewByStrategy = emailConfirmationMessageViewStrategy.stream()
                 .filter(EmailConfirmationMessageViewStrategy::isEnabled)
-                .map(strategy -> strategy.getHTMLMessage(Token.of(activationToken), user.getUserId()))
+                .map(strategy -> strategy.getHTMLMessage(Token.of(activationToken), user.userId()))
                 .findFirst()
                 .orElse(StringUtils.EMPTY);
         try {
@@ -45,17 +45,17 @@ public class SendConfirmationMessageByEmailStrategy implements SendConfirmationM
             message.setFrom("E-Diary");
             message.setSubject("Confirmation token");
             message.setText(mailViewByStrategy);
-            message.setTo(user.getEmail().value());
+            message.setTo(user.email().value());
 
             // TODO uncomment if needed
 //            sender.send(mimeMessage);
 
-            tokenRepository.insertActivationToken(user.getUserId(), activationToken);
+            tokenRepository.insertActivationToken(user.userId(), activationToken);
         } catch (MessagingException e) {
-            log.error("Error during sending an email message to email " + user.getEmail().value());
+            log.error("Error during sending an email message to email " + user.email().value());
             log.error(e.getMessage());
         }
-        log.debug("User " + user.getUsername() + " Email: " + user.getEmail() + " Activation token: " + activationToken);
+        log.debug("User " + user.username()+ " Email: " + user.email()+ " Activation token: " + activationToken);
     }
 
     @Override

@@ -17,8 +17,8 @@ public class GradeCommandMockRepo implements GradeCommandRepository {
 
     @Override
     public Grade save(Grade grade) {
-        database.put(grade.getGradeId(), grade);
-        return database.get(grade.getGradeId());
+        database.put(grade.gradeId(), grade);
+        return database.get(grade.gradeId());
     }
 
     @Override

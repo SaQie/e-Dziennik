@@ -69,7 +69,7 @@ public class CreateDirectorCommandValidatorTest extends BaseUnitTest {
                 Pesel.of("123123123"),
                 Email.of("test1@example.com"),
                 PhoneNumber.of("123000000"),
-                school.getSchoolId()
+                school.schoolId()
         );
 
         // when
@@ -106,7 +106,7 @@ public class CreateDirectorCommandValidatorTest extends BaseUnitTest {
                 Pesel.of("123123123"),
                 Email.of("test1@example.com"),
                 PhoneNumber.of("123000000"),
-                secondSchool.getSchoolId()
+                secondSchool.schoolId()
         );
 
         // when
@@ -142,7 +142,7 @@ public class CreateDirectorCommandValidatorTest extends BaseUnitTest {
                 Pesel.of("123123123"),
                 Email.of("test@example.com"),
                 PhoneNumber.of("123000000"),
-                secondSchool.getSchoolId()
+                secondSchool.schoolId()
         );
 
         // when
@@ -175,10 +175,10 @@ public class CreateDirectorCommandValidatorTest extends BaseUnitTest {
                 Address.of("address"),
                 PostalCode.of("12-12"),
                 City.of("Test"),
-                Pesel.of(user.getPesel().value()),
+                Pesel.of(user.pesel().value()),
                 Email.of("test1@example.com"),
                 PhoneNumber.of("123000000"),
-                secondSchool.getSchoolId()
+                secondSchool.schoolId()
         );
 
         // when

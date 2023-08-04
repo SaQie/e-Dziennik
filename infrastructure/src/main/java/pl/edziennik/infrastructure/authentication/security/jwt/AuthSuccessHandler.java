@@ -43,8 +43,8 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
         User user = repository.getByUsername(Username.of(principal.getUsername()));
 
-        String token = jwtUtils.generateJwtToken(principal, user.getUserId().id(), user.getSuperId());
-        String refreshToken = jwtUtils.generateRefreshToken(principal, user.getUserId().id());
+        String token = jwtUtils.generateJwtToken(principal, user.userId().id(), user.superId());
+        String refreshToken = jwtUtils.generateRefreshToken(principal, user.userId().id());
 
         AuthResponseDto authResponseDto = new AuthResponseDto();
         authResponseDto.setToken(token);

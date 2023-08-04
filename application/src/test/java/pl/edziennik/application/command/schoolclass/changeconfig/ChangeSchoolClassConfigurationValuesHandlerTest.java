@@ -51,7 +51,7 @@ public class ChangeSchoolClassConfigurationValuesHandlerTest extends BaseUnitTes
 
         ChangeSchoolClassConfigurationValuesCommand command =
                 new ChangeSchoolClassConfigurationValuesCommand(
-                        schoolClass.getSchoolClassId(),
+                        schoolClass.schoolClassId(),
                         50,
                         Boolean.FALSE
                 );
@@ -59,8 +59,8 @@ public class ChangeSchoolClassConfigurationValuesHandlerTest extends BaseUnitTes
         handler.handle(command);
 
         // then
-        SchoolClassConfiguration config = schoolClassConfigurationCommandRepository.getSchoolClassConfigurationBySchoolClassConfigurationId(schoolClass.getSchoolClassConfiguration().getSchoolClassConfigurationId());
-        assertEquals(config.getMaxStudentsSize(), 50);
-        assertEquals(config.getAutoAssignSubjects(), Boolean.FALSE);
+        SchoolClassConfiguration config = schoolClassConfigurationCommandRepository.getSchoolClassConfigurationBySchoolClassConfigurationId(schoolClass.schoolClassConfiguration().schoolClassConfigurationId());
+        assertEquals(config.maxStudentsSize(), 50);
+        assertEquals(config.autoAssignSubjects(), Boolean.FALSE);
     }
 }

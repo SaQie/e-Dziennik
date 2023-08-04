@@ -55,7 +55,7 @@ public class StudentIntegrationTest extends BaseIntegrationTest {
         // then
         Student student = studentCommandRepository.getByStudentId(StudentId.of(operationResult.identifier().id()));
         assertNotNull(student);
-        assertNotNull(student.getJournalNumber());
+        assertNotNull(student.journalNumber());
     }
 
     @Test
@@ -109,7 +109,7 @@ public class StudentIntegrationTest extends BaseIntegrationTest {
 
         SchoolClassId schoolClassId = createSchoolClass(schoolId, teacherId, "1A");
         SchoolClass schoolClass = schoolClassCommandRepository.getBySchoolClassId(schoolClassId);
-        schoolClass.getSchoolClassConfiguration().changeMaxStudentsSize(0);
+        schoolClass.schoolClassConfiguration().changeMaxStudentsSize(0);
 
         CreateStudentCommand command = new CreateStudentCommand(
                 Password.of("Test"),
@@ -164,22 +164,22 @@ public class StudentIntegrationTest extends BaseIntegrationTest {
         // then
         Student student = studentCommandRepository.getByStudentId(studentIdFirst);
         assertNotNull(student);
-        assertEquals(student.getJournalNumber().value(), 1);
+        assertEquals(student.journalNumber().value(), 1);
 
         student = studentCommandRepository.getByStudentId(studentIdSecond);
         assertNotNull(student);
-        assertEquals(student.getJournalNumber().value(), 2);
+        assertEquals(student.journalNumber().value(), 2);
 
 
         // Again journal number is one because every school class has their own sequence
         student = studentCommandRepository.getByStudentId(studentIdThird);
         assertNotNull(student);
-        assertEquals(student.getJournalNumber().value(), 1);
+        assertEquals(student.journalNumber().value(), 1);
 
 
         student = studentCommandRepository.getByStudentId(studentIdFourth);
         assertNotNull(student);
-        assertEquals(student.getJournalNumber().value(), 2);
+        assertEquals(student.journalNumber().value(), 2);
     }
 
 }

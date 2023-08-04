@@ -29,7 +29,7 @@ class ChangePasswordCommandValidator implements IBaseValidator<ChangePasswordCom
      */
     private void checkPassword(ChangePasswordCommand command, ValidationErrorBuilder errorBuilder) {
         User user = userCommandRepository.getUserByUserId(command.userId());
-        Password password = user.getPassword();
+        Password password = user.password();
 
         boolean isOldPasswordCorrectly = passwordEncoder.matches(command.oldPassword().value(), password.value());
 

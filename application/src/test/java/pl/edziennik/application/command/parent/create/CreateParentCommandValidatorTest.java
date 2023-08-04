@@ -73,7 +73,7 @@ class CreateParentCommandValidatorTest extends BaseUnitTest {
                 Pesel.of("123123123"),
                 Email.of("Kamcio@o2.pl"),
                 PhoneNumber.of("999999999"),
-                student.getStudentId()
+                student.studentId()
         );
 
         // when

@@ -2,11 +2,13 @@ package pl.edziennik.domain.admin;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
 import pl.edziennik.common.valueobject.id.AdminId;
 import pl.edziennik.domain.user.User;
 
 @Entity
 @Getter
+@Accessors(fluent = true)
 @Setter(AccessLevel.PROTECTED)
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

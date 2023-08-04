@@ -28,12 +28,12 @@ public class StudentEventListener {
     public void onStudentCreatedEvent(StudentAccountCreatedEvent event) {
         SchoolClass schoolClass = schoolClassCommandRepository.getBySchoolClassIdWithSubjects(event.schoolClassId());
 
-        if (!Boolean.TRUE.equals(schoolClass.getSchoolClassConfiguration().getAutoAssignSubjects())) {
+        if (!Boolean.TRUE.equals(schoolClass.schoolClassConfiguration().autoAssignSubjects())) {
             // check,the school class configuration allows assigning student subjects automatically
             return;
         }
 
-        List<Subject> subjects = schoolClass.getSubjects();
+        List<Subject> subjects = schoolClass.subjects();
         Student student = studentCommandRepository.getByStudentId(event.studentId());
 
         for (Subject subject : subjects) {

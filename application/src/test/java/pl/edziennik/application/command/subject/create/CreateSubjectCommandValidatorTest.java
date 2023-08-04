@@ -41,7 +41,7 @@ class CreateSubjectCommandValidatorTest extends BaseUnitTest {
                 Name.of("Test"),
                 Description.of("Test"),
                 TeacherId.create(),
-                schoolClass.getSchoolClassId()
+                schoolClass.schoolClassId()
         );
 
         // when
@@ -65,7 +65,7 @@ class CreateSubjectCommandValidatorTest extends BaseUnitTest {
         CreateSubjectCommand command = new CreateSubjectCommand(
                 Name.of("Test"),
                 Description.of("Test"),
-                teacher.getTeacherId(),
+                teacher.teacherId(),
                 SchoolClassId.create()
         );
 
@@ -96,8 +96,8 @@ class CreateSubjectCommandValidatorTest extends BaseUnitTest {
         CreateSubjectCommand command = new CreateSubjectCommand(
                 Name.of("Przyroda"),
                 Description.of("Test"),
-                teacher.getTeacherId(),
-                schoolClass.getSchoolClassId()
+                teacher.teacherId(),
+                schoolClass.schoolClassId()
         );
 
         // when
@@ -114,7 +114,7 @@ class CreateSubjectCommandValidatorTest extends BaseUnitTest {
     public void shouldAddErrorWhenTeacherIsFromAnotherSchool() {
         // given
         SchoolClass schoolClass = createSchoolWithSchoolClass();
-        School school = schoolClass.getSchool();
+        School school = schoolClass.school();
 
         User user = createUser("Test", "Test@example.com", RoleCommandMockRepo.TEACHER_ROLE_NAME.value());
         user.activate();
@@ -127,8 +127,8 @@ class CreateSubjectCommandValidatorTest extends BaseUnitTest {
         CreateSubjectCommand command = new CreateSubjectCommand(
                 Name.of("Test"),
                 Description.of("Test"),
-                teacher.getTeacherId(),
-                schoolClass.getSchoolClassId()
+                teacher.teacherId(),
+                schoolClass.schoolClassId()
         );
 
         // when
@@ -145,16 +145,16 @@ class CreateSubjectCommandValidatorTest extends BaseUnitTest {
     public void shouldAddErroWhenTeacherAccountIsInactive() {
         // given
         SchoolClass schoolClass = createSchoolWithSchoolClass();
-        School school = schoolClass.getSchool();
-        Teacher teacher = schoolClass.getTeacher();
-        User user = teacher.getUser();
+        School school = schoolClass.school();
+        Teacher teacher = schoolClass.teacher();
+        User user = teacher.user();
         user.unactivate();
 
         CreateSubjectCommand command = new CreateSubjectCommand(
                 Name.of("Test"),
                 Description.of("Test"),
-                teacher.getTeacherId(),
-                schoolClass.getSchoolClassId()
+                teacher.teacherId(),
+                schoolClass.schoolClassId()
         );
 
         // when

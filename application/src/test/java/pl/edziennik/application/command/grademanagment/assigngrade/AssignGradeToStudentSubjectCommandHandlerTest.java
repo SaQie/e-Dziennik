@@ -34,8 +34,8 @@ class AssignGradeToStudentSubjectCommandHandlerTest extends BaseUnitTest {
     public void shouldAssignGradeToStudentSubject() {
         // given
         SchoolClass schoolClass = createSchoolWithSchoolClass();
-        School school = schoolClass.getSchool();
-        Teacher teacher = schoolClass.getTeacher();
+        School school = schoolClass.school();
+        Teacher teacher = schoolClass.teacher();
 
         User user = createUser("Kamcio", "Test@exampleee.com", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
         Student student = createStudent(user, school, schoolClass, personInformation, address);
@@ -48,12 +48,12 @@ class AssignGradeToStudentSubjectCommandHandlerTest extends BaseUnitTest {
         studentSubject = studentSubjectCommandRepository.save(studentSubject);
 
         AssignGradeToStudentSubjectCommand command = new AssignGradeToStudentSubjectCommand(
-                student.getStudentId(),
-                subject.getSubjectId(),
+                student.studentId(),
+                subject.subjectId(),
                 Grade.FIVE,
                 Weight.of(5),
                 Description.of("Test"),
-                teacher.getTeacherId()
+                teacher.teacherId()
         );
         // when
         OperationResult operationResult = handler.handle(command);
@@ -62,7 +62,7 @@ class AssignGradeToStudentSubjectCommandHandlerTest extends BaseUnitTest {
         assertTrue(operationResult.isSuccess());
         pl.edziennik.domain.grade.Grade grade = gradeCommandRepository.getReferenceById(GradeId.of(operationResult.identifier().id()));
         assertNotNull(grade);
-        assertEquals(grade.getStudentSubject().getStudentSubjectId(), studentSubject.getStudentSubjectId());
+        assertEquals(grade.studentSubject().studentSubjectId(), studentSubject.studentSubjectId());
 
     }
 

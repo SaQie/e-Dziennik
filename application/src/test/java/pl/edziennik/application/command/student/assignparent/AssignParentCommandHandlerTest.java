@@ -30,17 +30,17 @@ class AssignParentCommandHandlerTest extends BaseUnitTest {
         parent = parentCommandRepository.save(parent);
 
         AssignParentCommand command = new AssignParentCommand(
-                student.getStudentId(),
-                parent.getParentId()
+                student.studentId(),
+                parent.parentId()
         );
-        assertFalse(studentCommandRepository.hasAlreadyAssignedParent(student.getStudentId()));
+        assertFalse(studentCommandRepository.hasAlreadyAssignedParent(student.studentId()));
 
         // when
         OperationResult operationResult = handler.handle(command);
 
         // then
         assertTrue(operationResult.isSuccess());
-        assertTrue(studentCommandRepository.hasAlreadyAssignedParent(student.getStudentId()));
+        assertTrue(studentCommandRepository.hasAlreadyAssignedParent(student.studentId()));
 
     }
 

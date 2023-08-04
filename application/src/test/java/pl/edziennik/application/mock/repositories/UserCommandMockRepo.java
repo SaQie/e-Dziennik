@@ -23,7 +23,7 @@ public class UserCommandMockRepo implements UserCommandRepository {
     @Override
     public boolean existsByEmail(Email email) {
         List<User> users = database.values().stream()
-                .filter(item -> item.getEmail().equals(email))
+                .filter(item -> item.email().equals(email))
                 .toList();
         return !users.isEmpty();
     }
@@ -31,7 +31,7 @@ public class UserCommandMockRepo implements UserCommandRepository {
     @Override
     public boolean existsByUsername(Username username) {
         List<User> users = database.values().stream()
-                .filter(item -> item.getUsername().equals(username))
+                .filter(item -> item.username().equals(username))
                 .toList();
         return !users.isEmpty();
     }
@@ -39,7 +39,7 @@ public class UserCommandMockRepo implements UserCommandRepository {
     @Override
     public boolean existsByPesel(Pesel pesel) {
         List<User> users = database.values().stream()
-                .filter(item -> item.getPesel().equals(pesel))
+                .filter(item -> item.pesel().equals(pesel))
                 .toList();
         return !users.isEmpty();
     }
@@ -56,8 +56,8 @@ public class UserCommandMockRepo implements UserCommandRepository {
 
     @Override
     public User save(User user) {
-        this.database.put(user.getUserId(), user);
-        return database.get(user.getUserId());
+        this.database.put(user.userId(), user);
+        return database.get(user.userId());
     }
 
     @Override

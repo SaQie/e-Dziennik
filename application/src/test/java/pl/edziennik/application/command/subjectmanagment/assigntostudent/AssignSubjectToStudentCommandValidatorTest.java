@@ -46,7 +46,7 @@ class AssignSubjectToStudentCommandValidatorTest extends BaseUnitTest {
 
         AssignSubjectToStudentCommand command = new AssignSubjectToStudentCommand(
                 StudentId.create(),
-                subject.getSubjectId()
+                subject.subjectId()
         );
 
         // when
@@ -64,7 +64,7 @@ class AssignSubjectToStudentCommandValidatorTest extends BaseUnitTest {
         Student student = createStudentWithSchoolAndClass(user, null);
 
         AssignSubjectToStudentCommand command = new AssignSubjectToStudentCommand(
-                student.getStudentId(),
+                student.studentId(),
                 SubjectId.create()
         );
 
@@ -92,8 +92,8 @@ class AssignSubjectToStudentCommandValidatorTest extends BaseUnitTest {
         subject = subjectCommandRepository.save(subject);
 
         AssignSubjectToStudentCommand command = new AssignSubjectToStudentCommand(
-                student.getStudentId(),
-                subject.getSubjectId()
+                student.studentId(),
+                subject.subjectId()
         );
 
         // when
@@ -128,8 +128,8 @@ class AssignSubjectToStudentCommandValidatorTest extends BaseUnitTest {
 
 
         AssignSubjectToStudentCommand command = new AssignSubjectToStudentCommand(
-                student.getStudentId(),
-                subject.getSubjectId()
+                student.studentId(),
+                subject.subjectId()
         );
 
         // when
@@ -159,8 +159,8 @@ class AssignSubjectToStudentCommandValidatorTest extends BaseUnitTest {
         subject = subjectCommandRepository.save(subject);
 
         AssignSubjectToStudentCommand command = new AssignSubjectToStudentCommand(
-                student.getStudentId(),
-                subject.getSubjectId()
+                student.studentId(),
+                subject.subjectId()
         );
 
         // when

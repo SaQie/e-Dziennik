@@ -39,9 +39,9 @@ class AssignGradeToStudentSubjectCommandHandler implements ICommandHandler<Assig
                 .teacher(teacher)
                 .build();
 
-        GradeId gradeId = gradeCommandRepository.save(grade).getGradeId();
+        GradeId gradeId = gradeCommandRepository.save(grade).gradeId();
 
-        GradeAddedEvent event = new GradeAddedEvent(studentSubject.getStudentSubjectId());
+        GradeAddedEvent event = new GradeAddedEvent(studentSubject.studentSubjectId());
         eventPublisher.publishEvent(event);
 
         return OperationResult.success(gradeId);

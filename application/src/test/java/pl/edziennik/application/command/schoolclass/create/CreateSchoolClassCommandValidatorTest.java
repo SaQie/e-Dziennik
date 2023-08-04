@@ -54,7 +54,7 @@ class CreateSchoolClassCommandValidatorTest extends BaseUnitTest {
         CreateSchoolClassCommand command = new CreateSchoolClassCommand(
                 Name.of("Test"),
                 TeacherId.create(),
-                school.getSchoolId()
+                school.schoolId()
         );
 
         // when
@@ -83,8 +83,8 @@ class CreateSchoolClassCommandValidatorTest extends BaseUnitTest {
 
         CreateSchoolClassCommand command = new CreateSchoolClassCommand(
                 Name.of("Test"),
-                teacher.getTeacherId(),
-                school.getSchoolId()
+                teacher.teacherId(),
+                school.schoolId()
         );
 
         // when
@@ -115,8 +115,8 @@ class CreateSchoolClassCommandValidatorTest extends BaseUnitTest {
 
         CreateSchoolClassCommand command = new CreateSchoolClassCommand(
                 Name.of("Test"),
-                teacher.getTeacherId(),
-                school.getSchoolId()
+                teacher.teacherId(),
+                school.schoolId()
         );
 
         // when
@@ -147,7 +147,7 @@ class CreateSchoolClassCommandValidatorTest extends BaseUnitTest {
         CreateSchoolClassCommand command = new CreateSchoolClassCommand(
                 Name.of("Test"),
                 null,
-                school.getSchoolId()
+                school.schoolId()
         );
 
         // when
@@ -172,8 +172,8 @@ class CreateSchoolClassCommandValidatorTest extends BaseUnitTest {
 
         CreateSchoolClassCommand command = new CreateSchoolClassCommand(
                 Name.of("Test"),
-                teacher.getTeacherId(),
-                school.getSchoolId()
+                teacher.teacherId(),
+                school.schoolId()
         );
 
         // when

@@ -3,6 +3,7 @@ package pl.edziennik.application.integration;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.command.student.create.CreateStudentCommand;
 import pl.edziennik.application.command.user.activate.ActivateUserCommand;
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UserIntegrationTest extends BaseIntegrationTest {
 
     @Test
+    @Transactional
     public void shouldCreateUserAccountAndSetIsActiveToFalse() {
         // given
         SchoolId schoolId = createSchool("Test", "123123", "23123");
@@ -46,10 +48,10 @@ public class UserIntegrationTest extends BaseIntegrationTest {
 
         // then
         Student student = studentCommandRepository.getByStudentId(StudentId.of(operationResult.identifier().id()));
-        UserId userId = student.getUser().getUserId();
+        UserId userId = transactionTemplate.execute((i) -> student.user().userId());
         User user = userQueryRepository.getUserByUserId(userId);
         assertNotNull(user);
-        assertFalse(user.getIsActive());
+        assertFalse(user.isActive());
     }
 
     @Test
@@ -76,8 +78,11 @@ public class UserIntegrationTest extends BaseIntegrationTest {
         OperationResult result = dispatcher.dispatch(command);
         StudentId studentId = StudentId.of(result.identifier().id());
 
-        Student student = studentCommandRepository.getByStudentId(studentId);
-        UserId userId = student.getUser().getUserId();
+        UserId userId = transactionTemplate.execute((i) -> {
+            Student student = studentCommandRepository.getByStudentId(studentId);
+
+            return student.user().userId();
+        });
 
         String response = jdbcTemplate.queryForObject(
                 "SELECT eat.token FROM email_activation_tokens eat where eat.user_id = :userId",
@@ -91,7 +96,7 @@ public class UserIntegrationTest extends BaseIntegrationTest {
 
         // then
         User user = userQueryRepository.getUserByUserId(userId);
-        assertTrue(user.getIsActive());
+        assertTrue(user.isActive());
 
         List<String> list = jdbcTemplate.queryForList(
                 "SELECT eat.token FROM email_activation_tokens eat",

@@ -43,9 +43,9 @@ class CreateParentCommandHandler implements ICommandHandler<CreateParentCommand,
                 .address(address)
                 .build();
 
-        ParentId parentId = parentCommandRepository.save(parent).getParentId();
+        ParentId parentId = parentCommandRepository.save(parent).parentId();
 
-        UserAccountCreatedEvent event = new UserAccountCreatedEvent(user.getUserId());
+        UserAccountCreatedEvent event = new UserAccountCreatedEvent(user.userId());
         eventPublisher.publishEvent(event);
 
         return OperationResult.success(parentId);

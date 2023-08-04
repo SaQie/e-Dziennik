@@ -24,8 +24,8 @@ public class TeacherCommandMockRepo implements TeacherCommandRepository {
 
     @Override
     public Teacher save(Teacher teacher) {
-        this.database.put(teacher.getTeacherId(), teacher);
-        return this.database.get(teacher.getTeacherId());
+        this.database.put(teacher.teacherId(), teacher);
+        return this.database.get(teacher.teacherId());
     }
 
     @Override
@@ -41,7 +41,7 @@ public class TeacherCommandMockRepo implements TeacherCommandRepository {
     @Override
     public List<Teacher> getTeachersByUserIds(List<UserId> userIds) {
         return database.values().stream()
-                .filter(item -> userIds.contains(item.getUser().getUserId()))
+                .filter(item -> userIds.contains(item.user().userId()))
                 .toList();
     }
 
@@ -56,8 +56,8 @@ public class TeacherCommandMockRepo implements TeacherCommandRepository {
         if (teacher == null) {
             return false;
         }
-        List<SchoolClass> schoolClasses = teacher.getSchool().getSchoolClasses().stream()
-                .filter(item -> item.getTeacher().getTeacherId().equals(teacherId))
+        List<SchoolClass> schoolClasses = teacher.school().schoolClasses().stream()
+                .filter(item -> item.teacher().teacherId().equals(teacherId))
                 .toList();
         return !schoolClasses.isEmpty();
     }
@@ -65,7 +65,7 @@ public class TeacherCommandMockRepo implements TeacherCommandRepository {
     @Override
     public boolean isAssignedToSchool(TeacherId teacherId, SchoolId schoolId) {
         Teacher teacher = database.get(teacherId);
-        return teacher.getSchool().getSchoolId().equals(schoolId);
+        return teacher.school().schoolId().equals(schoolId);
     }
 
     @Override
@@ -79,6 +79,6 @@ public class TeacherCommandMockRepo implements TeacherCommandRepository {
         if (teacher == null) {
             return true;
         }
-        return !teacher.getUser().getIsActive();
+        return !teacher.user().isActive();
     }
 }

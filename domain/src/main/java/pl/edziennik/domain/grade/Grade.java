@@ -2,6 +2,7 @@ package pl.edziennik.domain.grade;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
 import pl.edziennik.common.valueobject.Description;
 import pl.edziennik.common.valueobject.Weight;
 import pl.edziennik.common.valueobject.id.GradeId;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Accessors(fluent = true)
 @Setter(AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode

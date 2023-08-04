@@ -22,7 +22,7 @@ public class SchoolClassCommandMockRepo implements SchoolClassCommandRepository 
     @Override
     public boolean isSchoolClassBelongToSchool(SchoolClassId schoolClassId, SchoolId schoolId) {
         SchoolClass schoolClass = database.get(schoolClassId);
-        return schoolClass.getSchool().getSchoolId().equals(schoolId);
+        return schoolClass.school().schoolId().equals(schoolId);
     }
 
     @Override
@@ -33,15 +33,15 @@ public class SchoolClassCommandMockRepo implements SchoolClassCommandRepository 
     @Override
     public boolean existsByName(Name name, SchoolId schoolId) {
         List<SchoolClass> schoolClasses = database.values().stream()
-                .filter(item -> item.getSchool().getSchoolId().equals(schoolId) && item.getClassName().equals(name))
+                .filter(item -> item.school().schoolId().equals(schoolId) && item.className().equals(name))
                 .toList();
         return !schoolClasses.isEmpty();
     }
 
     @Override
     public SchoolClass save(SchoolClass schoolClass) {
-        this.database.put(schoolClass.getSchoolClassId(), schoolClass);
-        return this.database.get(schoolClass.getSchoolClassId());
+        this.database.put(schoolClass.schoolClassId(), schoolClass);
+        return this.database.get(schoolClass.schoolClassId());
     }
 
     @Override
@@ -62,8 +62,8 @@ public class SchoolClassCommandMockRepo implements SchoolClassCommandRepository 
     @Override
     public boolean isStudentLimitReached(SchoolClassId schoolClassId) {
         SchoolClass schoolClass = database.get(schoolClassId);
-        int studentsCount = schoolClass.getStudents().size();
-        Integer maxStudentsSize = schoolClass.getSchoolClassConfiguration().getMaxStudentsSize();
+        int studentsCount = schoolClass.students().size();
+        Integer maxStudentsSize = schoolClass.schoolClassConfiguration().maxStudentsSize();
 
         return studentsCount == maxStudentsSize;
     }

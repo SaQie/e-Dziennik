@@ -22,13 +22,13 @@ public class ChangePasswordHandlerTest extends BaseUnitTest {
         String expectedPasswordAfterUpdate = "TestAfterUpdate";
         User user = createUser("Test", "Test@example.com", RoleCommandMockRepo.TEACHER_ROLE_NAME.value(), "Test123");
 
-        ChangePasswordCommand command = new ChangePasswordCommand(user.getUserId(), Password.of("Test123"), Password.of(expectedPasswordAfterUpdate));
+        ChangePasswordCommand command = new ChangePasswordCommand(user.userId(), Password.of("Test123"), Password.of(expectedPasswordAfterUpdate));
 
         // when
         handler.handle(command);
 
         // then
-        user = userCommandRepository.getUserByUserId(user.getUserId());
-        assertEquals(user.getPassword().value(), expectedPasswordAfterUpdate);
+        user = userCommandRepository.getUserByUserId(user.userId());
+        assertEquals(user.password().value(), expectedPasswordAfterUpdate);
     }
 }

@@ -36,12 +36,12 @@ class AssignSubjectToStudentCommandHandlerTest extends BaseUnitTest {
         Subject subject = createSubject("Testowy", null, schoolClass);
         subject = subjectCommandRepository.save(subject);
 
-        boolean isStudentAssignedToSubject = studentSubjectCommandRepository.isStudentAlreadyAssignedToSubject(student.getStudentId(), subject.getSubjectId());
+        boolean isStudentAssignedToSubject = studentSubjectCommandRepository.isStudentAlreadyAssignedToSubject(student.studentId(), subject.subjectId());
         assertFalse(isStudentAssignedToSubject);
 
         AssignSubjectToStudentCommand command = new AssignSubjectToStudentCommand(
-                student.getStudentId(),
-                subject.getSubjectId()
+                student.studentId(),
+                subject.subjectId()
         );
 
         // when
@@ -49,7 +49,7 @@ class AssignSubjectToStudentCommandHandlerTest extends BaseUnitTest {
 
         // then
         assertTrue(operationResult.isSuccess());
-        isStudentAssignedToSubject = studentSubjectCommandRepository.isStudentAlreadyAssignedToSubject(student.getStudentId(), subject.getSubjectId());
+        isStudentAssignedToSubject = studentSubjectCommandRepository.isStudentAlreadyAssignedToSubject(student.studentId(), subject.subjectId());
         assertTrue(isStudentAssignedToSubject);
     }
 }

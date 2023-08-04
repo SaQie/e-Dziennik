@@ -36,7 +36,7 @@ class CreateSubjectCommandHandler implements ICommandHandler<CreateSubjectComman
                 .subjectName(command.name())
                 .build();
 
-        SubjectId subjectId = subjectCommandRepository.save(subject).getSubjectId();
+        SubjectId subjectId = subjectCommandRepository.save(subject).subjectId();
 
         return OperationResult.success(subjectId);
     }

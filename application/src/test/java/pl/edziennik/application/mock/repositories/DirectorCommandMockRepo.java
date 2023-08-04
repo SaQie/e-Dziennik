@@ -18,8 +18,8 @@ public class DirectorCommandMockRepo implements DirectorCommandRepository {
 
     @Override
     public Director save(Director director) {
-        database.put(director.getDirectorId(), director);
-        return database.get(director.getDirectorId());
+        database.put(director.directorId(), director);
+        return database.get(director.directorId());
     }
 
     @Override

@@ -49,9 +49,9 @@ class CreateTeacherCommandHandler implements ICommandHandler<CreateTeacherComman
                 .address(address)
                 .build();
 
-        TeacherId teacherId = teacherCommandRepository.save(teacher).getTeacherId();
+        TeacherId teacherId = teacherCommandRepository.save(teacher).teacherId();
 
-        UserAccountCreatedEvent accountCreatedEvent = new UserAccountCreatedEvent(user.getUserId());
+        UserAccountCreatedEvent accountCreatedEvent = new UserAccountCreatedEvent(user.userId());
         eventPublisher.publishEvent(accountCreatedEvent);
 
         return OperationResult.success(teacherId);

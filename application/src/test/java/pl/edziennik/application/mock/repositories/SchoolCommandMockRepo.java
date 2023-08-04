@@ -28,7 +28,7 @@ public class SchoolCommandMockRepo implements SchoolCommandRepository {
     @Override
     public boolean isExistsByName(Name name) {
         List<School> schools = database.values().stream()
-                .filter(school -> school.getName().equals(name))
+                .filter(school -> school.name().equals(name))
                 .toList();
         return !schools.isEmpty();
     }
@@ -36,7 +36,7 @@ public class SchoolCommandMockRepo implements SchoolCommandRepository {
     @Override
     public boolean isExistsByNip(Nip nip) {
         List<School> schools = database.values().stream()
-                .filter(school -> school.getNip().equals(nip))
+                .filter(school -> school.nip().equals(nip))
                 .toList();
         return !schools.isEmpty();
     }
@@ -44,15 +44,15 @@ public class SchoolCommandMockRepo implements SchoolCommandRepository {
     @Override
     public boolean isExistsByRegon(Regon regon) {
         List<School> schools = database.values().stream()
-                .filter(school -> school.getRegon().equals(regon))
+                .filter(school -> school.regon().equals(regon))
                 .toList();
         return !schools.isEmpty();
     }
 
     @Override
     public School save(School school) {
-        this.database.put(school.getSchoolId(), school);
-        return this.database.get(school.getSchoolId());
+        this.database.put(school.schoolId(), school);
+        return this.database.get(school.schoolId());
     }
 
     @Override
@@ -66,7 +66,7 @@ public class SchoolCommandMockRepo implements SchoolCommandRepository {
         if (school == null) {
             return false;
         }
-        return !school.getTeachers().isEmpty();
+        return !school.teachers().isEmpty();
     }
 
     @Override
@@ -75,7 +75,7 @@ public class SchoolCommandMockRepo implements SchoolCommandRepository {
         if (school == null) {
             return false;
         }
-        return !school.getStudents().isEmpty();
+        return !school.students().isEmpty();
     }
 
     @Override
@@ -84,14 +84,14 @@ public class SchoolCommandMockRepo implements SchoolCommandRepository {
         if (school == null) {
             return false;
         }
-        return !school.getSchoolClasses().isEmpty();
+        return !school.schoolClasses().isEmpty();
     }
 
     @Override
     public boolean isSchoolHasAssignedDirector(SchoolId schoolId) {
         School school = database.get(schoolId);
         if (school == null) return false;
-        return school.getDirector() != null;
+        return school.director() != null;
     }
 
     @Override

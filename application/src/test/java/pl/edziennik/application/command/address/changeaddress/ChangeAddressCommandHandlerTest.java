@@ -87,7 +87,7 @@ public class ChangeAddressCommandHandlerTest extends BaseUnitTest {
         School school = createSchool("test", "123123", "123123", address);
         Director director = createDirector(user, school, personInformation, address);
 
-        ChangeAddressCommand command = new ChangeAddressCommand(director.getDirectorId().id(),
+        ChangeAddressCommand command = new ChangeAddressCommand(director.directorId().id(),
                 Address.of("Test"),
                 City.of("Test2"),
                 PostalCode.of("11-111"),
@@ -97,10 +97,10 @@ public class ChangeAddressCommandHandlerTest extends BaseUnitTest {
         handler.handle(command);
 
         // then
-        director = directorCommandRepository.getByDirectorId(director.getDirectorId());
-        assertEquals(director.getAddress().getAddress().value(), "Test");
-        assertEquals(director.getAddress().getCity().value(), "Test2");
-        assertEquals(director.getAddress().getPostalCode().value(), "11-111");
+        director = directorCommandRepository.getByDirectorId(director.directorId());
+        assertEquals(director.address().address().value(), "Test");
+        assertEquals(director.address().city().value(), "Test2");
+        assertEquals(director.address().postalCode().value(), "11-111");
     }
 
     @Test
@@ -109,7 +109,7 @@ public class ChangeAddressCommandHandlerTest extends BaseUnitTest {
         User user = createUser("Test", "test@example.com", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
         Student student = createStudentWithSchoolAndClass(user, null);
 
-        ChangeAddressCommand command = new ChangeAddressCommand(student.getStudentId().id(),
+        ChangeAddressCommand command = new ChangeAddressCommand(student.studentId().id(),
                 Address.of("Test"),
                 City.of("Test2"),
                 PostalCode.of("11-111"),
@@ -119,10 +119,10 @@ public class ChangeAddressCommandHandlerTest extends BaseUnitTest {
         handler.handle(command);
 
         // then
-        student = studentCommandRepository.getByStudentId(student.getStudentId());
-        assertEquals(student.getAddress().getAddress().value(), "Test");
-        assertEquals(student.getAddress().getCity().value(), "Test2");
-        assertEquals(student.getAddress().getPostalCode().value(), "11-111");
+        student = studentCommandRepository.getByStudentId(student.studentId());
+        assertEquals(student.address().address().value(), "Test");
+        assertEquals(student.address().city().value(), "Test2");
+        assertEquals(student.address().postalCode().value(), "11-111");
     }
 
     @Test
@@ -133,7 +133,7 @@ public class ChangeAddressCommandHandlerTest extends BaseUnitTest {
         Teacher teacher = createTeacher(user, school, personInformation, address);
         teacherCommandRepository.save(teacher);
 
-        ChangeAddressCommand command = new ChangeAddressCommand(teacher.getTeacherId().id(),
+        ChangeAddressCommand command = new ChangeAddressCommand(teacher.teacherId().id(),
                 Address.of("Test"),
                 City.of("Test2"),
                 PostalCode.of("11-111"),
@@ -143,10 +143,10 @@ public class ChangeAddressCommandHandlerTest extends BaseUnitTest {
         handler.handle(command);
 
         // then
-        teacher = teacherCommandRepository.getByTeacherId(teacher.getTeacherId());
-        assertEquals(teacher.getAddress().getAddress().value(), "Test");
-        assertEquals(teacher.getAddress().getCity().value(), "Test2");
-        assertEquals(teacher.getAddress().getPostalCode().value(), "11-111");
+        teacher = teacherCommandRepository.getByTeacherId(teacher.teacherId());
+        assertEquals(teacher.address().address().value(), "Test");
+        assertEquals(teacher.address().city().value(), "Test2");
+        assertEquals(teacher.address().postalCode().value(), "11-111");
     }
 
     @Test
@@ -156,7 +156,7 @@ public class ChangeAddressCommandHandlerTest extends BaseUnitTest {
         Parent parent = createParent(user, personInformation, address);
         parentCommandRepository.save(parent);
 
-        ChangeAddressCommand command = new ChangeAddressCommand(parent.getParentId().id(),
+        ChangeAddressCommand command = new ChangeAddressCommand(parent.parentId().id(),
                 Address.of("Test"),
                 City.of("Test2"),
                 PostalCode.of("11-111"),
@@ -166,10 +166,10 @@ public class ChangeAddressCommandHandlerTest extends BaseUnitTest {
         handler.handle(command);
 
         // then
-        parent = parentCommandRepository.getReferenceById(parent.getParentId());
-        assertEquals(parent.getAddress().getAddress().value(), "Test");
-        assertEquals(parent.getAddress().getCity().value(), "Test2");
-        assertEquals(parent.getAddress().getPostalCode().value(), "11-111");
+        parent = parentCommandRepository.getReferenceById(parent.parentId());
+        assertEquals(parent.address().address().value(), "Test");
+        assertEquals(parent.address().city().value(), "Test2");
+        assertEquals(parent.address().postalCode().value(), "11-111");
     }
 
     @Test
@@ -178,7 +178,7 @@ public class ChangeAddressCommandHandlerTest extends BaseUnitTest {
         School school = createSchool("Test", "123123", "123123", address);
         schoolCommandRepository.save(school);
 
-        ChangeAddressCommand command = new ChangeAddressCommand(school.getSchoolId().id(),
+        ChangeAddressCommand command = new ChangeAddressCommand(school.schoolId().id(),
                 Address.of("Test"),
                 City.of("Test2"),
                 PostalCode.of("11-111"),
@@ -188,10 +188,10 @@ public class ChangeAddressCommandHandlerTest extends BaseUnitTest {
         handler.handle(command);
 
         // then
-        school = schoolCommandRepository.getBySchoolId(school.getSchoolId());
-        assertEquals(school.getAddress().getAddress().value(), "Test");
-        assertEquals(school.getAddress().getCity().value(), "Test2");
-        assertEquals(school.getAddress().getPostalCode().value(), "11-111");
+        school = schoolCommandRepository.getBySchoolId(school.schoolId());
+        assertEquals(school.address().address().value(), "Test");
+        assertEquals(school.address().city().value(), "Test2");
+        assertEquals(school.address().postalCode().value(), "11-111");
     }
 
 

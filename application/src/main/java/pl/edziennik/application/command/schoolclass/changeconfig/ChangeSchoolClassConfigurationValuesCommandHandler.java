@@ -27,7 +27,7 @@ class ChangeSchoolClassConfigurationValuesCommandHandler implements ICommandHand
                         res.notFoundError(ChangeSchoolClassConfigurationValuesCommand.SCHOOL_CLASS_ID, command.schoolClassId())
                 ));
 
-        SchoolClassConfigurationId schoolClassConfigurationId = schoolClass.getSchoolClassConfiguration().getSchoolClassConfigurationId();
+        SchoolClassConfigurationId schoolClassConfigurationId = schoolClass.schoolClassConfiguration().schoolClassConfigurationId();
 
         SchoolClassConfiguration schoolClassConfiguration = schoolClassConfigurationCommandRepository.getSchoolClassConfigurationBySchoolClassConfigurationId(schoolClassConfigurationId);
         schoolClassConfiguration.changeAutoAssignSubject(command.autoAssignSubjects());

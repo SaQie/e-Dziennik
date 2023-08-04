@@ -39,19 +39,19 @@ class AssignGradeToStudentSubjectCommandValidatorTest extends BaseUnitTest {
     public void shouldThrowExceptionWhenStudentNotExists() {
         // given
         SchoolClass schoolClass = createSchoolWithSchoolClass();
-        School school = schoolClass.getSchool();
-        Teacher teacher = schoolClass.getTeacher();
+        School school = schoolClass.school();
+        Teacher teacher = schoolClass.teacher();
 
         Subject subject = createSubject("Przyroda", teacher, schoolClass);
         subject = subjectCommandRepository.save(subject);
 
         AssignGradeToStudentSubjectCommand command = new AssignGradeToStudentSubjectCommand(
                 StudentId.create(),
-                subject.getSubjectId(),
+                subject.subjectId(),
                 Grade.ONE,
                 Weight.of(5),
                 Description.of("Test"),
-                teacher.getTeacherId()
+                teacher.teacherId()
         );
 
         // when
@@ -66,20 +66,20 @@ class AssignGradeToStudentSubjectCommandValidatorTest extends BaseUnitTest {
     public void shouldThrowExceptionWhenSubjectNotExists() {
         // given
         SchoolClass schoolClass = createSchoolWithSchoolClass();
-        School school = schoolClass.getSchool();
-        Teacher teacher = schoolClass.getTeacher();
+        School school = schoolClass.school();
+        Teacher teacher = schoolClass.teacher();
 
         User user = createUser("Testowy", "Test1@example.com", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
         Student student = createStudent(user, school, schoolClass, personInformation, address);
         student = studentCommandRepository.save(student);
 
         AssignGradeToStudentSubjectCommand command = new AssignGradeToStudentSubjectCommand(
-                student.getStudentId(),
+                student.studentId(),
                 SubjectId.create(),
                 Grade.ONE,
                 Weight.of(5),
                 Description.of("Test"),
-                teacher.getTeacherId()
+                teacher.teacherId()
         );
 
         // when
@@ -94,8 +94,8 @@ class AssignGradeToStudentSubjectCommandValidatorTest extends BaseUnitTest {
     public void shouldThrowExceptionWhenTeacherNotExists() {
         // given
         SchoolClass schoolClass = createSchoolWithSchoolClass();
-        School school = schoolClass.getSchool();
-        Teacher teacher = schoolClass.getTeacher();
+        School school = schoolClass.school();
+        Teacher teacher = schoolClass.teacher();
 
         User user = createUser("Testowy", "Test1@example.com", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
         Student student = createStudent(user, school, schoolClass, personInformation, address);
@@ -105,8 +105,8 @@ class AssignGradeToStudentSubjectCommandValidatorTest extends BaseUnitTest {
         subject = subjectCommandRepository.save(subject);
 
         AssignGradeToStudentSubjectCommand command = new AssignGradeToStudentSubjectCommand(
-                student.getStudentId(),
-                subject.getSubjectId(),
+                student.studentId(),
+                subject.subjectId(),
                 Grade.ONE,
                 Weight.of(5),
                 Description.of("Test"),
@@ -125,8 +125,8 @@ class AssignGradeToStudentSubjectCommandValidatorTest extends BaseUnitTest {
     public void shouldAddErrorWhenStudentIsNotAssignedToSubject() {
         // given
         SchoolClass schoolClass = createSchoolWithSchoolClass();
-        School school = schoolClass.getSchool();
-        Teacher teacher = schoolClass.getTeacher();
+        School school = schoolClass.school();
+        Teacher teacher = schoolClass.teacher();
 
         User user = createUser("Testowy", "Test1@example.com", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
         user.activate();
@@ -137,12 +137,12 @@ class AssignGradeToStudentSubjectCommandValidatorTest extends BaseUnitTest {
         subject = subjectCommandRepository.save(subject);
 
         AssignGradeToStudentSubjectCommand command = new AssignGradeToStudentSubjectCommand(
-                student.getStudentId(),
-                subject.getSubjectId(),
+                student.studentId(),
+                subject.subjectId(),
                 Grade.ONE,
                 Weight.of(5),
                 Description.of("Test"),
-                teacher.getTeacherId()
+                teacher.teacherId()
         );
 
         // when
@@ -159,9 +159,9 @@ class AssignGradeToStudentSubjectCommandValidatorTest extends BaseUnitTest {
     public void shouldAddErrorWhenTeacherAccountIsInactive() {
         // given
         SchoolClass schoolClass = createSchoolWithSchoolClass();
-        School school = schoolClass.getSchool();
-        Teacher teacher = schoolClass.getTeacher();
-        User user = teacher.getUser();
+        School school = schoolClass.school();
+        Teacher teacher = schoolClass.teacher();
+        User user = teacher.user();
         user.unactivate();
 
         user = createUser("Testowy", "Test1@example.com", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
@@ -176,12 +176,12 @@ class AssignGradeToStudentSubjectCommandValidatorTest extends BaseUnitTest {
         studentSubject = studentSubjectCommandRepository.save(studentSubject);
 
         AssignGradeToStudentSubjectCommand command = new AssignGradeToStudentSubjectCommand(
-                student.getStudentId(),
-                subject.getSubjectId(),
+                student.studentId(),
+                subject.subjectId(),
                 Grade.ONE,
                 Weight.of(5),
                 Description.of("Test"),
-                teacher.getTeacherId()
+                teacher.teacherId()
         );
 
         // when
@@ -201,8 +201,8 @@ class AssignGradeToStudentSubjectCommandValidatorTest extends BaseUnitTest {
     public void shouldAddErrorWhenStudentAccountIsInactive() {
         // given
         SchoolClass schoolClass = createSchoolWithSchoolClass();
-        School school = schoolClass.getSchool();
-        Teacher teacher = schoolClass.getTeacher();
+        School school = schoolClass.school();
+        Teacher teacher = schoolClass.teacher();
 
         User user = createUser("Testowy", "Test1@example.com", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
         Student student = createStudent(user, school, schoolClass, personInformation, address);
@@ -215,12 +215,12 @@ class AssignGradeToStudentSubjectCommandValidatorTest extends BaseUnitTest {
         studentSubject = studentSubjectCommandRepository.save(studentSubject);
 
         AssignGradeToStudentSubjectCommand command = new AssignGradeToStudentSubjectCommand(
-                student.getStudentId(),
-                subject.getSubjectId(),
+                student.studentId(),
+                subject.subjectId(),
                 Grade.ONE,
                 Weight.of(5),
                 Description.of("Test"),
-                teacher.getTeacherId()
+                teacher.teacherId()
         );
 
         // when

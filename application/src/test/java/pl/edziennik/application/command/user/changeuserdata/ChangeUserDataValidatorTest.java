@@ -45,7 +45,7 @@ public class ChangeUserDataValidatorTest extends BaseUnitTest {
         createUser("Test", "Test@example.com", RoleCommandMockRepo.TEACHER_ROLE_NAME.value());
         User secondUser = createUser("Test1", "Test2@example.com", RoleCommandMockRepo.TEACHER_ROLE_NAME.value());
 
-        ChangeUserDataCommand command = new ChangeUserDataCommand(secondUser.getUserId(), Username.of("Test"), Email.of("test@example.com"));
+        ChangeUserDataCommand command = new ChangeUserDataCommand(secondUser.userId(), Username.of("Test"), Email.of("test@example.com"));
 
         // when
         validator.validate(command, validationErrorBuilder);
@@ -64,7 +64,7 @@ public class ChangeUserDataValidatorTest extends BaseUnitTest {
         createUser("Test", "Test@example.com", RoleCommandMockRepo.TEACHER_ROLE_NAME.value());
         User secondUser = createUser("Test1", "Test2@example.com", RoleCommandMockRepo.TEACHER_ROLE_NAME.value());
 
-        ChangeUserDataCommand command = new ChangeUserDataCommand(secondUser.getUserId(), Username.of("Test5"), Email.of("Test@example.com"));
+        ChangeUserDataCommand command = new ChangeUserDataCommand(secondUser.userId(), Username.of("Test5"), Email.of("Test@example.com"));
 
         // when
         validator.validate(command, validationErrorBuilder);

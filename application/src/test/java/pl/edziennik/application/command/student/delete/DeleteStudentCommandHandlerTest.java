@@ -50,17 +50,17 @@ class DeleteStudentCommandHandlerTest extends BaseUnitTest {
         Student student = createStudent(user, school, schoolClass, personInformation, address);
         student = studentCommandRepository.save(student);
 
-        Student studentAfterSave = studentCommandRepository.getReferenceById(student.getStudentId());
+        Student studentAfterSave = studentCommandRepository.getReferenceById(student.studentId());
         assertNotNull(studentAfterSave);
 
-        DeleteStudentCommand command = new DeleteStudentCommand(student.getStudentId());
+        DeleteStudentCommand command = new DeleteStudentCommand(student.studentId());
 
         // when
         OperationResult operationResult = handler.handle(command);
 
         // then
         assertTrue(operationResult.isSuccess());
-        Student studentAfterDelete = studentCommandRepository.getReferenceById(student.getStudentId());
+        Student studentAfterDelete = studentCommandRepository.getReferenceById(student.studentId());
         assertNull(studentAfterDelete);
     }
 }

@@ -23,7 +23,7 @@ public class SchoolConfigurationCommandMockRepo implements SchoolConfigurationCo
 
     @Override
     public SchoolConfiguration save(SchoolConfiguration schoolConfiguration) {
-        database.put(schoolConfiguration.getSchoolConfigurationId(), schoolConfiguration);
-        return database.get(schoolConfiguration.getSchoolConfigurationId());
+        database.put(schoolConfiguration.schoolConfigurationId(), schoolConfiguration);
+        return database.get(schoolConfiguration.schoolConfigurationId());
     }
 }

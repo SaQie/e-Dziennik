@@ -48,7 +48,7 @@ class DeleteSchoolCommandValidatorTest extends BaseUnitTest {
         PersonInformation personInformation = createPersonInformation();
         createTeacher(user, school, personInformation, address);
 
-        DeleteSchoolCommand deleteSchoolCommand = new DeleteSchoolCommand(school.getSchoolId());
+        DeleteSchoolCommand deleteSchoolCommand = new DeleteSchoolCommand(school.schoolId());
 
         // when
         validator.validate(deleteSchoolCommand, validationErrorBuilder);
@@ -70,7 +70,7 @@ class DeleteSchoolCommandValidatorTest extends BaseUnitTest {
         PersonInformation personInformation = createPersonInformation();
         createStudent(user, school, SchoolClass.of(null, null, null, schoolClassConfigurationProperties), personInformation, address);
 
-        DeleteSchoolCommand deleteSchoolCommand = new DeleteSchoolCommand(school.getSchoolId());
+        DeleteSchoolCommand deleteSchoolCommand = new DeleteSchoolCommand(school.schoolId());
 
         // when
         validator.validate(deleteSchoolCommand, validationErrorBuilder);
@@ -92,7 +92,7 @@ class DeleteSchoolCommandValidatorTest extends BaseUnitTest {
         User user = createUser("Kamil", "qweqwe@o2.pl", "TEACHER");
         createSchoolClass("test", school, null);
 
-        DeleteSchoolCommand deleteSchoolCommand = new DeleteSchoolCommand(school.getSchoolId());
+        DeleteSchoolCommand deleteSchoolCommand = new DeleteSchoolCommand(school.schoolId());
 
         // when
         validator.validate(deleteSchoolCommand, validationErrorBuilder);

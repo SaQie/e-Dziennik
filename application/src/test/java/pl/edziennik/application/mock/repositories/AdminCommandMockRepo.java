@@ -23,8 +23,8 @@ public class AdminCommandMockRepo implements AdminCommandRepository {
 
     @Override
     public Admin save(Admin admin) {
-        database.put(admin.getAdminId(), admin);
-        return database.get(admin.getAdminId());
+        database.put(admin.adminId(), admin);
+        return database.get(admin.adminId());
     }
 
 }

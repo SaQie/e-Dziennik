@@ -36,15 +36,15 @@ public class ChangeSchoolConfigurationValuesHandlerTest extends BaseUnitTest {
         // given
         School school = createSchool("Test", "123123123", "123123", address);
         schoolCommandRepository.save(school);
-        assertEquals(school.getSchoolConfiguration().getAverageType(), AverageType.ARITHMETIC);
+        assertEquals(school.schoolConfiguration().averageType(), AverageType.ARITHMETIC);
 
-        ChangeSchoolConfigurationValuesCommand command = new ChangeSchoolConfigurationValuesCommand(school.getSchoolId(), AverageType.WEIGHTED);
+        ChangeSchoolConfigurationValuesCommand command = new ChangeSchoolConfigurationValuesCommand(school.schoolId(), AverageType.WEIGHTED);
 
         // when
         handler.handle(command);
 
         // then
-        school = schoolCommandRepository.getBySchoolId(school.getSchoolId());
-        assertEquals(school.getSchoolConfiguration().getAverageType(), AverageType.WEIGHTED);
+        school = schoolCommandRepository.getBySchoolId(school.schoolId());
+        assertEquals(school.schoolConfiguration().averageType(), AverageType.WEIGHTED);
     }
 }

@@ -23,14 +23,14 @@ public class ChangeUserDataHandlerTest extends BaseUnitTest {
         Email expectedEmailAfterUpdate = Email.of("Test2@example.com");
         User user = createUser("Test", "test@example.com", RoleCommandMockRepo.TEACHER_ROLE_NAME.value());
 
-        ChangeUserDataCommand command = new ChangeUserDataCommand(user.getUserId(), null, expectedEmailAfterUpdate);
+        ChangeUserDataCommand command = new ChangeUserDataCommand(user.userId(), null, expectedEmailAfterUpdate);
 
         // when
         handler.handle(command);
 
         // then
-        user = userCommandRepository.getUserByUserId(user.getUserId());
-        assertEquals(user.getEmail(), expectedEmailAfterUpdate);
+        user = userCommandRepository.getUserByUserId(user.userId());
+        assertEquals(user.email(), expectedEmailAfterUpdate);
     }
 
     @Test
@@ -39,14 +39,14 @@ public class ChangeUserDataHandlerTest extends BaseUnitTest {
         Username expectedUsernameAfterSave = Username.of("Test2");
         User user = createUser("Test", "test@example.com", RoleCommandMockRepo.TEACHER_ROLE_NAME.value());
 
-        ChangeUserDataCommand command = new ChangeUserDataCommand(user.getUserId(), expectedUsernameAfterSave, null);
+        ChangeUserDataCommand command = new ChangeUserDataCommand(user.userId(), expectedUsernameAfterSave, null);
 
         // when
         handler.handle(command);
 
         // then
-        user = userCommandRepository.getUserByUserId(user.getUserId());
-        assertEquals(user.getUsername(), expectedUsernameAfterSave);
+        user = userCommandRepository.getUserByUserId(user.userId());
+        assertEquals(user.username(), expectedUsernameAfterSave);
     }
 
     @Test
@@ -57,14 +57,14 @@ public class ChangeUserDataHandlerTest extends BaseUnitTest {
 
         User user = createUser("Test", "test@example.com", RoleCommandMockRepo.TEACHER_ROLE_NAME.value());
 
-        ChangeUserDataCommand command = new ChangeUserDataCommand(user.getUserId(), expectedUsernameAfterSave, expectedEmailAfterUpdate);
+        ChangeUserDataCommand command = new ChangeUserDataCommand(user.userId(), expectedUsernameAfterSave, expectedEmailAfterUpdate);
 
         // when
         handler.handle(command);
 
         // then
-        user = userCommandRepository.getUserByUserId(user.getUserId());
-        assertEquals(user.getUsername(), expectedUsernameAfterSave);
-        assertEquals(user.getEmail(), expectedEmailAfterUpdate);
+        user = userCommandRepository.getUserByUserId(user.userId());
+        assertEquals(user.username(), expectedUsernameAfterSave);
+        assertEquals(user.email(), expectedEmailAfterUpdate);
     }
 }

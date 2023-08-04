@@ -53,9 +53,9 @@ public class RemoveInactiveUserAccountSchedulerTest extends BaseIntegrationTest 
 
         OperationResult operationResult = dispatcher.dispatch(command);
         Teacher teacher = teacherCommandRepository.getByTeacherId(TeacherId.of(operationResult.identifier().id()));
-        List<UserId> userIds = List.of(teacher.getUser().getUserId());
+        List<UserId> userIds = List.of(teacher.user().userId());
 
-        assertFalse(teacher.getUser().getIsActive());
+        assertFalse(teacher.user().isActive());
         Mockito.when(activationTokenRepository.getUserIdsWithExpiredActivationTokens()).thenReturn(userIds);
 
         // when

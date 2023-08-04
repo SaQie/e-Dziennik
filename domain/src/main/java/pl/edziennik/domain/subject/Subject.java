@@ -2,6 +2,7 @@ package pl.edziennik.domain.subject;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
 import pl.edziennik.common.valueobject.Description;
 import pl.edziennik.common.valueobject.Name;
 import pl.edziennik.common.valueobject.id.SubjectId;
@@ -13,6 +14,7 @@ import pl.edziennik.domain.teacher.Teacher;
 @Getter
 @Setter(AccessLevel.PROTECTED)
 @EqualsAndHashCode
+@Accessors(fluent = true)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Subject {
 
@@ -51,7 +53,7 @@ public class Subject {
         subject.schoolClass = schoolClass;
         subject.teacher = teacher;
 
-        schoolClass.getSubjects().add(subject);
+        schoolClass.subjects().add(subject);
 
         return subject;
     }

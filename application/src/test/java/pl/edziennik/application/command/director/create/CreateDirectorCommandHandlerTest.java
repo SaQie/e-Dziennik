@@ -38,7 +38,7 @@ public class CreateDirectorCommandHandlerTest extends BaseUnitTest {
                 Pesel.of("123123123"),
                 Email.of("test@example.com"),
                 PhoneNumber.of("123000000"),
-                school.getSchoolId()
+                school.schoolId()
         );
 
 

@@ -27,8 +27,8 @@ public class StudentSubjectMockRepo implements StudentSubjectCommandRepository {
 
     @Override
     public StudentSubject save(StudentSubject studentSubject) {
-        database.put(studentSubject.getStudentSubjectId(), studentSubject);
-        return database.get(studentSubject.getStudentSubjectId());
+        database.put(studentSubject.studentSubjectId(), studentSubject);
+        return database.get(studentSubject.studentSubjectId());
     }
 
     @Override
@@ -44,8 +44,8 @@ public class StudentSubjectMockRepo implements StudentSubjectCommandRepository {
     @Override
     public StudentSubject getReferenceByStudentStudentIdAndSubjectSubjectId(StudentId studentId, SubjectId subjectId) {
         List<StudentSubject> list = database.values().stream()
-                .filter(item -> item.getStudent().getStudentId().equals(studentId))
-                .filter(item -> item.getSubject().getSubjectId().equals(subjectId))
+                .filter(item -> item.student().studentId().equals(studentId))
+                .filter(item -> item.subject().subjectId().equals(subjectId))
                 .toList();
         if (list.isEmpty()) {
             return null;
@@ -56,8 +56,8 @@ public class StudentSubjectMockRepo implements StudentSubjectCommandRepository {
     @Override
     public StudentSubject getByStudentStudentIdAndSubjectSubjectId(StudentId studentId, SubjectId subjectId) {
         List<StudentSubject> list = database.values().stream()
-                .filter(item -> item.getStudent().getStudentId().equals(studentId))
-                .filter(item -> item.getSubject().getSubjectId().equals(subjectId))
+                .filter(item -> item.student().studentId().equals(studentId))
+                .filter(item -> item.subject().subjectId().equals(subjectId))
                 .toList();
         if (list.isEmpty()) {
             return null;

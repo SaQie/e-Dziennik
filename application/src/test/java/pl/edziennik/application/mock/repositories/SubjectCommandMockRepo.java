@@ -37,22 +37,22 @@ public class SubjectCommandMockRepo implements SubjectCommandRepository {
         if (schoolClass == null) {
             return false;
         }
-        return schoolClass.getTeacher().getTeacherId().equals(teacherId);
+        return schoolClass.teacher().teacherId().equals(teacherId);
     }
 
     @Override
     public boolean existsByName(Name name, SchoolClassId schoolClassId) {
         List<Subject> subjects = database.values().stream()
-                .filter(item -> item.getSchoolClass().getSchoolClassId().equals(schoolClassId))
-                .filter(item -> item.getName().equals(name))
+                .filter(item -> item.schoolClass().schoolClassId().equals(schoolClassId))
+                .filter(item -> item.name().equals(name))
                 .toList();
         return !subjects.isEmpty();
     }
 
     @Override
     public Subject save(Subject subject) {
-        database.put(subject.getSubjectId(), subject);
-        return database.get(subject.getSubjectId());
+        database.put(subject.subjectId(), subject);
+        return database.get(subject.subjectId());
     }
 
     @Override
@@ -69,7 +69,7 @@ public class SubjectCommandMockRepo implements SubjectCommandRepository {
     public boolean isStudentFromTheSameSchoolClass(StudentId studentId, SubjectId subjectId) {
         Student student = studentCommandMockRepo.getReferenceById(studentId);
         Subject subject = getReferenceById(subjectId);
-        return student.getSchoolClass().getSchoolClassId().equals(subject.getSchoolClass().getSchoolClassId());
+        return student.schoolClass().schoolClassId().equals(subject.schoolClass().schoolClassId());
     }
 
     @Override
@@ -80,6 +80,6 @@ public class SubjectCommandMockRepo implements SubjectCommandRepository {
     @Override
     public boolean isTeacherFromProvidedSubject(TeacherId teacherId, SubjectId subjectId) {
         Subject subject = getReferenceById(subjectId);
-        return subject.getTeacher().getTeacherId().equals(teacherId);
+        return subject.teacher().teacherId().equals(teacherId);
     }
 }

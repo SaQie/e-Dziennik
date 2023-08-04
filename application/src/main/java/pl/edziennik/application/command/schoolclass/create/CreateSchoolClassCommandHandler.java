@@ -36,7 +36,7 @@ class CreateSchoolClassCommandHandler implements ICommandHandler<CreateSchoolCla
                 .properties(configurationProperties)
                 .build();
 
-        SchoolClassId schoolClassId = schoolClassCommandRepository.save(schoolClass).getSchoolClassId();
+        SchoolClassId schoolClassId = schoolClassCommandRepository.save(schoolClass).schoolClassId();
 
         return OperationResult.success(schoolClassId);
     }

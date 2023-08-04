@@ -45,7 +45,7 @@ public class ChangePasswordValidatorTest extends BaseUnitTest {
         // given
         User user = createUser("Test", "test@example.com", RoleCommandMockRepo.STUDENT_ROLE_NAME.value(), "Test123");
 
-        ChangePasswordCommand command = new ChangePasswordCommand(user.getUserId(),
+        ChangePasswordCommand command = new ChangePasswordCommand(user.userId(),
                 Password.of("Testtttt"),
                 Password.of("test12333"));
 

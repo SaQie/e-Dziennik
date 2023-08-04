@@ -5,6 +5,7 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Version;
 import lombok.*;
+import lombok.experimental.Accessors;
 import pl.edziennik.common.properties.SchoolClassConfigurationProperties;
 import pl.edziennik.common.valueobject.id.SchoolClassConfigurationId;
 
@@ -13,6 +14,7 @@ import pl.edziennik.common.valueobject.id.SchoolClassConfigurationId;
 @Getter
 @Setter(AccessLevel.PROTECTED)
 @EqualsAndHashCode
+@Accessors(fluent = true)
 public class SchoolClassConfiguration {
 
     @EmbeddedId

@@ -36,7 +36,7 @@ class AssignParentCommandValidatorTest extends BaseUnitTest {
 
         AssignParentCommand command = new AssignParentCommand(
                 StudentId.create(),
-                parent.getParentId()
+                parent.parentId()
         );
 
         // when
@@ -61,7 +61,7 @@ class AssignParentCommandValidatorTest extends BaseUnitTest {
         student = studentCommandRepository.save(student);
 
         AssignParentCommand command = new AssignParentCommand(
-                student.getStudentId(),
+                student.studentId(),
                 ParentId.create()
         );
 
@@ -85,8 +85,8 @@ class AssignParentCommandValidatorTest extends BaseUnitTest {
         parent = parentCommandRepository.save(parent);
 
         AssignParentCommand command = new AssignParentCommand(
-                student.getStudentId(),
-                parent.getParentId()
+                student.studentId(),
+                parent.parentId()
         );
 
         // when
@@ -113,8 +113,8 @@ class AssignParentCommandValidatorTest extends BaseUnitTest {
 
 
         AssignParentCommand command = new AssignParentCommand(
-                student.getStudentId(),
-                parent.getParentId()
+                student.studentId(),
+                parent.parentId()
         );
 
         // when
@@ -139,8 +139,8 @@ class AssignParentCommandValidatorTest extends BaseUnitTest {
         Student student = createStudentWithSchoolAndClass(user, null);
 
         AssignParentCommand command = new AssignParentCommand(
-                student.getStudentId(),
-                parent.getParentId()
+                student.studentId(),
+                parent.parentId()
         );
 
         // when
@@ -165,8 +165,8 @@ class AssignParentCommandValidatorTest extends BaseUnitTest {
         Student student = createStudentWithSchoolAndClass(user, null);
 
         AssignParentCommand command = new AssignParentCommand(
-                student.getStudentId(),
-                parent.getParentId()
+                student.studentId(),
+                parent.parentId()
         );
 
         // when

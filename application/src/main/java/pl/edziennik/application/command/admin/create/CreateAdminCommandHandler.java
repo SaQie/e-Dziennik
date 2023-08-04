@@ -28,7 +28,7 @@ class CreateAdminCommandHandler implements ICommandHandler<CreateAdminCommand, O
 
         user.activate();
 
-        AdminId adminId = adminCommandRepository.save(Admin.of(user)).getAdminId();
+        AdminId adminId = adminCommandRepository.save(Admin.of(user)).adminId();
 
         return OperationResult.success(adminId);
     }

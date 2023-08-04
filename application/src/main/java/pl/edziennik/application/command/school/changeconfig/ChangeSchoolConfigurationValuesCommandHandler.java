@@ -28,7 +28,7 @@ class ChangeSchoolConfigurationValuesCommandHandler implements ICommandHandler<C
                         res.notFoundError(ChangeSchoolConfigurationValuesCommand.SCHOOL_ID, command.schoolId()))
                 );
 
-        SchoolConfiguration schoolConfiguration = school.getSchoolConfiguration();
+        SchoolConfiguration schoolConfiguration = school.schoolConfiguration();
         schoolConfiguration.changeAverageType(command.averageType());
 
         schoolConfigurationCommandRepository.save(schoolConfiguration);

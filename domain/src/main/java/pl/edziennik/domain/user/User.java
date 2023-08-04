@@ -2,6 +2,7 @@ package pl.edziennik.domain.user;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
 import pl.edziennik.common.valueobject.Email;
 import pl.edziennik.common.valueobject.Password;
 import pl.edziennik.common.valueobject.Pesel;
@@ -18,6 +19,7 @@ import java.util.UUID;
 @Getter
 @Setter(AccessLevel.PROTECTED)
 @Entity
+@Accessors(fluent = true)
 @EqualsAndHashCode
 @Table(name = "users")
 public class User {

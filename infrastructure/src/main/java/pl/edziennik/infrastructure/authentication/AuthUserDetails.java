@@ -20,18 +20,18 @@ public class AuthUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority(user.getRole().getName().value()));
+        authorities.add(new SimpleGrantedAuthority(user.role().name().value()));
         return authorities;
     }
 
     @Override
     public String getPassword() {
-        return user.getPassword().value();
+        return user.password().value();
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername().value();
+        return user.username().value();
     }
 
     @Override
@@ -51,6 +51,6 @@ public class AuthUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return user.getIsActive();
+        return user.isActive();
     }
 }

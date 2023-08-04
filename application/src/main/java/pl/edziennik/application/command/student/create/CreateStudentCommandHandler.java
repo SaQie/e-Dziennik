@@ -51,9 +51,9 @@ class CreateStudentCommandHandler implements ICommandHandler<CreateStudentComman
 
         Student student = Student.of(user, school, schoolClass, personInformation, address);
 
-        StudentId studentId = studentCommandRepository.save(student).getStudentId();
+        StudentId studentId = studentCommandRepository.save(student).studentId();
 
-        UserAccountCreatedEvent userAccountCreatedEvent = new UserAccountCreatedEvent(user.getUserId());
+        UserAccountCreatedEvent userAccountCreatedEvent = new UserAccountCreatedEvent(user.userId());
         StudentAccountCreatedEvent studentAccountCreatedEvent = new StudentAccountCreatedEvent(studentId, command.schoolClassId());
 
         eventPublisher.publishEvent(userAccountCreatedEvent);

@@ -46,7 +46,7 @@ class CreateDirectorCommandHandler implements ICommandHandler<CreateDirectorComm
                 .user(user)
                 .build();
 
-        DirectorId directorId = directorCommandRepository.save(director).getDirectorId();
+        DirectorId directorId = directorCommandRepository.save(director).directorId();
 
         return OperationResult.success(directorId);
     }

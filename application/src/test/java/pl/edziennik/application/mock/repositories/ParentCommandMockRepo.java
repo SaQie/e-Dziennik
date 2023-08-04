@@ -24,7 +24,7 @@ public class ParentCommandMockRepo implements ParentCommandRepository {
         if (parent == null) {
             return false;
         }
-        return parent.getStudent() != null;
+        return parent.student() != null;
     }
 
     @Override
@@ -39,14 +39,14 @@ public class ParentCommandMockRepo implements ParentCommandRepository {
 
     @Override
     public Parent save(Parent parent) {
-        database.put(parent.getParentId(), parent);
-        return database.get(parent.getParentId());
+        database.put(parent.parentId(), parent);
+        return database.get(parent.parentId());
     }
 
     @Override
     public List<Parent> getParentsByUserIds(List<UserId> userIds) {
         return database.values().stream()
-                .filter(item -> userIds.contains(item.getUser().getUserId()))
+                .filter(item -> userIds.contains(item.user().userId()))
                 .toList();
     }
 
@@ -61,7 +61,7 @@ public class ParentCommandMockRepo implements ParentCommandRepository {
         if (parent == null) {
             return true;
         }
-        return !parent.getUser().getIsActive();
+        return !parent.user().isActive();
     }
 
 }

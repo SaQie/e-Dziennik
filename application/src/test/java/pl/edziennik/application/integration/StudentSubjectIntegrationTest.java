@@ -41,8 +41,8 @@ public class StudentSubjectIntegrationTest extends BaseIntegrationTest {
         // then
         StudentSubject studentSubject = studentSubjectCommandRepository.getByStudentStudentIdAndSubjectSubjectId(studentId, subjectId);
         assertNotNull(studentSubject);
-        assertEquals(studentSubject.getSubject().getSubjectId(), subjectId);
-        assertEquals(studentSubject.getStudent().getStudentId(), studentId);
+        assertEquals(studentSubject.subject().subjectId(), subjectId);
+        assertEquals(studentSubject.student().studentId(), studentId);
     }
 
     @Test
@@ -87,7 +87,7 @@ public class StudentSubjectIntegrationTest extends BaseIntegrationTest {
         SchoolClassId schoolClassId = createSchoolClass(schoolId, teacherId, "1A");
         SchoolClass schoolClass = schoolClassCommandRepository.getBySchoolClassId(schoolClassId);
 
-        SchoolClassConfiguration schoolClassConfiguration = schoolClassConfigurationCommandRepository.getSchoolClassConfigurationBySchoolClassConfigurationId(schoolClass.getSchoolClassConfiguration().getSchoolClassConfigurationId());
+        SchoolClassConfiguration schoolClassConfiguration = schoolClassConfigurationCommandRepository.getSchoolClassConfigurationBySchoolClassConfigurationId(schoolClass.schoolClassConfiguration().schoolClassConfigurationId());
         schoolClassConfiguration.changeAutoAssignSubject(Boolean.FALSE);
         schoolClassConfigurationCommandRepository.save(schoolClassConfiguration);
 

@@ -87,7 +87,7 @@ public class SchoolIntegrationTest extends BaseIntegrationTest {
 
         // then
         School school = schoolCommandRepository.getBySchoolId(schoolId);
-        assertEquals(school.getSchoolConfiguration().getAverageType(), AverageType.WEIGHTED);
+        assertEquals(school.schoolConfiguration().averageType(), AverageType.WEIGHTED);
     }
 
 }

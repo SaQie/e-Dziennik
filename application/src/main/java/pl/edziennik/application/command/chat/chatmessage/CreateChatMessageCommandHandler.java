@@ -32,7 +32,7 @@ class CreateChatMessageCommandHandler implements ICommandHandler<CreateChatMessa
                 .messageStatus(messageStatus)
                 .build();
 
-        ChatMessageId chatMessageId = commandRepository.save(entity).getChatMessageId();
+        ChatMessageId chatMessageId = commandRepository.save(entity).chatMessageId();
 
         return OperationResult.success(chatMessageId);
     }

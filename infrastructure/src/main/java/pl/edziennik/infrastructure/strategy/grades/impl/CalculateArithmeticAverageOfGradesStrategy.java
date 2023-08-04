@@ -18,7 +18,7 @@ public class CalculateArithmeticAverageOfGradesStrategy implements CalculateAver
     @Override
     public CalculateAverageOfGradesStrategyOutput calculateAverage(CalculateAverageOfGradesStrategyInput input) {
         double gradesSum = input.grades().stream()
-                .mapToDouble(grade -> grade.getGrade().decimalGrade)
+                .mapToDouble(grade -> grade.grade().decimalGrade)
                 .sum();
 
         int gradesCount = input.grades().size();
