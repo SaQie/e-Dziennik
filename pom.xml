@@ -28,7 +28,7 @@
         <springdoc.version>2.0.0</springdoc.version>
         <pdfbox.version>2.0.28</pdfbox.version>
 
-<!--        Modules       -->
+        <!--        Modules       -->
 
         <application.version>0.0.1-SNAPSHOT</application.version>
         <web.version>0.0.1-SNAPSHOT</web.version>
@@ -81,7 +81,6 @@
             <artifactId>liquibase-core</artifactId>
         </dependency>
     </dependencies>
-
 
 
 </project>

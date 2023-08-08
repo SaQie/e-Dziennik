@@ -26,6 +26,23 @@
             <artifactId>application</artifactId>
             <version>${application.version}</version>
         </dependency>
+        <dependency>
+            <groupId>pl.edziennik.domain</groupId>
+            <artifactId>domain</artifactId>
+            <scope>runtime</scope>
+            <version>${domain.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>pl.edziennik.infrastructure</groupId>
+            <artifactId>infrastructure</artifactId>
+            <scope>runtime</scope>
+            <version>${infrastructure.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>pl.edziennik.common</groupId>
+            <artifactId>common</artifactId>
+            <version>${common.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

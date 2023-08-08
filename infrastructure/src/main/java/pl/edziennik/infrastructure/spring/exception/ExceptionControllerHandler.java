@@ -1,4 +1,4 @@
-package pl.edziennik.web.exception;
+package pl.edziennik.infrastructure.spring.exception;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -17,7 +17,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import pl.edziennik.common.exception.InvalidIdentifierException;
 import pl.edziennik.common.exception.InvalidParameterException;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
-import pl.edziennik.infrastructure.spring.exception.BusinessException;
 import pl.edziennik.infrastructure.validator.ValidationError;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 

@@ -21,12 +21,14 @@ import java.util.List;
 @Slf4j
 public class RemoveInactiveUserAccountsSchedulerTask {
 
+    private static final String CRON = "0 0 0 1/2 * ?";
+
     private final ActivationTokenRepository tokenRepository;
     private final StudentCommandRepository studentCommandRepository;
     private final TeacherCommandRepository teacherCommandRepository;
     private final ParentCommandRepository parentCommandRepository;
 
-    @Scheduled(cron = "0 0 0 1/2 * ?")
+    @Scheduled(cron = CRON)
     @Transactional
     public void removeInactiveUserAccounts() {
         List<UserId> userIds = tokenRepository.getUserIdsWithExpiredActivationTokens();

@@ -8,9 +8,9 @@ import pl.edziennik.infrastructure.authentication.security.LoggedUser;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,13 +33,9 @@ public class SpringCacheService {
             redisTemplate.opsForSet().getOperations().delete(LOGGED_USERS_KEY);
 
             loggedUsersSet.forEach(user -> redisTemplate.opsForSet().add(LOGGED_USERS_KEY, user));
-
-
         } else {
-            Set<LoggedUser> newLoggedUsersSet = new HashSet<>();
-            newLoggedUsersSet.add(loggedUser);
-
             redisTemplate.opsForSet().add(LOGGED_USERS_KEY, loggedUser);
+            redisTemplate.expire(LOGGED_USERS_KEY, 1, TimeUnit.HOURS);
         }
     }
 
@@ -48,6 +44,7 @@ public class SpringCacheService {
             Set<LoggedUser> loggedUsersSet = redisTemplate.opsForSet().members(LOGGED_USERS_KEY).stream()
                     .map(obj -> (LoggedUser) obj)
                     .collect(Collectors.toSet());
+
             loggedUsersSet.removeIf(user -> user.userId().equals(loggedUser.userId()));
 
             redisTemplate.opsForSet().getOperations().delete(LOGGED_USERS_KEY);

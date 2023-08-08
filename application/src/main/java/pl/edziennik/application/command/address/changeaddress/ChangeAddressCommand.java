@@ -2,6 +2,7 @@ package pl.edziennik.application.command.address.changeaddress;
 
 import jakarta.validation.Valid;
 import pl.edziennik.application.common.dispatcher.OperationResult;
+import pl.edziennik.application.common.dispatcher.base.HandledBy;
 import pl.edziennik.application.common.dispatcher.command.ICommand;
 import pl.edziennik.common.valueobject.Address;
 import pl.edziennik.common.valueobject.City;
@@ -14,6 +15,7 @@ import java.util.UUID;
  * <br>
  * <b>Note that, this command is common for student,teacher,parent and school entities</b>
  */
+@HandledBy(handler = ChangeAddressCommandHandler.class)
 public record ChangeAddressCommand(
         UUID id,
         @Valid Address address,
