@@ -1,6 +1,7 @@
 package pl.edziennik.web.chat;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -14,12 +15,11 @@ import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.query.chat.chatmessage.GetChatMessagesHistoryQuery;
 import pl.edziennik.application.query.chat.chatroom.GetChatRoomQuery;
+import pl.edziennik.common.dto.PageDto;
 import pl.edziennik.common.dto.chat.ChatMessageDto;
 import pl.edziennik.common.valueobject.id.ChatId;
 import pl.edziennik.common.valueobject.id.RecipientId;
 import pl.edziennik.common.valueobject.id.SenderId;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/chat")
@@ -30,8 +30,8 @@ public class ChatController {
     private final SimpMessagingTemplate template;
 
     @GetMapping("/history/{chatId}")
-    public List<ChatMessageDto> getChatHistory(@PathVariable ChatId chatId) {
-        GetChatMessagesHistoryQuery getChatMessagesHistoryQuery = new GetChatMessagesHistoryQuery(chatId);
+    public PageDto<ChatMessageDto> getChatHistory(Pageable pageable, @PathVariable ChatId chatId) {
+        GetChatMessagesHistoryQuery getChatMessagesHistoryQuery = new GetChatMessagesHistoryQuery(chatId, pageable);
 
         return dispatcher.dispatch(getChatMessagesHistoryQuery);
     }
