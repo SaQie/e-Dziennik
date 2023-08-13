@@ -66,3 +66,7 @@ jwt:
 
 application:
   address: localhost:8080/
+
+groovy:
+  execution:
+    timeout: 10

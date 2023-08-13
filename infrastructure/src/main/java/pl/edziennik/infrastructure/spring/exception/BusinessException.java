@@ -19,8 +19,14 @@ public class BusinessException extends RuntimeException {
         this.errors = errors;
     }
 
-    public BusinessException(ValidationError error){
+    public BusinessException(ValidationError error) {
         super(error.message());
+        this.errors = new ArrayList<>();
+        this.errors.add(error);
+    }
+
+    public BusinessException(ValidationError error, Throwable t) {
+        super(error.message(), t);
         this.errors = new ArrayList<>();
         this.errors.add(error);
     }

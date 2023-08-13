@@ -1,6 +1,7 @@
 package pl.edziennik.infrastructure.validator;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
 /**
  * Object that represent specific error
@@ -23,6 +24,10 @@ public record ValidationError(
     }
 
     public ValidationError(String field, String message, Integer errorCode) {
-        this(field,errorCode,message,null);
+        this(field, errorCode, message, null);
+    }
+
+    public ValidationError(String field, String message, ErrorCode errorCode) {
+        this(field, errorCode.errorCode(), message, null);
     }
 }

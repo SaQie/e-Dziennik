@@ -19,7 +19,7 @@ public class DirectorCommandController {
     private final Dispatcher dispatcher;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> createDirector(@RequestBody CreateDirectorCommand command) {
         OperationResult operationResult = dispatcher.dispatch(command);
 

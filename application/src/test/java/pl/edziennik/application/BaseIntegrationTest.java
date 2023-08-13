@@ -1,5 +1,6 @@
 package pl.edziennik.application;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import liquibase.util.StringUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,7 +77,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
         "pl.edziennik.infrastructure.strategy",
         "pl.edziennik.infrastructure.repository",
         "pl.edziennik.infrastructure.scheduler"})
-@SpringBootTest(classes = {BaseIntegrationTest.class, RedisCacheTestConfig.class})
+@SpringBootTest(classes = {BaseIntegrationTest.class, RedisCacheTestConfig.class, ObjectMapper.class})
 @AutoConfigureDataJpa
 @Sql(scripts = "/schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(scripts = "/clearDb.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
