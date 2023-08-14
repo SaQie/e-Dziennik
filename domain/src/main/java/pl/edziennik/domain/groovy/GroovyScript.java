@@ -27,13 +27,16 @@ public class GroovyScript {
     @Embedded
     @Lob
     @AttributeOverrides({
-            @AttributeOverride(name = "value", column = @Column(name = "content", nullable = false))
+            @AttributeOverride(name = "value", column = @Column(columnDefinition = "TEXT", name = "content", nullable = false))
     })
     private ScriptContent scriptContent;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "groovy_script_status_id", referencedColumnName = "id", nullable = false)
     private GroovyScriptStatus groovyScriptStatus;
+
+    @Version
+    private Long version;
 
     @Builder
     public static GroovyScript of(User user, ScriptContent scriptContent, GroovyScriptStatus scriptStatus) {

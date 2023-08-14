@@ -24,4 +24,7 @@ public class GroovyScriptStatus {
     })
     private Name name;
 
+    @Version
+    private Long version;
+
 }

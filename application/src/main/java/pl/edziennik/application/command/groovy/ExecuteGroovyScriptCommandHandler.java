@@ -1,10 +1,10 @@
 package pl.edziennik.application.command.groovy;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
 import pl.edziennik.common.valueobject.Username;
@@ -17,7 +17,7 @@ import pl.edziennik.infrastructure.repository.groovy.GroovyScriptCommandReposito
 import pl.edziennik.infrastructure.repository.groovy.result.GroovyScriptResultCommandRepository;
 import pl.edziennik.infrastructure.repository.groovy.status.GroovyScriptStatusQueryRepository;
 import pl.edziennik.infrastructure.repository.user.UserQueryRepository;
-import pl.edziennik.infrastructure.spring.ResourceCreator;
+import pl.edziennik.infrastructure.spring.exception.BusinessException;
 import pl.edziennik.infrastructure.spring.script.GroovyScriptExecResult;
 import pl.edziennik.infrastructure.spring.script.GroovyShellExecutor;
 
@@ -31,10 +31,9 @@ class ExecuteGroovyScriptCommandHandler implements ICommandHandler<ExecuteGroovy
     private final GroovyScriptStatusQueryRepository groovyScriptStatusQueryRepository;
     private final GroovyScriptCommandRepository groovyScriptCommandRepository;
     private final GroovyScriptResultCommandRepository groovyScriptResultCommandRepository;
-    private final ObjectMapper objectMapper;
-    private final ResourceCreator res;
 
     @Override
+    @Transactional(noRollbackFor = BusinessException.class)
     public OperationResult handle(ExecuteGroovyScriptCommand command) {
         // 1. Get required information
         String name = SecurityContextHolder.getContext().getAuthentication().getName();

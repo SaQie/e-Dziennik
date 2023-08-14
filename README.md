@@ -30,17 +30,17 @@ _____________
 
 </div>
 
-| Description                   |                                            | Description              |                                       |
-|-------------------------------|--------------------------------------------|--------------------------|---------------------------------------|
-| **Schools option**            | ![#00d1a0](images/School_Building.png)     | **Email confirmation**   | ![#00d1a0](images/Received.png)       |
-| **School classes option**     | ![#00d1a0](images/Meeting_Room.png)        | **Document generator**   | ![#00d1a0](images/PDF.png)            |
-| **Students option**           | ![#00d1a0](images/Student_Male.png)        | **Internationalization** | ![#00d1a0](images/Language_Skill.png) |
-| **Teachers option**           | ![#00d1a0](images/Teacher.png)             | **Real-Time Chat**       | ![#00d1a0](images/WeChat.png)         |
-| **Parents option**            | ![#00d1a0](images/Family.png)              |                          |                                       |
-| **Admins option**             | ![#00d1a0](images/Admin_Settings_Male.png) |                          |                                       |
-| **Subjects option**           | ![#00d1a0](images/Read.png)                |                          |                                       |
-| **Grades option**             | ![#00d1a0](images/Numbers.png)             |                          |                                       |
-| **Dynamic app configuration** | ![#FC0000](images/Services.png)            |                          |                                       |
+| Description                   |                                            | Description                 |                                       |
+|-------------------------------|--------------------------------------------|-----------------------------|---------------------------------------|
+| **Schools option**            | ![#00d1a0](images/School_Building.png)     | **Email confirmation**      | ![#00d1a0](images/Received.png)       |
+| **School classes option**     | ![#00d1a0](images/Meeting_Room.png)        | **Document generator**      | ![#00d1a0](images/PDF.png)            |
+| **Students option**           | ![#00d1a0](images/Student_Male.png)        | **Internationalization**    | ![#00d1a0](images/Language_Skill.png) |
+| **Teachers option**           | ![#00d1a0](images/Teacher.png)             | **Real-Time Chat**          | ![#00d1a0](images/WeChat.png)         |
+| **Parents option**            | ![#00d1a0](images/Family.png)              | **Groovy script Execution** | ![#00d1a0](images/Code_File.png)      |
+| **Admins option**             | ![#00d1a0](images/Admin_Settings_Male.png) |                             |                                       |
+| **Subjects option**           | ![#00d1a0](images/Read.png)                |                             |                                       |
+| **Grades option**             | ![#00d1a0](images/Numbers.png)             |                             |                                       |
+| **Dynamic app configuration** | ![#FC0000](images/Services.png)            |                             |                                       |
 
 <div>Dynamic app configuration allows to configure our application through REST-API</div>
 
@@ -64,20 +64,25 @@ List of task's I will implement in future in this project:
 * *Add homeworks that can be sent to teacher* ❌
 * *Add notes system per student inside application* ❌
 * *Add dashboard that shows recently added grades* ❌
-* *Add interactive panel that allows to run groovy script and get result(for homeworks)* ❌
+* *Add interactive panel that allows to run groovy script and get result* ✅
 * *And more.....*
 
 # 🪨 Milestones
+
 ___
 
 - *(15/09/2022) Start project*
-  - When I started the project, I decided to implement DAO pattern instead of Repository pattern
-- *(21/12/2022)* Start client desktop project for this app     <a href="https://github.com/SaQie/e-Dziennik-desktop"><strong>Move to client »</strong></a>
+    - When I started the project, I decided to implement DAO pattern instead of Repository pattern
+- *(21/12/2022)* Start client desktop project for this
+  app     <a href="https://github.com/SaQie/e-Dziennik-desktop"><strong>Move to client »</strong></a>
 - *(24/03/2023) Change persistence layer to Spring Data Jpa repositories*
-  - I decided to change my persistence layer, due to i had a lot of problems with DAO pattern (Pagination, transactions etc.)
+    - I decided to change my persistence layer, due to i had a lot of problems with DAO pattern (Pagination,
+      transactions etc.)
 - *(06/05/2023) Changed architecture layer to CQRS, check <strong>[Architecture Look »](#-architecture-look)</strong>*
-- *(31/05/2023)* I decided to temporarily stop developing client desktop application and instead start developing Angular web client 
-- *(30/07/2023)* My first face to WebSocket's - implemented a new one-to-one chat with message history | check <strong>[Chat »](#-chat---how-it-works)</strong>
+- *(31/05/2023)* I decided to temporarily stop developing client desktop application and instead start developing
+  Angular web client
+- *(30/07/2023)* My first face to WebSocket's - implemented a new one-to-one chat with message history |
+  check <strong>[Chat »](#-chat---how-it-works)</strong>
 
 # 👨‍💻 Tech stack
 
@@ -103,6 +108,7 @@ _____
 * WebSockets
 
 # 🗾 Architecture look
+
 ___
 
 *I am currently using CQRS architecture in my project.*
@@ -111,11 +117,12 @@ ___
 ![#FC0000](images/CQRS_architecture.png)
 
 # 💬 Chat - How it works
+
 ___
 
 ![#FC0000](images/one-to-one-chat.png)
 
-#  🖥️ How to run
+# 🖥️ How to run
 
 _____
 Project has a docker-compose file that allows to run application very simple:

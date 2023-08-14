@@ -9,11 +9,13 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 
 @Getter
+@Slf4j
 @Accessors(fluent = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @EqualsAndHashCode(of = "value")
@@ -42,6 +44,7 @@ public class ScriptContent implements ValueObject, Serializable {
                 content.append(line).append("\n");
             }
         } catch (IOException e) {
+            log.error("error occurred while reading file {}", file.getName());
             e.printStackTrace();
         }
 

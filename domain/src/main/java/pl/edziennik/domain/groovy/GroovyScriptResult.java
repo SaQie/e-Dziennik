@@ -32,6 +32,9 @@ public class GroovyScriptResult {
     @JoinColumn(name = "groovy_script_id", referencedColumnName = "id", nullable = false)
     private GroovyScript groovyScript;
 
+    @Version
+    private Long version;
+
     @Builder
     public static GroovyScriptResult of(ScriptResult scriptResult, GroovyScript groovyScript) {
         GroovyScriptResult groovyScriptResult = new GroovyScriptResult();

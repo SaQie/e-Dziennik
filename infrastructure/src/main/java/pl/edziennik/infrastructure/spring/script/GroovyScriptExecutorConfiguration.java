@@ -4,13 +4,16 @@ import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import groovy.transform.CompileStatic;
 import groovy.transform.TimedInterrupt;
-import org.codehaus.groovy.ast.stmt.SynchronizedStatement;
-import org.codehaus.groovy.classgen.BytecodeExpression;
-import org.codehaus.groovy.classgen.BytecodeSequence;
+import org.codehaus.groovy.ast.expr.*;
+import org.codehaus.groovy.ast.stmt.*;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer;
 import org.codehaus.groovy.control.customizers.ImportCustomizer;
 import org.codehaus.groovy.control.customizers.SecureASTCustomizer;
+import org.codehaus.groovy.transform.sc.ListOfExpressionsExpression;
+import org.codehaus.groovy.transform.sc.TemporaryVariableExpression;
+import org.codehaus.groovy.transform.sc.transformers.CompareIdentityExpression;
+import org.codehaus.groovy.transform.sc.transformers.CompareToNullExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -58,6 +61,34 @@ public class GroovyScriptExecutorConfiguration {
             Object.class, ScriptResult.class
     );
 
+    // Allowed statements in script
+    private static final List<Class<? extends Statement>> ALLOWED_STATEMENTS = List.of(
+            DoWhileStatement.class, WhileStatement.class,
+            ReturnStatement.class, ContinueStatement.class,
+            BlockStatement.class, BreakStatement.class,
+            CaseStatement.class, SwitchStatement.class,
+            ForStatement.class, IfStatement.class,
+            Statement.class, ExpressionStatement.class
+    );
+
+    // Allowed expressions in script
+    private static final List<Class<? extends Expression>> ALLOWED_EXPRESSIONS = List.of(
+            ClosureExpression.class, ClosureListExpression.class,
+            ArgumentListExpression.class, ArrayExpression.class,
+            BinaryExpression.class, ConstantExpression.class,
+            UnaryMinusExpression.class, UnaryPlusExpression.class,
+            BitwiseNegationExpression.class, PostfixExpression.class,
+            VariableExpression.class, PrefixExpression.class,
+            DeclarationExpression.class, ConstructorCallExpression.class,
+            BooleanExpression.class, ClosureListExpression.class, ClosureExpression.class,
+            CompareIdentityExpression.class, CompareToNullExpression.class,
+            EmptyExpression.class, MapEntryExpression.class, MapExpression.class,
+            FieldExpression.class, GStringExpression.class, ListExpression.class,
+            ListOfExpressionsExpression.class, MethodCallExpression.class, MethodPointerExpression.class,
+            MethodReferenceExpression.class, TemporaryVariableExpression.class,
+            TernaryExpression.class, RangeExpression.class
+    );
+
 
     // Map for store time to break executing script
     private final Map<String, Object> timeInterruptedParams;
@@ -76,16 +107,18 @@ public class GroovyScriptExecutorConfiguration {
         secureCustomizer.setIndirectImportCheckEnabled(true);
         // Allows to define methods in script
         secureCustomizer.setMethodDefinitionAllowed(true);
-        // Allowed classes for calling methods on them
-        secureCustomizer.setAllowedReceiversClasses(List.of(ScriptResult.class, Object.class));
         // Allowed imports
-        secureCustomizer.setImportsWhitelist(ALLOWED_IMPORTS);
-        secureCustomizer.setStarImportsWhitelist(ALLOWED_IMPORTS);
+        secureCustomizer.setAllowedStarImports(ALLOWED_IMPORTS);
+        secureCustomizer.setAllowedImports(ALLOWED_IMPORTS);
         secureCustomizer.setPackageAllowed(false);
         secureCustomizer.setClosuresAllowed(true);
-        secureCustomizer.setReceiversClassesWhiteList(RECEIVERS_CLASSES_WHITE_LIST);
-        secureCustomizer.setExpressionsBlacklist(List.of(BytecodeExpression.class));
-        secureCustomizer.setStatementsBlacklist(List.of(BytecodeSequence.class, SynchronizedStatement.class));
+
+        // Allowed classes for calling methods on them
+        secureCustomizer.setAllowedReceiversClasses(RECEIVERS_CLASSES_WHITE_LIST);
+
+        // Allowed expressions and statements
+        secureCustomizer.setAllowedExpressions(ALLOWED_EXPRESSIONS);
+        secureCustomizer.setAllowedStatements(ALLOWED_STATEMENTS);
 
         CompilerConfiguration config = new CompilerConfiguration();
         ImportCustomizer importCustomizer = createImportCustomizer();

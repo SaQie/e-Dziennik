@@ -22,12 +22,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>3.0.15</version>
-            <type>pom</type>
-        </dependency>
-        <dependency>
             <groupId>pl.edziennik.domain</groupId>
             <artifactId>domain</artifactId>
             <version>${domain.version}</version>
@@ -76,6 +70,13 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>4.0.13</version>
+            <type>pom</type>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -87,6 +88,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 

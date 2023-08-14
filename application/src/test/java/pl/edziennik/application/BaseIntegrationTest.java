@@ -26,6 +26,7 @@ import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.admin.Admin;
 import pl.edziennik.domain.director.Director;
 import pl.edziennik.domain.grade.Grade;
+import pl.edziennik.domain.groovy.GroovyScriptStatus;
 import pl.edziennik.domain.role.Role;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.schoolclass.SchoolClass;
@@ -42,6 +43,11 @@ import pl.edziennik.infrastructure.repository.director.DirectorCommandRepository
 import pl.edziennik.infrastructure.repository.director.DirectorQueryRepository;
 import pl.edziennik.infrastructure.repository.grade.GradeCommandRepository;
 import pl.edziennik.infrastructure.repository.grade.GradeQueryRepository;
+import pl.edziennik.infrastructure.repository.groovy.GroovyScriptCommandRepository;
+import pl.edziennik.infrastructure.repository.groovy.GroovyScriptQueryRepository;
+import pl.edziennik.infrastructure.repository.groovy.result.GroovyScriptResultCommandRepository;
+import pl.edziennik.infrastructure.repository.groovy.result.GroovyScriptResultQueryRepository;
+import pl.edziennik.infrastructure.repository.groovy.status.GroovyScriptStatusQueryRepository;
 import pl.edziennik.infrastructure.repository.parent.ParentCommandRepository;
 import pl.edziennik.infrastructure.repository.parent.ParentQueryRepository;
 import pl.edziennik.infrastructure.repository.role.RoleCommandRepository;
@@ -158,6 +164,16 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     protected SchoolClassConfigurationProperties schoolClassConfigurationProperties;
     @Autowired
     protected SchoolConfigurationProperties schoolConfigurationProperties;
+    @Autowired
+    protected GroovyScriptCommandRepository groovyScriptCommandRepository;
+    @Autowired
+    protected GroovyScriptResultCommandRepository groovyScriptResultCommandRepository;
+    @Autowired
+    protected GroovyScriptStatusQueryRepository groovyScriptStatusQueryRepository;
+    @Autowired
+    protected GroovyScriptResultQueryRepository groovyScriptResultQueryRepository;
+    @Autowired
+    protected GroovyScriptQueryRepository groovyScriptQueryRepository;
 
     protected TransactionTemplate transactionTemplate;
 
@@ -166,6 +182,10 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     protected Role parentRole;
     protected Role adminRole;
     protected Role directorRole;
+
+    protected GroovyScriptStatus executingGroovyScriptStatus;
+    protected GroovyScriptStatus errorGroovyScriptStatus;
+    protected GroovyScriptStatus successGroovyScriptStatus;
 
 
     protected final Address address = Address.of(
@@ -181,6 +201,10 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         this.parentRole = roleCommandRepository.getByRoleId(RoleId.PredefinedRow.ROLE_PARENT);
         this.adminRole = roleCommandRepository.getByRoleId(RoleId.PredefinedRow.ROLE_ADMIN);
         this.directorRole = roleCommandRepository.getByRoleId(RoleId.PredefinedRow.ROLE_DIRECTOR);
+
+        this.executingGroovyScriptStatus = groovyScriptStatusQueryRepository.getByGroovyScriptStatusId(GroovyScriptStatusId.PredefinedRow.EXECUTING);
+        this.errorGroovyScriptStatus = groovyScriptStatusQueryRepository.getByGroovyScriptStatusId(GroovyScriptStatusId.PredefinedRow.ERROR);
+        this.successGroovyScriptStatus = groovyScriptStatusQueryRepository.getByGroovyScriptStatusId(GroovyScriptStatusId.PredefinedRow.SUCCESS);
 
 
         Mockito.when(resourceCreator.of(Mockito.anyString(), Mockito.any())).thenAnswer(invocation -> invocation.<String>getArgument(0));
@@ -371,7 +395,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     protected void assertOneRowExists(String tableName) {
         Integer integer = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM " + tableName, new MapSqlParameterSource(), Integer.class);
         assertNotNull(integer);
-        assertEquals(integer, 1);
+        assertEquals(1, integer);
     }
 
     protected void assertNoOneRowExists(String tableName) {
