@@ -26,6 +26,8 @@ import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.admin.Admin;
 import pl.edziennik.domain.director.Director;
 import pl.edziennik.domain.grade.Grade;
+import pl.edziennik.domain.groovy.GroovyScript;
+import pl.edziennik.domain.groovy.GroovyScriptResult;
 import pl.edziennik.domain.groovy.GroovyScriptStatus;
 import pl.edziennik.domain.role.Role;
 import pl.edziennik.domain.school.School;
@@ -402,6 +404,25 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         Integer integer = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM " + tableName, new MapSqlParameterSource(), Integer.class);
         assertNotNull(integer);
         assertEquals(integer, 0);
+    }
+
+    protected GroovyScriptId execSimpleGroovyScript(User user) {
+
+        GroovyScript groovyScript = GroovyScript.builder()
+                .scriptContent(ScriptContent.of("return new ScriptResult(\"Test\")"))
+                .scriptStatus(successGroovyScriptStatus)
+                .user(user)
+                .build();
+
+        GroovyScriptResult scriptResult = GroovyScriptResult.builder()
+                .groovyScript(groovyScript)
+                .scriptResult(ScriptResult.of("Test"))
+                .execTime(10L)
+                .build();
+
+        groovyScriptResultCommandRepository.save(scriptResult);
+
+        return groovyScript.groovyScriptId();
     }
 
     private Address createAddress() {

@@ -1,6 +1,7 @@
 package pl.edziennik.common.valueobject;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -29,7 +30,7 @@ public class ScriptContent implements ValueObject, Serializable {
     }
 
     @JsonCreator
-    public static ScriptContent of(@NotEmpty String value) {
+    public static ScriptContent of(@NotEmpty @JsonProperty String value) {
         return new ScriptContent(value);
     }
 

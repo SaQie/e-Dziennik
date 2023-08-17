@@ -26,7 +26,7 @@ _____________
 _____________
 
 <div>
-    This project is a backend server for <a href="https://github.com/SaQie/e-Dziennik-desktop"><b>client(D)</b></a> <a href="https://github.com/SaQie/"><b>client(W)</b></a> that consume REST API for receiving a data. That is a full school managment application that allows you to do this kind of operations at the moment (02.05.2023)
+    This project is a backend server for <a href="https://github.com/SaQie/e-Dziennik-desktop"><b>client(D)</b></a> <a href="https://github.com/SaQie/"><b>client(W)</b></a> that consume REST API for receiving a data. That is a full school managment application that allows you to do this kind of operations at the moment
 
 </div>
 
@@ -54,7 +54,7 @@ Actually project is just a base project for future develop
 
 _________
 
-List of task's I will implement in future in this project:
+List of tasks I will implement in future in this project:
 
 * *Add email confirmation* ✅
 * *Add redis cache for configuration* ✅
@@ -106,6 +106,7 @@ _____
 * TestContainers
 * Redis
 * WebSockets
+* Groovy
 
 # 🗾 Architecture look
 

@@ -8,6 +8,8 @@ import pl.edziennik.common.valueobject.id.GroovyScriptId;
 import pl.edziennik.common.valueobject.id.GroovyScriptStatusId;
 import pl.edziennik.domain.user.User;
 
+import java.time.LocalDateTime;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -31,6 +33,8 @@ public class GroovyScript {
     })
     private ScriptContent scriptContent;
 
+    private LocalDateTime startTime;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "groovy_script_status_id", referencedColumnName = "id", nullable = false)
     private GroovyScriptStatus groovyScriptStatus;
@@ -45,6 +49,7 @@ public class GroovyScript {
         groovyScript.groovyScriptStatus = scriptStatus;
         groovyScript.user = user;
         groovyScript.scriptContent = scriptContent;
+        groovyScript.startTime = LocalDateTime.now();
 
         return groovyScript;
     }

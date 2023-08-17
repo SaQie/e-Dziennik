@@ -1,4 +1,4 @@
-package pl.edziennik.web.script;
+package pl.edziennik.web.command.groovy;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,18 +16,19 @@ import java.net.URI;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/scripts")
-public class GroovyScriptExecutorController {
+public class GroovyScriptExecutorCommandController {
 
     private final Dispatcher dispatcher;
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
+    @ResponseBody()
     public ResponseEntity<Void> executeGroovyScript(@RequestBody ExecuteGroovyScriptCommand command) {
         OperationResult operationResult = dispatcher.dispatch(command);
 
         URI location = ServletUriComponentsBuilder
-                .fromCurrentRequestUri()
-                .path("/{id}")
+                .fromCurrentContextPath()
+                .path("/api/v1/scripts/results/{groovyScriptId}")
                 .buildAndExpand(operationResult.identifier().id())
                 .toUri();
 
@@ -41,8 +42,8 @@ public class GroovyScriptExecutorController {
         OperationResult operationResult = dispatcher.dispatch(command);
 
         URI location = ServletUriComponentsBuilder
-                .fromCurrentRequestUri()
-                .path("/{id}")
+                .fromCurrentContextPath()
+                .path("/api/v1/scripts/results/{groovyScriptId}")
                 .buildAndExpand(operationResult.identifier().id())
                 .toUri();
 

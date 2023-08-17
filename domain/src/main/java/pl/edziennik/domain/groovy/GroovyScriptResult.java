@@ -32,15 +32,18 @@ public class GroovyScriptResult {
     @JoinColumn(name = "groovy_script_id", referencedColumnName = "id", nullable = false)
     private GroovyScript groovyScript;
 
+    private Long execTime;
+
     @Version
     private Long version;
 
     @Builder
-    public static GroovyScriptResult of(ScriptResult scriptResult, GroovyScript groovyScript) {
+    public static GroovyScriptResult of(ScriptResult scriptResult, GroovyScript groovyScript, Long execTime) {
         GroovyScriptResult groovyScriptResult = new GroovyScriptResult();
 
         groovyScriptResult.groovyScript = groovyScript;
         groovyScriptResult.scriptResult = scriptResult;
+        groovyScriptResult.execTime = execTime;
 
         return groovyScriptResult;
     }

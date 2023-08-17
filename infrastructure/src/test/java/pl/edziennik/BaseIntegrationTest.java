@@ -22,6 +22,9 @@ import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.admin.Admin;
 import pl.edziennik.domain.director.Director;
 import pl.edziennik.domain.grade.Grade;
+import pl.edziennik.domain.groovy.GroovyScript;
+import pl.edziennik.domain.groovy.GroovyScriptResult;
+import pl.edziennik.domain.groovy.GroovyScriptStatus;
 import pl.edziennik.domain.role.Role;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.schoolclass.SchoolClass;
@@ -38,6 +41,11 @@ import pl.edziennik.infrastructure.repository.director.DirectorCommandRepository
 import pl.edziennik.infrastructure.repository.director.DirectorQueryRepository;
 import pl.edziennik.infrastructure.repository.grade.GradeCommandRepository;
 import pl.edziennik.infrastructure.repository.grade.GradeQueryRepository;
+import pl.edziennik.infrastructure.repository.groovy.GroovyScriptCommandRepository;
+import pl.edziennik.infrastructure.repository.groovy.GroovyScriptQueryRepository;
+import pl.edziennik.infrastructure.repository.groovy.result.GroovyScriptResultCommandRepository;
+import pl.edziennik.infrastructure.repository.groovy.result.GroovyScriptResultQueryRepository;
+import pl.edziennik.infrastructure.repository.groovy.status.GroovyScriptStatusQueryRepository;
 import pl.edziennik.infrastructure.repository.parent.ParentCommandRepository;
 import pl.edziennik.infrastructure.repository.parent.ParentQueryRepository;
 import pl.edziennik.infrastructure.repository.role.RoleCommandRepository;
@@ -146,6 +154,16 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     protected SchoolClassConfigurationProperties schoolClassConfigurationProperties;
     @Autowired
     protected SchoolConfigurationProperties schoolConfigurationProperties;
+    @Autowired
+    protected GroovyScriptCommandRepository groovyScriptCommandRepository;
+    @Autowired
+    protected GroovyScriptResultCommandRepository groovyScriptResultCommandRepository;
+    @Autowired
+    protected GroovyScriptStatusQueryRepository groovyScriptStatusQueryRepository;
+    @Autowired
+    protected GroovyScriptResultQueryRepository groovyScriptResultQueryRepository;
+    @Autowired
+    protected GroovyScriptQueryRepository groovyScriptQueryRepository;
 
     @Autowired
     protected EntityManager entityManager;
@@ -157,6 +175,10 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     protected Role parentRole;
     protected Role adminRole;
     protected Role directorRole;
+
+    protected GroovyScriptStatus executingGroovyScriptStatus;
+    protected GroovyScriptStatus errorGroovyScriptStatus;
+    protected GroovyScriptStatus successGroovyScriptStatus;
 
     protected final Address address = Address.of(
             pl.edziennik.common.valueobject.Address.of("Test"),
@@ -171,6 +193,10 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         this.parentRole = roleCommandRepository.getByRoleId(RoleId.PredefinedRow.ROLE_PARENT);
         this.adminRole = roleCommandRepository.getByRoleId(RoleId.PredefinedRow.ROLE_ADMIN);
         this.directorRole = roleCommandRepository.getByRoleId(RoleId.PredefinedRow.ROLE_DIRECTOR);
+
+        this.executingGroovyScriptStatus = groovyScriptStatusQueryRepository.getByGroovyScriptStatusId(GroovyScriptStatusId.PredefinedRow.EXECUTING);
+        this.errorGroovyScriptStatus = groovyScriptStatusQueryRepository.getByGroovyScriptStatusId(GroovyScriptStatusId.PredefinedRow.ERROR);
+        this.successGroovyScriptStatus = groovyScriptStatusQueryRepository.getByGroovyScriptStatusId(GroovyScriptStatusId.PredefinedRow.SUCCESS);
 
         this.transactionTemplate = new TransactionTemplate(transactionManager);
 
@@ -350,6 +376,25 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         );
 
         return studentSubjectCommandRepository.save(studentSubject).studentSubjectId();
+    }
+
+    protected GroovyScriptId execSimpleGroovyScript(User user) {
+
+        GroovyScript groovyScript = GroovyScript.builder()
+                .scriptContent(ScriptContent.of("return new ScriptResult(\"Test\")"))
+                .scriptStatus(successGroovyScriptStatus)
+                .user(user)
+                .build();
+
+        GroovyScriptResult scriptResult = GroovyScriptResult.builder()
+                .groovyScript(groovyScript)
+                .scriptResult(ScriptResult.of("Test"))
+                .execTime(10L)
+                .build();
+
+        groovyScriptResultCommandRepository.save(scriptResult);
+
+        return groovyScript.groovyScriptId();
     }
 
     private Address createAddress() {

@@ -1,6 +1,5 @@
 package pl.edziennik.infrastructure.spring.script;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import groovy.lang.GroovyShell;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +11,7 @@ import org.codehaus.groovy.control.messages.SyntaxErrorMessage;
 import org.codehaus.groovy.syntax.SyntaxException;
 import pl.edziennik.common.valueobject.ScriptContent;
 import pl.edziennik.common.valueobject.ScriptResult;
+import pl.edziennik.common.valueobject.id.GroovyScriptId;
 import pl.edziennik.common.valueobject.id.GroovyScriptStatusId;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
 import pl.edziennik.infrastructure.spring.exception.BusinessException;
@@ -41,28 +41,27 @@ public class GroovyShellExecutor {
     /**
      * Executes groovy script
      */
-    public GroovyScriptExecResult execute(ScriptContent scriptContent) {
-        return getScriptResult(scriptContent);
+    public GroovyScriptExecResult execute(GroovyScriptId groovyScriptId, ScriptContent scriptContent) {
+        return getScriptResult(groovyScriptId, scriptContent);
     }
 
-    private GroovyScriptExecResult getScriptResult(ScriptContent scriptContent) {
+    private GroovyScriptExecResult getScriptResult(GroovyScriptId groovyScriptId, ScriptContent scriptContent) {
         try {
-            // Run script and save result as JSON
+            // Run script and save result
             Object result = runScript(scriptContent);
-            String jsonValue = objectMapper.writeValueAsString(result);
-            ScriptResult scriptResult = ScriptResult.of(jsonValue);
+            ScriptResult scriptResult = ScriptResult.of(result.toString());
 
             return new GroovyScriptExecResult(true, GroovyScriptStatusId.PredefinedRow.SUCCESS, scriptResult, null);
 
-        } catch (TimeoutException | JsonProcessingException e) {
-            // If there were a timeout or json parse error
+        } catch (TimeoutException e) {
+            // If there were a timeout
             log.error("Failed during executing groovy script: {}", e.getMessage());
 
-            return mapResultUsingBusinessException(e, e.getMessage());
+            return mapResultUsingBusinessException(groovyScriptId, e, e.getMessage());
 
         } catch (SyntaxException e) {
             // If there were syntax error
-            return mapResultUsingBusinessException(e, e.getCause() == null ? e.getMessage() : e.getCause().getMessage());
+            return mapResultUsingBusinessException(groovyScriptId, e, e.getCause() == null ? e.getMessage() : e.getCause().getMessage());
 
         } catch (MultipleCompilationErrorsException e) {
             // If there were multiple compilation errors
@@ -88,7 +87,7 @@ public class GroovyShellExecutor {
             String parsedError = String.join(", ", combinedErrorList);
 
 
-            return mapResultUsingBusinessException(e, parsedError);
+            return mapResultUsingBusinessException(groovyScriptId, e, parsedError);
 
         }
     }
@@ -96,9 +95,9 @@ public class GroovyShellExecutor {
     /**
      * Method to wrap exception into BusinessException
      */
-    private GroovyScriptExecResult mapResultUsingBusinessException(Exception e, String message) {
+    private GroovyScriptExecResult mapResultUsingBusinessException(GroovyScriptId groovyScriptId, Exception e, String message) {
         ValidationError validationError = new ValidationError("scriptContent",
-                res.of("groovy.script.executing.error", message),
+                res.of("groovy.script.executing.error", groovyScriptId.id(),message),
                 ErrorCode.GROOVY_SCRIPT_ERROR);
         BusinessException exception = new BusinessException(validationError, e);
 
