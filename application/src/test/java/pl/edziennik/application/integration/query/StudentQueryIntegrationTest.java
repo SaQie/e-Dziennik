@@ -8,13 +8,13 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.query.student.detailed.GetDetailedStudentQuery;
 import pl.edziennik.application.query.student.summary.GetStudentSummaryQuery;
-import pl.edziennik.common.dto.PageDto;
-import pl.edziennik.common.dto.student.DetailedStudentDto;
-import pl.edziennik.common.dto.student.StudentSummaryDto;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.id.TeacherId;
+import pl.edziennik.common.view.PageView;
+import pl.edziennik.common.view.student.DetailedStudentView;
+import pl.edziennik.common.view.student.StudentSummaryView;
 import pl.edziennik.infrastructure.spring.exception.BusinessException;
 import pl.edziennik.infrastructure.validator.ValidationError;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
@@ -39,11 +39,11 @@ public class StudentQueryIntegrationTest extends BaseIntegrationTest {
         GetDetailedStudentQuery query = new GetDetailedStudentQuery(studentId);
 
         // when
-        DetailedStudentDto dto = dispatcher.dispatch(query);
+        DetailedStudentView view = dispatcher.dispatch(query);
 
         // then
-        assertNotNull(dto);
-        assertEquals(dto.studentId(), studentId);
+        assertNotNull(view);
+        assertEquals(view.studentId(), studentId);
     }
 
     @Test
@@ -76,11 +76,11 @@ public class StudentQueryIntegrationTest extends BaseIntegrationTest {
         GetStudentSummaryQuery query = new GetStudentSummaryQuery(Pageable.unpaged());
 
         // when
-        PageDto<StudentSummaryDto> pageDto = dispatcher.dispatch(query);
+        PageView<StudentSummaryView> pageView = dispatcher.dispatch(query);
 
         // then
-        assertNotNull(pageDto);
-        assertEquals(pageDto.getContent().size(), 1);
+        assertNotNull(pageView);
+        assertEquals(pageView.getContent().size(), 1);
     }
 
 }

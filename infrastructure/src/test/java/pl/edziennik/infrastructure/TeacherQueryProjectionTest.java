@@ -5,14 +5,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.edziennik.BaseIntegrationTest;
-import pl.edziennik.common.dto.teacher.DetailedTeacherDto;
-import pl.edziennik.common.dto.teacher.TeacherSubjectsSummaryDto;
-import pl.edziennik.common.dto.teacher.TeacherSummaryDto;
 import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.SubjectId;
 import pl.edziennik.common.valueobject.id.TeacherId;
+import pl.edziennik.common.view.teacher.DetailedTeacherView;
+import pl.edziennik.common.view.teacher.TeacherSubjectsSummaryView;
+import pl.edziennik.common.view.teacher.TeacherSummaryView;
 
 import java.util.List;
 
@@ -44,42 +44,42 @@ public class TeacherQueryProjectionTest extends BaseIntegrationTest {
     final String expectedSubjectNameSecond = "Chemia";
 
     @Test
-    public void shouldReturnDetailedTeacherDto() {
+    public void shouldReturnDetailedTeacherView() {
         // given
         SchoolId schoolId = createSchool(expectedSchoolName, "123123", "123123");
         TeacherId teacherId = createTeacher(expectedUsername, expectedEmail, expectedPesel, schoolId);
 
         // when
-        DetailedTeacherDto dto = teacherQueryRepository.getTeacher(teacherId);
+        DetailedTeacherView view = teacherQueryRepository.getTeacherView(teacherId);
 
         // then
-        assertNotNull(dto);
-        assertEquals(dto.teacherId(), teacherId);
-        assertEquals(dto.email(), Email.of(expectedEmail));
-        assertEquals(dto.address(), Address.of(expectedAddress));
-        assertEquals(dto.username(), Username.of(expectedUsername));
-        assertEquals(dto.pesel(), Pesel.of(expectedPesel));
-        assertEquals(dto.city(), City.of(expectedCity));
-        assertEquals(dto.fullName(), FullName.of(expectedFirstName + " " + expectedLastName));
-        assertEquals(dto.postalCode(), PostalCode.of(expectedPostalCode));
-        assertEquals(dto.schoolName(), Name.of(expectedSchoolName));
-        assertEquals(dto.schoolId(), schoolId);
+        assertNotNull(view);
+        assertEquals(view.teacherId(), teacherId);
+        assertEquals(view.email(), Email.of(expectedEmail));
+        assertEquals(view.address(), Address.of(expectedAddress));
+        assertEquals(view.username(), Username.of(expectedUsername));
+        assertEquals(view.pesel(), Pesel.of(expectedPesel));
+        assertEquals(view.city(), City.of(expectedCity));
+        assertEquals(view.fullName(), FullName.of(expectedFirstName + " " + expectedLastName));
+        assertEquals(view.postalCode(), PostalCode.of(expectedPostalCode));
+        assertEquals(view.schoolName(), Name.of(expectedSchoolName));
+        assertEquals(view.schoolId(), schoolId);
 
     }
 
     @Test
-    public void shouldReturnTeacherSummaryDto() {
+    public void shouldReturnTeacherSummaryView() {
         // given
         SchoolId schoolId = createSchool(expectedSchoolName, "123123", "123123");
         TeacherId teacherId = createTeacher(expectedUsername, expectedEmail, expectedPesel, schoolId);
         TeacherId secondTeacherId = createTeacher(expectedUsernameSecond, expectedEmailSecond, expectedPeselSecond, schoolId);
 
         // when
-        Page<TeacherSummaryDto> dtos = teacherQueryRepository.findAllWithPagination(Pageable.unpaged());
+        Page<TeacherSummaryView> dtos = teacherQueryRepository.findAllWithPagination(Pageable.unpaged());
 
         // then
         assertNotNull(dtos);
-        List<TeacherSummaryDto> dtoList = dtos.get().toList();
+        List<TeacherSummaryView> dtoList = dtos.get().toList();
         assertEquals(2, dtoList.size());
 
         assertEquals(dtoList.get(0).teacherId(), teacherId);
@@ -95,7 +95,7 @@ public class TeacherQueryProjectionTest extends BaseIntegrationTest {
 
 
     @Test
-    public void shouldReturnTeacherSubjectsSummaryDto() {
+    public void shouldReturnTeacherSubjectsSummaryView() {
         // given
         SchoolId schoolId = createSchool(expectedSchoolName, "123123", "123123");
         TeacherId teacherId = createTeacher(expectedUsername, expectedEmail, expectedPesel, schoolId);
@@ -106,12 +106,12 @@ public class TeacherQueryProjectionTest extends BaseIntegrationTest {
         SubjectId subjectIdSecond = transactionTemplate.execute((x) -> createSubject(expectedSubjectNameSecond, schoolClassIdSecond, teacherId));
 
         // when
-        Page<TeacherSubjectsSummaryDto> dtos = teacherQueryRepository.getTeacherSubjectsSummaryWithPagination(
+        Page<TeacherSubjectsSummaryView> dtos = teacherQueryRepository.getTeacherSubjectsSummaryWithPagination(
                 Pageable.unpaged(), teacherId);
 
         // then
         assertNotNull(dtos);
-        List<TeacherSubjectsSummaryDto> dtoList = dtos.get().toList();
+        List<TeacherSubjectsSummaryView> dtoList = dtos.get().toList();
         assertEquals(2, dtoList.size());
 
         assertEquals(dtoList.get(0).subjectId(), subjectId);

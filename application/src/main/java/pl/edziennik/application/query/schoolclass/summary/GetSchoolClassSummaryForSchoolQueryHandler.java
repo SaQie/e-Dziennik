@@ -5,21 +5,21 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.query.IQueryHandler;
-import pl.edziennik.common.dto.PageDto;
-import pl.edziennik.common.dto.schoolclass.SchoolClassSummaryForSchoolDto;
+import pl.edziennik.common.view.PageView;
+import pl.edziennik.common.view.schoolclass.SchoolClassSummaryForSchoolView;
 import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassQueryRepository;
 
 @Component
 @AllArgsConstructor
-class GetSchoolClassSummaryForSchoolQueryHandler implements IQueryHandler<GetSchoolClassSummaryForSchoolQuery, PageDto<SchoolClassSummaryForSchoolDto>> {
+class GetSchoolClassSummaryForSchoolQueryHandler implements IQueryHandler<GetSchoolClassSummaryForSchoolQuery, PageView<SchoolClassSummaryForSchoolView>> {
 
     private final SchoolClassQueryRepository schoolClassQueryRepository;
 
     @Override
     @Cacheable(value = "schoolClasses", key = "#root.method.name")
-    public PageDto<SchoolClassSummaryForSchoolDto> handle(GetSchoolClassSummaryForSchoolQuery command) {
-        Page<SchoolClassSummaryForSchoolDto> dto = schoolClassQueryRepository.findAllWithPaginationForSchool(command.pageable(), command.schoolId());
+    public PageView<SchoolClassSummaryForSchoolView> handle(GetSchoolClassSummaryForSchoolQuery command) {
+        Page<SchoolClassSummaryForSchoolView> dto = schoolClassQueryRepository.findAllWithPaginationForSchool(command.pageable(), command.schoolId());
 
-        return PageDto.fromPage(dto);
+        return PageView.fromPage(dto);
     }
 }

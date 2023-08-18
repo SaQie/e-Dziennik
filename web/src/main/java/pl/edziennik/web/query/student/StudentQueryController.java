@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.application.query.student.detailed.GetDetailedStudentQuery;
 import pl.edziennik.application.query.student.summary.GetStudentSummaryQuery;
-import pl.edziennik.common.dto.PageDto;
-import pl.edziennik.common.dto.student.DetailedStudentDto;
-import pl.edziennik.common.dto.student.StudentSummaryDto;
+import pl.edziennik.common.view.PageView;
+import pl.edziennik.common.view.student.DetailedStudentView;
+import pl.edziennik.common.view.student.StudentSummaryView;
 import pl.edziennik.common.valueobject.id.StudentId;
 
 @RestController
@@ -21,7 +21,7 @@ public class StudentQueryController {
 
     @GetMapping("/{studentId}")
     @ResponseStatus(HttpStatus.OK)
-    public DetailedStudentDto getStudentById(@PathVariable StudentId studentId) {
+    public DetailedStudentView getStudentById(@PathVariable StudentId studentId) {
         GetDetailedStudentQuery getDetailedStudentQuery = new GetDetailedStudentQuery(studentId);
 
         return dispatcher.dispatch(getDetailedStudentQuery);
@@ -29,7 +29,7 @@ public class StudentQueryController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public PageDto<StudentSummaryDto> getAllStudents(Pageable pageable) {
+    public PageView<StudentSummaryView> getAllStudents(Pageable pageable) {
         GetStudentSummaryQuery getStudentSummaryQuery = new GetStudentSummaryQuery(pageable);
 
         return dispatcher.dispatch(getStudentSummaryQuery);

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.application.query.schoollevel.GetSchoolLevelSummaryQuery;
-import pl.edziennik.common.dto.schoollevel.SchoolLevelDto;
+import pl.edziennik.common.view.schoollevel.SchoolLevelView;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class SchoolLevelQueryController {
     private Dispatcher dispatcher;
 
     @GetMapping()
-    public List<SchoolLevelDto> getSchoolLevels() {
+    public List<SchoolLevelView> getSchoolLevels() {
         GetSchoolLevelSummaryQuery query = new GetSchoolLevelSummaryQuery();
 
         return dispatcher.dispatch(query);

@@ -2,7 +2,7 @@ package pl.edziennik.infrastructure.repository.schoollevel;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.RepositoryDefinition;
-import pl.edziennik.common.dto.schoollevel.SchoolLevelDto;
+import pl.edziennik.common.view.schoollevel.SchoolLevelView;
 import pl.edziennik.common.valueobject.Name;
 import pl.edziennik.common.valueobject.id.SchoolLevelId;
 import pl.edziennik.domain.schoollevel.SchoolLevel;
@@ -15,8 +15,8 @@ public interface SchoolLevelQueryRepository {
     @Query("SELECT sl.schoolLevelId FROM SchoolLevel sl where sl.name = :name")
     SchoolLevelId getByName(Name name);
 
-    @Query("SELECT NEW pl.edziennik.common.dto.schoollevel.SchoolLevelDto(sl.schoolLevelId, sl.name) " +
+    @Query("SELECT NEW pl.edziennik.common.view.schoollevel.SchoolLevelView(sl.schoolLevelId, sl.name) " +
             "FROM SchoolLevel sl ")
-    List<SchoolLevelDto> findAll();
+    List<SchoolLevelView> findAll();
 
 }

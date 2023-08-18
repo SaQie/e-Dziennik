@@ -3,12 +3,12 @@ package pl.edziennik.infrastructure.repository.user;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.RepositoryDefinition;
 import org.springframework.data.repository.query.Param;
-import pl.edziennik.common.dto.user.LoggedUserDto;
 import pl.edziennik.common.valueobject.FullName;
 import pl.edziennik.common.valueobject.Name;
 import pl.edziennik.common.valueobject.Pesel;
 import pl.edziennik.common.valueobject.Username;
 import pl.edziennik.common.valueobject.id.UserId;
+import pl.edziennik.common.view.user.LoggedUserView;
 import pl.edziennik.domain.user.User;
 
 import java.util.ArrayList;
@@ -66,13 +66,13 @@ public interface UserQueryRepository {
     List<Object[]> getLoggedUsersData(@Param(value = "userIds") List<UUID> userIds, @Param("username") String usernameToExclude);
 
 
-    default List<LoggedUserDto> getLoggedUsersDto(List<UserId> userIds, String usernameToExclude) {
+    default List<LoggedUserView> getLoggedUsersView(List<UserId> userIds, String usernameToExclude) {
         List<UUID> rawUserIds = userIds.stream()
                 .map(UserId::id)
                 .toList();
 
         List<Object[]> loggedUsersData = this.getLoggedUsersData(rawUserIds, usernameToExclude);
-        List<LoggedUserDto> userDtos = new ArrayList<>();
+        List<LoggedUserView> userDtos = new ArrayList<>();
 
 
         for (Object[] row : loggedUsersData) {
@@ -82,7 +82,7 @@ public interface UserQueryRepository {
             String roleName = (String) row[2];
             String username = (String) row[3];
 
-            LoggedUserDto dto = new LoggedUserDto(UserId.of(userId), Name.of(username),FullName.of(fullname), Name.of(roleName));
+            LoggedUserView dto = new LoggedUserView(UserId.of(userId), Name.of(username),FullName.of(fullname), Name.of(roleName));
             userDtos.add(dto);
         }
 

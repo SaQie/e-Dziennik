@@ -6,13 +6,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.BaseIntegrationTest;
-import pl.edziennik.common.dto.student.DetailedStudentDto;
-import pl.edziennik.common.dto.student.StudentSummaryDto;
 import pl.edziennik.common.valueobject.FullName;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.id.TeacherId;
+import pl.edziennik.common.view.student.DetailedStudentView;
+import pl.edziennik.common.view.student.StudentSummaryView;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class StudentQueryProjectionTest extends BaseIntegrationTest {
 
     @Test
     @Transactional
-    public void shouldReturnDetailedStudentDto() {
+    public void shouldReturnDetailedStudentView() {
         // given
         SchoolId schoolId = createSchool(expectedSchoolName, "12312313", "123123123");
         TeacherId teacherId = createTeacher("Test", "test@example.com", "123123123", schoolId);
@@ -42,22 +42,22 @@ public class StudentQueryProjectionTest extends BaseIntegrationTest {
         StudentId studentId = createStudent(expectedStudentName, expectedStudentEmail, expectedStudentPesel, schoolId, schoolClassId);
 
         // when
-        DetailedStudentDto dto = studentQueryRepository.getStudent(studentId);
+        DetailedStudentView view = studentQueryRepository.getStudentView(studentId);
 
         // then
-        assertNotNull(dto);
-        assertEquals(dto.username().value(), expectedStudentName);
-        assertEquals(dto.email().value(), expectedStudentEmail);
-        assertEquals(dto.schoolClassId(), schoolClassId);
-        assertEquals(dto.schoolId(), schoolId);
-        assertEquals(dto.fullName(), FullName.of(expectedStudentName + " " + expectedStudentName));
-        assertEquals(dto.schoolName().value(), expectedSchoolName);
-        assertEquals(dto.journalNumber().value(), 1);
+        assertNotNull(view);
+        assertEquals(view.username().value(), expectedStudentName);
+        assertEquals(view.email().value(), expectedStudentEmail);
+        assertEquals(view.schoolClassId(), schoolClassId);
+        assertEquals(view.schoolId(), schoolId);
+        assertEquals(view.fullName(), FullName.of(expectedStudentName + " " + expectedStudentName));
+        assertEquals(view.schoolName().value(), expectedSchoolName);
+        assertEquals(view.journalNumber().value(), 1);
     }
 
     @Test
     @Transactional
-    public void shouldReturnStudentSummaryDto() {
+    public void shouldReturnStudentSummaryView() {
         // given
         SchoolId schoolId = createSchool(expectedSchoolName, "12312313", "123123123");
         TeacherId teacherId = createTeacher("Test", "test@example.com", "123123123", schoolId);
@@ -67,11 +67,11 @@ public class StudentQueryProjectionTest extends BaseIntegrationTest {
         StudentId studentIdSecond = createStudent(expectedSecondStudentName, expectedSecondStudentEmail, expectedSecondStudentPesel, schoolId, schoolClassId);
 
         // when
-        Page<StudentSummaryDto> dtos = studentQueryRepository.findAllWithPagination(Pageable.unpaged());
+        Page<StudentSummaryView> dtos = studentQueryRepository.findAllWithPagination(Pageable.unpaged());
 
         // then
         assertNotNull(dtos);
-        List<StudentSummaryDto> list = dtos.get().toList();
+        List<StudentSummaryView> list = dtos.get().toList();
         assertEquals(2, list.size());
 
         assertEquals(list.get(0).studentId(), studentId);

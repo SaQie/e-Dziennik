@@ -6,13 +6,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.BaseIntegrationTest;
-import pl.edziennik.common.dto.schoolclass.DetailedSchoolClassDto;
-import pl.edziennik.common.dto.schoolclass.SchoolClassSummaryForSchoolDto;
-import pl.edziennik.common.dto.schoolclass.StudentSummaryForSchoolClassDto;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.id.TeacherId;
+import pl.edziennik.common.view.schoolclass.DetailedSchoolClassView;
+import pl.edziennik.common.view.schoolclass.SchoolClassSummaryForSchoolView;
+import pl.edziennik.common.view.schoolclass.StudentSummaryForSchoolClassView;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class SchoolClassQueryProjectionTest extends BaseIntegrationTest {
 
     @Test
     @Transactional
-    public void shouldReturnDetailedSchoolClassDto() {
+    public void shouldReturnDetailedSchoolClassView() {
         // given
         SchoolId schoolId = createSchool(expectedSchoolName, "123123123123", "123123123");
         TeacherId teacherId = createTeacher("Test", "test@example.com", "12312312312", schoolId);
@@ -38,15 +38,15 @@ public class SchoolClassQueryProjectionTest extends BaseIntegrationTest {
         StudentId studentId = createStudent("Test", "Test@Example.com", "123123123", schoolId, schoolClassId);
 
         // when
-        DetailedSchoolClassDto dto = schoolClassQueryRepository.getSchoolClass(schoolClassId);
-        List<StudentSummaryForSchoolClassDto> studentsSummary = schoolClassQueryRepository.getSchoolClassStudentsSummary(schoolClassId);
+        DetailedSchoolClassView view = schoolClassQueryRepository.getSchoolClassView(schoolClassId);
+        List<StudentSummaryForSchoolClassView> studentsSummary = schoolClassQueryRepository.getSchoolClassStudentsSummaryView(schoolClassId);
 
         // then
-        assertNotNull(dto);
-        assertEquals(dto.className().value(), expectedSchoolClassName);
-        assertEquals(dto.schoolClassId(), schoolClassId);
-        assertEquals(dto.supervisingTeacherId(), teacherId);
-        assertEquals(dto.supervisingTeacherName().value(), "Test Test");
+        assertNotNull(view);
+        assertEquals(view.className().value(), expectedSchoolClassName);
+        assertEquals(view.schoolClassId(), schoolClassId);
+        assertEquals(view.supervisingTeacherId(), teacherId);
+        assertEquals(view.supervisingTeacherName().value(), "Test Test");
 
         assertEquals(1,studentsSummary.size());
         assertEquals(studentsSummary.get(0).studentId(), studentId);
@@ -55,7 +55,7 @@ public class SchoolClassQueryProjectionTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void shouldReturnSchoolClassSummaryForSchoolDto(){
+    public void shouldReturnSchoolClassSummaryForSchoolView(){
         // given
         SchoolId schoolId = createSchool(expectedSchoolName, "123123123123", "123123123");
         TeacherId teacherId = createTeacher("Test", "test@example.com", "12312312312", schoolId);
@@ -65,11 +65,11 @@ public class SchoolClassQueryProjectionTest extends BaseIntegrationTest {
         SchoolClassId schoolClassIdSecond = createSchoolClass(schoolId, teacherIdSecond, expectedSchoolClassNameSecond);
 
         // when
-        Page<SchoolClassSummaryForSchoolDto> dto = schoolClassQueryRepository.findAllWithPaginationForSchool(Pageable.unpaged(), schoolId);
+        Page<SchoolClassSummaryForSchoolView> dto = schoolClassQueryRepository.findAllWithPaginationForSchool(Pageable.unpaged(), schoolId);
 
         // then
         assertNotNull(dto);
-        List<SchoolClassSummaryForSchoolDto> list = dto.get().toList();
+        List<SchoolClassSummaryForSchoolView> list = dto.get().toList();
 
         assertEquals(list.get(0).schoolClassId(), schoolClassId);
         assertEquals(list.get(0).schoolClassName().value(), expectedSchoolClassName);

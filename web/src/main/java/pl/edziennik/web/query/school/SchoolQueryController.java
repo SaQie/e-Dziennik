@@ -8,10 +8,10 @@ import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.application.query.school.config.GetSchoolConfigSummaryQuery;
 import pl.edziennik.application.query.school.detailed.GetDetailedSchoolQuery;
 import pl.edziennik.application.query.school.summary.GetSchoolSummaryQuery;
-import pl.edziennik.common.dto.PageDto;
-import pl.edziennik.common.dto.school.DetailedSchoolDto;
-import pl.edziennik.common.dto.school.SchoolSummaryDto;
-import pl.edziennik.common.dto.school.config.SchoolConfigSummaryDto;
+import pl.edziennik.common.view.PageView;
+import pl.edziennik.common.view.school.DetailedSchoolView;
+import pl.edziennik.common.view.school.SchoolSummaryView;
+import pl.edziennik.common.view.school.config.SchoolConfigSummaryView;
 import pl.edziennik.common.valueobject.id.SchoolId;
 
 @RestController
@@ -23,7 +23,7 @@ public class SchoolQueryController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public PageDto<SchoolSummaryDto> getSchoolList(Pageable pageable) {
+    public PageView<SchoolSummaryView> getSchoolList(Pageable pageable) {
         GetSchoolSummaryQuery getSchoolSummaryQuery = new GetSchoolSummaryQuery(pageable);
 
         return dispatcher.dispatch(getSchoolSummaryQuery);
@@ -31,7 +31,7 @@ public class SchoolQueryController {
 
     @GetMapping("/{schoolId}")
     @ResponseStatus(HttpStatus.OK)
-    public DetailedSchoolDto getSchool(@PathVariable SchoolId schoolId) {
+    public DetailedSchoolView getSchool(@PathVariable SchoolId schoolId) {
         GetDetailedSchoolQuery getDetailedSchoolQuery = new GetDetailedSchoolQuery(schoolId);
 
         return dispatcher.dispatch(getDetailedSchoolQuery);
@@ -39,7 +39,7 @@ public class SchoolQueryController {
 
     @GetMapping("/{schoolId}/configurations")
     @ResponseStatus(HttpStatus.OK)
-    public SchoolConfigSummaryDto getSchoolConfigurationValues(@PathVariable SchoolId schoolId) {
+    public SchoolConfigSummaryView getSchoolConfigurationValues(@PathVariable SchoolId schoolId) {
         GetSchoolConfigSummaryQuery query = new GetSchoolConfigSummaryQuery(schoolId);
 
         return dispatcher.dispatch(query);

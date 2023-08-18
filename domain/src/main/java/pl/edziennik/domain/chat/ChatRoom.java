@@ -38,6 +38,8 @@ public class ChatRoom {
     })
     private RecipientId recipientId;
 
+    @Version
+    private Long version;
 
     @Builder
     public static ChatRoom of(SenderId senderId, RecipientId recipientId, ChatId chatId) {

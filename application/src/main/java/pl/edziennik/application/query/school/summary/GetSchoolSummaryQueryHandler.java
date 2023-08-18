@@ -5,21 +5,21 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.query.IQueryHandler;
-import pl.edziennik.common.dto.PageDto;
-import pl.edziennik.common.dto.school.SchoolSummaryDto;
+import pl.edziennik.common.view.PageView;
+import pl.edziennik.common.view.school.SchoolSummaryView;
 import pl.edziennik.infrastructure.repository.school.SchoolQueryRepository;
 
 @Component
 @AllArgsConstructor
-class GetSchoolSummaryQueryHandler implements IQueryHandler<GetSchoolSummaryQuery, PageDto<SchoolSummaryDto>> {
+class GetSchoolSummaryQueryHandler implements IQueryHandler<GetSchoolSummaryQuery, PageView<SchoolSummaryView>> {
 
     private final SchoolQueryRepository schoolQueryRepository;
 
     @Override
     @Cacheable(value = "schools", key = "#root.method.name")
-    public PageDto<SchoolSummaryDto> handle(GetSchoolSummaryQuery command) {
-        Page<SchoolSummaryDto> dtos = schoolQueryRepository.findAllWithPagination(command.pageable());
+    public PageView<SchoolSummaryView> handle(GetSchoolSummaryQuery command) {
+        Page<SchoolSummaryView> dtos = schoolQueryRepository.findAllWithPagination(command.pageable());
 
-        return PageDto.fromPage(dtos);
+        return PageView.fromPage(dtos);
     }
 }

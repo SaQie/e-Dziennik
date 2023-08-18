@@ -3,13 +3,14 @@ package pl.edziennik.application.integration.query;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.annotation.DirtiesContext;
 import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.query.groovy.byscript.GetGroovyScriptExecResultQuery;
 import pl.edziennik.application.query.groovy.byuser.GetGroovyScriptExecResultByUserQuery;
-import pl.edziennik.common.dto.PageDto;
-import pl.edziennik.common.dto.groovy.GroovyScriptResultDto;
 import pl.edziennik.common.valueobject.Username;
 import pl.edziennik.common.valueobject.id.GroovyScriptId;
+import pl.edziennik.common.view.PageView;
+import pl.edziennik.common.view.groovy.GroovyScriptResultView;
 import pl.edziennik.domain.user.User;
 import pl.edziennik.infrastructure.spring.exception.BusinessException;
 import pl.edziennik.infrastructure.validator.ValidationError;
@@ -20,6 +21,7 @@ import java.util.List;
 import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@DirtiesContext
 public class GroovyScriptExecResultQueryIntegrationTest extends BaseIntegrationTest {
 
     @Test
@@ -50,10 +52,10 @@ public class GroovyScriptExecResultQueryIntegrationTest extends BaseIntegrationT
         GetGroovyScriptExecResultQuery query = new GetGroovyScriptExecResultQuery(groovyScriptId);
 
         // when
-        GroovyScriptResultDto dto = dispatcher.dispatch(query);
+        GroovyScriptResultView view = dispatcher.dispatch(query);
 
         // then
-        Assertions.assertNotNull(dto);
+        Assertions.assertNotNull(view);
     }
 
     @Test
@@ -67,11 +69,11 @@ public class GroovyScriptExecResultQueryIntegrationTest extends BaseIntegrationT
         GetGroovyScriptExecResultByUserQuery query = new GetGroovyScriptExecResultByUserQuery(user.userId(), Pageable.unpaged());
 
         // when
-        PageDto<GroovyScriptResultDto> dto = dispatcher.dispatch(query);
+        PageView<GroovyScriptResultView> view = dispatcher.dispatch(query);
 
         // then
-        Assertions.assertNotNull(dto);
-        List<GroovyScriptResultDto> content = dto.getContent();
+        Assertions.assertNotNull(view);
+        List<GroovyScriptResultView> content = view.getContent();
         assertEquals(1, content.size());
     }
 

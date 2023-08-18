@@ -4,15 +4,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.BaseIntegrationTest;
-import pl.edziennik.common.dto.file.studentallsubjectsgrades.DetailedGradeForFileDto;
-import pl.edziennik.common.dto.file.studentallsubjectsgrades.StudentAllSubjectsGradesHeaderForFileDto;
-import pl.edziennik.common.dto.file.studentallsubjectsgrades.StudentAllSubjectsSummaryForFileDto;
-import pl.edziennik.common.dto.grade.DetailedGradeDto;
-import pl.edziennik.common.dto.grade.allsubjects.StudentAllSubjectsGradesHeaderDto;
-import pl.edziennik.common.dto.grade.allsubjects.StudentAssignedSubjectsDto;
-import pl.edziennik.common.dto.grade.bysubject.StudentGradesBySubjectDto;
 import pl.edziennik.common.enums.Grade;
 import pl.edziennik.common.valueobject.id.*;
+import pl.edziennik.common.view.file.studentallsubjectsgrades.DetailedGradeForFileView;
+import pl.edziennik.common.view.file.studentallsubjectsgrades.StudentAllSubjectsGradesHeaderForFileView;
+import pl.edziennik.common.view.file.studentallsubjectsgrades.StudentAllSubjectsSummaryForFileView;
+import pl.edziennik.common.view.grade.DetailedGradeView;
+import pl.edziennik.common.view.grade.allsubjects.StudentAllSubjectsGradesHeaderView;
+import pl.edziennik.common.view.grade.allsubjects.StudentAssignedSubjectsView;
+import pl.edziennik.common.view.grade.bysubject.StudentGradesBySubjectView;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class GradeQueryProjectionTest extends BaseIntegrationTest {
 
     @Test
     @Transactional
-    public void shouldReturnStudentGradesBySubjectDtoForSpecificStudent() {
+    public void shouldReturnStudentGradesBySubjectViewForSpecificStudent() {
         // given
         SchoolId schoolId = createSchool("Test", "123123", "123123");
         TeacherId teacherId = createTeacher("Kamil", "test@example.com", "123123123", schoolId);
@@ -39,32 +39,32 @@ public class GradeQueryProjectionTest extends BaseIntegrationTest {
         assignGradeToStudentSubject(Grade.FIVE, studentId, subjectId, teacherId);
 
         // when
-        StudentGradesBySubjectDto studentGradesBySubjectDto = gradeQueryRepository.getStudentGradesBySubjectDto(subjectId, studentId);
-        List<DetailedGradeDto> detailedGradeDtos = gradeQueryRepository.getDetailedGradeDto(subjectId, studentId);
+        StudentGradesBySubjectView studentGradesBySubjectDto = gradeQueryRepository.getStudentGradesBySubjectView(subjectId, studentId);
+        List<DetailedGradeView> detailedGradeViews = gradeQueryRepository.getDetailedGradeView(subjectId, studentId);
 
         // then
         assertNotNull(studentGradesBySubjectDto);
-        assertEquals(2, detailedGradeDtos.size());
+        assertEquals(2, detailedGradeViews.size());
 
         assertEquals(studentGradesBySubjectDto.studentSubjectId(), studentSubjectId);
         assertEquals(studentGradesBySubjectDto.studentId(), studentId);
         assertEquals(studentGradesBySubjectDto.fullName().value(), "Test Test");
 
-        assertEquals(detailedGradeDtos.get(0).grade(), Grade.ONE);
-        assertEquals(detailedGradeDtos.get(0).studentSubjectId(), studentSubjectId);
-        assertEquals(detailedGradeDtos.get(0).teacherId(), teacherId);
-        assertEquals(detailedGradeDtos.get(0).teacherFullName().value(), "Test Test");
+        assertEquals(detailedGradeViews.get(0).grade(), Grade.ONE);
+        assertEquals(detailedGradeViews.get(0).studentSubjectId(), studentSubjectId);
+        assertEquals(detailedGradeViews.get(0).teacherId(), teacherId);
+        assertEquals(detailedGradeViews.get(0).teacherFullName().value(), "Test Test");
 
-        assertEquals(detailedGradeDtos.get(1).grade(), Grade.FIVE);
-        assertEquals(detailedGradeDtos.get(1).studentSubjectId(), studentSubjectId);
-        assertEquals(detailedGradeDtos.get(1).teacherId(), teacherId);
-        assertEquals(detailedGradeDtos.get(1).teacherFullName().value(), "Test Test");
+        assertEquals(detailedGradeViews.get(1).grade(), Grade.FIVE);
+        assertEquals(detailedGradeViews.get(1).studentSubjectId(), studentSubjectId);
+        assertEquals(detailedGradeViews.get(1).teacherId(), teacherId);
+        assertEquals(detailedGradeViews.get(1).teacherFullName().value(), "Test Test");
     }
 
 
     @Test
     @Transactional
-    public void shouldReturnStudentGradesBySubjectDtoForAllStudentsAssignedToSubject() {
+    public void shouldReturnStudentGradesBySubjectViewForAllStudentsAssignedToSubject() {
         // given
         SchoolId schoolId = createSchool("Test", "123123", "123123");
         TeacherId teacherId = createTeacher("Kamil", "test@example.com", "123123123", schoolId);
@@ -83,12 +83,12 @@ public class GradeQueryProjectionTest extends BaseIntegrationTest {
         assignGradeToStudentSubject(Grade.THREE, studentIdThird, subjectId, teacherId);
 
         // when
-        List<StudentGradesBySubjectDto> studentsGradesBySubjectDto = gradeQueryRepository.getStudentsGradesBySubjectDto(subjectId);
-        List<DetailedGradeDto> detailedGradeDtos = gradeQueryRepository.getDetailedGradeDto(subjectId);
+        List<StudentGradesBySubjectView> studentsGradesBySubjectDto = gradeQueryRepository.getStudentsGradesBySubjectView(subjectId);
+        List<DetailedGradeView> detailedGradeViews = gradeQueryRepository.getDetailedGradeView(subjectId);
 
         // then
         assertEquals(studentsGradesBySubjectDto.size(), 3);
-        assertEquals(detailedGradeDtos.size(), 3);
+        assertEquals(detailedGradeViews.size(), 3);
 
         assertEquals(studentsGradesBySubjectDto.get(0).studentId(), studentId);
         assertEquals(studentsGradesBySubjectDto.get(0).studentSubjectId(), studentSubjectId);
@@ -102,23 +102,23 @@ public class GradeQueryProjectionTest extends BaseIntegrationTest {
         assertEquals(studentsGradesBySubjectDto.get(2).studentSubjectId(), studentSubjectIdThird);
         assertEquals(studentsGradesBySubjectDto.get(2).fullName().value(), "Test Test");
 
-        assertEquals(detailedGradeDtos.get(0).teacherId(), teacherId);
-        assertEquals(detailedGradeDtos.get(0).studentSubjectId(), studentSubjectId);
-        assertEquals(detailedGradeDtos.get(0).grade(), Grade.ONE);
+        assertEquals(detailedGradeViews.get(0).teacherId(), teacherId);
+        assertEquals(detailedGradeViews.get(0).studentSubjectId(), studentSubjectId);
+        assertEquals(detailedGradeViews.get(0).grade(), Grade.ONE);
 
-        assertEquals(detailedGradeDtos.get(1).teacherId(), teacherId);
-        assertEquals(detailedGradeDtos.get(1).studentSubjectId(), studentSubjectIdSecond);
-        assertEquals(detailedGradeDtos.get(1).grade(), Grade.TWO);
+        assertEquals(detailedGradeViews.get(1).teacherId(), teacherId);
+        assertEquals(detailedGradeViews.get(1).studentSubjectId(), studentSubjectIdSecond);
+        assertEquals(detailedGradeViews.get(1).grade(), Grade.TWO);
 
-        assertEquals(detailedGradeDtos.get(2).teacherId(), teacherId);
-        assertEquals(detailedGradeDtos.get(2).studentSubjectId(), studentSubjectIdThird);
-        assertEquals(detailedGradeDtos.get(2).grade(), Grade.THREE);
+        assertEquals(detailedGradeViews.get(2).teacherId(), teacherId);
+        assertEquals(detailedGradeViews.get(2).studentSubjectId(), studentSubjectIdThird);
+        assertEquals(detailedGradeViews.get(2).grade(), Grade.THREE);
     }
 
 
     @Test
     @Transactional
-    public void shouldReturnDetailedGradeDto(){
+    public void shouldReturnDetailedGradeView(){
         // given
         SchoolId schoolId = createSchool("Test", "123123", "123123");
         TeacherId teacherId = createTeacher("Kamil", "test@example.com", "123123123", schoolId);
@@ -133,27 +133,27 @@ public class GradeQueryProjectionTest extends BaseIntegrationTest {
         assignGradeToStudentSubject(Grade.THREE, studentId, subjectId, teacherId);
 
         // when
-        List<DetailedGradeDto> detailedGradeDtos = gradeQueryRepository.getDetailedGradeDto(studentId);
+        List<DetailedGradeView> detailedGradeViews = gradeQueryRepository.getDetailedGradeView(studentId);
 
         // then
-        assertEquals(detailedGradeDtos.size(), 3);
+        assertEquals(detailedGradeViews.size(), 3);
 
-        assertEquals(detailedGradeDtos.get(0).teacherId(), teacherId);
-        assertEquals(detailedGradeDtos.get(0).studentSubjectId(), studentSubjectId);
-        assertEquals(detailedGradeDtos.get(0).grade(), Grade.ONE);
+        assertEquals(detailedGradeViews.get(0).teacherId(), teacherId);
+        assertEquals(detailedGradeViews.get(0).studentSubjectId(), studentSubjectId);
+        assertEquals(detailedGradeViews.get(0).grade(), Grade.ONE);
 
-        assertEquals(detailedGradeDtos.get(1).teacherId(), teacherId);
-        assertEquals(detailedGradeDtos.get(1).studentSubjectId(), studentSubjectId);
-        assertEquals(detailedGradeDtos.get(1).grade(), Grade.TWO);
+        assertEquals(detailedGradeViews.get(1).teacherId(), teacherId);
+        assertEquals(detailedGradeViews.get(1).studentSubjectId(), studentSubjectId);
+        assertEquals(detailedGradeViews.get(1).grade(), Grade.TWO);
 
-        assertEquals(detailedGradeDtos.get(2).teacherId(), teacherId);
-        assertEquals(detailedGradeDtos.get(2).studentSubjectId(), studentSubjectId);
-        assertEquals(detailedGradeDtos.get(2).grade(), Grade.THREE);
+        assertEquals(detailedGradeViews.get(2).teacherId(), teacherId);
+        assertEquals(detailedGradeViews.get(2).studentSubjectId(), studentSubjectId);
+        assertEquals(detailedGradeViews.get(2).grade(), Grade.THREE);
     }
 
     @Test
     @Transactional
-    public void shouldReturnStudentAllSubjectsGradesHeaderDto(){
+    public void shouldReturnStudentAllSubjectsGradesHeaderView(){
         // given
         SchoolId schoolId = createSchool("Test", "123123", "123123");
         TeacherId teacherId = createTeacher("Kamil", "test@example.com", "123123123", schoolId);
@@ -170,16 +170,16 @@ public class GradeQueryProjectionTest extends BaseIntegrationTest {
         assignGradeToStudentSubject(Grade.THREE, studentId, subjectIdSecond, teacherId);
 
         // when
-        StudentAllSubjectsGradesHeaderDto dto = gradeQueryRepository.getStudentAllSubjectsGradesHeaderDto(studentId);
-        List<StudentAssignedSubjectsDto> assignedSubjectsDto = gradeQueryRepository.getStudentAssignedSubjectsDto(studentId);
-        List<DetailedGradeDto> gradeDto = gradeQueryRepository.getDetailedGradeDto(studentId);
+        StudentAllSubjectsGradesHeaderView view = gradeQueryRepository.getStudentAllSubjectsGradesHeaderView(studentId);
+        List<StudentAssignedSubjectsView> assignedSubjectsDto = gradeQueryRepository.getStudentAssignedSubjectsView(studentId);
+        List<DetailedGradeView> gradeView = gradeQueryRepository.getDetailedGradeView(studentId);
 
         // then
-        assertEquals(dto.studentId(), studentId);
+        assertEquals(view.studentId(), studentId);
         assertEquals(assignedSubjectsDto.size(), 2);
-        assertEquals(gradeDto.size(), 3);
+        assertEquals(gradeView.size(), 3);
 
-        assertEquals(dto.fullName().value(), "Test Test");
+        assertEquals(view.fullName().value(), "Test Test");
 
         assertEquals(assignedSubjectsDto.get(0).studentSubjectId(), studentSubjectId);
         assertEquals(assignedSubjectsDto.get(0).teacherFullName().value(), "Test Test");
@@ -188,25 +188,25 @@ public class GradeQueryProjectionTest extends BaseIntegrationTest {
         assertEquals(assignedSubjectsDto.get(1).studentSubjectId(), studentSubjectIdSecond);
         assertEquals(assignedSubjectsDto.get(1).subjectName().value(), "Przyroda2");
 
-        assertEquals(gradeDto.get(0).studentSubjectId(), studentSubjectId);
-        assertEquals(gradeDto.get(0).grade(), Grade.ONE);
-        assertEquals(gradeDto.get(0).teacherId(), teacherId);
+        assertEquals(gradeView.get(0).studentSubjectId(), studentSubjectId);
+        assertEquals(gradeView.get(0).grade(), Grade.ONE);
+        assertEquals(gradeView.get(0).teacherId(), teacherId);
 
 
-        assertEquals(gradeDto.get(1).studentSubjectId(), studentSubjectId);
-        assertEquals(gradeDto.get(1).grade(), Grade.TWO);
-        assertEquals(gradeDto.get(1).teacherId(), teacherId);
+        assertEquals(gradeView.get(1).studentSubjectId(), studentSubjectId);
+        assertEquals(gradeView.get(1).grade(), Grade.TWO);
+        assertEquals(gradeView.get(1).teacherId(), teacherId);
 
-        assertEquals(gradeDto.get(2).studentSubjectId(), studentSubjectIdSecond);
-        assertEquals(gradeDto.get(2).grade(), Grade.THREE);
-        assertEquals(gradeDto.get(2).teacherId(), teacherId);
+        assertEquals(gradeView.get(2).studentSubjectId(), studentSubjectIdSecond);
+        assertEquals(gradeView.get(2).grade(), Grade.THREE);
+        assertEquals(gradeView.get(2).teacherId(), teacherId);
 
 
     }
 
     @Test
     @Transactional
-    public void shouldReturnStudentAllSubjectGradesHeaderForFileDto(){
+    public void shouldReturnStudentAllSubjectGradesHeaderForFileView(){
         // given
         SchoolId schoolId = createSchool("Test", "123123", "123123");
         TeacherId teacherId = createTeacher("Kamil", "test@example.com", "123123123", schoolId);
@@ -223,9 +223,9 @@ public class GradeQueryProjectionTest extends BaseIntegrationTest {
         assignGradeToStudentSubject(Grade.THREE, studentId, subjectIdSecond, teacherId);
 
         // when
-        StudentAllSubjectsGradesHeaderForFileDto header = gradeQueryRepository.getStudentAllSubjectGradesHeaderForFileDto(studentId);
-        List<StudentAllSubjectsSummaryForFileDto> subjectsSummary = gradeQueryRepository.getStudentAllSubjectsSummaryForFileDto(studentId);
-        List<DetailedGradeForFileDto> gradeDto = gradeQueryRepository.getDetailedGradeForFileDto(studentId);
+        StudentAllSubjectsGradesHeaderForFileView header = gradeQueryRepository.getStudentAllSubjectGradesHeaderForFileView(studentId);
+        List<StudentAllSubjectsSummaryForFileView> subjectsSummary = gradeQueryRepository.getStudentAllSubjectsSummaryForFileView(studentId);
+        List<DetailedGradeForFileView> gradeDto = gradeQueryRepository.getDetailedGradeForFileView(studentId);
 
         // then
         assertEquals(header.schoolClassName().value(),"1A");

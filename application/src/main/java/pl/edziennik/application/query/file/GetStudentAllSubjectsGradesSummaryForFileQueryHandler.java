@@ -3,9 +3,9 @@ package pl.edziennik.application.query.file;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.query.IQueryHandler;
-import pl.edziennik.common.dto.file.studentallsubjectsgrades.DetailedGradeForFileDto;
-import pl.edziennik.common.dto.file.studentallsubjectsgrades.StudentAllSubjectsGradesHeaderForFileDto;
-import pl.edziennik.common.dto.file.studentallsubjectsgrades.StudentAllSubjectsSummaryForFileDto;
+import pl.edziennik.common.view.file.studentallsubjectsgrades.DetailedGradeForFileView;
+import pl.edziennik.common.view.file.studentallsubjectsgrades.StudentAllSubjectsGradesHeaderForFileView;
+import pl.edziennik.common.view.file.studentallsubjectsgrades.StudentAllSubjectsSummaryForFileView;
 import pl.edziennik.infrastructure.repository.grade.GradeQueryRepository;
 import pl.edziennik.infrastructure.strategy.file.DocumentGeneratorStrategy;
 
@@ -22,11 +22,11 @@ class GetStudentAllSubjectsGradesSummaryForFileQueryHandler
 
     @Override
     public byte[] handle(GetStudentAllSubjectsGradesSummaryForFileQuery command) {
-        StudentAllSubjectsGradesHeaderForFileDto header = gradeQueryRepository.getStudentAllSubjectGradesHeaderForFileDto(command.studentId());
+        StudentAllSubjectsGradesHeaderForFileView header = gradeQueryRepository.getStudentAllSubjectGradesHeaderForFileView(command.studentId());
 
-        List<StudentAllSubjectsSummaryForFileDto> subjects = gradeQueryRepository.getStudentAllSubjectsSummaryForFileDto(command.studentId());
+        List<StudentAllSubjectsSummaryForFileView> subjects = gradeQueryRepository.getStudentAllSubjectsSummaryForFileView(command.studentId());
 
-        List<DetailedGradeForFileDto> grades = gradeQueryRepository.getDetailedGradeForFileDto(command.studentId());
+        List<DetailedGradeForFileView> grades = gradeQueryRepository.getDetailedGradeForFileView(command.studentId());
 
         subjects = connectSubjectListWithTheirGrades(subjects, grades);
 
@@ -35,7 +35,7 @@ class GetStudentAllSubjectsGradesSummaryForFileQueryHandler
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("File generation strategy not found"));
 
-        StudentAllSubjectsGradesHeaderForFileDto dto = new StudentAllSubjectsGradesHeaderForFileDto(header, subjects);
+        StudentAllSubjectsGradesHeaderForFileView dto = new StudentAllSubjectsGradesHeaderForFileView(header, subjects);
 
         return generatorStrategy.generateDocument(dto);
     }
@@ -43,9 +43,9 @@ class GetStudentAllSubjectsGradesSummaryForFileQueryHandler
     /**
      * Method for connect list of subjects with their grades (every subject has many grades)
      */
-    private static List<StudentAllSubjectsSummaryForFileDto> connectSubjectListWithTheirGrades(List<StudentAllSubjectsSummaryForFileDto> subjects, List<DetailedGradeForFileDto> grades) {
+    private static List<StudentAllSubjectsSummaryForFileView> connectSubjectListWithTheirGrades(List<StudentAllSubjectsSummaryForFileView> subjects, List<DetailedGradeForFileView> grades) {
         return subjects.stream()
-                .map(subject -> new StudentAllSubjectsSummaryForFileDto(subject, grades.stream()
+                .map(subject -> new StudentAllSubjectsSummaryForFileView(subject, grades.stream()
                         .filter(grade -> grade.studentSubjectId().equals(subject.studentSubjectId()))
                         .toList()))
                 .toList();

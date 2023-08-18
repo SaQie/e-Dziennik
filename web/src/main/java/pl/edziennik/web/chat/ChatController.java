@@ -15,8 +15,8 @@ import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.query.chat.chatmessage.GetChatMessagesHistoryQuery;
 import pl.edziennik.application.query.chat.chatroom.GetChatRoomQuery;
-import pl.edziennik.common.dto.PageDto;
-import pl.edziennik.common.dto.chat.ChatMessageDto;
+import pl.edziennik.common.view.PageView;
+import pl.edziennik.common.view.chat.ChatMessageView;
 import pl.edziennik.common.valueobject.id.ChatId;
 import pl.edziennik.common.valueobject.id.RecipientId;
 import pl.edziennik.common.valueobject.id.SenderId;
@@ -30,7 +30,7 @@ public class ChatController {
     private final SimpMessagingTemplate template;
 
     @GetMapping("/history/{chatId}")
-    public PageDto<ChatMessageDto> getChatHistory(Pageable pageable, @PathVariable ChatId chatId) {
+    public PageView<ChatMessageView> getChatHistory(Pageable pageable, @PathVariable ChatId chatId) {
         GetChatMessagesHistoryQuery getChatMessagesHistoryQuery = new GetChatMessagesHistoryQuery(chatId, pageable);
 
         return dispatcher.dispatch(getChatMessagesHistoryQuery);

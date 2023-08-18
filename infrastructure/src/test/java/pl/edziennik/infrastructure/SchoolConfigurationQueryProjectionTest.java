@@ -3,9 +3,9 @@ package pl.edziennik.infrastructure;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.edziennik.BaseIntegrationTest;
-import pl.edziennik.common.dto.school.config.SchoolConfigSummaryDto;
 import pl.edziennik.common.enums.AverageType;
 import pl.edziennik.common.valueobject.id.SchoolId;
+import pl.edziennik.common.view.school.config.SchoolConfigSummaryView;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -14,16 +14,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class SchoolConfigurationQueryProjectionTest extends BaseIntegrationTest {
 
     @Test
-    public void shouldReturnSchoolConfigurationSummaryDto() {
+    public void shouldReturnSchoolConfigurationSummaryView() {
         // given
         SchoolId schoolId = createSchool("Testowa", "123123123", "123123123");
 
         // when
-        SchoolConfigSummaryDto dto = schoolConfigurationQueryRepository.getSchoolConfiguration(schoolId);
+        SchoolConfigSummaryView view = schoolConfigurationQueryRepository.getSchoolConfigurationView(schoolId);
 
         // then
-        assertNotNull(dto);
-        assertEquals(dto.schoolId(), schoolId);
-        assertEquals(dto.averageType(), AverageType.ARITHMETIC);
+        assertNotNull(view);
+        assertEquals(view.schoolId(), schoolId);
+        assertEquals(view.averageType(), AverageType.ARITHMETIC);
     }
 }

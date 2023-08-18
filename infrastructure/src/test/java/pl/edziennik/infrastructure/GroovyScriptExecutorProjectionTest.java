@@ -3,10 +3,10 @@ package pl.edziennik.infrastructure;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.edziennik.BaseIntegrationTest;
-import pl.edziennik.common.dto.groovy.GroovyScriptResultDto;
 import pl.edziennik.common.valueobject.Name;
 import pl.edziennik.common.valueobject.Username;
 import pl.edziennik.common.valueobject.id.GroovyScriptId;
+import pl.edziennik.common.view.groovy.GroovyScriptResultView;
 import pl.edziennik.domain.user.User;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,18 +15,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class GroovyScriptExecutorProjectionTest extends BaseIntegrationTest {
 
     @Test
-    public void shouldReturnGroovyScriptResultDto() {
+    public void shouldReturnGroovyScriptResultView() {
         // given
         createAdmin("Test", "Test@example.com");
         User user = userQueryRepository.getByUsername(Username.of("Test"));
 
         GroovyScriptId groovyScriptId = execSimpleGroovyScript(user);
         // when
-        GroovyScriptResultDto dto = groovyScriptResultQueryRepository.getGroovyScriptResultDto(groovyScriptId);
+        GroovyScriptResultView view = groovyScriptResultQueryRepository.getGroovyScriptResultView(groovyScriptId);
 
         // then
-        assertEquals(groovyScriptId, dto.groovyScriptId());
-        assertEquals(Name.of("SUCCESS"), dto.status());
+        assertEquals(groovyScriptId, view.groovyScriptId());
+        assertEquals(Name.of("SUCCESS"), view.status());
     }
 
 }

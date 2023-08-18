@@ -9,10 +9,10 @@ import pl.edziennik.application.query.subject.detailed.GetDetailedSubjectQuery;
 import pl.edziennik.application.query.subject.specificstudentgrades.GetGradesOfSpecificStudentBySubjectQuery;
 import pl.edziennik.application.query.subject.studentsgrades.all.GetAllSubjectsGradesOfSpecificStudentQuery;
 import pl.edziennik.application.query.subject.studentsgrades.bysubject.GetStudentsGradesBySubjectQuery;
-import pl.edziennik.common.dto.grade.allsubjects.StudentAllSubjectsGradesHeaderDto;
-import pl.edziennik.common.dto.grade.bysubject.StudentGradesBySubjectDto;
-import pl.edziennik.common.dto.subject.DetailedSubjectDto;
 import pl.edziennik.common.valueobject.id.*;
+import pl.edziennik.common.view.grade.allsubjects.StudentAllSubjectsGradesHeaderView;
+import pl.edziennik.common.view.grade.bysubject.StudentGradesBySubjectView;
+import pl.edziennik.common.view.subject.DetailedSubjectView;
 import pl.edziennik.infrastructure.spring.exception.BusinessException;
 import pl.edziennik.infrastructure.validator.ValidationError;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
@@ -38,10 +38,10 @@ public class SubjectQueryIntegrationTest extends BaseIntegrationTest {
         GetDetailedSubjectQuery query = new GetDetailedSubjectQuery(subjectId);
 
         // when
-        DetailedSubjectDto dto = dispatcher.dispatch(query);
+        DetailedSubjectView view = dispatcher.dispatch(query);
 
         // then
-        assertNotNull(dto);
+        assertNotNull(view);
     }
 
     @Test
@@ -76,11 +76,11 @@ public class SubjectQueryIntegrationTest extends BaseIntegrationTest {
         GetAllSubjectsGradesOfSpecificStudentQuery query = new GetAllSubjectsGradesOfSpecificStudentQuery(studentId);
 
         // when
-        StudentAllSubjectsGradesHeaderDto dto = dispatcher.dispatch(query);
+        StudentAllSubjectsGradesHeaderView view = dispatcher.dispatch(query);
 
         // then
-        assertNotNull(dto);
-        assertEquals(dto.studentId(), studentId);
+        assertNotNull(view);
+        assertEquals(view.studentId(), studentId);
     }
 
     @Test
@@ -98,12 +98,12 @@ public class SubjectQueryIntegrationTest extends BaseIntegrationTest {
         GetGradesOfSpecificStudentBySubjectQuery query = new GetGradesOfSpecificStudentBySubjectQuery(subjectId, studentId);
 
         // when
-        StudentGradesBySubjectDto dto = dispatcher.dispatch(query);
+        StudentGradesBySubjectView view = dispatcher.dispatch(query);
 
         // then
-        assertNotNull(dto);
-        assertEquals(studentId, dto.studentId());
-        assertEquals(studentSubjectId, dto.studentSubjectId());
+        assertNotNull(view);
+        assertEquals(studentId, view.studentId());
+        assertEquals(studentSubjectId, view.studentSubjectId());
     }
 
     @Test
@@ -121,12 +121,12 @@ public class SubjectQueryIntegrationTest extends BaseIntegrationTest {
         GetStudentsGradesBySubjectQuery query = new GetStudentsGradesBySubjectQuery(subjectId);
 
         // when
-        List<StudentGradesBySubjectDto> dto = dispatcher.dispatch(query);
+        List<StudentGradesBySubjectView> view = dispatcher.dispatch(query);
 
         // then
-        assertNotNull(dto);
-        assertEquals(1, dto.size());
-        assertEquals(dto.get(0).studentId(), studentId);
+        assertNotNull(view);
+        assertEquals(1, view.size());
+        assertEquals(view.get(0).studentId(), studentId);
     }
 
 

@@ -20,6 +20,9 @@ import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.*;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.admin.Admin;
+import pl.edziennik.domain.chat.ChatMessage;
+import pl.edziennik.domain.chat.ChatRoom;
+import pl.edziennik.domain.chat.MessageStatus;
 import pl.edziennik.domain.director.Director;
 import pl.edziennik.domain.grade.Grade;
 import pl.edziennik.domain.groovy.GroovyScript;
@@ -37,6 +40,10 @@ import pl.edziennik.infrastructure.repository.address.AddressCommandRepository;
 import pl.edziennik.infrastructure.repository.address.AddressQueryRepository;
 import pl.edziennik.infrastructure.repository.admin.AdminCommandRepository;
 import pl.edziennik.infrastructure.repository.admin.AdminQueryRepository;
+import pl.edziennik.infrastructure.repository.chat.chatmessage.ChatMessageCommandRepository;
+import pl.edziennik.infrastructure.repository.chat.chatmessage.ChatMessageQueryRepository;
+import pl.edziennik.infrastructure.repository.chat.chatroom.ChatRoomCommandRepository;
+import pl.edziennik.infrastructure.repository.chat.messagestatus.MessageStatusQueryRepository;
 import pl.edziennik.infrastructure.repository.director.DirectorCommandRepository;
 import pl.edziennik.infrastructure.repository.director.DirectorQueryRepository;
 import pl.edziennik.infrastructure.repository.grade.GradeCommandRepository;
@@ -164,6 +171,14 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     protected GroovyScriptResultQueryRepository groovyScriptResultQueryRepository;
     @Autowired
     protected GroovyScriptQueryRepository groovyScriptQueryRepository;
+    @Autowired
+    protected ChatMessageQueryRepository chatMessageQueryRepository;
+    @Autowired
+    protected ChatMessageCommandRepository chatMessageCommandRepository;
+    @Autowired
+    protected ChatRoomCommandRepository chatRoomCommandRepository;
+    @Autowired
+    protected MessageStatusQueryRepository messageStatusQueryRepository;
 
     @Autowired
     protected EntityManager entityManager;
@@ -179,6 +194,9 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     protected GroovyScriptStatus executingGroovyScriptStatus;
     protected GroovyScriptStatus errorGroovyScriptStatus;
     protected GroovyScriptStatus successGroovyScriptStatus;
+
+    protected MessageStatus deliveredMessageStatus;
+    protected MessageStatus receivedMessageStatus;
 
     protected final Address address = Address.of(
             pl.edziennik.common.valueobject.Address.of("Test"),
@@ -197,6 +215,9 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         this.executingGroovyScriptStatus = groovyScriptStatusQueryRepository.getByGroovyScriptStatusId(GroovyScriptStatusId.PredefinedRow.EXECUTING);
         this.errorGroovyScriptStatus = groovyScriptStatusQueryRepository.getByGroovyScriptStatusId(GroovyScriptStatusId.PredefinedRow.ERROR);
         this.successGroovyScriptStatus = groovyScriptStatusQueryRepository.getByGroovyScriptStatusId(GroovyScriptStatusId.PredefinedRow.SUCCESS);
+
+        this.deliveredMessageStatus = messageStatusQueryRepository.getByMessageStatusId(MessageStatusId.PredefinedRow.DELIVERED);
+        this.receivedMessageStatus = messageStatusQueryRepository.getByMessageStatusId(MessageStatusId.PredefinedRow.RECEIVED);
 
         this.transactionTemplate = new TransactionTemplate(transactionManager);
 
@@ -395,6 +416,39 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         groovyScriptResultCommandRepository.save(scriptResult);
 
         return groovyScript.groovyScriptId();
+    }
+
+    protected ChatId createChatMessage(RecipientId recipientId, SenderId senderId, ChatContent chatContent) {
+        ChatId chatId = ChatId.create();
+
+        ChatRoom recipientChatRoom = ChatRoom.builder()
+                .recipientId(recipientId)
+                .senderId(senderId)
+                .chatId(chatId)
+                .build();
+
+        ChatRoom senderChatRoom = ChatRoom.builder()
+                .recipientId(RecipientId.convert(senderId))
+                .senderId(SenderId.convert(recipientId))
+                .chatId(chatId)
+                .build();
+
+        chatRoomCommandRepository.save(senderChatRoom);
+        chatRoomCommandRepository.save(recipientChatRoom);
+
+        ChatMessage chatMessage = ChatMessage.builder()
+                .senderId(senderId)
+                .recipientId(recipientId)
+                .chatId(chatId)
+                .messageStatus(receivedMessageStatus)
+                .chatContent(chatContent)
+                .senderName(FullName.of("Test"))
+                .recipientName(FullName.of("Test"))
+                .build();
+
+        chatMessageCommandRepository.save(chatMessage);
+
+        return chatId;
     }
 
     private Address createAddress() {

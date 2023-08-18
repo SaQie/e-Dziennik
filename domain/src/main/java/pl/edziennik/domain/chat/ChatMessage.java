@@ -67,6 +67,9 @@ public class ChatMessage {
     @JoinColumn(name = "message_status_id", referencedColumnName = "id", nullable = false)
     private MessageStatus messageStatus;
 
+    @Version
+    private Long version;
+
     @Builder
     public static ChatMessage of(ChatId chatId, SenderId senderId, RecipientId recipientId, FullName senderName,
                                  FullName recipientName, ChatContent chatContent, MessageStatus messageStatus) {

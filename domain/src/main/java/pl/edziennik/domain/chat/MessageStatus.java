@@ -24,4 +24,7 @@ public class MessageStatus {
     })
     private Name name;
 
+    @Version
+    private Long version;
+
 }

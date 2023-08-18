@@ -3,27 +3,27 @@ package pl.edziennik.application.query.groovy.byscript;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.query.IQueryHandler;
-import pl.edziennik.common.dto.groovy.GroovyScriptResultDto;
+import pl.edziennik.common.view.groovy.GroovyScriptResultView;
 import pl.edziennik.infrastructure.repository.groovy.result.GroovyScriptResultQueryRepository;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
 import pl.edziennik.infrastructure.spring.exception.BusinessException;
 
 @Component
 @AllArgsConstructor
-class GetGroovyScriptExecResultQueryHandler implements IQueryHandler<GetGroovyScriptExecResultQuery, GroovyScriptResultDto> {
+class GetGroovyScriptExecResultQueryHandler implements IQueryHandler<GetGroovyScriptExecResultQuery, GroovyScriptResultView> {
 
     private final GroovyScriptResultQueryRepository groovyScriptResultQueryRepository;
     private final ResourceCreator res;
 
 
     @Override
-    public GroovyScriptResultDto handle(GetGroovyScriptExecResultQuery query) {
-        GroovyScriptResultDto dto = groovyScriptResultQueryRepository.getGroovyScriptResultDto(query.groovyScriptId());
+    public GroovyScriptResultView handle(GetGroovyScriptExecResultQuery query) {
+        GroovyScriptResultView view = groovyScriptResultQueryRepository.getGroovyScriptResultView(query.groovyScriptId());
 
-        if (dto == null) {
+        if (view == null) {
             throw new BusinessException(res.notFoundError(GetGroovyScriptExecResultQuery.GROOVY_SCRIPT_ID, query.groovyScriptId()));
         }
 
-        return dto;
+        return view;
     }
 }

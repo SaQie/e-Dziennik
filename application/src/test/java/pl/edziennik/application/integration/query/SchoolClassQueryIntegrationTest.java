@@ -8,13 +8,13 @@ import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.query.schoolclass.config.GetSchoolClassConfigSummaryQuery;
 import pl.edziennik.application.query.schoolclass.detailed.GetDetailedSchoolClassQuery;
 import pl.edziennik.application.query.schoolclass.summary.GetSchoolClassSummaryForSchoolQuery;
-import pl.edziennik.common.dto.PageDto;
-import pl.edziennik.common.dto.schoolclass.DetailedSchoolClassDto;
-import pl.edziennik.common.dto.schoolclass.SchoolClassSummaryForSchoolDto;
-import pl.edziennik.common.dto.schoolclass.config.SchoolClassConfigSummaryDto;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.TeacherId;
+import pl.edziennik.common.view.PageView;
+import pl.edziennik.common.view.schoolclass.DetailedSchoolClassView;
+import pl.edziennik.common.view.schoolclass.SchoolClassSummaryForSchoolView;
+import pl.edziennik.common.view.schoolclass.config.SchoolClassConfigSummaryView;
 import pl.edziennik.infrastructure.spring.exception.BusinessException;
 import pl.edziennik.infrastructure.validator.ValidationError;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
@@ -36,11 +36,11 @@ public class SchoolClassQueryIntegrationTest extends BaseIntegrationTest {
 
         GetDetailedSchoolClassQuery query = new GetDetailedSchoolClassQuery(schoolClassId);
         // when
-        DetailedSchoolClassDto dto = dispatcher.dispatch(query);
+        DetailedSchoolClassView view = dispatcher.dispatch(query);
 
         // then
-        assertNotNull(dto);
-        assertEquals(dto.schoolClassId(), schoolClassId);
+        assertNotNull(view);
+        assertEquals(view.schoolClassId(), schoolClassId);
     }
 
     @Test
@@ -54,11 +54,11 @@ public class SchoolClassQueryIntegrationTest extends BaseIntegrationTest {
 
         GetSchoolClassSummaryForSchoolQuery query = new GetSchoolClassSummaryForSchoolQuery(schoolId, Pageable.unpaged());
         // when
-        PageDto<SchoolClassSummaryForSchoolDto> dto = dispatcher.dispatch(query);
+        PageView<SchoolClassSummaryForSchoolView> view = dispatcher.dispatch(query);
 
         // then
-        assertNotNull(dto);
-        assertEquals(dto.getContent().size(), 2);
+        assertNotNull(view);
+        assertEquals(view.getContent().size(), 2);
     }
 
     @Test
@@ -70,11 +70,11 @@ public class SchoolClassQueryIntegrationTest extends BaseIntegrationTest {
 
         GetSchoolClassConfigSummaryQuery query = new GetSchoolClassConfigSummaryQuery(schoolClassId);
         // when
-        SchoolClassConfigSummaryDto dto = dispatcher.dispatch(query);
+        SchoolClassConfigSummaryView view = dispatcher.dispatch(query);
 
         // then
-        assertNotNull(dto);
-        assertEquals(dto.schoolClassId(), schoolClassId);
+        assertNotNull(view);
+        assertEquals(view.schoolClassId(), schoolClassId);
     }
 
     @Test

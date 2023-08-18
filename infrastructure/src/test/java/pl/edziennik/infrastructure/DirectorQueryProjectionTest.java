@@ -3,9 +3,9 @@ package pl.edziennik.infrastructure;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.edziennik.BaseIntegrationTest;
-import pl.edziennik.common.dto.director.DetailedDirectorDto;
 import pl.edziennik.common.valueobject.id.DirectorId;
 import pl.edziennik.common.valueobject.id.SchoolId;
+import pl.edziennik.common.view.director.DetailedDirectorView;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -15,7 +15,7 @@ public class DirectorQueryProjectionTest extends BaseIntegrationTest {
 
 
     @Test
-    public void shouldReturnDetialedDirectorDto() {
+    public void shouldReturnDetialedDirectorView() {
         // given
         final String expectedSchoolName = "Testowa";
         final String expectedDirectorName = "Test Test";
@@ -26,16 +26,16 @@ public class DirectorQueryProjectionTest extends BaseIntegrationTest {
         DirectorId directorId = createDirector(expectedDirectorUsername, expectedDirectorEmail, "123123123", schoolId);
 
         // when
-        DetailedDirectorDto dto = directorQueryRepository.getDirector(directorId);
+        DetailedDirectorView view = directorQueryRepository.getDirectorView(directorId);
 
         // then
-        assertNotNull(dto);
-        assertEquals(dto.directorId(),directorId);
-        assertEquals(dto.schoolId(),schoolId);
-        assertEquals(dto.fullName().value(),expectedDirectorName);
-        assertEquals(dto.email().value(), expectedDirectorEmail);
-        assertEquals(dto.username().value(),expectedDirectorUsername);
-        assertEquals(dto.schoolName().value(),expectedSchoolName);
+        assertNotNull(view);
+        assertEquals(view.directorId(),directorId);
+        assertEquals(view.schoolId(),schoolId);
+        assertEquals(view.fullName().value(),expectedDirectorName);
+        assertEquals(view.email().value(), expectedDirectorEmail);
+        assertEquals(view.username().value(),expectedDirectorUsername);
+        assertEquals(view.schoolName().value(),expectedSchoolName);
     }
 
 }

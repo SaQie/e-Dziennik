@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.query.IQueryHandler;
 import pl.edziennik.common.valueobject.id.ChatId;
-import pl.edziennik.infrastructure.repository.chat.chatroom.ChatRoomQueryRepository;
+import pl.edziennik.infrastructure.repository.chat.chatroom.ChatRoomCommandRepository;
 
 import java.util.Optional;
 
@@ -13,10 +13,10 @@ import java.util.Optional;
 @AllArgsConstructor
 class GetChatRoomQueryHandler implements IQueryHandler<GetChatRoomQuery, Optional<ChatId>> {
 
-    private final ChatRoomQueryRepository chatRoomQueryRepository;
+    private final ChatRoomCommandRepository chatRoomCommandRepository;
 
     @Override
     public Optional<ChatId> handle(GetChatRoomQuery query) {
-        return chatRoomQueryRepository.findChatRoomIdByRecipientIdAndSenderId(query.recipientId(), query.senderId());
+        return chatRoomCommandRepository.findChatRoomIdByRecipientIdAndSenderId(query.recipientId(), query.senderId());
     }
 }

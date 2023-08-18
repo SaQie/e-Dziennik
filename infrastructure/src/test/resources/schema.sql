@@ -34,6 +34,11 @@ INSERT INTO groovy_script_status(id, name, version)
 VALUES ('c5789bce-3947-11ee-be56-0242ac120002', 'ERROR', 1)
 ON CONFLICT DO NOTHING;
 
+INSERT INTO message_status(id,name,version)
+VALUES('36572198-2cab-11ee-be56-0242ac120002', 'DELIVERED', 1);
+INSERT INTO message_status(id,name,version)
+VALUES('36571ed2-2cab-11ee-be56-0242ac120002', 'RECEIVED', 1);
+
 CREATE TABLE IF NOT EXISTS email_activation_tokens
 (
     user_id         uuid      not null unique,
