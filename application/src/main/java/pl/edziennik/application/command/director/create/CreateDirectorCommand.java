@@ -6,8 +6,8 @@ import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.base.HandledBy;
 import pl.edziennik.application.common.dispatcher.base.ValidatedBy;
 import pl.edziennik.application.common.dispatcher.command.ICommand;
-import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.SchoolId;
+import pl.edziennik.common.valueobject.vo.*;
 
 /**
  * A command used for creating a new director account
@@ -23,7 +23,7 @@ public record CreateDirectorCommand(
         @Valid @NotNull(message = "{postalCode.empty}") PostalCode postalCode,
         @Valid @NotNull(message = "{city.empty}") City city,
         @Valid @NotNull(message = "{pesel.invalid}") Pesel pesel,
-        @Valid @NotNull(message = "{email.empty}") pl.edziennik.common.valueobject.Email email,
+        @Valid @NotNull(message = "{email.empty}") Email email,
         @Valid @NotNull(message = "{phone.invalid}") PhoneNumber phoneNumber,
         @NotNull(message = "{school.empty}") SchoolId schoolId
 ) implements ICommand<OperationResult> {

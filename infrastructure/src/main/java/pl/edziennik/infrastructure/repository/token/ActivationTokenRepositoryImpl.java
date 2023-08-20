@@ -5,7 +5,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import pl.edziennik.common.valueobject.Token;
+import pl.edziennik.common.valueobject.vo.Token;
 import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
 import pl.edziennik.infrastructure.spring.exception.BusinessException;

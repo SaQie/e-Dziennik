@@ -1,4 +1,4 @@
-package pl.edziennik.common.valueobject;
+package pl.edziennik.common.valueobject.vo;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -9,27 +9,25 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-
-import java.io.Serializable;
+import pl.edziennik.common.valueobject.base.StringValueObject;
 
 @Getter
 @Accessors(fluent = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @EqualsAndHashCode(of = "value")
-public class Password implements ValueObject, Serializable {
-
+public class Username implements StringValueObject {
     @JsonValue
-    @NotEmpty(message = "{password.empty}")
-    @Size(min = 5, message = "{password.size}")
+    @NotEmpty(message = "{username.empty}")
+    @Size(min = 4, message = "{username.size}")
     private final String value;
 
-    private Password(String value) {
+    private Username(String value) {
         this.value = value;
     }
 
     @JsonCreator
-    public static Password of(@NotEmpty String value) {
-        return new Password(value);
+    public static Username of(@NotEmpty String value) {
+        return new Username(value);
     }
 
     @Override

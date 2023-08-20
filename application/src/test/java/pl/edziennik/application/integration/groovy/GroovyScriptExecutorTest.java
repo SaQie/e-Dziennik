@@ -7,7 +7,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.command.groovy.ExecuteGroovyScriptCommand;
-import pl.edziennik.common.valueobject.ScriptContent;
+import pl.edziennik.common.valueobject.vo.ScriptContent;
 import pl.edziennik.common.valueobject.id.GroovyScriptId;
 import pl.edziennik.common.valueobject.id.GroovyScriptStatusId;
 import pl.edziennik.domain.groovy.GroovyScriptStatus;

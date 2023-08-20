@@ -3,7 +3,7 @@ package pl.edziennik.application.command.school.delete;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
-import pl.edziennik.common.valueobject.PersonInformation;
+import pl.edziennik.common.valueobject.vo.PersonInformation;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.schoolclass.SchoolClass;

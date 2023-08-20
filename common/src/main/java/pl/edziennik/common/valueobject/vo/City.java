@@ -1,39 +1,36 @@
-package pl.edziennik.common.valueobject;
+package pl.edziennik.common.valueobject.vo;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import pl.edziennik.common.valueobject.base.StringValueObject;
 
-import java.io.Serializable;
-
-@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @Getter
 @Accessors(fluent = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @EqualsAndHashCode(of = "value")
-public class PhoneNumber implements ValueObject, Serializable {
+public class City implements StringValueObject {
 
     @JsonValue
-    @Pattern(regexp = "[\\d]{9}", message = "{phone.invalid}")
+    @NotEmpty(message = "{city.empty}")
     private final String value;
 
-    private PhoneNumber(String value) {
+    private City(String value) {
         this.value = value;
     }
 
     @JsonCreator
-    public static PhoneNumber of(@NotEmpty String value) {
-        return new PhoneNumber(value);
+    public static City of(@NotEmpty String value) {
+        return new City(value);
     }
 
     @Override
     public String toString() {
         return value;
     }
-
 }

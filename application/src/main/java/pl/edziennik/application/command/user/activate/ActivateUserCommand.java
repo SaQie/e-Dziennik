@@ -3,7 +3,7 @@ package pl.edziennik.application.command.user.activate;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.base.HandledBy;
 import pl.edziennik.application.common.dispatcher.command.ICommand;
-import pl.edziennik.common.valueobject.Token;
+import pl.edziennik.common.valueobject.vo.Token;
 
 /**
  * A command used for activating the user account when the user was successfully registered

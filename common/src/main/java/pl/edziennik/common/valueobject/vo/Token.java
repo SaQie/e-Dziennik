@@ -1,19 +1,23 @@
-package pl.edziennik.common.valueobject;
+package pl.edziennik.common.valueobject.vo;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import pl.edziennik.common.exception.InvalidParameterException;
+import pl.edziennik.common.valueobject.base.UUIDValueObject;
 
-import java.io.Serializable;
+import java.util.Objects;
 import java.util.UUID;
 
 @Getter
 @Accessors(fluent = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @EqualsAndHashCode(of = "value")
-public class Token implements Serializable {
+public class Token implements UUIDValueObject {
 
     private final UUID value;
 
@@ -36,6 +40,7 @@ public class Token implements Serializable {
 
     @Override
     public String toString() {
-        return value.toString();
+        return Objects.requireNonNull(value).toString();
     }
+
 }

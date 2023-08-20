@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.mock.repositories.SchoolLevelCommandMockRepo;
-import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.SchoolLevelId;
+import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.infrastructure.spring.exception.BusinessException;
 

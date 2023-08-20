@@ -1,6 +1,6 @@
 package pl.edziennik.infrastructure.strategy.confirmation.email;
 
-import pl.edziennik.common.valueobject.Token;
+import pl.edziennik.common.valueobject.vo.Token;
 import pl.edziennik.common.valueobject.id.UserId;
 
 /**

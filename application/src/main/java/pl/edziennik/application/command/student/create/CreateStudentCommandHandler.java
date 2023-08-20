@@ -10,10 +10,10 @@ import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
 import pl.edziennik.application.events.event.StudentAccountCreatedEvent;
 import pl.edziennik.application.events.event.UserAccountCreatedEvent;
-import pl.edziennik.common.valueobject.Password;
-import pl.edziennik.common.valueobject.PersonInformation;
 import pl.edziennik.common.valueobject.id.RoleId;
 import pl.edziennik.common.valueobject.id.StudentId;
+import pl.edziennik.common.valueobject.vo.Password;
+import pl.edziennik.common.valueobject.vo.PersonInformation;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.role.Role;
 import pl.edziennik.domain.school.School;
@@ -43,13 +43,19 @@ class CreateStudentCommandHandler implements ICommandHandler<CreateStudentComman
     @CacheEvict(allEntries = true, value = "students")
     public OperationResult handle(CreateStudentCommand command) {
         SchoolClass schoolClass = schoolClassCommandRepository.getBySchoolClassId(command.schoolClassId());
-        School school = schoolCommandRepository.getBySchoolId(command.schoolId());
+        School school = schoolClass.school();
 
         User user = createUser(command);
         PersonInformation personInformation = createPersonInformation(command);
         Address address = createAddress(command);
 
-        Student student = Student.of(user, school, schoolClass, personInformation, address);
+        Student student = Student.builder()
+                .user(user)
+                .school(school)
+                .schoolClass(schoolClass)
+                .personInformation(personInformation)
+                .address(address)
+                .build();
 
         StudentId studentId = studentCommandRepository.save(student).studentId();
 

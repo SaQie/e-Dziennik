@@ -3,7 +3,7 @@ package pl.edziennik.domain.teacher;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
-import pl.edziennik.common.valueobject.PersonInformation;
+import pl.edziennik.common.valueobject.vo.PersonInformation;
 import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.school.School;

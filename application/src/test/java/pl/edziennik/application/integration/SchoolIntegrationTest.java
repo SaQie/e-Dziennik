@@ -9,9 +9,9 @@ import pl.edziennik.application.command.school.changeconfig.ChangeSchoolConfigur
 import pl.edziennik.application.command.school.create.CreateSchoolCommand;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.common.enums.AverageType;
-import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.SchoolLevelId;
+import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.infrastructure.spring.exception.BusinessException;
 import pl.edziennik.infrastructure.validator.ValidationError;

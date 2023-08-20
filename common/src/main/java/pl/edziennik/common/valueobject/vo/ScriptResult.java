@@ -1,4 +1,4 @@
-package pl.edziennik.common.valueobject;
+package pl.edziennik.common.valueobject.vo;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -10,14 +10,13 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-
-import java.io.Serializable;
+import pl.edziennik.common.valueobject.base.StringValueObject;
 
 @Getter
 @Accessors(fluent = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @EqualsAndHashCode(of = "value")
-public class ScriptResult implements ValueObject, Serializable {
+public class ScriptResult implements StringValueObject {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 

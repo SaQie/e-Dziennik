@@ -2,10 +2,10 @@ package pl.edziennik.application.command.admin.create;
 
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
-import pl.edziennik.common.valueobject.Email;
-import pl.edziennik.common.valueobject.Password;
-import pl.edziennik.common.valueobject.Pesel;
-import pl.edziennik.common.valueobject.Username;
+import pl.edziennik.common.valueobject.vo.Email;
+import pl.edziennik.common.valueobject.vo.Password;
+import pl.edziennik.common.valueobject.vo.Pesel;
+import pl.edziennik.common.valueobject.vo.Username;
 import pl.edziennik.domain.admin.Admin;
 import pl.edziennik.domain.user.User;
 import pl.edziennik.infrastructure.validator.ValidationError;

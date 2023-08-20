@@ -1,7 +1,7 @@
 package pl.edziennik.common.view.schoolclass;
 
-import pl.edziennik.common.valueobject.FullName;
-import pl.edziennik.common.valueobject.Name;
+import pl.edziennik.common.valueobject.vo.FullName;
+import pl.edziennik.common.valueobject.vo.Name;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.TeacherId;
 

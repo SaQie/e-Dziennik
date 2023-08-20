@@ -3,8 +3,8 @@ package pl.edziennik.application.command.student.create;
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
 import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.StudentId;
+import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.student.Student;
@@ -52,7 +52,6 @@ class CreateStudentCommandHandlerTest extends BaseUnitTest {
                 Pesel.of("12345678912"),
                 Email.of("Test@example.com"),
                 PhoneNumber.of("123123"),
-                school.schoolId(),
                 schoolClass.schoolClassId()
         );
 

@@ -1,6 +1,6 @@
 package pl.edziennik.application.mock;
 
-import pl.edziennik.common.valueobject.Identifier;
+import pl.edziennik.common.valueobject.base.Identifier;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
 import pl.edziennik.infrastructure.validator.ValidationError;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;

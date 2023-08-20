@@ -1,6 +1,6 @@
 package pl.edziennik.application.mock.repositories;
 
-import pl.edziennik.common.valueobject.Name;
+import pl.edziennik.common.valueobject.vo.Name;
 import pl.edziennik.common.valueobject.id.RoleId;
 import pl.edziennik.domain.role.Role;
 import pl.edziennik.infrastructure.repository.role.RoleCommandRepository;

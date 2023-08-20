@@ -1,6 +1,6 @@
 package pl.edziennik.common.view.grade.allsubjects;
 
-import pl.edziennik.common.valueobject.FullName;
+import pl.edziennik.common.valueobject.vo.FullName;
 import pl.edziennik.common.valueobject.id.StudentId;
 
 import java.util.ArrayList;

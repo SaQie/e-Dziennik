@@ -38,6 +38,7 @@ public class StudentCommandController {
     }
 
     @DeleteMapping("/{studentId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteStudent(@PathVariable StudentId studentId) {
         dispatcher.dispatch(new DeleteStudentCommand(studentId));
 
@@ -45,13 +46,14 @@ public class StudentCommandController {
     }
 
     @PostMapping("/{studentId}/parents/{parentId}/assign")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> assignParent(@PathVariable StudentId studentId, @PathVariable ParentId parentId) {
         dispatcher.dispatch(new AssignParentCommand(studentId, parentId));
 
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{studentId}/address")
+    @PutMapping("/{studentId}/addresses")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateAddress(@PathVariable StudentId studentId, @RequestBody ChangeAddressCommand command) {
         command = new ChangeAddressCommand(studentId.id(),

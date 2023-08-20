@@ -3,7 +3,7 @@ package pl.edziennik.infrastructure;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.edziennik.BaseIntegrationTest;
-import pl.edziennik.common.valueobject.FullName;
+import pl.edziennik.common.valueobject.vo.FullName;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.SubjectId;

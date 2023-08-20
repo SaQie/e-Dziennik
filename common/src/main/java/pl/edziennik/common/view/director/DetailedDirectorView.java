@@ -1,8 +1,8 @@
 package pl.edziennik.common.view.director;
 
-import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.DirectorId;
 import pl.edziennik.common.valueobject.id.SchoolId;
+import pl.edziennik.common.valueobject.vo.*;
 
 public record DetailedDirectorView(
 

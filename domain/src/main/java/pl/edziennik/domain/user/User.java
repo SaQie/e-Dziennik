@@ -3,10 +3,10 @@ package pl.edziennik.domain.user;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
-import pl.edziennik.common.valueobject.Email;
-import pl.edziennik.common.valueobject.Password;
-import pl.edziennik.common.valueobject.Pesel;
-import pl.edziennik.common.valueobject.Username;
+import pl.edziennik.common.valueobject.vo.Email;
+import pl.edziennik.common.valueobject.vo.Password;
+import pl.edziennik.common.valueobject.vo.Pesel;
+import pl.edziennik.common.valueobject.vo.Username;
 import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.domain.role.Role;
 

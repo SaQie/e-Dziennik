@@ -1,4 +1,4 @@
-package pl.edziennik.common.valueobject;
+package pl.edziennik.common.valueobject.vo;
 
 import jakarta.persistence.Convert;
 import jakarta.persistence.Embeddable;

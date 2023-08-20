@@ -2,7 +2,7 @@ package pl.edziennik.common.attribute;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-import pl.edziennik.common.valueobject.FullName;
+import pl.edziennik.common.valueobject.vo.FullName;
 
 @Converter(autoApply = true)
 public class FullNameAttributeConverter implements AttributeConverter<FullName, String> {

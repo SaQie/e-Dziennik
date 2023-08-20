@@ -1,7 +1,7 @@
 package pl.edziennik.common.view.file.studentallsubjectsgrades;
 
-import pl.edziennik.common.valueobject.FullName;
-import pl.edziennik.common.valueobject.Name;
+import pl.edziennik.common.valueobject.vo.FullName;
+import pl.edziennik.common.valueobject.vo.Name;
 
 import java.util.ArrayList;
 import java.util.List;

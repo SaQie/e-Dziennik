@@ -6,16 +6,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import pl.edziennik.common.valueobject.Username;
+import pl.edziennik.common.valueobject.vo.Username;
 import pl.edziennik.domain.user.User;
-import pl.edziennik.infrastructure.repository.user.UserQueryRepository;
+import pl.edziennik.infrastructure.repository.user.UserCommandRepository;
 
 
 @Service
 @AllArgsConstructor
 public class AuthUserDetailsService implements UserDetailsService {
 
-    private final UserQueryRepository repository;
+    private final UserCommandRepository repository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import pl.edziennik.common.exception.InvalidIdentifierException;
-import pl.edziennik.common.valueobject.Identifier;
+import pl.edziennik.common.valueobject.base.Identifier;
 
 import java.io.Serializable;
 import java.util.UUID;

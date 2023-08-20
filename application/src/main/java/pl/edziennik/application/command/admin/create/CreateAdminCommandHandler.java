@@ -5,7 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
-import pl.edziennik.common.valueobject.Password;
+import pl.edziennik.common.valueobject.vo.Password;
 import pl.edziennik.common.valueobject.id.AdminId;
 import pl.edziennik.common.valueobject.id.RoleId;
 import pl.edziennik.domain.admin.Admin;

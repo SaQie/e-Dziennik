@@ -2,9 +2,9 @@ package pl.edziennik.infrastructure.repository.school;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.RepositoryDefinition;
-import pl.edziennik.common.valueobject.Name;
-import pl.edziennik.common.valueobject.Nip;
-import pl.edziennik.common.valueobject.Regon;
+import pl.edziennik.common.valueobject.vo.Name;
+import pl.edziennik.common.valueobject.vo.Nip;
+import pl.edziennik.common.valueobject.vo.Regon;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.domain.school.School;
 

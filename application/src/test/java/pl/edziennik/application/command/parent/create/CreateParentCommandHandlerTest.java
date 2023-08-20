@@ -3,8 +3,8 @@ package pl.edziennik.application.command.parent.create;
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
 import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.ParentId;
+import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.parent.Parent;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;

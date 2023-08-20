@@ -6,9 +6,10 @@ import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.base.HandledBy;
 import pl.edziennik.application.common.dispatcher.base.ValidatedBy;
 import pl.edziennik.application.common.dispatcher.command.ICommand;
-import pl.edziennik.common.valueobject.Password;
-import pl.edziennik.common.valueobject.Pesel;
-import pl.edziennik.common.valueobject.Username;
+import pl.edziennik.common.valueobject.vo.Email;
+import pl.edziennik.common.valueobject.vo.Password;
+import pl.edziennik.common.valueobject.vo.Pesel;
+import pl.edziennik.common.valueobject.vo.Username;
 
 /**
  * A command used for creating a new admin account
@@ -20,7 +21,7 @@ import pl.edziennik.common.valueobject.Username;
 public record CreateAdminCommand(
 
         @Valid @NotNull(message = "{username.empty}") Username username,
-        @Valid @NotNull(message = "{email.empty}") pl.edziennik.common.valueobject.Email email,
+        @Valid @NotNull(message = "{email.empty}") Email email,
         @Valid @NotNull(message = "{password.empty}") Password password,
         @Valid @NotNull(message = "{pesel.empty}") Pesel pesel
 

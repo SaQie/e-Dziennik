@@ -3,8 +3,8 @@ package pl.edziennik.domain.address;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
-import pl.edziennik.common.valueobject.City;
-import pl.edziennik.common.valueobject.PostalCode;
+import pl.edziennik.common.valueobject.vo.City;
+import pl.edziennik.common.valueobject.vo.PostalCode;
 import pl.edziennik.common.valueobject.id.AddressId;
 
 
@@ -23,7 +23,7 @@ public class Address {
     @AttributeOverrides({
             @AttributeOverride(name = "value", column = @Column(name = "address", nullable = false))
     })
-    private pl.edziennik.common.valueobject.Address address;
+    private pl.edziennik.common.valueobject.vo.Address address;
 
     @Embedded
     @AttributeOverrides({
@@ -42,7 +42,7 @@ public class Address {
 
 
     @Builder
-    public static Address of(pl.edziennik.common.valueobject.Address address, City city, PostalCode postalCode) {
+    public static Address of(pl.edziennik.common.valueobject.vo.Address address, City city, PostalCode postalCode) {
         Address addressEntity = new Address();
 
         addressEntity.city = city;
@@ -60,7 +60,7 @@ public class Address {
         this.postalCode = postalCode;
     }
 
-    public void changeAddress(pl.edziennik.common.valueobject.Address address) {
+    public void changeAddress(pl.edziennik.common.valueobject.vo.Address address) {
         this.address = address;
     }
 }

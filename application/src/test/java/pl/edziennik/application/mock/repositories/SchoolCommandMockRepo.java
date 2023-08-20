@@ -1,8 +1,8 @@
 package pl.edziennik.application.mock.repositories;
 
-import pl.edziennik.common.valueobject.Name;
-import pl.edziennik.common.valueobject.Nip;
-import pl.edziennik.common.valueobject.Regon;
+import pl.edziennik.common.valueobject.vo.Name;
+import pl.edziennik.common.valueobject.vo.Nip;
+import pl.edziennik.common.valueobject.vo.Regon;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.infrastructure.repository.school.SchoolCommandRepository;

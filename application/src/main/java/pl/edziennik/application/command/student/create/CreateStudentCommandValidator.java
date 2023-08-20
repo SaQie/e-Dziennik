@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
 import pl.edziennik.application.common.dispatcher.base.IBaseValidator;
-import pl.edziennik.infrastructure.repository.school.SchoolCommandRepository;
 import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassCommandRepository;
-import pl.edziennik.infrastructure.repository.student.StudentCommandRepository;
 import pl.edziennik.infrastructure.repository.user.UserCommandRepository;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
@@ -20,22 +18,15 @@ class CreateStudentCommandValidator implements IBaseValidator<CreateStudentComma
     public static final String MESSAGE_KEY_SCHOOL_CLASS_NOT_BELONGS_TO_SCHOOL = "school.class.not.belong.to.school";
     public static final String MESSAGE_KEY_SCHOOL_CLASS_STUDENT_LIMIT_REACHED = "school.class.student.limit.reached";
 
-    private final StudentCommandRepository studentCommandRepository;
     private final SchoolClassCommandRepository schoolClassCommandRepository;
-    private final SchoolCommandRepository schoolCommandRepository;
     private final UserCommandRepository userCommandRepository;
 
     @Override
     public void validate(CreateStudentCommand command, ValidationErrorBuilder errorBuilder) {
-        checkSchoolExists(command, errorBuilder);
         checkSchoolClassExists(command, errorBuilder);
-
-        errorBuilder.flush();
-
         checkUserWithEmailExists(command, errorBuilder);
         checkUserWithUsernameExists(command, errorBuilder);
         checkStudentWithPeselExists(command, errorBuilder);
-        checkSchoolClassBelongToSchool(command, errorBuilder);
         checkSchoolClassStudentLimit(command, errorBuilder);
 
     }
@@ -53,18 +44,6 @@ class CreateStudentCommandValidator implements IBaseValidator<CreateStudentComma
         }
     }
 
-    /**
-     * Check if given school class belong to given school
-     */
-    private void checkSchoolClassBelongToSchool(CreateStudentCommand command, ValidationErrorBuilder errorBuilder) {
-        if (!schoolClassCommandRepository.isSchoolClassBelongToSchool(command.schoolClassId(), command.schoolId())) {
-            errorBuilder.addError(
-                    CreateStudentCommand.SCHOOL_ID,
-                    MESSAGE_KEY_SCHOOL_CLASS_NOT_BELONGS_TO_SCHOOL,
-                    ErrorCode.SCHOOL_CLASS_IS_NOT_PART_OF_SCHOOL
-            );
-        }
-    }
 
     /**
      * Check if student with given pesel already exists
@@ -117,14 +96,4 @@ class CreateStudentCommandValidator implements IBaseValidator<CreateStudentComma
                 });
     }
 
-    /**
-     * Check if school with given id exists
-     */
-    private void checkSchoolExists(CreateStudentCommand command, ValidationErrorBuilder errorBuilder) {
-        schoolCommandRepository.findById(command.schoolId())
-                .orElseGet(() -> {
-                    errorBuilder.addNotFoundError(CreateStudentCommand.SCHOOL_ID);
-                    return null;
-                });
-    }
 }

@@ -1,6 +1,6 @@
 package pl.edziennik.application.mock.repositories;
 
-import pl.edziennik.common.valueobject.Token;
+import pl.edziennik.common.valueobject.vo.Token;
 import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.infrastructure.repository.token.ActivationTokenRepository;
 

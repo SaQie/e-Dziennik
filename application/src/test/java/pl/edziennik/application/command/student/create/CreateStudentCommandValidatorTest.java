@@ -4,9 +4,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
 import pl.edziennik.application.mock.repositories.RoleCommandMockRepo;
-import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
-import pl.edziennik.common.valueobject.id.SchoolId;
+import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.student.Student;
@@ -23,41 +22,10 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
     private final CreateStudentCommandValidator validator;
 
     public CreateStudentCommandValidatorTest() {
-        this.validator = new CreateStudentCommandValidator(studentCommandRepository,
-                schoolClassCommandRepository,
-                schoolCommandRepository, userCommandRepository);
+        this.validator = new CreateStudentCommandValidator(schoolClassCommandRepository,
+                userCommandRepository);
     }
 
-    @Test
-    public void shouldThrowErrorWhenSchoolNotExists() {
-        // given
-        School school = createSchool("Test", "123123123", "123123123", address);
-        school = schoolCommandRepository.save(school);
-
-        SchoolClass schoolClass = createSchoolClass("Testowa", school, null);
-        schoolClass = schoolClassCommandRepository.save(schoolClass);
-
-        CreateStudentCommand command = new CreateStudentCommand(
-                Password.of("Test"),
-                Username.of("Test112"),
-                FirstName.of("Kamil"),
-                LastName.of("Nowak"),
-                Address.of("Test"),
-                PostalCode.of("123123"),
-                City.of("Nowakowo"),
-                Pesel.of("99999999999"),
-                Email.of("Test@example.com"),
-                PhoneNumber.of("123123"),
-                SchoolId.create(),
-                schoolClass.schoolClassId()
-        );
-
-        // when
-        // then
-        Assertions.assertThatThrownBy(() -> validator.validate(command, validationErrorBuilder))
-                .isInstanceOf(BusinessException.class)
-                .hasMessage(assertBusinessExceptionMessage(CreateStudentCommand.SCHOOL_ID));
-    }
 
     @Test
     public void shouldThrowErrorWhenSchoolClassNotExists() {
@@ -76,7 +44,6 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
                 Pesel.of("99999999999"),
                 Email.of("Test@example.com"),
                 PhoneNumber.of("123123"),
-                school.schoolId(),
                 SchoolClassId.create()
         );
 
@@ -113,7 +80,6 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
                 Pesel.of("99999999999"),
                 Email.of("Test@example.com"),
                 PhoneNumber.of("123123"),
-                school.schoolId(),
                 schoolClass.schoolClassId()
         );
 
@@ -152,7 +118,6 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
                 Pesel.of("99999999999"),
                 Email.of("Test@example.com"),
                 PhoneNumber.of("123123"),
-                school.schoolId(),
                 schoolClass.schoolClassId()
         );
 
@@ -191,7 +156,6 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
                 Pesel.of(user.pesel().value()),
                 Email.of("Test@example.com"),
                 PhoneNumber.of("123123"),
-                school.schoolId(),
                 schoolClass.schoolClassId()
         );
 
@@ -205,42 +169,6 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
         assertEquals(errors.get(0).message(), CreateStudentCommandValidator.MESSAGE_KEY_STUDENT_PESEL_NOT_UNIQUE);
     }
 
-    @Test
-    public void shouldAddErrorWhenSchoolClassNotBelongsToSchool() {
-        // given
-        School school = createSchool("FirstSchool", "123123123", "123123123", address);
-        school = schoolCommandRepository.save(school);
-
-        SchoolClass schoolClass = createSchoolClass("Test", school, null);
-        schoolClass = schoolClassCommandRepository.save(schoolClass);
-
-        School secondSchool = createSchool("SecondSchool", "123123123", "123123123", address);
-        secondSchool = schoolCommandRepository.save(secondSchool);
-
-        CreateStudentCommand command = new CreateStudentCommand(
-                Password.of("Test"),
-                Username.of("Test"),
-                FirstName.of("Kamil"),
-                LastName.of("Nowak"),
-                Address.of("Test"),
-                PostalCode.of("123123"),
-                City.of("Nowakowo"),
-                Pesel.of("12345678912"),
-                Email.of("Test@example.com"),
-                PhoneNumber.of("123123"),
-                secondSchool.schoolId(),
-                schoolClass.schoolClassId()
-        );
-
-        // when
-        validator.validate(command, validationErrorBuilder);
-
-        // then
-        List<ValidationError> errors = validationErrorBuilder.getErrors();
-        assertEquals(errors.size(), 1);
-        assertEquals(errors.get(0).field(), CreateStudentCommand.SCHOOL_ID);
-        assertEquals(errors.get(0).message(), CreateStudentCommandValidator.MESSAGE_KEY_SCHOOL_CLASS_NOT_BELONGS_TO_SCHOOL);
-    }
 
     @Test
     public void shouldAddErrorWhenSchoolClassStudentLimitReached() {
@@ -266,7 +194,6 @@ class CreateStudentCommandValidatorTest extends BaseUnitTest {
                 Pesel.of("12345678912"),
                 Email.of("Test@example.com"),
                 PhoneNumber.of("123123"),
-                school.schoolId(),
                 schoolClass.schoolClassId()
         );
 

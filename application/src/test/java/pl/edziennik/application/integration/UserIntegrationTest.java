@@ -8,8 +8,8 @@ import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.command.student.create.CreateStudentCommand;
 import pl.edziennik.application.command.user.activate.ActivateUserCommand;
 import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.*;
+import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.student.Student;
 import pl.edziennik.domain.user.User;
 
@@ -39,7 +39,6 @@ public class UserIntegrationTest extends BaseIntegrationTest {
                 Pesel.of("123123123"),
                 Email.of("test1@example.com"),
                 PhoneNumber.of("123123"),
-                schoolId,
                 schoolClassId
         );
 
@@ -49,7 +48,7 @@ public class UserIntegrationTest extends BaseIntegrationTest {
         // then
         Student student = studentCommandRepository.getByStudentId(StudentId.of(operationResult.identifier().id()));
         UserId userId = transactionTemplate.execute((i) -> student.user().userId());
-        User user = userQueryRepository.getUserByUserId(userId);
+        User user = userCommandRepository.getUserByUserId(userId);
         assertNotNull(user);
         assertFalse(user.isActive());
     }
@@ -72,7 +71,6 @@ public class UserIntegrationTest extends BaseIntegrationTest {
                 Pesel.of("123123123"),
                 Email.of("test1@example.com"),
                 PhoneNumber.of("123123"),
-                schoolId,
                 schoolClassId
         );
         OperationResult result = dispatcher.dispatch(command);
@@ -95,7 +93,7 @@ public class UserIntegrationTest extends BaseIntegrationTest {
         dispatcher.dispatch(activateUserCommand);
 
         // then
-        User user = userQueryRepository.getUserByUserId(userId);
+        User user = userCommandRepository.getUserByUserId(userId);
         assertTrue(user.isActive());
 
         List<String> list = jdbcTemplate.queryForList(

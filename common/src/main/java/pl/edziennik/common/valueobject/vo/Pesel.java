@@ -1,5 +1,4 @@
-package pl.edziennik.common.valueobject;
-
+package pl.edziennik.common.valueobject.vo;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -9,27 +8,27 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.hibernate.validator.constraints.pl.PESEL;
+import pl.edziennik.common.valueobject.base.StringValueObject;
 
-import java.io.Serializable;
 
 @Getter
 @Accessors(fluent = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @EqualsAndHashCode(of = "value")
-public class Email implements ValueObject, Serializable {
+public class Pesel implements StringValueObject {
 
     @JsonValue
-    @jakarta.validation.constraints.Email(message = "{email.is.not.valid}")
-    @NotEmpty(message = "{email.empty}")
+    @PESEL(message = "{pesel.invalid}")
     private final String value;
 
-    private Email(String value) {
+    private Pesel(String value) {
         this.value = value;
     }
 
     @JsonCreator
-    public static Email of(@NotEmpty String value) {
-        return new Email(value);
+    public static Pesel of(@NotEmpty String value) {
+        return new Pesel(value);
     }
 
     @Override
