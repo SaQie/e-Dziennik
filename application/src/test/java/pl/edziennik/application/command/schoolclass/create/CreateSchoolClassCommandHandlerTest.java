@@ -3,7 +3,7 @@ package pl.edziennik.application.command.schoolclass.create;
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
 import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.common.valueobject.Name;
+import pl.edziennik.common.valueobject.vo.Name;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.TeacherId;

@@ -9,7 +9,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.application.command.groovy.ExecuteGroovyScriptCommand;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.common.valueobject.ScriptContent;
+import pl.edziennik.common.valueobject.vo.ScriptContent;
 
 import java.net.URI;
 

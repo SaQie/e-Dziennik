@@ -3,7 +3,7 @@ package pl.edziennik.domain.chat;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
-import pl.edziennik.common.valueobject.Name;
+import pl.edziennik.common.valueobject.vo.Name;
 import pl.edziennik.common.valueobject.id.MessageStatusId;
 
 @Entity

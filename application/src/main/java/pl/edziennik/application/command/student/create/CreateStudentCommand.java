@@ -6,9 +6,8 @@ import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.base.HandledBy;
 import pl.edziennik.application.common.dispatcher.base.ValidatedBy;
 import pl.edziennik.application.common.dispatcher.command.ICommand;
-import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
-import pl.edziennik.common.valueobject.id.SchoolId;
+import pl.edziennik.common.valueobject.vo.*;
 
 /**
  * A command used for creating a new student account
@@ -25,9 +24,8 @@ public record CreateStudentCommand(
         @Valid @NotNull(message = "{postalCode.empty}") PostalCode postalCode,
         @Valid @NotNull(message = "{city.empty}") City city,
         @Valid @NotNull(message = "{pesel.invalid}") Pesel pesel,
-        @Valid @NotNull(message = "{email.empty}") pl.edziennik.common.valueobject.Email email,
+        @Valid @NotNull(message = "{email.empty}") Email email,
         @Valid @NotNull(message = "{phone.invalid}") PhoneNumber phoneNumber,
-        @NotNull(message = "{school.empty}") SchoolId schoolId,
         @NotNull(message = "{schoolClass.empty}") SchoolClassId schoolClassId
 
 ) implements ICommand<OperationResult> {
@@ -41,7 +39,6 @@ public record CreateStudentCommand(
     public static final String PESEL = "pesel";
     public static final String ROLE = "role";
     public static final String PHONE_NUMBER = "phoneNumber";
-    public static final String SCHOOL_ID = "schoolId";
     public static final String SCHOOL_CLASS_ID = "schoolClassId";
     public static final String EMAIL = "email";
 

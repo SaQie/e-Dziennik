@@ -3,7 +3,7 @@ package pl.edziennik.application.command.user.activate;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
-import pl.edziennik.common.valueobject.Token;
+import pl.edziennik.common.valueobject.vo.Token;
 import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.infrastructure.spring.exception.BusinessException;
 import pl.edziennik.infrastructure.validator.ValidationError;

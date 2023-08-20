@@ -5,8 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
 import pl.edziennik.common.attribute.ScriptResultAttributeConverter;
-import pl.edziennik.common.valueobject.ScriptResult;
 import pl.edziennik.common.valueobject.id.GroovyScriptResultId;
+import pl.edziennik.common.valueobject.vo.GroovyScriptExecTime;
+import pl.edziennik.common.valueobject.vo.ScriptResult;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,13 +33,17 @@ public class GroovyScriptResult {
     @JoinColumn(name = "groovy_script_id", referencedColumnName = "id", nullable = false)
     private GroovyScript groovyScript;
 
-    private Long execTime;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "value", column = @Column(name = "exec_time", nullable = false))
+    })
+    private GroovyScriptExecTime execTime;
 
     @Version
     private Long version;
 
     @Builder
-    public static GroovyScriptResult of(ScriptResult scriptResult, GroovyScript groovyScript, Long execTime) {
+    public static GroovyScriptResult of(ScriptResult scriptResult, GroovyScript groovyScript, GroovyScriptExecTime execTime) {
         GroovyScriptResult groovyScriptResult = new GroovyScriptResult();
 
         groovyScriptResult.groovyScript = groovyScript;

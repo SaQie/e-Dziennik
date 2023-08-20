@@ -1,8 +1,8 @@
 package pl.edziennik.common.view.school;
 
-import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.SchoolLevelId;
+import pl.edziennik.common.valueobject.vo.*;
 
 public record DetailedSchoolView(
         SchoolId schoolId,

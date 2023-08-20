@@ -3,7 +3,7 @@ package pl.edziennik.application.command.user.changepassword;
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
 import pl.edziennik.application.mock.repositories.RoleCommandMockRepo;
-import pl.edziennik.common.valueobject.Password;
+import pl.edziennik.common.valueobject.vo.Password;
 import pl.edziennik.domain.user.User;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

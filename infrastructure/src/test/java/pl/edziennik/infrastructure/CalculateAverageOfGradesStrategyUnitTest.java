@@ -1,7 +1,7 @@
 package pl.edziennik.infrastructure;
 
 import org.junit.jupiter.api.Test;
-import pl.edziennik.common.valueobject.Weight;
+import pl.edziennik.common.valueobject.vo.Weight;
 import pl.edziennik.domain.grade.Grade;
 import pl.edziennik.infrastructure.strategy.grades.CalculateAverageOfGradesStrategyInput;
 import pl.edziennik.infrastructure.strategy.grades.CalculateAverageOfGradesStrategyOutput;

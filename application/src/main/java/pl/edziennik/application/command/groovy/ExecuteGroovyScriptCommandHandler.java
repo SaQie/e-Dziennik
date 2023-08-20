@@ -7,9 +7,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
-import pl.edziennik.common.valueobject.ScriptResult;
-import pl.edziennik.common.valueobject.Username;
 import pl.edziennik.common.valueobject.id.GroovyScriptStatusId;
+import pl.edziennik.common.valueobject.vo.GroovyScriptExecTime;
+import pl.edziennik.common.valueobject.vo.ScriptResult;
+import pl.edziennik.common.valueobject.vo.Username;
 import pl.edziennik.domain.groovy.GroovyScript;
 import pl.edziennik.domain.groovy.GroovyScriptResult;
 import pl.edziennik.domain.groovy.GroovyScriptStatus;
@@ -17,7 +18,7 @@ import pl.edziennik.domain.user.User;
 import pl.edziennik.infrastructure.repository.groovy.GroovyScriptCommandRepository;
 import pl.edziennik.infrastructure.repository.groovy.result.GroovyScriptResultCommandRepository;
 import pl.edziennik.infrastructure.repository.groovy.status.GroovyScriptStatusQueryRepository;
-import pl.edziennik.infrastructure.repository.user.UserQueryRepository;
+import pl.edziennik.infrastructure.repository.user.UserCommandRepository;
 import pl.edziennik.infrastructure.spring.exception.BusinessException;
 import pl.edziennik.infrastructure.spring.script.GroovyScriptExecResult;
 import pl.edziennik.infrastructure.spring.script.GroovyShellExecutor;
@@ -31,7 +32,7 @@ import java.time.Instant;
 class ExecuteGroovyScriptCommandHandler implements ICommandHandler<ExecuteGroovyScriptCommand, OperationResult> {
 
     private final GroovyShellExecutor groovyShellExecutor;
-    private final UserQueryRepository userQueryRepository;
+    private final UserCommandRepository userCommandRepository;
     private final GroovyScriptStatusQueryRepository groovyScriptStatusQueryRepository;
     private final GroovyScriptCommandRepository groovyScriptCommandRepository;
     private final GroovyScriptResultCommandRepository groovyScriptResultCommandRepository;
@@ -41,7 +42,7 @@ class ExecuteGroovyScriptCommandHandler implements ICommandHandler<ExecuteGroovy
     public OperationResult handle(ExecuteGroovyScriptCommand command) {
         // 1. Get required information
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userQueryRepository.getByUsername(Username.of(name));
+        User user = userCommandRepository.getByUsername(Username.of(name));
         GroovyScriptStatus scriptStatus = groovyScriptStatusQueryRepository.getByGroovyScriptStatusId(
                 GroovyScriptStatusId.PredefinedRow.EXECUTING);
 
@@ -73,7 +74,7 @@ class ExecuteGroovyScriptCommandHandler implements ICommandHandler<ExecuteGroovy
             GroovyScriptResult groovyScriptResult = GroovyScriptResult.builder()
                     .groovyScript(script)
                     .scriptResult(scriptExecResult.result())
-                    .execTime(execTime.toMillis())
+                    .execTime(GroovyScriptExecTime.of(execTime))
                     .build();
 
             groovyScriptResultCommandRepository.save(groovyScriptResult);
@@ -85,7 +86,7 @@ class ExecuteGroovyScriptCommandHandler implements ICommandHandler<ExecuteGroovy
             GroovyScriptResult groovyScriptResult = GroovyScriptResult.builder()
                     .groovyScript(script)
                     .scriptResult(ScriptResult.of(scriptExecResult.error().getMessage()))
-                    .execTime(0L)
+                    .execTime(GroovyScriptExecTime.none())
                     .build();
 
             groovyScriptResultCommandRepository.save(groovyScriptResult);

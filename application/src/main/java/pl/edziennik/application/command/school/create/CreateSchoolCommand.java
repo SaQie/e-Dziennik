@@ -7,8 +7,8 @@ import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.base.HandledBy;
 import pl.edziennik.application.common.dispatcher.base.ValidatedBy;
 import pl.edziennik.application.common.dispatcher.command.ICommand;
-import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.SchoolLevelId;
+import pl.edziennik.common.valueobject.vo.*;
 
 /**
  * A command used for creating a new school

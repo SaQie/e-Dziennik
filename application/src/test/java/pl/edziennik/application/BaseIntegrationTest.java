@@ -20,8 +20,9 @@ import org.springframework.transaction.support.TransactionTemplate;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.common.properties.SchoolClassConfigurationProperties;
 import pl.edziennik.common.properties.SchoolConfigurationProperties;
-import pl.edziennik.common.valueobject.*;
+import pl.edziennik.common.valueobject.base.Identifier;
 import pl.edziennik.common.valueobject.id.*;
+import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.admin.Admin;
 import pl.edziennik.domain.director.Director;
@@ -75,6 +76,8 @@ import pl.edziennik.infrastructure.repository.user.UserQueryRepository;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
 import pl.edziennik.infrastructure.validator.ValidationError;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
+
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -191,7 +194,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
 
 
     protected final Address address = Address.of(
-            pl.edziennik.common.valueobject.Address.of("Test"),
+            pl.edziennik.common.valueobject.vo.Address.of("Test"),
             City.of("test"),
             PostalCode.of("123123")
     );
@@ -417,7 +420,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         GroovyScriptResult scriptResult = GroovyScriptResult.builder()
                 .groovyScript(groovyScript)
                 .scriptResult(ScriptResult.of("Test"))
-                .execTime(10L)
+                .execTime(GroovyScriptExecTime.of(Duration.ZERO))
                 .build();
 
         groovyScriptResultCommandRepository.save(scriptResult);
@@ -427,7 +430,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
 
     private Address createAddress() {
         return Address.of(
-                pl.edziennik.common.valueobject.Address.of("Test"),
+                pl.edziennik.common.valueobject.vo.Address.of("Test"),
                 City.of("Test"),
                 PostalCode.of("12-123"));
     }

@@ -1,7 +1,7 @@
 package pl.edziennik.common.view.student;
 
-import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.*;
+import pl.edziennik.common.valueobject.vo.*;
 
 import java.io.Serializable;
 

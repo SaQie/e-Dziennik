@@ -16,8 +16,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 import pl.edziennik.common.properties.SchoolClassConfigurationProperties;
 import pl.edziennik.common.properties.SchoolConfigurationProperties;
-import pl.edziennik.common.valueobject.*;
+import pl.edziennik.common.valueobject.base.Identifier;
 import pl.edziennik.common.valueobject.id.*;
+import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.admin.Admin;
 import pl.edziennik.domain.chat.ChatMessage;
@@ -78,6 +79,8 @@ import pl.edziennik.infrastructure.repository.teacher.TeacherQueryRepository;
 import pl.edziennik.infrastructure.repository.user.UserCommandRepository;
 import pl.edziennik.infrastructure.repository.user.UserQueryRepository;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
+
+import java.time.Duration;
 
 @EnableJpaRepositories(basePackages = {"pl.edziennik.infrastructure.repository"})
 @EntityScan(basePackages = {"pl.edziennik.domain"})
@@ -199,7 +202,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     protected MessageStatus receivedMessageStatus;
 
     protected final Address address = Address.of(
-            pl.edziennik.common.valueobject.Address.of("Test"),
+            pl.edziennik.common.valueobject.vo.Address.of("Test"),
             City.of("Test"),
             PostalCode.of("12-123")
     );
@@ -410,7 +413,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         GroovyScriptResult scriptResult = GroovyScriptResult.builder()
                 .groovyScript(groovyScript)
                 .scriptResult(ScriptResult.of("Test"))
-                .execTime(10L)
+                .execTime(GroovyScriptExecTime.of(Duration.ZERO))
                 .build();
 
         groovyScriptResultCommandRepository.save(scriptResult);
@@ -453,7 +456,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
 
     private Address createAddress() {
         return Address.of(
-                pl.edziennik.common.valueobject.Address.of("Test"),
+                pl.edziennik.common.valueobject.vo.Address.of("Test"),
                 City.of("Test"),
                 PostalCode.of("12-123"));
     }

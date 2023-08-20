@@ -7,8 +7,8 @@ import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.command.grademanagment.assigngrade.AssignGradeToStudentSubjectCommand;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.common.enums.Grade;
-import pl.edziennik.common.valueobject.Description;
-import pl.edziennik.common.valueobject.Weight;
+import pl.edziennik.common.valueobject.vo.Description;
+import pl.edziennik.common.valueobject.vo.Weight;
 import pl.edziennik.common.valueobject.id.*;
 import pl.edziennik.domain.studentsubject.StudentSubject;
 

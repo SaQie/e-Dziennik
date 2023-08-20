@@ -1,9 +1,9 @@
 package pl.edziennik.application.mock.repositories;
 
-import pl.edziennik.common.valueobject.Email;
-import pl.edziennik.common.valueobject.Pesel;
-import pl.edziennik.common.valueobject.Username;
 import pl.edziennik.common.valueobject.id.UserId;
+import pl.edziennik.common.valueobject.vo.Email;
+import pl.edziennik.common.valueobject.vo.Pesel;
+import pl.edziennik.common.valueobject.vo.Username;
 import pl.edziennik.domain.user.User;
 import pl.edziennik.infrastructure.repository.user.UserCommandRepository;
 
@@ -58,6 +58,22 @@ public class UserCommandMockRepo implements UserCommandRepository {
     public User save(User user) {
         this.database.put(user.userId(), user);
         return database.get(user.userId());
+    }
+
+    @Override
+    public User getByUsername(Username username) {
+        List<User> users = database.values().stream()
+                .filter(item -> item.username().equals(username))
+                .toList();
+        return users.size() > 0 ? users.get(0) : null;
+    }
+
+    @Override
+    public User getByPesel(Pesel pesel) {
+        List<User> users = database.values().stream()
+                .filter(item -> item.pesel().equals(pesel))
+                .toList();
+        return users.size() > 0 ? users.get(0) : null;
     }
 
     @Override

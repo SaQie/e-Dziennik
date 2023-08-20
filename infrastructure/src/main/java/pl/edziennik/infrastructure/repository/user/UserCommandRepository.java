@@ -3,10 +3,10 @@ package pl.edziennik.infrastructure.repository.user;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.RepositoryDefinition;
-import pl.edziennik.common.valueobject.Email;
-import pl.edziennik.common.valueobject.Pesel;
-import pl.edziennik.common.valueobject.Username;
 import pl.edziennik.common.valueobject.id.UserId;
+import pl.edziennik.common.valueobject.vo.Email;
+import pl.edziennik.common.valueobject.vo.Pesel;
+import pl.edziennik.common.valueobject.vo.Username;
 import pl.edziennik.domain.user.User;
 
 import java.util.List;
@@ -28,6 +28,16 @@ public interface UserCommandRepository {
     Optional<User> findById(UserId userId);
 
     User save(User user);
+
+    @Query("SELECT u FROM User u " +
+            "JOIN FETCH u.role " +
+            "WHERE u.username = :username")
+    User getByUsername(Username username);
+
+    @Query("SELECT u FROM User u " +
+            "JOIN FETCH u.role " +
+            "WHERE u.pesel = :pesel")
+    User getByPesel(Pesel pesel);
 
     User getUserByUserId(UserId userId);
 }

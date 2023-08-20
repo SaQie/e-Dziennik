@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.edziennik.BaseIntegrationTest;
-import pl.edziennik.common.valueobject.ChatContent;
+import pl.edziennik.common.valueobject.vo.ChatContent;
 import pl.edziennik.common.valueobject.id.ChatId;
 import pl.edziennik.common.valueobject.id.RecipientId;
 import pl.edziennik.common.valueobject.id.SenderId;

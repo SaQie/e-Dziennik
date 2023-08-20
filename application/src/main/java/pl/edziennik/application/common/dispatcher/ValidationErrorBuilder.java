@@ -28,20 +28,24 @@ public class ValidationErrorBuilder {
         return this;
     }
 
-    public void addError(String field, String message, ErrorCode errorCode,Object... objects) {
-        ValidationError validationError = new ValidationError(field, res.of(message,objects), errorCode.errorCode());
+    public void addError(String field, String message, ErrorCode errorCode, Object... objects) {
+        ValidationError validationError = new ValidationError(field, res.of(message, objects), errorCode.errorCode());
         this.errors.add(validationError);
     }
 
     public void addError(String field, String message, String detail, ErrorCode errorCode, Object... objects) {
-        ValidationError validationError = new ValidationError(field, errorCode.errorCode(), res.of(message,objects), detail);
+        ValidationError validationError = new ValidationError(field, errorCode.errorCode(), res.of(message, objects), detail);
         this.errors.add(validationError);
     }
 
+    /**
+     * Adding a not found error and throws the error immediately
+     */
     public void addNotFoundError(String field) {
         ValidationError validationError = new ValidationError(field, res.of(NOT_FOUND_MESSAGE_KEY, field),
                 ErrorCode.OBJECT_NOT_EXISTS.errorCode());
         this.errors.add(validationError);
+        build();
     }
 
     public List<ValidationError> getErrors() {

@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
 import pl.edziennik.common.properties.SchoolClassConfigurationProperties;
-import pl.edziennik.common.valueobject.Name;
+import pl.edziennik.common.valueobject.vo.Name;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.student.Student;

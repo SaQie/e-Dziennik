@@ -1,8 +1,8 @@
 package pl.edziennik.common.view.grade.allsubjects;
 
 import pl.edziennik.common.view.grade.DetailedGradeView;
-import pl.edziennik.common.valueobject.FullName;
-import pl.edziennik.common.valueobject.Name;
+import pl.edziennik.common.valueobject.vo.FullName;
+import pl.edziennik.common.valueobject.vo.Name;
 import pl.edziennik.common.valueobject.id.StudentSubjectId;
 
 import java.util.ArrayList;

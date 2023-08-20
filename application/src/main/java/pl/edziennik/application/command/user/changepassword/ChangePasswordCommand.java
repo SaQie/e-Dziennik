@@ -6,7 +6,7 @@ import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.base.HandledBy;
 import pl.edziennik.application.common.dispatcher.base.ValidatedBy;
 import pl.edziennik.application.common.dispatcher.command.ICommand;
-import pl.edziennik.common.valueobject.Password;
+import pl.edziennik.common.valueobject.vo.Password;
 import pl.edziennik.common.valueobject.id.UserId;
 
 /**

@@ -8,10 +8,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
-import pl.edziennik.common.valueobject.Token;
+import pl.edziennik.common.valueobject.vo.Token;
 import pl.edziennik.domain.user.User;
 import pl.edziennik.infrastructure.repository.token.ActivationTokenRepository;
-import pl.edziennik.infrastructure.repository.user.UserQueryRepository;
+import pl.edziennik.infrastructure.repository.user.UserCommandRepository;
 import pl.edziennik.infrastructure.strategy.confirmation.SendConfirmationMessageStrategy;
 import pl.edziennik.infrastructure.strategy.confirmation.SendConfirmationMessageStrategyData;
 import pl.edziennik.infrastructure.strategy.confirmation.email.EmailConfirmationMessageViewStrategy;
@@ -24,14 +24,14 @@ import java.util.UUID;
 @Slf4j
 public class SendConfirmationMessageByEmailStrategy implements SendConfirmationMessageStrategy {
 
-    private final UserQueryRepository userQueryRepository;
+    private final UserCommandRepository userCommandRepository;
     private final ActivationTokenRepository tokenRepository;
     private final JavaMailSender sender;
     private final List<EmailConfirmationMessageViewStrategy> emailConfirmationMessageViewStrategy;
 
     @Override
     public void sendMessage(SendConfirmationMessageStrategyData data) {
-        User user = userQueryRepository.getUserByUserId(data.userId());
+        User user = userCommandRepository.getUserByUserId(data.userId());
         UUID activationToken = UUID.randomUUID();
 
         String mailViewByStrategy = emailConfirmationMessageViewStrategy.stream()

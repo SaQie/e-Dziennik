@@ -7,11 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.command.student.create.CreateStudentCommand;
 import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.id.TeacherId;
+import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.student.Student;
 import pl.edziennik.infrastructure.spring.exception.BusinessException;
@@ -45,7 +45,6 @@ public class StudentIntegrationTest extends BaseIntegrationTest {
                 Pesel.of("123123123"),
                 Email.of("test1@example.com"),
                 PhoneNumber.of("123123"),
-                schoolId,
                 schoolClassId
         );
 
@@ -79,7 +78,6 @@ public class StudentIntegrationTest extends BaseIntegrationTest {
                 Pesel.of("123123123"),
                 Email.of("test@example.com"),
                 PhoneNumber.of("123123"),
-                schoolId,
                 schoolClassId
         );
 
@@ -122,7 +120,6 @@ public class StudentIntegrationTest extends BaseIntegrationTest {
                 Pesel.of("123123123"),
                 Email.of("test@example.com"),
                 PhoneNumber.of("123123"),
-                schoolId,
                 schoolClassId
         );
 

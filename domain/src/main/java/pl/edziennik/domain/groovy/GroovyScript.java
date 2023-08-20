@@ -3,7 +3,7 @@ package pl.edziennik.domain.groovy;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
-import pl.edziennik.common.valueobject.ScriptContent;
+import pl.edziennik.common.valueobject.vo.ScriptContent;
 import pl.edziennik.common.valueobject.id.GroovyScriptId;
 import pl.edziennik.common.valueobject.id.GroovyScriptStatusId;
 import pl.edziennik.domain.user.User;

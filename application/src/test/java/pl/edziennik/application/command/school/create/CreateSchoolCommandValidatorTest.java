@@ -3,7 +3,7 @@ package pl.edziennik.application.command.school.create;
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
 import pl.edziennik.application.mock.repositories.SchoolLevelCommandMockRepo;
-import pl.edziennik.common.valueobject.*;
+import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.infrastructure.validator.ValidationError;
 

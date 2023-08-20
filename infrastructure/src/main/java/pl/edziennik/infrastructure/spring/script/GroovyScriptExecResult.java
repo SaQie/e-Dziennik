@@ -1,6 +1,6 @@
 package pl.edziennik.infrastructure.spring.script;
 
-import pl.edziennik.common.valueobject.ScriptResult;
+import pl.edziennik.common.valueobject.vo.ScriptResult;
 import pl.edziennik.common.valueobject.id.GroovyScriptStatusId;
 import pl.edziennik.infrastructure.spring.exception.BusinessException;
 

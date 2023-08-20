@@ -7,8 +7,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.query.groovy.byscript.GetGroovyScriptExecResultQuery;
 import pl.edziennik.application.query.groovy.byuser.GetGroovyScriptExecResultByUserQuery;
-import pl.edziennik.common.valueobject.Username;
 import pl.edziennik.common.valueobject.id.GroovyScriptId;
+import pl.edziennik.common.valueobject.vo.Username;
 import pl.edziennik.common.view.PageView;
 import pl.edziennik.common.view.groovy.GroovyScriptResultView;
 import pl.edziennik.domain.user.User;
@@ -45,7 +45,7 @@ public class GroovyScriptExecResultQueryIntegrationTest extends BaseIntegrationT
     public void shouldReturnGroovyScriptExecResultDto() {
         // given
         createAdmin("Test", "Test@example.com");
-        User user = userQueryRepository.getByUsername(Username.of("Test"));
+        User user = userCommandRepository.getByUsername(Username.of("Test"));
 
         GroovyScriptId groovyScriptId = execSimpleGroovyScript(user);
 
@@ -62,7 +62,7 @@ public class GroovyScriptExecResultQueryIntegrationTest extends BaseIntegrationT
     public void shouldReturnGroovyScriptExecResultDtoByUser() {
         // given
         createAdmin("Test", "Test@example.com");
-        User user = userQueryRepository.getByUsername(Username.of("Test"));
+        User user = userCommandRepository.getByUsername(Username.of("Test"));
 
         execSimpleGroovyScript(user);
 

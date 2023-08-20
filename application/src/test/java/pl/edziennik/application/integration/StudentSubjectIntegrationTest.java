@@ -7,8 +7,8 @@ import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.command.student.create.CreateStudentCommand;
 import pl.edziennik.application.command.subjectmanagment.assigntostudent.AssignSubjectToStudentCommand;
 import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.common.valueobject.*;
 import pl.edziennik.common.valueobject.id.*;
+import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.schoolclass.SchoolClassConfiguration;
 import pl.edziennik.domain.studentsubject.StudentSubject;
@@ -66,7 +66,6 @@ public class StudentSubjectIntegrationTest extends BaseIntegrationTest {
                 Pesel.of("123123123"),
                 Email.of("test1@example.com"),
                 PhoneNumber.of("123123"),
-                schoolId,
                 schoolClassId
         );
 
@@ -104,7 +103,6 @@ public class StudentSubjectIntegrationTest extends BaseIntegrationTest {
                 Pesel.of("123123123"),
                 Email.of("test1@example.com"),
                 PhoneNumber.of("123123"),
-                schoolId,
                 schoolClassId
         );
 

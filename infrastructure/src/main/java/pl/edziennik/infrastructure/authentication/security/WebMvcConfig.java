@@ -27,7 +27,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addConverter(new GradeIdConverter());
         registry.addConverter(new SchoolClassIdConverter());
         registry.addConverter(new SchoolLevelIdConverter());
-        registry.addConverter(new SettingsIdConverter());
         registry.addConverter(new TeacherIdConverter());
         registry.addConverter(new UserIdConverter());
         registry.addConverter(new AdminIdConverter());

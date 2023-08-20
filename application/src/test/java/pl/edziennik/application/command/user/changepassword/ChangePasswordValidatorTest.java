@@ -4,7 +4,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
 import pl.edziennik.application.mock.repositories.RoleCommandMockRepo;
-import pl.edziennik.common.valueobject.Password;
+import pl.edziennik.common.valueobject.vo.Password;
 import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.domain.user.User;
 import pl.edziennik.infrastructure.spring.exception.BusinessException;

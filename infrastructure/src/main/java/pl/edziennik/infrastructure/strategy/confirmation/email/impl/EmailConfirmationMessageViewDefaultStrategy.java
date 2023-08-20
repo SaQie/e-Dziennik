@@ -2,7 +2,7 @@ package pl.edziennik.infrastructure.strategy.confirmation.email.impl;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import pl.edziennik.common.valueobject.Token;
+import pl.edziennik.common.valueobject.vo.Token;
 import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.infrastructure.strategy.confirmation.email.EmailConfirmationMessageViewStrategy;
 

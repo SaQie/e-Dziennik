@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pl.edziennik.common.valueobject.ScriptResult;
+import pl.edziennik.common.valueobject.vo.ScriptResult;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
 
 import java.math.BigDecimal;
@@ -45,7 +45,7 @@ public class GroovyScriptExecutorConfiguration {
             "java.math.BigInteger", "java.math.BigDecimal",
             "java.text.DecimalFormat", "java.util.stream", "java.util.function",
             "java.util.Arrays", "java.util.Collections", "java.util.Random",
-            "java.lang.Object", "pl.edziennik.common.valueobject.ScriptResult");
+            "java.lang.Object", "pl.edziennik.common.valueobject.vo.ScriptResult");
 
     // Allowed classes for calling methods on them
     private static final List<Class> RECEIVERS_CLASSES_WHITE_LIST = List.of(
@@ -136,7 +136,7 @@ public class GroovyScriptExecutorConfiguration {
     private ImportCustomizer createImportCustomizer() {
         ImportCustomizer importCustomizer = new ImportCustomizer();
 
-        importCustomizer.addImports("pl.edziennik.common.valueobject.ScriptResult");
+        importCustomizer.addImports("pl.edziennik.common.valueobject.vo.ScriptResult");
         for (String allowedPackage : ALLOWED_IMPORTS) {
             importCustomizer.addStarImports(allowedPackage);
         }

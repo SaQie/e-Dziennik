@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.BaseIntegrationTest;
-import pl.edziennik.common.valueobject.FullName;
+import pl.edziennik.common.valueobject.vo.FullName;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.StudentId;

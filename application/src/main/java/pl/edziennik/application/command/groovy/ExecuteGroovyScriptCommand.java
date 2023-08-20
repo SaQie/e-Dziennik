@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.base.HandledBy;
 import pl.edziennik.application.common.dispatcher.command.ICommand;
-import pl.edziennik.common.valueobject.ScriptContent;
+import pl.edziennik.common.valueobject.vo.ScriptContent;
 
 /**
  * A command used for execute groovy script

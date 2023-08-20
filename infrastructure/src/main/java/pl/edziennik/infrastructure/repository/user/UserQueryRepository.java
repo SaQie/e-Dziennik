@@ -3,17 +3,14 @@ package pl.edziennik.infrastructure.repository.user;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.RepositoryDefinition;
 import org.springframework.data.repository.query.Param;
-import pl.edziennik.common.valueobject.FullName;
-import pl.edziennik.common.valueobject.Name;
-import pl.edziennik.common.valueobject.Pesel;
-import pl.edziennik.common.valueobject.Username;
 import pl.edziennik.common.valueobject.id.UserId;
+import pl.edziennik.common.valueobject.vo.FullName;
+import pl.edziennik.common.valueobject.vo.Name;
 import pl.edziennik.common.view.user.LoggedUserView;
 import pl.edziennik.domain.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RepositoryDefinition(domainClass = User.class, idClass = UserId.class)
@@ -47,19 +44,7 @@ public interface UserQueryRepository {
                     AND u.username <> :username 
                     """;
 
-    @Query("SELECT u FROM User u " +
-            "JOIN FETCH u.role " +
-            "WHERE u.username = :username")
-    User getByUsername(Username username);
 
-    @Query("SELECT u FROM User u " +
-            "JOIN FETCH u.role " +
-            "WHERE u.pesel = :pesel")
-    User getByPesel(Pesel pesel);
-
-    Optional<User> findById(UserId userId);
-
-    User getUserByUserId(UserId userId);
 
 
     @Query(value = GET_LOGGED_USERS_QUERY, nativeQuery = true)

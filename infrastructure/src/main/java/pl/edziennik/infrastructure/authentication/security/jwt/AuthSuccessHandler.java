@@ -11,11 +11,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import pl.edziennik.common.valueobject.Username;
+import pl.edziennik.common.valueobject.vo.Username;
 import pl.edziennik.domain.user.User;
 import pl.edziennik.infrastructure.authentication.JwtUtils;
 import pl.edziennik.infrastructure.authentication.security.jwt.dto.AuthResponseDto;
-import pl.edziennik.infrastructure.repository.user.UserQueryRepository;
+import pl.edziennik.infrastructure.repository.user.UserCommandRepository;
 
 import java.io.IOException;
 
@@ -27,7 +27,7 @@ import java.io.IOException;
 public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     @Autowired
-    private UserQueryRepository repository;
+    private UserCommandRepository repository;
 
     @Autowired
     private JwtUtils jwtUtils;

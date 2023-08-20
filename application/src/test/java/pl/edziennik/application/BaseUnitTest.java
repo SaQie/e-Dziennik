@@ -11,7 +11,7 @@ import pl.edziennik.application.mock.repositories.*;
 import pl.edziennik.common.enums.AverageType;
 import pl.edziennik.common.properties.SchoolClassConfigurationProperties;
 import pl.edziennik.common.properties.SchoolConfigurationProperties;
-import pl.edziennik.common.valueobject.*;
+import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.admin.Admin;
 import pl.edziennik.domain.director.Director;
@@ -95,7 +95,7 @@ public class BaseUnitTest {
         this.schoolClassConfigurationCommandRepository = new SchoolClassConfigurationCommandMockRepo();
         this.schoolConfigurationCommandRepository = new SchoolConfigurationCommandMockRepo();
         this.address = Address.of(
-                pl.edziennik.common.valueobject.Address.of(StringUtil.randomIdentifer(5)),
+                pl.edziennik.common.valueobject.vo.Address.of(StringUtil.randomIdentifer(5)),
                 City.of(StringUtil.randomIdentifer(5)),
                 PostalCode.of(StringUtil.randomIdentifer(5))
         );
@@ -180,7 +180,7 @@ public class BaseUnitTest {
 
     protected Address createAddress() {
         return Address.of(
-                pl.edziennik.common.valueobject.Address.of(StringUtil.randomIdentifer(5)),
+                pl.edziennik.common.valueobject.vo.Address.of(StringUtil.randomIdentifer(5)),
                 City.of(StringUtil.randomIdentifer(5)),
                 PostalCode.of(StringUtil.randomIdentifer(5))
         );

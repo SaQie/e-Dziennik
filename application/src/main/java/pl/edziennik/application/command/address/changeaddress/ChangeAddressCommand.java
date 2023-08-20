@@ -4,9 +4,9 @@ import jakarta.validation.Valid;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.base.HandledBy;
 import pl.edziennik.application.common.dispatcher.command.ICommand;
-import pl.edziennik.common.valueobject.Address;
-import pl.edziennik.common.valueobject.City;
-import pl.edziennik.common.valueobject.PostalCode;
+import pl.edziennik.common.valueobject.vo.Address;
+import pl.edziennik.common.valueobject.vo.City;
+import pl.edziennik.common.valueobject.vo.PostalCode;
 
 import java.util.UUID;
 
