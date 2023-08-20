@@ -6,10 +6,10 @@ import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.common.dispatcher.base.HandledBy;
 import pl.edziennik.application.common.dispatcher.base.ValidatedBy;
 import pl.edziennik.application.common.dispatcher.command.ICommand;
-import pl.edziennik.common.valueobject.vo.Description;
-import pl.edziennik.common.valueobject.vo.Name;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.TeacherId;
+import pl.edziennik.common.valueobject.vo.Description;
+import pl.edziennik.common.valueobject.vo.Name;
 
 /**
  * A command used for creating a new subject in a specific school class
@@ -24,7 +24,7 @@ public record CreateSubjectCommand(
 
         @NotNull(message = "{teacher.empty}") TeacherId teacherId,
 
-        @NotNull(message = "{schoolClass.empty}") SchoolClassId schoolClassId
+        SchoolClassId schoolClassId
 
 
 ) implements ICommand<OperationResult> {
@@ -34,4 +34,7 @@ public record CreateSubjectCommand(
     public static final String TEACHER_ID = "teacherId";
     public static final String SCHOOL_CLASS_ID = "schoolClassId";
 
+    public CreateSubjectCommand(SchoolClassId schoolClassId, CreateSubjectCommand command) {
+        this(command.name, command.description, command.teacherId, schoolClassId);
+    }
 }

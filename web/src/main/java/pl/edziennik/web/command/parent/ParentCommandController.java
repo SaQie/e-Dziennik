@@ -34,7 +34,7 @@ public class ParentCommandController {
         return ResponseEntity.created(location).build();
     }
 
-    @PutMapping("/{parentId}/address")
+    @PutMapping("/{parentId}/addresses")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateAddress(@PathVariable ParentId parentId, @RequestBody ChangeAddressCommand command) {
         command = new ChangeAddressCommand(parentId.id(),

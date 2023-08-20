@@ -26,7 +26,7 @@ public record CreateStudentCommand(
         @Valid @NotNull(message = "{pesel.invalid}") Pesel pesel,
         @Valid @NotNull(message = "{email.empty}") Email email,
         @Valid @NotNull(message = "{phone.invalid}") PhoneNumber phoneNumber,
-        @NotNull(message = "{schoolClass.empty}") SchoolClassId schoolClassId
+        SchoolClassId schoolClassId
 
 ) implements ICommand<OperationResult> {
 
@@ -42,4 +42,8 @@ public record CreateStudentCommand(
     public static final String SCHOOL_CLASS_ID = "schoolClassId";
     public static final String EMAIL = "email";
 
+    public CreateStudentCommand(SchoolClassId schoolClassId, CreateStudentCommand command) {
+        this(command.password, command.username, command.firstName, command.lastName, command.address,
+                command.postalCode, command.city, command.pesel, command.email, command.phoneNumber, schoolClassId);
+    }
 }

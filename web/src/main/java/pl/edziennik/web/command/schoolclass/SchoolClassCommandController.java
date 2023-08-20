@@ -1,6 +1,7 @@
 package pl.edziennik.web.command.schoolclass;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,18 +12,21 @@ import pl.edziennik.application.command.schoolclass.create.CreateSchoolClassComm
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
+import pl.edziennik.common.valueobject.id.SchoolId;
 
 import java.net.URI;
 
 @RestController
-@RequestMapping("/api/v1/schoolclasses")
+@RequestMapping("/api/v1")
 @AllArgsConstructor
 public class SchoolClassCommandController {
 
     private final Dispatcher dispatcher;
 
-    @PostMapping
-    public ResponseEntity<Void> createSchoolClass(@RequestBody @Valid CreateSchoolClassCommand command) {
+    @PostMapping("/schools/{schoolId}/schoolclasses")
+    public ResponseEntity<Void> createSchoolClass(@PathVariable @NotNull(message = "${school.empty}") SchoolId schoolId,
+                                                  @RequestBody @Valid CreateSchoolClassCommand requestCommand) {
+        CreateSchoolClassCommand command = new CreateSchoolClassCommand(schoolId, requestCommand);
         OperationResult operationResult = dispatcher.dispatch(command);
 
         URI location = ServletUriComponentsBuilder
@@ -36,9 +40,10 @@ public class SchoolClassCommandController {
     }
 
 
-    @PatchMapping("/{schoolClassId}/configurations")
+    @PatchMapping("/schoolclasses/{schoolClassId}/configurations")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void changeSchoolClassConfigurationValues(@RequestBody @Valid ChangeSchoolClassConfigurationValuesCommand commandBody, @PathVariable SchoolClassId schoolClassId) {
+    public void changeSchoolClassConfigurationValues(@RequestBody @Valid ChangeSchoolClassConfigurationValuesCommand commandBody,
+                                                     @PathVariable SchoolClassId schoolClassId) {
         ChangeSchoolClassConfigurationValuesCommand command = new ChangeSchoolClassConfigurationValuesCommand(schoolClassId, commandBody.maxStudentsSize(), commandBody.autoAssignSubjects());
 
         dispatcher.dispatch(command);

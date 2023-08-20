@@ -10,7 +10,7 @@ import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.vo.*;
 
 /**
- *  A command used for creating a new teacher
+ * A command used for creating a new teacher
  */
 @HandledBy(handler = CreateTeacherCommandHandler.class)
 @ValidatedBy(validator = CreateTeacherCommandValidator.class)
@@ -26,7 +26,7 @@ public record CreateTeacherCommand(
         @Valid @NotNull(message = "{pesel.invalid}") Pesel pesel,
         @Valid @NotNull(message = "{email.empty}") Email email,
         @Valid @NotNull(message = "{phone.invalid}") PhoneNumber phoneNumber,
-        @NotNull(message = "{school.empty}") SchoolId schoolId
+        SchoolId schoolId
 
 ) implements ICommand<OperationResult> {
 
@@ -41,5 +41,8 @@ public record CreateTeacherCommand(
     public static final String SCHOOL_ID = "schoolId";
     public static final String EMAIL = "email";
 
-
+    public CreateTeacherCommand(SchoolId schoolId, CreateTeacherCommand command) {
+        this(command.password, command.username, command.firstName, command.lastName, command.address,
+                command.postalCode, command.city, command.pesel, command.email, command.phoneNumber, schoolId);
+    }
 }

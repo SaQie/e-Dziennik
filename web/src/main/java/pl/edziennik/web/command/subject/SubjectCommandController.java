@@ -1,29 +1,30 @@
 package pl.edziennik.web.command.subject;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.application.command.subject.create.CreateSubjectCommand;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.application.common.dispatcher.OperationResult;
+import pl.edziennik.common.valueobject.id.SchoolClassId;
 
 import java.net.URI;
 
 @RestController
-@RequestMapping("/api/v1/subjects")
+@RequestMapping("/api/v1")
 @AllArgsConstructor
 public class SubjectCommandController {
 
     private final Dispatcher dispatcher;
 
 
-    @PostMapping()
-    public ResponseEntity<Void> createSubject(@RequestBody @Valid CreateSubjectCommand command) {
+    @PostMapping("/schoolclasses/{schoolClassId}/subjects")
+    public ResponseEntity<Void> createSubject(@PathVariable @NotNull(message = "{schoolClass.empty}") SchoolClassId schoolClassId,
+                                              @RequestBody @Valid CreateSubjectCommand requestCommand) {
+        CreateSubjectCommand command = new CreateSubjectCommand(schoolClassId, requestCommand);
         OperationResult operationResult = dispatcher.dispatch(command);
 
         URI location = ServletUriComponentsBuilder

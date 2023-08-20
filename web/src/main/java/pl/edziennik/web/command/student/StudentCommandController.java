@@ -1,6 +1,7 @@
 package pl.edziennik.web.command.student;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,19 +14,22 @@ import pl.edziennik.application.command.student.delete.DeleteStudentCommand;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.common.valueobject.id.ParentId;
+import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.StudentId;
 
 import java.net.URI;
 
 @RestController
-@RequestMapping("/api/v1/students")
+@RequestMapping("/api/v1")
 @AllArgsConstructor
 public class StudentCommandController {
 
     private final Dispatcher dispatcher;
 
-    @PostMapping()
-    public ResponseEntity<Void> createStudent(@RequestBody @Valid CreateStudentCommand command) {
+    @PostMapping("/schoolclasses/{schoolClassId}/students")
+    public ResponseEntity<Void> createStudent(@PathVariable @NotNull(message = "{schoolClass.empty}") SchoolClassId schoolClassId,
+                                              @RequestBody @Valid CreateStudentCommand requestCommand) {
+        CreateStudentCommand command = new CreateStudentCommand(schoolClassId, requestCommand);
         OperationResult operationResult = dispatcher.dispatch(command);
 
         URI location = ServletUriComponentsBuilder
@@ -37,7 +41,7 @@ public class StudentCommandController {
         return ResponseEntity.created(location).build();
     }
 
-    @DeleteMapping("/{studentId}")
+    @DeleteMapping("/students/{studentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteStudent(@PathVariable StudentId studentId) {
         dispatcher.dispatch(new DeleteStudentCommand(studentId));
@@ -45,15 +49,17 @@ public class StudentCommandController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{studentId}/parents/{parentId}/assign")
+    @PostMapping("/students/{studentId}/parents/{parentId}/assign")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> assignParent(@PathVariable StudentId studentId, @PathVariable ParentId parentId) {
-        dispatcher.dispatch(new AssignParentCommand(studentId, parentId));
+        AssignParentCommand command = new AssignParentCommand(studentId, parentId);
+
+        dispatcher.dispatch(command);
 
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{studentId}/addresses")
+    @PutMapping("/students/{studentId}/addresses")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateAddress(@PathVariable StudentId studentId, @RequestBody ChangeAddressCommand command) {
         command = new ChangeAddressCommand(studentId.id(),

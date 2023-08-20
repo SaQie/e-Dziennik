@@ -45,7 +45,7 @@ public class SchoolCommandController {
         dispatcher.dispatch(deleteSchoolCommand);
     }
 
-    @PutMapping("/{schoolId}/address")
+    @PutMapping("/{schoolId}/addresses")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateAddress(@PathVariable SchoolId schoolId, @RequestBody ChangeAddressCommand command) {
         command = new ChangeAddressCommand(schoolId.id(),

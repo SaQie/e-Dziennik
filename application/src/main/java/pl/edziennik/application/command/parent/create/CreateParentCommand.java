@@ -40,6 +40,6 @@ public record CreateParentCommand(
     public static final String PESEL = "pesel";
     public static final String EMAIL = "email";
     public static final String PHONE_NUMBER = "phoneNumber";
-    public static final String STUDENT_ID = "studentID";
+    public static final String STUDENT_ID = "studentId";
 
 }

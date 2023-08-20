@@ -25,7 +25,7 @@ public record CreateDirectorCommand(
         @Valid @NotNull(message = "{pesel.invalid}") Pesel pesel,
         @Valid @NotNull(message = "{email.empty}") Email email,
         @Valid @NotNull(message = "{phone.invalid}") PhoneNumber phoneNumber,
-        @NotNull(message = "{school.empty}") SchoolId schoolId
+        SchoolId schoolId
 ) implements ICommand<OperationResult> {
 
 
@@ -40,4 +40,9 @@ public record CreateDirectorCommand(
     public static final String SCHOOL_ID = "schoolId";
     public static final String EMAIL = "email";
 
+
+    public CreateDirectorCommand(SchoolId schoolId, CreateDirectorCommand command) {
+        this(command.password, command.username, command.firstName, command.lastName, command.address, command.postalCode,
+                command.city, command.pesel, command.email, command.phoneNumber, schoolId);
+    }
 }
