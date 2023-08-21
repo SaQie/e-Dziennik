@@ -8,14 +8,17 @@ import pl.edziennik.common.attribute.TimeFrameDurationAttributeConverter;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Embeddable
 @Accessors(fluent = true)
 @Getter
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TimeFrame {
+
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private LocalDateTime startDate;
 
@@ -29,7 +32,15 @@ public class TimeFrame {
         Duration duration = Duration.between(startDate, endDate);
         long minutes = duration.toMinutes();
 
-        return new TimeFrame(startDate, endDate, TimeFrameDuration.of(minutes));
+        return new TimeFrame(startDate, endDate, TimeFrameDuration.of((int) minutes));
+    }
+
+    public String formattedStartDate() {
+        return startDate.format(DATE_TIME_FORMATTER);
+    }
+
+    public String formattedEndDate() {
+        return endDate.format(DATE_TIME_FORMATTER);
     }
 
 }

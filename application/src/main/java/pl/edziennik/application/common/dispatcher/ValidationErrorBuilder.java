@@ -23,6 +23,7 @@ public class ValidationErrorBuilder {
 
     private final List<ValidationError> errors = new ArrayList<>();
 
+
     public ValidationErrorBuilder addError(ValidationError error) {
         this.errors.add(error);
         return this;
@@ -45,7 +46,6 @@ public class ValidationErrorBuilder {
         ValidationError validationError = new ValidationError(field, res.of(NOT_FOUND_MESSAGE_KEY, field),
                 ErrorCode.OBJECT_NOT_EXISTS.errorCode());
         this.errors.add(validationError);
-        build();
     }
 
     public List<ValidationError> getErrors() {
@@ -56,6 +56,9 @@ public class ValidationErrorBuilder {
         this.errors.clear();
     }
 
+    /**
+     * Throw an exception with collection of errors
+     */
     public void flush() {
         build();
     }

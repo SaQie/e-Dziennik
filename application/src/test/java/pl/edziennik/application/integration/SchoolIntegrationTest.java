@@ -80,7 +80,7 @@ public class SchoolIntegrationTest extends BaseIntegrationTest {
         // given
         SchoolId schoolId = createSchool("Test", "9999999", "9999999");
 
-        ChangeSchoolConfigurationValuesCommand command = new ChangeSchoolConfigurationValuesCommand(schoolId, AverageType.WEIGHTED);
+        ChangeSchoolConfigurationValuesCommand command = new ChangeSchoolConfigurationValuesCommand(schoolId, AverageType.WEIGHTED,TimeFrameDuration.of(1));
 
         // when
         dispatcher.dispatch(command);

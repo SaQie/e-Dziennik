@@ -7,9 +7,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.command.groovy.ExecuteGroovyScriptCommand;
-import pl.edziennik.common.valueobject.vo.ScriptContent;
 import pl.edziennik.common.valueobject.id.GroovyScriptId;
 import pl.edziennik.common.valueobject.id.GroovyScriptStatusId;
+import pl.edziennik.common.valueobject.vo.ScriptContent;
 import pl.edziennik.domain.groovy.GroovyScriptStatus;
 import pl.edziennik.infrastructure.spring.exception.BusinessException;
 
@@ -351,7 +351,7 @@ public class GroovyScriptExecutorTest extends BaseIntegrationTest {
     @Test
     @WithMockUser(username = TEST_USER)
     public void shouldThrowExceptionIfScriptExecutionTimeoutExceeded() {
-        // Limit is set in application.properties file (groovy.execution.timeout)
+        // Limit is set in application.yml file (groovy.execution.timeout)
         // given
         String script =
                 """

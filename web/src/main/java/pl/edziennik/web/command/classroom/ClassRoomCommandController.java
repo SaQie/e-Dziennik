@@ -11,20 +11,22 @@ import pl.edziennik.application.command.classroom.create.CreateClassRoomCommand;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.common.valueobject.id.ClassRoomId;
+import pl.edziennik.common.valueobject.id.SchoolId;
 
 import java.net.URI;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/classrooms")
+@RequestMapping("/api/v1")
 public class ClassRoomCommandController {
 
     private final Dispatcher dispatcher;
 
 
-    @PostMapping("")
+    @PostMapping("/schools/{schoolId}/classrooms")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> createClassRoom(@RequestBody @Valid CreateClassRoomCommand command) {
+    public ResponseEntity<Void> createClassRoom(@PathVariable SchoolId schoolId, @RequestBody @Valid CreateClassRoomCommand requestCommand) {
+        CreateClassRoomCommand command = new CreateClassRoomCommand(schoolId, requestCommand);
         OperationResult operationResult = dispatcher.dispatch(command);
 
         URI location = ServletUriComponentsBuilder

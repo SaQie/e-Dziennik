@@ -1,5 +1,6 @@
 package pl.edziennik.application.command.schoolclass.create;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.OperationResult;
@@ -19,7 +20,7 @@ public record CreateSchoolClassCommand(
 
         @Valid @NotNull(message = "{name.empty}") Name className,
         @NotNull(message = "{teacher.empty}") TeacherId teacherId,
-        SchoolId schoolId
+        @JsonIgnore SchoolId schoolId
 
 ) implements ICommand<OperationResult> {
 

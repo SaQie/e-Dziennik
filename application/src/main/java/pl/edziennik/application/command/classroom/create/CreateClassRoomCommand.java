@@ -1,5 +1,6 @@
 package pl.edziennik.application.command.classroom.create;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.OperationResult;
@@ -16,7 +17,7 @@ import pl.edziennik.common.valueobject.vo.ClassRoomName;
 @ValidatedBy(validator = CreateClassRoomCommandValidator.class)
 public record CreateClassRoomCommand(
 
-        SchoolId schoolId,
+        @JsonIgnore SchoolId schoolId,
         @Valid @NotNull(message = "${field.empty}") ClassRoomName classRoomName
 
 ) implements ICommand<OperationResult> {
@@ -24,4 +25,7 @@ public record CreateClassRoomCommand(
     public static final String CLASS_ROOM_NAME = "classRoomName";
     public static final String SCHOOL_ID = "schoolId";
 
+    public CreateClassRoomCommand(SchoolId schoolId, CreateClassRoomCommand command) {
+        this(schoolId, command.classRoomName);
+    }
 }

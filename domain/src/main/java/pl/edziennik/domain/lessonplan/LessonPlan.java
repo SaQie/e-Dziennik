@@ -9,6 +9,7 @@ import pl.edziennik.common.valueobject.vo.TimeFrame;
 import pl.edziennik.domain.classroom.ClassRoom;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.subject.Subject;
+import pl.edziennik.domain.teacher.Teacher;
 
 @Entity
 @Getter
@@ -23,6 +24,7 @@ public class LessonPlan {
     private LessonPlanId lessonPlanId = LessonPlanId.create();
 
     @Embedded
+    @Column(nullable = false)
     private TimeFrame timeFrame;
 
     @Embedded
@@ -38,15 +40,20 @@ public class LessonPlan {
     private Subject subject;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "classroom_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "class_room_id", referencedColumnName = "id", nullable = false)
     private ClassRoom classRoom;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private Teacher teacher;
+
+    private boolean isSubstitute;
 
     @Version
     private Long version;
 
     @Builder
-    public static LessonPlan of(SchoolClass schoolClass, Subject subject, ClassRoom classRoom,
-                                TimeFrame timeFrame, LessonOrder lessonOrder) {
+    public static LessonPlan of(SchoolClass schoolClass, Subject subject, ClassRoom classRoom, Teacher teacher,
+                                Boolean isSubstitute, TimeFrame timeFrame, LessonOrder lessonOrder) {
         LessonPlan lessonPlan = new LessonPlan();
 
         lessonPlan.classRoom = classRoom;
@@ -54,8 +61,10 @@ public class LessonPlan {
         lessonPlan.schoolClass = schoolClass;
         lessonPlan.subject = subject;
         lessonPlan.timeFrame = timeFrame;
+        lessonPlan.teacher = teacher;
+        lessonPlan.isSubstitute = isSubstitute;
 
-        return new LessonPlan();
+        return lessonPlan;
     }
 
 }

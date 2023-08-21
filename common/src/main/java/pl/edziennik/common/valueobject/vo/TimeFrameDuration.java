@@ -8,26 +8,30 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import pl.edziennik.common.valueobject.base.LongValueObject;
+import pl.edziennik.common.valueobject.base.IntegerValueObject;
+
+import java.util.Objects;
 
 @Getter
 @Accessors(fluent = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @EqualsAndHashCode(of = "value")
-public class TimeFrameDuration implements LongValueObject {
+public class TimeFrameDuration implements IntegerValueObject {
 
     @JsonValue
-    private final Long value;
+    private final Integer value;
 
-    private TimeFrameDuration(Long value) {
+    private TimeFrameDuration(Integer value) {
         this.value = value;
     }
 
     @JsonCreator
-    public static TimeFrameDuration of(@NotEmpty Long value) {
+    public static TimeFrameDuration of(@NotEmpty Integer value) {
         return new TimeFrameDuration(value);
     }
 
-
-
+    @Override
+    public String toString() {
+        return Objects.requireNonNull(value).toString();
+    }
 }

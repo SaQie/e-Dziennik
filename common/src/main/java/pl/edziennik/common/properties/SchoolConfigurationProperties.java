@@ -7,6 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 import pl.edziennik.common.enums.AverageType;
+import pl.edziennik.common.valueobject.vo.TimeFrameDuration;
 
 @Getter
 @Setter
@@ -17,5 +18,8 @@ public class SchoolConfigurationProperties {
 
     @NotNull
     private AverageType averageType;
+
+    @NotNull
+    private TimeFrameDuration lessonTime;
 
 }

@@ -36,4 +36,9 @@ public class LessonOrder implements IntegerValueObject {
         return Objects.requireNonNull(value).toString();
     }
 
+    public LessonOrder increase() {
+        Integer newValue = value + 1;
+        return new LessonOrder(newValue);
+    }
+
 }

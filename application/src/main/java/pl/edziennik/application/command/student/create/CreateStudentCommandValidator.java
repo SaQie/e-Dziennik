@@ -94,6 +94,7 @@ class CreateStudentCommandValidator implements IBaseValidator<CreateStudentComma
                     errorBuilder.addNotFoundError(CreateStudentCommand.SCHOOL_CLASS_ID);
                     return null;
                 });
+        errorBuilder.flush();
     }
 
 }

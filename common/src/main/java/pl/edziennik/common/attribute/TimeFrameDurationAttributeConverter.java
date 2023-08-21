@@ -5,15 +5,15 @@ import jakarta.persistence.Converter;
 import pl.edziennik.common.valueobject.vo.TimeFrameDuration;
 
 @Converter(autoApply = true)
-public class TimeFrameDurationAttributeConverter implements AttributeConverter<TimeFrameDuration, Long> {
+public class TimeFrameDurationAttributeConverter implements AttributeConverter<TimeFrameDuration, Integer> {
 
     @Override
-    public Long convertToDatabaseColumn(TimeFrameDuration timeFrameDuration) {
+    public Integer convertToDatabaseColumn(TimeFrameDuration timeFrameDuration) {
         return timeFrameDuration == null ? null : timeFrameDuration.value();
     }
 
     @Override
-    public TimeFrameDuration convertToEntityAttribute(Long value) {
+    public TimeFrameDuration convertToEntityAttribute(Integer value) {
         return value == null ? null : TimeFrameDuration.of(value);
     }
 }

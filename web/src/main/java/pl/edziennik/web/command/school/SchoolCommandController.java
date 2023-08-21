@@ -24,6 +24,7 @@ public class SchoolCommandController {
     private final Dispatcher dispatcher;
 
     @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> createSchool(@RequestBody @Valid CreateSchoolCommand createSchoolCommand) {
         OperationResult operationResult = dispatcher.dispatch(createSchoolCommand);
 
@@ -60,7 +61,7 @@ public class SchoolCommandController {
     @PatchMapping("/{schoolId}/configurations")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void changeSchoolConfigurationValues(@RequestBody @Valid ChangeSchoolConfigurationValuesCommand command, @PathVariable SchoolId schoolId) {
-        command = new ChangeSchoolConfigurationValuesCommand(schoolId, command.averageType());
+        command = new ChangeSchoolConfigurationValuesCommand(schoolId, command.averageType(), command.lessonTime());
 
         dispatcher.dispatch(command);
     }

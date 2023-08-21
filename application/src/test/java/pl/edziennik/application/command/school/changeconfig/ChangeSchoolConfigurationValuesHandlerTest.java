@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
 import pl.edziennik.common.enums.AverageType;
 import pl.edziennik.common.valueobject.id.SchoolId;
+import pl.edziennik.common.valueobject.vo.TimeFrameDuration;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.infrastructure.spring.exception.BusinessException;
 
@@ -21,7 +22,7 @@ public class ChangeSchoolConfigurationValuesHandlerTest extends BaseUnitTest {
     @Test
     public void shouldThrowExceptionWhenSchoolNotExists() {
         // given
-        ChangeSchoolConfigurationValuesCommand command = new ChangeSchoolConfigurationValuesCommand(SchoolId.create(), AverageType.WEIGHTED);
+        ChangeSchoolConfigurationValuesCommand command = new ChangeSchoolConfigurationValuesCommand(SchoolId.create(), AverageType.WEIGHTED, TimeFrameDuration.of(1));
 
         // when
         // then
@@ -38,7 +39,7 @@ public class ChangeSchoolConfigurationValuesHandlerTest extends BaseUnitTest {
         schoolCommandRepository.save(school);
         assertEquals(school.schoolConfiguration().averageType(), AverageType.ARITHMETIC);
 
-        ChangeSchoolConfigurationValuesCommand command = new ChangeSchoolConfigurationValuesCommand(school.schoolId(), AverageType.WEIGHTED);
+        ChangeSchoolConfigurationValuesCommand command = new ChangeSchoolConfigurationValuesCommand(school.schoolId(), AverageType.WEIGHTED, TimeFrameDuration.of(1));
 
         // when
         handler.handle(command);
