@@ -15,7 +15,7 @@ public record ChangeSchoolConfigurationValuesCommand(
 
         SchoolId schoolId,
         AverageType averageType,
-        TimeFrameDuration lessonTime
+        TimeFrameDuration maxLessonTime
 
 ) implements ICommand<OperationResult> {
 

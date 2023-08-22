@@ -34,4 +34,8 @@ public class TimeFrameDuration implements IntegerValueObject {
     public String toString() {
         return Objects.requireNonNull(value).toString();
     }
+
+    public boolean isGreaterThan(TimeFrameDuration timeFrameDuration) {
+        return timeFrameDuration.value < this.value;
+    }
 }

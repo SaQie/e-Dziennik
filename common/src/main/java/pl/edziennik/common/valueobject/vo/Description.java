@@ -32,4 +32,8 @@ public class Description implements StringValueObject {
     public String toString() {
         return value;
     }
+
+    public Description append(String value) {
+        return new Description(this.value + " " + value);
+    }
 }

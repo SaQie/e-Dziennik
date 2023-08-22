@@ -6,13 +6,12 @@ import pl.edziennik.application.command.lessonplan.create.CreateLessonPlanComman
 import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
 import pl.edziennik.application.common.dispatcher.base.IBaseValidator;
 import pl.edziennik.common.valueobject.vo.Description;
-import pl.edziennik.common.valueobject.vo.TimeFrame;
+import pl.edziennik.domain.teacher.TeacherSchedule;
 import pl.edziennik.infrastructure.repository.teacher.TeacherCommandRepository;
 import pl.edziennik.infrastructure.repository.teacherschedule.TeacherScheduleCommandRepository;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
@@ -47,20 +46,19 @@ class CreateTeacherScheduleCommandValidator implements IBaseValidator<CreateTeac
      * Check that teacher's schedule doesn't conflict with provided time frame
      */
     private void checkTeacherScheduleConflicts(CreateTeacherScheduleCommand command, ValidationErrorBuilder errorBuilder) {
-        List<Description> schedules = teacherScheduleCommandRepository.getTeacherSchedulesInTimeFrame(command.startDate(),
+        List<TeacherSchedule> schedules = teacherScheduleCommandRepository.getTeacherSchedulesInTimeFrame(command.startDate(),
                 command.endDate(), command.teacherId());
-        TimeFrame timeFrame = TimeFrame.of(command.startDate(), command.endDate());
 
-        if (!schedules.isEmpty()) {
+        for (TeacherSchedule teacherSchedule : schedules) {
             // If there exist any schedule conflicts with provided time frame
-            String description = schedules.stream()
-                    .map(Description::value)
-                    .collect(Collectors.joining(" -- "));
+            Description description = teacherSchedule.description()
+                    .append(
+                            teacherSchedule.timeFrame().formattedStartDate() + " -> " + teacherSchedule.timeFrame().formattedEndDate());
+
 
             errorBuilder.addError(
                     CreateLessonPlanCommand.TEACHER_ID,
                     BUSY_TEACHER_SCHEDULE_MESSAGE_KEY,
-                    timeFrame.formattedStartDate() + " -> " + timeFrame.formattedEndDate(),
                     ErrorCode.BUSY_SCHEDULE,
                     description);
         }

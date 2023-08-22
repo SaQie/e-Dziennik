@@ -20,6 +20,6 @@ public class SchoolConfigurationProperties {
     private AverageType averageType;
 
     @NotNull
-    private TimeFrameDuration lessonTime;
+    private TimeFrameDuration maxLessonTime;
 
 }

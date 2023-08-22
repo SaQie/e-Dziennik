@@ -67,8 +67,7 @@ public class LessonPlanEventListener {
      */
     private Description createTeacherScheduleDescription(FullName fullName, ClassRoomName classRoom, Name subjectName, TimeFrame timeFrame) {
         String description = res.of(TEACHER_SCHEDULE_DESCRIPTION_MESSAGE_KEY, fullName,
-                classRoom, timeFrame.formattedStartDate(), timeFrame.formattedEndDate(),
-                timeFrame.duration(), subjectName);
+                classRoom, timeFrame.duration(), subjectName);
 
         return Description.of(description);
 
@@ -80,8 +79,7 @@ public class LessonPlanEventListener {
      */
     private Description createClassRoomScheduleDescription(FullName fullName, ClassRoomName classRoom, Name subjectName, TimeFrame timeFrame) {
         String description = res.of(CLASS_ROOM_SCHEDULE_DESCRIPTION_MESSAGE_KEY, fullName,
-                classRoom, timeFrame.formattedStartDate(), timeFrame.formattedEndDate(),
-                timeFrame.duration(), subjectName);
+                classRoom, timeFrame.duration(), subjectName);
 
         return Description.of(description);
     }

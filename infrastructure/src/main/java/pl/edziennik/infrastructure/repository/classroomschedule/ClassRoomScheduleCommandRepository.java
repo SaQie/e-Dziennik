@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.RepositoryDefinition;
 import pl.edziennik.common.valueobject.id.ClassRoomId;
 import pl.edziennik.common.valueobject.id.ClassRoomScheduleId;
-import pl.edziennik.common.valueobject.vo.Description;
 import pl.edziennik.domain.classroom.ClassRoomSchedule;
 
 import java.time.LocalDateTime;
@@ -15,9 +14,9 @@ public interface ClassRoomScheduleCommandRepository {
 
     ClassRoomSchedule save(ClassRoomSchedule classRoomSchedule);
 
-    @Query("SELECT crs.description FROM ClassRoomSchedule crs " +
+    @Query("SELECT crs FROM ClassRoomSchedule crs " +
             "WHERE crs.classRoom.classRoomId = :classRoomId " +
             "AND crs.timeFrame.endDate BETWEEN :startDate and :endDate ")
-    List<Description> getClassRoomSchedulesInTimeFrame(LocalDateTime startDate,
+    List<ClassRoomSchedule> getClassRoomSchedulesInTimeFrame(LocalDateTime startDate,
                                                        LocalDateTime endDate, ClassRoomId classRoomId);
 }

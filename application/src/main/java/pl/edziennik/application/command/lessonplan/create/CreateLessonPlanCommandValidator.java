@@ -6,7 +6,13 @@ import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
 import pl.edziennik.application.common.dispatcher.base.IBaseValidator;
 import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.common.valueobject.vo.Description;
+import pl.edziennik.common.valueobject.vo.TimeFrame;
+import pl.edziennik.common.valueobject.vo.TimeFrameDuration;
+import pl.edziennik.domain.classroom.ClassRoomSchedule;
+import pl.edziennik.domain.school.School;
+import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.subject.Subject;
+import pl.edziennik.domain.teacher.TeacherSchedule;
 import pl.edziennik.infrastructure.repository.classroom.ClassRoomCommandRepository;
 import pl.edziennik.infrastructure.repository.classroomschedule.ClassRoomScheduleCommandRepository;
 import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassCommandRepository;
@@ -16,7 +22,6 @@ import pl.edziennik.infrastructure.repository.teacherschedule.TeacherScheduleCom
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
@@ -24,6 +29,8 @@ class CreateLessonPlanCommandValidator implements IBaseValidator<CreateLessonPla
 
     public static final String BUSY_TEACHER_SCHEDULE_MESSAGE_KEY = "teacher.schedule.busy";
     public static final String BUSY_CLASS_ROOM_SCHEDULE_MESSAGE_KEY = "classroom.schedule.busy";
+    public static final String LESSON_TIME_GREATER_THAN_CONFIGURATION_LIMIT = "lesson.time.greater.than.config.limit";
+    public static final String END_DATE_CANNOT_BE_BEFORE_START_DATE = "end.date.cannot.be.before.start.date";
 
     private final TeacherCommandRepository teacherCommandRepository;
     private final SubjectCommandRepository subjectCommandRepository;
@@ -41,8 +48,11 @@ class CreateLessonPlanCommandValidator implements IBaseValidator<CreateLessonPla
 
         errorBuilder.flush();
 
+        checkEndDateIsNotBeforeStartDate(command, errorBuilder);
+        checkSchoolConfigurationLessonTime(command, errorBuilder);
         checkTeacherScheduleConflicts(command, errorBuilder);
         checkClassRoomScheduleConflicts(command, errorBuilder);
+
     }
 
     /**
@@ -91,6 +101,40 @@ class CreateLessonPlanCommandValidator implements IBaseValidator<CreateLessonPla
                 });
     }
 
+    /**
+     * Check end date isn't before start date
+     */
+    private void checkEndDateIsNotBeforeStartDate(CreateLessonPlanCommand command, ValidationErrorBuilder errorBuilder) {
+        TimeFrame timeFrame = TimeFrame.of(command.startDate(), command.endDate());
+        if (command.endDate().isBefore(command.startDate())) {
+            errorBuilder.addError(
+                    CreateLessonPlanCommand.END_DATE,
+                    END_DATE_CANNOT_BE_BEFORE_START_DATE,
+                    ErrorCode.DATE_CONFLICT,
+                    timeFrame.formattedEndDate(), timeFrame.formattedStartDate());
+        }
+    }
+
+
+    /**
+     * Check lesson time is not greater than lesson time in school config
+     */
+    private void checkSchoolConfigurationLessonTime(CreateLessonPlanCommand command, ValidationErrorBuilder errorBuilder) {
+        SchoolClass schoolClass = schoolClassCommandRepository.getBySchoolClassId(command.schoolClassId());
+        School school = schoolClass.school();
+        TimeFrameDuration maxLessonTime = school.schoolConfiguration().maxLessonTime();
+        TimeFrame timeFrame = TimeFrame.of(command.startDate(), command.endDate());
+
+        if (timeFrame.duration().isGreaterThan(maxLessonTime)) {
+            errorBuilder.addError(
+                    CreateLessonPlanCommand.END_DATE,
+                    LESSON_TIME_GREATER_THAN_CONFIGURATION_LIMIT,
+                    ErrorCode.CONFIGURATION_CONFLICT,
+                    maxLessonTime, timeFrame.duration());
+        }
+
+
+    }
 
     /**
      * Check that teacher's schedule doesn't conflict with provided time frame
@@ -103,13 +147,14 @@ class CreateLessonPlanCommandValidator implements IBaseValidator<CreateLessonPla
             teacherId = subject.teacher().teacherId();
         }
 
-        List<Description> schedules = teacherScheduleCommandRepository.getTeacherSchedulesInTimeFrame(command.startDate(), command.endDate(), teacherId);
+        List<TeacherSchedule> schedules = teacherScheduleCommandRepository.getTeacherSchedulesInTimeFrame(command.startDate(), command.endDate(), teacherId);
 
-        if (!schedules.isEmpty()) {
+        for (TeacherSchedule teacherSchedule : schedules) {
             // If there exist any schedule conflicts with provided time frame
-            String description = schedules.stream()
-                    .map(Description::value)
-                    .collect(Collectors.joining(" -- "));
+            Description description = teacherSchedule.description()
+                    .append(
+                            teacherSchedule.timeFrame().formattedStartDate() + " -> " + teacherSchedule.timeFrame().formattedEndDate());
+
 
             errorBuilder.addError(
                     CreateLessonPlanCommand.TEACHER_ID,
@@ -124,14 +169,14 @@ class CreateLessonPlanCommandValidator implements IBaseValidator<CreateLessonPla
      * Check that classroom's schedule doesn't conflict with provided time frame
      */
     private void checkClassRoomScheduleConflicts(CreateLessonPlanCommand command, ValidationErrorBuilder errorBuilder) {
-        List<Description> schedules = classRoomScheduleCommandRepository.getClassRoomSchedulesInTimeFrame(command.startDate(),
+        List<ClassRoomSchedule> schedules = classRoomScheduleCommandRepository.getClassRoomSchedulesInTimeFrame(command.startDate(),
                 command.endDate(), command.classRoomId());
 
-        if (!schedules.isEmpty()) {
+        for (ClassRoomSchedule classRoomSchedule : schedules) {
             // If there exists any schedule conflicts with provided time frame
-            String description = schedules.stream()
-                    .map(Description::value)
-                    .collect(Collectors.joining(" -- "));
+            Description description = classRoomSchedule.description()
+                    .append(
+                            classRoomSchedule.timeFrame().formattedStartDate() + " -> " + classRoomSchedule.timeFrame().formattedEndDate());
 
             errorBuilder.addError(
                     CreateLessonPlanCommand.CLASS_ROOM_ID,

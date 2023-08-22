@@ -26,16 +26,16 @@ public class SchoolConfiguration {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "value", column = @Column(name = "lesson_time", nullable = false))
+            @AttributeOverride(name = "value", column = @Column(name = "max_lesson_time", nullable = false))
     })
-    private TimeFrameDuration lessonTime;
+    private TimeFrameDuration maxLessonTime;
 
 
     public static SchoolConfiguration createConfigFromProperties(SchoolConfigurationProperties properties) {
         SchoolConfiguration schoolConfiguration = new SchoolConfiguration();
 
         schoolConfiguration.averageType = properties.getAverageType();
-        schoolConfiguration.lessonTime = properties.getLessonTime();
+        schoolConfiguration.maxLessonTime = properties.getMaxLessonTime();
 
         return schoolConfiguration;
     }
@@ -46,9 +46,9 @@ public class SchoolConfiguration {
         }
     }
 
-    public void changeLessonTime(TimeFrameDuration timeFrameDuration) {
-        if (timeFrameDuration != null && !timeFrameDuration.equals(lessonTime)) {
-            this.lessonTime = timeFrameDuration;
+    public void changeMaxLessonTime(TimeFrameDuration timeFrameDuration) {
+        if (timeFrameDuration != null && !timeFrameDuration.equals(maxLessonTime)) {
+            this.maxLessonTime = timeFrameDuration;
         }
     }
 

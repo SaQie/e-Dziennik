@@ -30,7 +30,7 @@ class ChangeSchoolConfigurationValuesCommandHandler implements ICommandHandler<C
 
         SchoolConfiguration schoolConfiguration = school.schoolConfiguration();
         schoolConfiguration.changeAverageType(command.averageType());
-        schoolConfiguration.changeLessonTime(command.lessonTime());
+        schoolConfiguration.changeMaxLessonTime(command.maxLessonTime());
 
         schoolConfigurationCommandRepository.save(schoolConfiguration);
 
