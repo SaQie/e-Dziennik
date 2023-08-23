@@ -8,21 +8,21 @@ import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.application.query.schoolclass.config.GetSchoolClassConfigSummaryQuery;
 import pl.edziennik.application.query.schoolclass.detailed.GetDetailedSchoolClassQuery;
 import pl.edziennik.application.query.schoolclass.summary.GetSchoolClassSummaryForSchoolQuery;
+import pl.edziennik.common.valueobject.id.SchoolClassId;
+import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.view.PageView;
 import pl.edziennik.common.view.schoolclass.DetailedSchoolClassView;
 import pl.edziennik.common.view.schoolclass.SchoolClassSummaryForSchoolView;
 import pl.edziennik.common.view.schoolclass.config.SchoolClassConfigSummaryView;
-import pl.edziennik.common.valueobject.id.SchoolClassId;
-import pl.edziennik.common.valueobject.id.SchoolId;
 
 @RestController
-@RequestMapping("/api/v1/schoolclasses")
+@RequestMapping("/api/v1")
 @AllArgsConstructor
 public class SchoolClassQueryController {
 
     private final Dispatcher dispatcher;
 
-    @GetMapping("/{schoolClassId}")
+    @GetMapping("/schoolclasses/{schoolClassId}")
     @ResponseStatus(HttpStatus.OK)
     public DetailedSchoolClassView getDetailedSchoolClass(@PathVariable SchoolClassId schoolClassId) {
         GetDetailedSchoolClassQuery schoolClassQuery = new GetDetailedSchoolClassQuery(schoolClassId);
@@ -30,15 +30,15 @@ public class SchoolClassQueryController {
         return dispatcher.dispatch(schoolClassQuery);
     }
 
-    @GetMapping
+    @GetMapping("/schools/{schoolId}/schoolclasses")
     @ResponseStatus(HttpStatus.OK)
-    public PageView<SchoolClassSummaryForSchoolView> getSchoolClassSummaryForSchool(@RequestParam SchoolId schoolId, Pageable pageable) {
+    public PageView<SchoolClassSummaryForSchoolView> getSchoolClassSummaryForSchool(@PathVariable SchoolId schoolId, Pageable pageable) {
         GetSchoolClassSummaryForSchoolQuery query = new GetSchoolClassSummaryForSchoolQuery(schoolId, pageable);
 
         return dispatcher.dispatch(query);
     }
 
-    @GetMapping("/{schoolClassId}/configurations")
+    @GetMapping("/schoolclasses/{schoolClassId}/configurations")
     @ResponseStatus(HttpStatus.OK)
     public SchoolClassConfigSummaryView getSchoolClassConfiguration(@PathVariable SchoolClassId schoolClassId) {
         GetSchoolClassConfigSummaryQuery query = new GetSchoolClassConfigSummaryQuery(schoolClassId);
