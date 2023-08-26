@@ -16,8 +16,8 @@ class GetTeacherSubjectsSummaryQueryHandler implements IQueryHandler<GetTeacherS
 
     @Override
     public PageView<TeacherSubjectsSummaryView> handle(GetTeacherSubjectsSummaryQuery command) {
-        Page<TeacherSubjectsSummaryView> dtos = teacherQueryRepository.getTeacherSubjectsSummaryWithPagination(command.pageable(), command.teacherId());
+        Page<TeacherSubjectsSummaryView> views = teacherQueryRepository.getTeacherSubjectsSummaryWithPagination(command.pageable(), command.teacherId());
 
-        return PageView.fromPage(dtos);
+        return PageView.fromPage(views);
     }
 }

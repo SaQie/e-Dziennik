@@ -12,7 +12,7 @@ import pl.edziennik.common.view.classroomschedule.summary.ClassRoomScheduleSumma
 /**
  * A query used for getting the selected class-room schedule
  * <br>
- * <b>Return DTO: {@link ClassRoomScheduleSummaryView}</b>
+ * <b>Return VIEW: {@link ClassRoomScheduleSummaryView}</b>
  */
 @HandledBy(handler = GetClassRoomScheduleSummaryQueryHandler.class)
 public record GetClassRoomScheduleSummaryQuery(

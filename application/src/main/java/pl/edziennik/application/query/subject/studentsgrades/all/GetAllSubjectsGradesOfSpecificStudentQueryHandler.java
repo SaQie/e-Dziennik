@@ -40,9 +40,13 @@ class GetAllSubjectsGradesOfSpecificStudentQueryHandler implements
 
         // Join list of subjects with list of subject grades
         assignedSubjectsView = assignedSubjectsView.stream()
-                .map(subject -> new StudentAssignedSubjectsView(subject, detailedGradeView.stream()
-                        .filter(grade -> grade.studentSubjectId().equals(subject.studentSubjectId())).toList()
-                )).toList();
+                .map(subject -> {
+                    List<DetailedGradeView> gradesForSubject = detailedGradeView.stream()
+                            .filter(grade -> grade.studentSubjectId().equals(subject.studentSubjectId()))
+                            .toList();
+                    return new StudentAssignedSubjectsView(subject, gradesForSubject);
+                })
+                .toList();
 
         return new StudentAllSubjectsGradesHeaderView(header, assignedSubjectsView);
     }

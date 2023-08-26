@@ -20,7 +20,8 @@ public interface ClassRoomScheduleQueryRepository {
             "(crs.classRoomScheduleId,crs.description,crs.timeFrame) " +
             "FROM ClassRoom cr " +
             "LEFT JOIN ClassRoomSchedule crs ON (crs.classRoom.classRoomId = cr.classRoomId) " +
-            "WHERE cr.classRoomId = :classRoomId")
+            "WHERE cr.classRoomId = :classRoomId " +
+            "ORDER BY crs.timeFrame.startDate ")
     Page<ClassRoomScheduleSummaryView> getClassRoomScheduleView(Pageable pageable, ClassRoomId classRoomId);
 
     @Query("SELECT NEW pl.edziennik.common.view.classroomschedule.summaryforschool.ClassRoomScheduleSummaryForSchoolView" +
@@ -33,7 +34,8 @@ public interface ClassRoomScheduleQueryRepository {
             "(crs.classRoomScheduleId,crs.description,crs.timeFrame) " +
             "FROM ClassRoomSchedule crs " +
             "JOIN crs.classRoom cr " +
-            "WHERE cr.classRoomId = :classRoomId")
+            "WHERE cr.classRoomId = :classRoomId " +
+            "ORDER BY crs.timeFrame.startDate ")
     List<ClassRoomScheduleSummaryView> getClassRoomScheduleView(ClassRoomId classRoomId);
 
 }

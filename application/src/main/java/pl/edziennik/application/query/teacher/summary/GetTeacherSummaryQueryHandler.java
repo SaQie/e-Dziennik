@@ -18,8 +18,8 @@ class GetTeacherSummaryQueryHandler implements IQueryHandler<GetTeacherSummaryQu
     @Override
     @Cacheable(value = "teachers", key = "#root.method.name")
     public PageView<TeacherSummaryView> handle(GetTeacherSummaryQuery query) {
-        Page<TeacherSummaryView> dtos = teacherQueryRepository.findAllWithPagination(query.pageable());
+        Page<TeacherSummaryView> views = teacherQueryRepository.findAllWithPagination(query.pageable());
 
-        return PageView.fromPage(dtos);
+        return PageView.fromPage(views);
     }
 }
