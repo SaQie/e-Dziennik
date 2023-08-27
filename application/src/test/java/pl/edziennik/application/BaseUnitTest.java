@@ -14,6 +14,8 @@ import pl.edziennik.common.properties.SchoolConfigurationProperties;
 import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.admin.Admin;
+import pl.edziennik.domain.classroom.ClassRoom;
+import pl.edziennik.domain.classroom.ClassRoomSchedule;
 import pl.edziennik.domain.director.Director;
 import pl.edziennik.domain.parent.Parent;
 import pl.edziennik.domain.role.Role;
@@ -25,8 +27,11 @@ import pl.edziennik.domain.student.Student;
 import pl.edziennik.domain.studentsubject.StudentSubject;
 import pl.edziennik.domain.subject.Subject;
 import pl.edziennik.domain.teacher.Teacher;
+import pl.edziennik.domain.teacher.TeacherSchedule;
 import pl.edziennik.domain.user.User;
 import pl.edziennik.infrastructure.repository.admin.AdminCommandRepository;
+import pl.edziennik.infrastructure.repository.classroom.ClassRoomCommandRepository;
+import pl.edziennik.infrastructure.repository.classroomschedule.ClassRoomScheduleCommandRepository;
 import pl.edziennik.infrastructure.repository.director.DirectorCommandRepository;
 import pl.edziennik.infrastructure.repository.grade.GradeCommandRepository;
 import pl.edziennik.infrastructure.repository.parent.ParentCommandRepository;
@@ -40,6 +45,7 @@ import pl.edziennik.infrastructure.repository.student.StudentCommandRepository;
 import pl.edziennik.infrastructure.repository.studentsubject.StudentSubjectCommandRepository;
 import pl.edziennik.infrastructure.repository.subject.SubjectCommandRepository;
 import pl.edziennik.infrastructure.repository.teacher.TeacherCommandRepository;
+import pl.edziennik.infrastructure.repository.teacherschedule.TeacherScheduleCommandRepository;
 import pl.edziennik.infrastructure.repository.token.ActivationTokenRepository;
 import pl.edziennik.infrastructure.repository.user.UserCommandRepository;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
@@ -74,6 +80,9 @@ public class BaseUnitTest {
     protected SchoolClassConfiguration schoolClassConfiguration;
     protected SchoolConfigurationProperties schoolConfigurationProperties;
     protected SchoolClassConfigurationProperties schoolClassConfigurationProperties;
+    protected TeacherScheduleCommandRepository teacherScheduleCommandRepository;
+    protected ClassRoomScheduleCommandRepository classRoomScheduleCommandRepository;
+    protected ClassRoomCommandRepository classRoomCommandRepository;
 
     protected BaseUnitTest() {
         this.gradeCommandRepository = new GradeCommandMockRepo();
@@ -94,6 +103,10 @@ public class BaseUnitTest {
         this.directorCommandRepository = new DirectorCommandMockRepo();
         this.schoolClassConfigurationCommandRepository = new SchoolClassConfigurationCommandMockRepo();
         this.schoolConfigurationCommandRepository = new SchoolConfigurationCommandMockRepo();
+        this.classRoomCommandRepository = new ClassRoomCommandMockRepo();
+        this.classRoomScheduleCommandRepository = new ClassRoomScheduleCommandMockRepo();
+        this.teacherScheduleCommandRepository = new TeacherScheduleCommandMockRepo();
+
         this.address = Address.of(
                 pl.edziennik.common.valueobject.vo.Address.of(StringUtil.randomIdentifer(5)),
                 City.of(StringUtil.randomIdentifer(5)),
@@ -288,6 +301,31 @@ public class BaseUnitTest {
                 student,
                 subject
         );
+    }
+
+    protected ClassRoom createClassRoom(String name, School school) {
+        ClassRoom classRoom = ClassRoom.of(school, ClassRoomName.of(name));
+        return classRoomCommandRepository.save(classRoom);
+    }
+
+    protected ClassRoomSchedule createClassRoomSchedule(ClassRoom classRoom, TimeFrame timeFrame) {
+        ClassRoomSchedule classRoomSchedule = ClassRoomSchedule.builder()
+                .timeFrame(timeFrame)
+                .description(Description.of("TEST"))
+                .classRoom(classRoom)
+                .build();
+
+        return classRoomScheduleCommandRepository.save(classRoomSchedule);
+    }
+
+    protected TeacherSchedule createTeacherSchedule(Teacher teacher, TimeFrame timeFrame) {
+        TeacherSchedule teacherSchedule = TeacherSchedule.builder()
+                .teacher(teacher)
+                .description(Description.of("TEST"))
+                .timeFrame(timeFrame)
+                .build();
+
+        return teacherScheduleCommandRepository.save(teacherSchedule);
     }
 
     protected School createSchool(String name, String nip, String regon, Address address) {

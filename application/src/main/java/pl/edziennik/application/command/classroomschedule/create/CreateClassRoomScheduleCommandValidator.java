@@ -6,6 +6,7 @@ import pl.edziennik.application.command.lessonplan.create.CreateLessonPlanComman
 import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
 import pl.edziennik.application.common.dispatcher.base.IBaseValidator;
 import pl.edziennik.common.valueobject.vo.Description;
+import pl.edziennik.common.valueobject.vo.TimeFrame;
 import pl.edziennik.domain.classroom.ClassRoomSchedule;
 import pl.edziennik.infrastructure.repository.classroom.ClassRoomCommandRepository;
 import pl.edziennik.infrastructure.repository.classroomschedule.ClassRoomScheduleCommandRepository;
@@ -18,6 +19,7 @@ import java.util.List;
 class CreateClassRoomScheduleCommandValidator implements IBaseValidator<CreateClassRoomScheduleCommand> {
 
     public static final String BUSY_CLASS_ROOM_SCHEDULE_MESSAGE_KEY = "classroom.schedule.busy";
+    public static final String END_DATE_CANNOT_BE_BEFORE_START_DATE = "end.date.cannot.be.before.start.date";
 
     private final ClassRoomCommandRepository classRoomCommandRepository;
     private final ClassRoomScheduleCommandRepository classRoomScheduleCommandRepository;
@@ -26,7 +28,9 @@ class CreateClassRoomScheduleCommandValidator implements IBaseValidator<CreateCl
     public void validate(CreateClassRoomScheduleCommand command, ValidationErrorBuilder errorBuilder) {
         checkClassRoomExists(command, errorBuilder);
         checkClassRoomScheduleConflicts(command, errorBuilder);
+        checkEndDateIsNotBeforeStartDate(command, errorBuilder);
     }
+
 
     /**
      * Check class-room exists
@@ -55,10 +59,25 @@ class CreateClassRoomScheduleCommandValidator implements IBaseValidator<CreateCl
                             classRoomSchedule.timeFrame().formattedStartDate() + " -> " + classRoomSchedule.timeFrame().formattedEndDate());
 
             errorBuilder.addError(
-                    CreateLessonPlanCommand.CLASS_ROOM_ID,
+                    CreateLessonPlanCommand.START_DATE,
                     BUSY_CLASS_ROOM_SCHEDULE_MESSAGE_KEY,
                     ErrorCode.BUSY_SCHEDULE,
                     description);
         }
     }
+
+    /**
+     * Check end date isn't before start date
+     */
+    private void checkEndDateIsNotBeforeStartDate(CreateClassRoomScheduleCommand command, ValidationErrorBuilder errorBuilder) {
+        TimeFrame timeFrame = TimeFrame.of(command.startDate(), command.endDate());
+        if (command.endDate().isBefore(command.startDate())) {
+            errorBuilder.addError(
+                    CreateClassRoomScheduleCommand.END_DATE,
+                    END_DATE_CANNOT_BE_BEFORE_START_DATE,
+                    ErrorCode.DATE_CONFLICT,
+                    timeFrame.formattedEndDate(), timeFrame.formattedStartDate());
+        }
+    }
+
 }

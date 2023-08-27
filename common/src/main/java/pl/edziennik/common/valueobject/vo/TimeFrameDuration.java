@@ -38,4 +38,8 @@ public class TimeFrameDuration implements IntegerValueObject {
     public boolean isGreaterThan(TimeFrameDuration timeFrameDuration) {
         return timeFrameDuration.value < this.value;
     }
+
+    public boolean isSmallerThan(TimeFrameDuration timeFrameDuration) {
+        return timeFrameDuration.value > this.value;
+    }
 }

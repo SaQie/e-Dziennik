@@ -12,6 +12,7 @@ import java.util.List;
 @RepositoryDefinition(idClass = ClassRoomScheduleId.class, domainClass = ClassRoomSchedule.class)
 public interface ClassRoomScheduleCommandRepository {
 
+    ClassRoomSchedule getReferenceById(ClassRoomScheduleId classRoomScheduleId);
     ClassRoomSchedule save(ClassRoomSchedule classRoomSchedule);
 
     @Query("SELECT crs FROM ClassRoomSchedule crs " +

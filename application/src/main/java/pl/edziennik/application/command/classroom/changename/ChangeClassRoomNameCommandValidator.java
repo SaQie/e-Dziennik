@@ -12,7 +12,7 @@ import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
 @Component
 @AllArgsConstructor
-class ChangeClassRoomCommandValidator implements IBaseValidator<ChangeClassRoomNameCommand> {
+class ChangeClassRoomNameCommandValidator implements IBaseValidator<ChangeClassRoomNameCommand> {
 
     public static final String CLASS_ROOM_NAME_EQUAL_TO_OLD_MESSAGE_KEY = "class.room.name.equal.to.old";
     public static final String CLASS_ROOM_NAME_ALREADY_EXISTS_MESSAGE_KEY = "class.room.already.exists";

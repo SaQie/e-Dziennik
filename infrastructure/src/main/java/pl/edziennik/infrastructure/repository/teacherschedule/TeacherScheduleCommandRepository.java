@@ -12,11 +12,13 @@ import java.util.List;
 @RepositoryDefinition(domainClass = TeacherSchedule.class, idClass = TeacherScheduleId.class)
 public interface TeacherScheduleCommandRepository {
 
+    TeacherSchedule getReferenceById(TeacherScheduleId teacherScheduleId);
+
     TeacherSchedule save(TeacherSchedule teacherSchedule);
 
     @Query("SELECT ts FROM TeacherSchedule ts " +
             "WHERE ts.teacher.teacherId = :teacherId " +
             "AND ts.timeFrame.endDate BETWEEN :startDate and :endDate ")
     List<TeacherSchedule> getTeacherSchedulesInTimeFrame(LocalDateTime startDate, LocalDateTime endDate,
-                                                     TeacherId teacherId);
+                                                         TeacherId teacherId);
 }

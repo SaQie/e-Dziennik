@@ -27,7 +27,7 @@ public record CreateTeacherScheduleCommand(
 
 ) implements ICommand<OperationResult> {
 
-    public static final String TEACHER_ID = "teacherID";
+    public static final String TEACHER_ID = "teacherId";
     public static final String DESCRIPTION = "description";
     public static final String START_DATE = "startDate";
     public static final String END_DATE = "endDate";

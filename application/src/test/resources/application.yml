@@ -37,4 +37,4 @@ application:
 
 groovy:
   execution:
-    timeout: 10
+    timeout: 2

@@ -16,7 +16,7 @@ class ChangeClassRoomNameCommandHandler implements ICommandHandler<ChangeClassRo
     @Override
     public OperationResult handle(ChangeClassRoomNameCommand command) {
         ClassRoom classRoom = classRoomCommandRepository.getById(command.classRoomId());
-        classRoom.changeName(classRoom.classRoomName());
+        classRoom.changeName(command.classRoomName());
 
         classRoomCommandRepository.save(classRoom);
 

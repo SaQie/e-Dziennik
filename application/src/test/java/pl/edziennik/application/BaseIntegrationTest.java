@@ -25,6 +25,8 @@ import pl.edziennik.common.valueobject.id.*;
 import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.admin.Admin;
+import pl.edziennik.domain.classroom.ClassRoom;
+import pl.edziennik.domain.classroom.ClassRoomSchedule;
 import pl.edziennik.domain.director.Director;
 import pl.edziennik.domain.grade.Grade;
 import pl.edziennik.domain.groovy.GroovyScript;
@@ -37,11 +39,16 @@ import pl.edziennik.domain.student.Student;
 import pl.edziennik.domain.studentsubject.StudentSubject;
 import pl.edziennik.domain.subject.Subject;
 import pl.edziennik.domain.teacher.Teacher;
+import pl.edziennik.domain.teacher.TeacherSchedule;
 import pl.edziennik.domain.user.User;
 import pl.edziennik.infrastructure.repository.address.AddressCommandRepository;
 import pl.edziennik.infrastructure.repository.address.AddressQueryRepository;
 import pl.edziennik.infrastructure.repository.admin.AdminCommandRepository;
 import pl.edziennik.infrastructure.repository.admin.AdminQueryRepository;
+import pl.edziennik.infrastructure.repository.classroom.ClassRoomCommandRepository;
+import pl.edziennik.infrastructure.repository.classroom.ClassRoomQueryRepository;
+import pl.edziennik.infrastructure.repository.classroomschedule.ClassRoomScheduleCommandRepository;
+import pl.edziennik.infrastructure.repository.classroomschedule.ClassRoomScheduleQueryRepository;
 import pl.edziennik.infrastructure.repository.director.DirectorCommandRepository;
 import pl.edziennik.infrastructure.repository.director.DirectorQueryRepository;
 import pl.edziennik.infrastructure.repository.grade.GradeCommandRepository;
@@ -70,6 +77,8 @@ import pl.edziennik.infrastructure.repository.subject.SubjectCommandRepository;
 import pl.edziennik.infrastructure.repository.subject.SubjectQueryRepository;
 import pl.edziennik.infrastructure.repository.teacher.TeacherCommandRepository;
 import pl.edziennik.infrastructure.repository.teacher.TeacherQueryRepository;
+import pl.edziennik.infrastructure.repository.teacherschedule.TeacherScheduleCommandRepository;
+import pl.edziennik.infrastructure.repository.teacherschedule.TeacherScheduleQueryRepository;
 import pl.edziennik.infrastructure.repository.token.ActivationTokenRepository;
 import pl.edziennik.infrastructure.repository.user.UserCommandRepository;
 import pl.edziennik.infrastructure.repository.user.UserQueryRepository;
@@ -78,6 +87,7 @@ import pl.edziennik.infrastructure.validator.ValidationError;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -179,6 +189,18 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     protected GroovyScriptResultQueryRepository groovyScriptResultQueryRepository;
     @Autowired
     protected GroovyScriptQueryRepository groovyScriptQueryRepository;
+    @Autowired
+    protected TeacherScheduleQueryRepository teacherScheduleQueryRepository;
+    @Autowired
+    protected TeacherScheduleCommandRepository teacherScheduleCommandRepository;
+    @Autowired
+    protected ClassRoomScheduleQueryRepository classRoomScheduleQueryRepository;
+    @Autowired
+    protected ClassRoomScheduleCommandRepository classRoomScheduleCommandRepository;
+    @Autowired
+    protected ClassRoomCommandRepository classRoomCommandRepository;
+    @Autowired
+    protected ClassRoomQueryRepository classRoomQueryRepository;
 
     protected TransactionTemplate transactionTemplate;
 
@@ -433,6 +455,50 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                 pl.edziennik.common.valueobject.vo.Address.of("Test"),
                 City.of("Test"),
                 PostalCode.of("12-123"));
+    }
+
+    protected void checkTimeFrame(LocalDateTime from, LocalDateTime to, TimeFrame timeFrame) {
+        Duration duration = Duration.between(from, to);
+        int durationInMinutes = (int) duration.toMinutes();
+
+        assertEquals(durationInMinutes, timeFrame.duration().value());
+        assertEquals(from, timeFrame.startDate());
+        assertEquals(to, timeFrame.endDate());
+    }
+
+    protected TeacherScheduleId createTeacherSchedule(TeacherId teacherId, TimeFrame timeFrame) {
+        Teacher teacher = teacherCommandRepository.getReferenceById(teacherId);
+
+        TeacherSchedule teacherSchedule = TeacherSchedule.builder()
+                .timeFrame(timeFrame)
+                .description(Description.of("Something special"))
+                .teacher(teacher)
+                .build();
+
+        return teacherScheduleCommandRepository.save(teacherSchedule).teacherScheduleId();
+    }
+
+    protected ClassRoomScheduleId createClassRoomSchedule(ClassRoomId classRoomId, TimeFrame timeFrame) {
+        ClassRoom classRoom = classRoomCommandRepository.getById(classRoomId);
+
+        ClassRoomSchedule classRoomSchedule = ClassRoomSchedule.builder()
+                .description(Description.of("Something special"))
+                .classRoom(classRoom)
+                .timeFrame(timeFrame)
+                .build();
+
+        return classRoomScheduleCommandRepository.save(classRoomSchedule).classRoomScheduleId();
+    }
+
+    protected ClassRoomId createClassRoom(SchoolId schoolId, String name) {
+        School school = schoolCommandRepository.getReferenceById(schoolId);
+
+        ClassRoom classRoom = ClassRoom.builder()
+                .school(school)
+                .classRoomName(ClassRoomName.of(name))
+                .build();
+
+        return classRoomCommandRepository.save(classRoom).classRoomId();
     }
 
 }

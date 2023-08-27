@@ -6,6 +6,7 @@ import pl.edziennik.application.command.lessonplan.create.CreateLessonPlanComman
 import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
 import pl.edziennik.application.common.dispatcher.base.IBaseValidator;
 import pl.edziennik.common.valueobject.vo.Description;
+import pl.edziennik.common.valueobject.vo.TimeFrame;
 import pl.edziennik.domain.teacher.TeacherSchedule;
 import pl.edziennik.infrastructure.repository.teacher.TeacherCommandRepository;
 import pl.edziennik.infrastructure.repository.teacherschedule.TeacherScheduleCommandRepository;
@@ -18,6 +19,7 @@ import java.util.List;
 class CreateTeacherScheduleCommandValidator implements IBaseValidator<CreateTeacherScheduleCommand> {
 
     public static final String BUSY_TEACHER_SCHEDULE_MESSAGE_KEY = "teacher.schedule.busy";
+    public static final String END_DATE_CANNOT_BE_BEFORE_START_DATE = "end.date.cannot.be.before.start.date";
 
     private final TeacherCommandRepository teacherCommandRepository;
     private final TeacherScheduleCommandRepository teacherScheduleCommandRepository;
@@ -27,6 +29,7 @@ class CreateTeacherScheduleCommandValidator implements IBaseValidator<CreateTeac
     public void validate(CreateTeacherScheduleCommand command, ValidationErrorBuilder errorBuilder) {
         checkTeacherExists(command, errorBuilder);
         checkTeacherScheduleConflicts(command, errorBuilder);
+        checkEndDateIsNotBeforeStartDate(command, errorBuilder);
     }
 
     /**
@@ -39,6 +42,7 @@ class CreateTeacherScheduleCommandValidator implements IBaseValidator<CreateTeac
                         errorBuilder.addNotFoundError(CreateLessonPlanCommand.TEACHER_ID);
                         return null;
                     });
+            errorBuilder.flush();
         }
     }
 
@@ -57,11 +61,25 @@ class CreateTeacherScheduleCommandValidator implements IBaseValidator<CreateTeac
 
 
             errorBuilder.addError(
-                    CreateLessonPlanCommand.TEACHER_ID,
+                    CreateLessonPlanCommand.START_DATE,
                     BUSY_TEACHER_SCHEDULE_MESSAGE_KEY,
                     ErrorCode.BUSY_SCHEDULE,
                     description);
         }
 
+    }
+
+    /**
+     * Check end date isn't before start date
+     */
+    private void checkEndDateIsNotBeforeStartDate(CreateTeacherScheduleCommand command, ValidationErrorBuilder errorBuilder) {
+        TimeFrame timeFrame = TimeFrame.of(command.startDate(), command.endDate());
+        if (command.endDate().isBefore(command.startDate())) {
+            errorBuilder.addError(
+                    CreateTeacherScheduleCommand.END_DATE,
+                    END_DATE_CANNOT_BE_BEFORE_START_DATE,
+                    ErrorCode.DATE_CONFLICT,
+                    timeFrame.formattedEndDate(), timeFrame.formattedStartDate());
+        }
     }
 }

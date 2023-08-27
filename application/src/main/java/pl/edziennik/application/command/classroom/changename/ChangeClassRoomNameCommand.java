@@ -13,7 +13,7 @@ import pl.edziennik.common.valueobject.vo.ClassRoomName;
  * A command used for changing the specific classroom name
  */
 @HandledBy(handler = ChangeClassRoomNameCommandHandler.class)
-@ValidatedBy(validator = ChangeClassRoomCommandValidator.class)
+@ValidatedBy(validator = ChangeClassRoomNameCommandValidator.class)
 public record ChangeClassRoomNameCommand(
 
         ClassRoomId classRoomId,
