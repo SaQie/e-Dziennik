@@ -23,6 +23,9 @@ class CreateTeacherScheduleCommandValidatorTest extends BaseUnitTest {
     private static final LocalDateTime DATE_2022_01_01_10_00 = LocalDateTime.of(2022, 1, 1, 10, 0);
     private static final LocalDateTime DATE_2022_01_01_10_30 = LocalDateTime.of(2022, 1, 1, 10, 30);
 
+    // 10:05
+    private static final LocalDateTime DATE_2022_01_01_10_05 = LocalDateTime.of(2022, 1, 1, 10, 5);
+
     private final CreateTeacherScheduleCommandValidator validator;
 
     public CreateTeacherScheduleCommandValidatorTest() {
@@ -81,8 +84,30 @@ class CreateTeacherScheduleCommandValidatorTest extends BaseUnitTest {
 
         // then
         List<ValidationError> errors = validationErrorBuilder.getErrors();
-        assertEquals(errors.size(), 1);
+        assertEquals(2, errors.size());
         assertEquals(errors.get(0).field(), CreateTeacherScheduleCommand.END_DATE);
         assertEquals(errors.get(0).message(), CreateTeacherScheduleCommandValidator.END_DATE_CANNOT_BE_BEFORE_START_DATE);
+    }
+
+    @Test
+    public void shouldAddErrorWhenTimeFrameIsTooShort() {
+        // given
+        User user = createUser("TEST", "TEST@EXAMPLE.COM", "TEACHER");
+        School school = createSchool("TEST", "123123", "123123", address);
+        Teacher teacher = createTeacher(user, school, personInformation, address);
+        teacher = teacherCommandRepository.save(teacher);
+
+        CreateTeacherScheduleCommand command =
+                new CreateTeacherScheduleCommand(teacher.teacherId(),
+                        Description.of("TEST"), DATE_2022_01_01_10_00, DATE_2022_01_01_10_05);
+
+        // when
+        validator.validate(command, validationErrorBuilder);
+
+        // then
+        List<ValidationError> errors = validationErrorBuilder.getErrors();
+        assertEquals(errors.size(), 1);
+        assertEquals(errors.get(0).field(), CreateTeacherScheduleCommand.START_DATE);
+        assertEquals(errors.get(0).message(), CreateTeacherScheduleCommandValidator.SCHEDULE_TIME_TOO_SHORT);
     }
 }

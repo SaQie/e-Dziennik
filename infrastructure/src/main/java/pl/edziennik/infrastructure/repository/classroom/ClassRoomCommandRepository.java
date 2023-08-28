@@ -23,5 +23,7 @@ public interface ClassRoomCommandRepository {
     Optional<ClassRoom> findById(ClassRoomId classRoomId);
 
     ClassRoom getById(ClassRoomId classRoomId);
+    @Query("SELECT cr FROM ClassRoom cr JOIN FETCH cr.school s JOIN FETCH s.schoolConfiguration where cr.classRoomId = :classRoomId")
+    ClassRoom getByIdWithSchoolConfig(ClassRoomId classRoomId);
 
 }

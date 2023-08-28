@@ -15,11 +15,15 @@ public record ChangeSchoolConfigurationValuesCommand(
 
         SchoolId schoolId,
         AverageType averageType,
-        TimeFrameDuration maxLessonTime
+        TimeFrameDuration maxLessonTime,
+        TimeFrameDuration minScheduleTime
+
 
 ) implements ICommand<OperationResult> {
 
     public static final String SCHOOL_ID = "schoolId";
     public static final String AVERAGE_TYPE = "averageType";
+    public static final String MAX_LESSON_TIME = "maxLessonTime";
+    public static final String MIN_SCHEDULE_TIME = "minScheduleTime";
 
 }

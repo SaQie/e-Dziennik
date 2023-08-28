@@ -43,4 +43,9 @@ public class ClassRoomCommandMockRepo implements ClassRoomCommandRepository {
     public ClassRoom getById(ClassRoomId classRoomId) {
         return database.get(classRoomId);
     }
+
+    @Override
+    public ClassRoom getByIdWithSchoolConfig(ClassRoomId classRoomId) {
+        return database.get(classRoomId);
+    }
 }

@@ -7,6 +7,8 @@ import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
 import pl.edziennik.application.common.dispatcher.base.IBaseValidator;
 import pl.edziennik.common.valueobject.vo.Description;
 import pl.edziennik.common.valueobject.vo.TimeFrame;
+import pl.edziennik.common.valueobject.vo.TimeFrameDuration;
+import pl.edziennik.domain.classroom.ClassRoom;
 import pl.edziennik.domain.classroom.ClassRoomSchedule;
 import pl.edziennik.infrastructure.repository.classroom.ClassRoomCommandRepository;
 import pl.edziennik.infrastructure.repository.classroomschedule.ClassRoomScheduleCommandRepository;
@@ -20,6 +22,7 @@ class CreateClassRoomScheduleCommandValidator implements IBaseValidator<CreateCl
 
     public static final String BUSY_CLASS_ROOM_SCHEDULE_MESSAGE_KEY = "classroom.schedule.busy";
     public static final String END_DATE_CANNOT_BE_BEFORE_START_DATE = "end.date.cannot.be.before.start.date";
+    public static final String SCHEDULE_TIME_TOO_SHORT_MESSAGE_KEY = "schedule.time.too.short";
 
     private final ClassRoomCommandRepository classRoomCommandRepository;
     private final ClassRoomScheduleCommandRepository classRoomScheduleCommandRepository;
@@ -29,6 +32,7 @@ class CreateClassRoomScheduleCommandValidator implements IBaseValidator<CreateCl
         checkClassRoomExists(command, errorBuilder);
         checkClassRoomScheduleConflicts(command, errorBuilder);
         checkEndDateIsNotBeforeStartDate(command, errorBuilder);
+        checkMinimalScheduleTimeFromSchoolConfiguration(command, errorBuilder);
     }
 
 
@@ -77,6 +81,23 @@ class CreateClassRoomScheduleCommandValidator implements IBaseValidator<CreateCl
                     END_DATE_CANNOT_BE_BEFORE_START_DATE,
                     ErrorCode.DATE_CONFLICT,
                     timeFrame.formattedEndDate(), timeFrame.formattedStartDate());
+        }
+    }
+
+    /**
+     * Check given time frame is not smaller than school config minimal schedule time
+     */
+    private void checkMinimalScheduleTimeFromSchoolConfiguration(CreateClassRoomScheduleCommand command, ValidationErrorBuilder errorBuilder) {
+        TimeFrame timeFrame = TimeFrame.of(command.startDate(), command.endDate());
+        ClassRoom classRoom = classRoomCommandRepository.getByIdWithSchoolConfig(command.classRoomId());
+        TimeFrameDuration minScheduleTime = classRoom.school().schoolConfiguration().minScheduleTime();
+
+        if (timeFrame.duration().isSmallerThan(minScheduleTime)) {
+            errorBuilder.addError(
+                    CreateClassRoomScheduleCommand.START_DATE,
+                    SCHEDULE_TIME_TOO_SHORT_MESSAGE_KEY,
+                    ErrorCode.DATE_CONFLICT,
+                    minScheduleTime);
         }
     }
 

@@ -58,6 +58,7 @@ school:
   config:
     averageType: ARITHMETIC
     maxLessonTime: 45
+    minScheduleTime: 10
 
 jwt:
   secret: testtt

@@ -22,10 +22,14 @@ class CreateClassRoomScheduleCommandValidatorTest extends BaseUnitTest {
     private static final LocalDateTime DATE_2022_01_01_10_00 = LocalDateTime.of(2022, 1, 1, 10, 0);
     private static final LocalDateTime DATE_2022_01_01_10_30 = LocalDateTime.of(2022, 1, 1, 10, 30);
 
+    // 10:05
+    private static final LocalDateTime DATE_2022_01_01_10_05 = LocalDateTime.of(2022, 1, 1, 10, 5);
+
     private final CreateClassRoomScheduleCommandValidator validator;
 
     public CreateClassRoomScheduleCommandValidatorTest() {
-        this.validator = new CreateClassRoomScheduleCommandValidator(classRoomCommandRepository, classRoomScheduleCommandRepository);
+        this.validator = new CreateClassRoomScheduleCommandValidator(classRoomCommandRepository,
+                classRoomScheduleCommandRepository);
     }
 
     @Test
@@ -80,8 +84,29 @@ class CreateClassRoomScheduleCommandValidatorTest extends BaseUnitTest {
 
         // then
         List<ValidationError> errors = validationErrorBuilder.getErrors();
-        assertEquals(1, errors.size());
+        assertEquals(2, errors.size());
         assertEquals(errors.get(0).field(), CreateClassRoomScheduleCommand.END_DATE);
         assertEquals(errors.get(0).message(), CreateClassRoomScheduleCommandValidator.END_DATE_CANNOT_BE_BEFORE_START_DATE);
+    }
+
+    @Test
+    public void shouldAddErrorWhenTimeFrameIsTooShort() {
+        // given
+        School school = createSchool("TEST", "123123123", "231232", address);
+        school = schoolCommandRepository.save(school);
+
+        ClassRoom classRoom = createClassRoom("122A", school);
+
+        CreateClassRoomScheduleCommand command = new CreateClassRoomScheduleCommand(classRoom.classRoomId(),
+                Description.of("TEST"), DATE_2022_01_01_10_00, DATE_2022_01_01_10_05);
+
+        // when
+        validator.validate(command, validationErrorBuilder);
+
+        // then
+        List<ValidationError> errors = validationErrorBuilder.getErrors();
+        assertEquals(1, errors.size());
+        assertEquals(errors.get(0).field(), CreateClassRoomScheduleCommand.START_DATE);
+        assertEquals(errors.get(0).message(), CreateClassRoomScheduleCommandValidator.SCHEDULE_TIME_TOO_SHORT_MESSAGE_KEY);
     }
 }

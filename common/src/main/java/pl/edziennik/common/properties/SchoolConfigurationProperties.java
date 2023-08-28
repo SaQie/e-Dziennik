@@ -22,4 +22,7 @@ public class SchoolConfigurationProperties {
     @NotNull
     private TimeFrameDuration maxLessonTime;
 
+    @NotNull
+    private TimeFrameDuration minScheduleTime;
+
 }

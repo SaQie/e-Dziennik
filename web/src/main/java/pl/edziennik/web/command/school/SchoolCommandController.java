@@ -61,7 +61,7 @@ public class SchoolCommandController {
     @PatchMapping("/{schoolId}/configurations")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void changeSchoolConfigurationValues(@RequestBody @Valid ChangeSchoolConfigurationValuesCommand command, @PathVariable SchoolId schoolId) {
-        command = new ChangeSchoolConfigurationValuesCommand(schoolId, command.averageType(), command.maxLessonTime());
+        command = new ChangeSchoolConfigurationValuesCommand(schoolId, command.averageType(), command.maxLessonTime(), command.minScheduleTime());
 
         dispatcher.dispatch(command);
     }

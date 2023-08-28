@@ -22,7 +22,8 @@ public class ChangeSchoolConfigurationValuesHandlerTest extends BaseUnitTest {
     @Test
     public void shouldThrowExceptionWhenSchoolNotExists() {
         // given
-        ChangeSchoolConfigurationValuesCommand command = new ChangeSchoolConfigurationValuesCommand(SchoolId.create(), AverageType.WEIGHTED, TimeFrameDuration.of(1));
+        ChangeSchoolConfigurationValuesCommand command = new ChangeSchoolConfigurationValuesCommand(SchoolId.create(),
+                AverageType.WEIGHTED, TimeFrameDuration.of(1), TimeFrameDuration.of(1));
 
         // when
         // then
@@ -39,7 +40,8 @@ public class ChangeSchoolConfigurationValuesHandlerTest extends BaseUnitTest {
         schoolCommandRepository.save(school);
         assertEquals(school.schoolConfiguration().averageType(), AverageType.ARITHMETIC);
 
-        ChangeSchoolConfigurationValuesCommand command = new ChangeSchoolConfigurationValuesCommand(school.schoolId(), AverageType.WEIGHTED, TimeFrameDuration.of(1));
+        ChangeSchoolConfigurationValuesCommand command = new ChangeSchoolConfigurationValuesCommand(school.schoolId(), AverageType.WEIGHTED,
+                TimeFrameDuration.of(1), TimeFrameDuration.of(1));
 
         // when
         handler.handle(command);
@@ -47,5 +49,7 @@ public class ChangeSchoolConfigurationValuesHandlerTest extends BaseUnitTest {
         // then
         school = schoolCommandRepository.getBySchoolId(school.schoolId());
         assertEquals(school.schoolConfiguration().averageType(), AverageType.WEIGHTED);
+        assertEquals(school.schoolConfiguration().minScheduleTime(), TimeFrameDuration.of(1));
+        assertEquals(school.schoolConfiguration().maxLessonTime(), TimeFrameDuration.of(1));
     }
 }

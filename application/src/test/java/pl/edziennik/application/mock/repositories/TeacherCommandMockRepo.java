@@ -74,6 +74,11 @@ public class TeacherCommandMockRepo implements TeacherCommandRepository {
     }
 
     @Override
+    public Teacher getByTeacherIdWithSchoolConfig(TeacherId teacherId) {
+        return database.get(teacherId);
+    }
+
+    @Override
     public boolean isTeacherAccountNotActive(TeacherId teacherId) {
         Teacher teacher = database.get(teacherId);
         if (teacher == null) {

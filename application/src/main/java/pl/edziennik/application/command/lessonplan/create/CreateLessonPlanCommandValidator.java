@@ -8,6 +8,7 @@ import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.common.valueobject.vo.Description;
 import pl.edziennik.common.valueobject.vo.TimeFrame;
 import pl.edziennik.common.valueobject.vo.TimeFrameDuration;
+import pl.edziennik.domain.classroom.ClassRoom;
 import pl.edziennik.domain.classroom.ClassRoomSchedule;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.schoolclass.SchoolClass;
@@ -31,6 +32,7 @@ class CreateLessonPlanCommandValidator implements IBaseValidator<CreateLessonPla
     public static final String BUSY_CLASS_ROOM_SCHEDULE_MESSAGE_KEY = "classroom.schedule.busy";
     public static final String LESSON_TIME_GREATER_THAN_CONFIGURATION_LIMIT = "lesson.time.greater.than.config.limit";
     public static final String END_DATE_CANNOT_BE_BEFORE_START_DATE = "end.date.cannot.be.before.start.date";
+    public static final String SCHEDULE_TIME_TOO_SHORT_MESSAGE_KEY = "schedule.time.too.short";
 
     private final TeacherCommandRepository teacherCommandRepository;
     private final SubjectCommandRepository subjectCommandRepository;
@@ -50,6 +52,7 @@ class CreateLessonPlanCommandValidator implements IBaseValidator<CreateLessonPla
 
         checkEndDateIsNotBeforeStartDate(command, errorBuilder);
         checkSchoolConfigurationLessonTime(command, errorBuilder);
+        checkMinimalScheduleTimeFromSchoolConfiguration(command, errorBuilder);
         checkTeacherScheduleConflicts(command, errorBuilder);
         checkClassRoomScheduleConflicts(command, errorBuilder);
 
@@ -185,4 +188,23 @@ class CreateLessonPlanCommandValidator implements IBaseValidator<CreateLessonPla
                     description);
         }
     }
+
+
+    /**
+     * Check given time frame is not smaller than school config minimal schedule time
+     */
+    private void checkMinimalScheduleTimeFromSchoolConfiguration(CreateLessonPlanCommand command, ValidationErrorBuilder errorBuilder) {
+        TimeFrame timeFrame = TimeFrame.of(command.startDate(), command.endDate());
+        ClassRoom classRoom = classRoomCommandRepository.getById(command.classRoomId());
+        TimeFrameDuration minScheduleTime = classRoom.school().schoolConfiguration().minScheduleTime();
+
+        if (timeFrame.duration().isSmallerThan(minScheduleTime)) {
+            errorBuilder.addError(
+                    CreateLessonPlanCommand.START_DATE,
+                    SCHEDULE_TIME_TOO_SHORT_MESSAGE_KEY,
+                    ErrorCode.DATE_CONFLICT,
+                    minScheduleTime);
+        }
+    }
+
 }

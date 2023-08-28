@@ -30,12 +30,19 @@ public class SchoolConfiguration {
     })
     private TimeFrameDuration maxLessonTime;
 
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "value", column = @Column(name = "min_schedule_time", nullable = false))
+    })
+    private TimeFrameDuration minScheduleTime;
+
 
     public static SchoolConfiguration createConfigFromProperties(SchoolConfigurationProperties properties) {
         SchoolConfiguration schoolConfiguration = new SchoolConfiguration();
 
         schoolConfiguration.averageType = properties.getAverageType();
         schoolConfiguration.maxLessonTime = properties.getMaxLessonTime();
+        schoolConfiguration.minScheduleTime = properties.getMinScheduleTime();
 
         return schoolConfiguration;
     }
@@ -49,6 +56,12 @@ public class SchoolConfiguration {
     public void changeMaxLessonTime(TimeFrameDuration timeFrameDuration) {
         if (timeFrameDuration != null && !timeFrameDuration.equals(maxLessonTime)) {
             this.maxLessonTime = timeFrameDuration;
+        }
+    }
+
+    public void changeMinScheduleTime(TimeFrameDuration timeFrameDuration) {
+        if (timeFrameDuration != null && !timeFrameDuration.equals(minScheduleTime)) {
+            this.minScheduleTime = timeFrameDuration;
         }
     }
 

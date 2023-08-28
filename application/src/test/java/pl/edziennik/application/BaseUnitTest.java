@@ -120,6 +120,8 @@ public class BaseUnitTest {
 
         SchoolConfigurationProperties schoolConfigurationProperties = new SchoolConfigurationProperties();
         schoolConfigurationProperties.setAverageType(AverageType.ARITHMETIC);
+        schoolConfigurationProperties.setMaxLessonTime(TimeFrameDuration.of(1));
+        schoolConfigurationProperties.setMinScheduleTime(TimeFrameDuration.of(10));
 
         this.schoolConfigurationProperties = schoolConfigurationProperties;
 

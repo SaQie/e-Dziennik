@@ -7,6 +7,8 @@ import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
 import pl.edziennik.application.common.dispatcher.base.IBaseValidator;
 import pl.edziennik.common.valueobject.vo.Description;
 import pl.edziennik.common.valueobject.vo.TimeFrame;
+import pl.edziennik.common.valueobject.vo.TimeFrameDuration;
+import pl.edziennik.domain.teacher.Teacher;
 import pl.edziennik.domain.teacher.TeacherSchedule;
 import pl.edziennik.infrastructure.repository.teacher.TeacherCommandRepository;
 import pl.edziennik.infrastructure.repository.teacherschedule.TeacherScheduleCommandRepository;
@@ -20,6 +22,7 @@ class CreateTeacherScheduleCommandValidator implements IBaseValidator<CreateTeac
 
     public static final String BUSY_TEACHER_SCHEDULE_MESSAGE_KEY = "teacher.schedule.busy";
     public static final String END_DATE_CANNOT_BE_BEFORE_START_DATE = "end.date.cannot.be.before.start.date";
+    public static final String SCHEDULE_TIME_TOO_SHORT = "schedule.time.too.short";
 
     private final TeacherCommandRepository teacherCommandRepository;
     private final TeacherScheduleCommandRepository teacherScheduleCommandRepository;
@@ -30,7 +33,9 @@ class CreateTeacherScheduleCommandValidator implements IBaseValidator<CreateTeac
         checkTeacherExists(command, errorBuilder);
         checkTeacherScheduleConflicts(command, errorBuilder);
         checkEndDateIsNotBeforeStartDate(command, errorBuilder);
+        checkMinimalScheduleTimeFromSchoolConfiguration(command, errorBuilder);
     }
+
 
     /**
      * Check provided teacher exists
@@ -80,6 +85,23 @@ class CreateTeacherScheduleCommandValidator implements IBaseValidator<CreateTeac
                     END_DATE_CANNOT_BE_BEFORE_START_DATE,
                     ErrorCode.DATE_CONFLICT,
                     timeFrame.formattedEndDate(), timeFrame.formattedStartDate());
+        }
+    }
+
+    /**
+     * Check given time frame is not smaller than school config minimal schedule time
+     */
+    private void checkMinimalScheduleTimeFromSchoolConfiguration(CreateTeacherScheduleCommand command, ValidationErrorBuilder errorBuilder) {
+        TimeFrame timeFrame = TimeFrame.of(command.startDate(), command.endDate());
+        Teacher teacher = teacherCommandRepository.getByTeacherIdWithSchoolConfig(command.teacherId());
+        TimeFrameDuration minScheduleTime = teacher.school().schoolConfiguration().minScheduleTime();
+
+        if (timeFrame.duration().isSmallerThan(minScheduleTime)) {
+            errorBuilder.addError(
+                    CreateTeacherScheduleCommand.START_DATE,
+                    SCHEDULE_TIME_TOO_SHORT,
+                    ErrorCode.DATE_CONFLICT,
+                    minScheduleTime);
         }
     }
 }
