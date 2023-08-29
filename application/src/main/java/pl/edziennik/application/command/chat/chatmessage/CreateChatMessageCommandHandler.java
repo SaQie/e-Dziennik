@@ -3,7 +3,7 @@ package pl.edziennik.application.command.chat.chatmessage;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
+import pl.edziennik.application.common.dispatcher.ICommandHandler;
 import pl.edziennik.common.valueobject.id.ChatMessageId;
 import pl.edziennik.common.valueobject.id.MessageStatusId;
 import pl.edziennik.domain.chat.ChatMessage;

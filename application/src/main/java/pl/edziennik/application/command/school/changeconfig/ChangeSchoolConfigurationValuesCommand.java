@@ -1,8 +1,8 @@
 package pl.edziennik.application.command.school.changeconfig;
 
 import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.base.HandledBy;
-import pl.edziennik.application.common.dispatcher.command.ICommand;
+import pl.edziennik.application.common.dispatcher.HandledBy;
+import pl.edziennik.application.common.dispatcher.ICommand;
 import pl.edziennik.common.enums.AverageType;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.vo.TimeFrameDuration;

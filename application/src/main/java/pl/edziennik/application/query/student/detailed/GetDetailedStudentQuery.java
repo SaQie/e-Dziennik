@@ -1,8 +1,8 @@
 package pl.edziennik.application.query.student.detailed;
 
 import jakarta.validation.constraints.NotNull;
-import pl.edziennik.application.common.dispatcher.base.HandledBy;
-import pl.edziennik.application.common.dispatcher.query.IQuery;
+import pl.edziennik.application.common.dispatcher.HandledBy;
+import pl.edziennik.application.common.dispatcher.IQuery;
 import pl.edziennik.common.view.student.DetailedStudentView;
 import pl.edziennik.common.valueobject.id.StudentId;
 

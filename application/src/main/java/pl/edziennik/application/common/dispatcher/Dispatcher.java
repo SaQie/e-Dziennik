@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
-import pl.edziennik.application.common.dispatcher.base.IBaseHandler;
-import pl.edziennik.application.common.dispatcher.base.IDispatchable;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
 
 /**

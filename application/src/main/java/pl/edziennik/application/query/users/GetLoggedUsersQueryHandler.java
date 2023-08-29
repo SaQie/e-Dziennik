@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.query.IQueryHandler;
+import pl.edziennik.application.common.dispatcher.IQueryHandler;
 import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.common.view.user.LoggedUserView;
 import pl.edziennik.infrastructure.repository.user.UserQueryRepository;

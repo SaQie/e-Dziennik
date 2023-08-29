@@ -2,7 +2,7 @@ package pl.edziennik.application.query.school.config;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.query.IQueryHandler;
+import pl.edziennik.application.common.dispatcher.IQueryHandler;
 import pl.edziennik.common.view.school.config.SchoolConfigSummaryView;
 import pl.edziennik.infrastructure.repository.school.SchoolConfigurationQueryRepository;
 import pl.edziennik.infrastructure.spring.ResourceCreator;

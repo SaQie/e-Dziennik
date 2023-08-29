@@ -3,9 +3,6 @@ package pl.edziennik.application.common.dispatcher;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.base.HandledBy;
-import pl.edziennik.application.common.dispatcher.base.IBaseHandler;
-import pl.edziennik.application.common.dispatcher.base.IDispatchable;
 import pl.edziennik.infrastructure.spring.exception.ResolverException;
 
 import java.util.Map;

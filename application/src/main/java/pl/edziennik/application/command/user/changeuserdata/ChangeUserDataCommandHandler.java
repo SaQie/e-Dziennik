@@ -3,7 +3,7 @@ package pl.edziennik.application.command.user.changeuserdata;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
+import pl.edziennik.application.common.dispatcher.ICommandHandler;
 import pl.edziennik.domain.user.User;
 import pl.edziennik.infrastructure.repository.user.UserCommandRepository;
 

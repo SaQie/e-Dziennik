@@ -7,8 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.edziennik.application.common.dispatcher.Dispatcher;
-import pl.edziennik.application.query.file.GetStudentAllSubjectsGradesSummaryForFileQuery;
+import pl.edziennik.application.query.file.FileQueryDao;
 import pl.edziennik.common.enums.DocumentType;
 import pl.edziennik.common.valueobject.id.StudentId;
 
@@ -19,23 +18,21 @@ import java.io.ByteArrayInputStream;
 @AllArgsConstructor
 public class FileQueryController {
 
-    private final Dispatcher dispatcher;
+    private final FileQueryDao dao;
 
     @GetMapping("/grades/{studentId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<InputStreamResource> getStudentAllSubjectsGradesSummaryFile(@PathVariable StudentId studentId, @RequestParam String type) {
         DocumentType documentType = DocumentType.get(type);
 
-        GetStudentAllSubjectsGradesSummaryForFileQuery query = new GetStudentAllSubjectsGradesSummaryForFileQuery(studentId, documentType);
+        byte[] bytes = dao.getStudentAllSubjectGradesFile(studentId, documentType);
 
-        byte[] documentBytes = dispatcher.dispatch(query);
-
-        InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(documentBytes));
+        InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(bytes));
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=student_subject_grades.pdf")
                 .contentType(MediaType.APPLICATION_PDF)
-                .contentLength(documentBytes.length)
+                .contentLength(bytes.length)
                 .body(resource);
     }
 

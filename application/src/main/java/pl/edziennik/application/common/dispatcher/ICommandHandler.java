@@ -1,8 +1,5 @@
-package pl.edziennik.application.common.dispatcher.command;
+package pl.edziennik.application.common.dispatcher;
 
-
-import pl.edziennik.application.common.dispatcher.base.IBaseHandler;
-import pl.edziennik.application.common.dispatcher.base.IDispatchable;
 
 /**
  * Implement this interface for all Command Handlers in this system

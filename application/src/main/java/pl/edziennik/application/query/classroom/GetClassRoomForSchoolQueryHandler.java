@@ -3,7 +3,7 @@ package pl.edziennik.application.query.classroom;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.query.IQueryHandler;
+import pl.edziennik.application.common.dispatcher.IQueryHandler;
 import pl.edziennik.common.view.PageView;
 import pl.edziennik.common.view.classroom.classroomsforschool.ClassRoomForSchoolView;
 import pl.edziennik.infrastructure.repository.classroom.ClassRoomQueryRepository;

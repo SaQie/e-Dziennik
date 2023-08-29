@@ -5,7 +5,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
+import pl.edziennik.application.common.dispatcher.ICommandHandler;
 import pl.edziennik.common.valueobject.id.SubjectId;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.subject.Subject;

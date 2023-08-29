@@ -3,7 +3,7 @@ package pl.edziennik.application.query.teacherschedule.summaryforschool;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.query.IQueryHandler;
+import pl.edziennik.application.common.dispatcher.IQueryHandler;
 import pl.edziennik.common.view.PageView;
 import pl.edziennik.common.view.teacherschedule.summaryforschool.TeacherScheduleSummaryForSchoolView;
 import pl.edziennik.infrastructure.repository.teacherschedule.TeacherScheduleQueryRepository;

@@ -2,8 +2,8 @@ package pl.edziennik.application.command.address.changeaddress;
 
 import jakarta.validation.Valid;
 import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.base.HandledBy;
-import pl.edziennik.application.common.dispatcher.command.ICommand;
+import pl.edziennik.application.common.dispatcher.HandledBy;
+import pl.edziennik.application.common.dispatcher.ICommand;
 import pl.edziennik.common.valueobject.vo.Address;
 import pl.edziennik.common.valueobject.vo.City;
 import pl.edziennik.common.valueobject.vo.PostalCode;

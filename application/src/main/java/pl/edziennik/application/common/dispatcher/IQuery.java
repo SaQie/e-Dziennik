@@ -1,7 +1,5 @@
-package pl.edziennik.application.common.dispatcher.query;
+package pl.edziennik.application.common.dispatcher;
 
-
-import pl.edziennik.application.common.dispatcher.base.IDispatchable;
 
 /**
  * Implement this interface for all Query in this system

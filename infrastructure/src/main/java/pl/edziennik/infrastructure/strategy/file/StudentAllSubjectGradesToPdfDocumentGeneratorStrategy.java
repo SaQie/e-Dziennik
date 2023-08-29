@@ -2,9 +2,9 @@ package pl.edziennik.infrastructure.strategy.file;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import pl.edziennik.common.enums.DocumentType;
 import pl.edziennik.common.view.file.studentallsubjectsgrades.StudentAllSubjectsGradesHeaderForFileView;
 import pl.edziennik.common.view.file.studentallsubjectsgrades.StudentAllSubjectsSummaryForFileView;
-import pl.edziennik.common.enums.DocumentType;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
 import pl.edziennik.infrastructure.spring.file.PdfTableGenerator;
 

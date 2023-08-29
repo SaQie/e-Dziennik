@@ -1,4 +1,4 @@
-package pl.edziennik.application.common.dispatcher.base;
+package pl.edziennik.application.common.dispatcher;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

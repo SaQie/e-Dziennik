@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.edziennik.application.common.dispatcher.Dispatcher;
-import pl.edziennik.application.query.schoollevel.GetSchoolLevelSummaryQuery;
+import pl.edziennik.application.query.schoollevel.SchoolLevelQueryDao;
 import pl.edziennik.common.view.schoollevel.SchoolLevelView;
 
 import java.util.List;
@@ -15,13 +14,11 @@ import java.util.List;
 @RestController
 public class SchoolLevelQueryController {
 
-    private Dispatcher dispatcher;
+    private final SchoolLevelQueryDao dao;
 
     @GetMapping()
     public List<SchoolLevelView> getSchoolLevels() {
-        GetSchoolLevelSummaryQuery query = new GetSchoolLevelSummaryQuery();
-
-        return dispatcher.dispatch(query);
+        return dao.getSchoolLevelsView();
     }
 
 }

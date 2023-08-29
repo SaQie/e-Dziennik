@@ -3,7 +3,7 @@ package pl.edziennik.application.command.classroomschedule.create;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
+import pl.edziennik.application.common.dispatcher.ICommandHandler;
 import pl.edziennik.common.valueobject.id.ClassRoomScheduleId;
 import pl.edziennik.common.valueobject.vo.TimeFrame;
 import pl.edziennik.domain.classroom.ClassRoom;

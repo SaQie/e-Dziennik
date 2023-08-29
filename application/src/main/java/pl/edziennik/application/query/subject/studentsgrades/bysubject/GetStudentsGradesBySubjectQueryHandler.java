@@ -2,7 +2,7 @@ package pl.edziennik.application.query.subject.studentsgrades.bysubject;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.query.IQueryHandler;
+import pl.edziennik.application.common.dispatcher.IQueryHandler;
 import pl.edziennik.common.view.grade.DetailedGradeView;
 import pl.edziennik.common.view.grade.bysubject.StudentGradesBySubjectView;
 import pl.edziennik.infrastructure.repository.grade.GradeQueryRepository;

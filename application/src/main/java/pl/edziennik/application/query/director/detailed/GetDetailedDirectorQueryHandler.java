@@ -2,7 +2,7 @@ package pl.edziennik.application.query.director.detailed;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.query.IQueryHandler;
+import pl.edziennik.application.common.dispatcher.IQueryHandler;
 import pl.edziennik.common.view.director.DetailedDirectorView;
 import pl.edziennik.infrastructure.repository.director.DirectorQueryRepository;
 import pl.edziennik.infrastructure.spring.ResourceCreator;

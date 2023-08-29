@@ -1,4 +1,4 @@
-package pl.edziennik.application.common.dispatcher.base;
+package pl.edziennik.application.common.dispatcher;
 
 /**
  * Basic interface for ICommand/IQuery
@@ -7,5 +7,5 @@ package pl.edziennik.application.common.dispatcher.base;
  *
  * @param <T>
  */
-public interface IDispatchable<T> {
+interface IDispatchable<T> {
 }

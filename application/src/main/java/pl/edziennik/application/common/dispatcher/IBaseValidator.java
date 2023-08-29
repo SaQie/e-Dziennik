@@ -1,7 +1,5 @@
-package pl.edziennik.application.common.dispatcher.base;
+package pl.edziennik.application.common.dispatcher;
 
-
-import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
 
 /**
  * Base validator for all types of {@link IDispatchable} (Query/command)

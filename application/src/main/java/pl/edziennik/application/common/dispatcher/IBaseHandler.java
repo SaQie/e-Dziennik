@@ -1,4 +1,4 @@
-package pl.edziennik.application.common.dispatcher.base;
+package pl.edziennik.application.common.dispatcher;
 
 /**
  * Base handler for all types of {@link IDispatchable} (Query/Command)
@@ -6,7 +6,7 @@ package pl.edziennik.application.common.dispatcher.base;
  * @param <T> -> Object that implements ICommand/IQuery interface
  * @param <R> -> Result object
  */
-public interface IBaseHandler<T extends IDispatchable<R>, R> {
+interface IBaseHandler<T extends IDispatchable<R>, R> {
 
     R handle(final T command);
 

@@ -2,8 +2,8 @@ package pl.edziennik.application.command.schoolclass.changeconfig;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import pl.edziennik.application.common.dispatcher.ICommandHandler;
 import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.command.ICommandHandler;
 import pl.edziennik.common.valueobject.id.SchoolClassConfigurationId;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.schoolclass.SchoolClassConfiguration;
