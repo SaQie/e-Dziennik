@@ -5,9 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.edziennik.application.BaseIntegrationTest;
-import pl.edziennik.application.query.schoolclass.config.GetSchoolClassConfigSummaryQuery;
-import pl.edziennik.application.query.schoolclass.detailed.GetDetailedSchoolClassQuery;
-import pl.edziennik.application.query.schoolclass.summary.GetSchoolClassSummaryForSchoolQuery;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.TeacherId;
@@ -34,9 +31,8 @@ public class SchoolClassQueryIntegrationTest extends BaseIntegrationTest {
         TeacherId teacherId = createTeacher("Test", "123123@o2.pl", "123123", schoolId);
         SchoolClassId schoolClassId = createSchoolClass(schoolId, teacherId, "1A");
 
-        GetDetailedSchoolClassQuery query = new GetDetailedSchoolClassQuery(schoolClassId);
         // when
-        DetailedSchoolClassView view = dispatcher.dispatch(query);
+        DetailedSchoolClassView view = schoolClassQueryDao.getDetailedSchoolClassView(schoolClassId);
 
         // then
         assertNotNull(view);
@@ -52,9 +48,8 @@ public class SchoolClassQueryIntegrationTest extends BaseIntegrationTest {
         createSchoolClass(schoolId, teacherId, "1A");
         createSchoolClass(schoolId, teacherIdSecond, "2A");
 
-        GetSchoolClassSummaryForSchoolQuery query = new GetSchoolClassSummaryForSchoolQuery(schoolId, Pageable.unpaged());
         // when
-        PageView<SchoolClassSummaryForSchoolView> view = dispatcher.dispatch(query);
+        PageView<SchoolClassSummaryForSchoolView> view = schoolClassQueryDao.getSchoolClassSummaryForSchoolView(schoolId, Pageable.unpaged());
 
         // then
         assertNotNull(view);
@@ -68,9 +63,8 @@ public class SchoolClassQueryIntegrationTest extends BaseIntegrationTest {
         TeacherId teacherId = createTeacher("Test", "123123@o2.pl", "123123", schoolId);
         SchoolClassId schoolClassId = createSchoolClass(schoolId, teacherId, "1A");
 
-        GetSchoolClassConfigSummaryQuery query = new GetSchoolClassConfigSummaryQuery(schoolClassId);
         // when
-        SchoolClassConfigSummaryView view = dispatcher.dispatch(query);
+        SchoolClassConfigSummaryView view = schoolClassQueryDao.getSchoolClassConfigSummaryView(schoolClassId);
 
         // then
         assertNotNull(view);
@@ -79,12 +73,10 @@ public class SchoolClassQueryIntegrationTest extends BaseIntegrationTest {
 
     @Test
     public void shouldThrowExceptionWhileGettingDetailedSchoolClassDataAndSchoolClassNotExists() {
-        // given
-        GetDetailedSchoolClassQuery query = new GetDetailedSchoolClassQuery(SchoolClassId.create());
-
         try {
+            // given
             // when
-            dispatcher.dispatch(query);
+            schoolClassQueryDao.getDetailedSchoolClassView(SchoolClassId.create());
             Assertions.fail("Should throw exception when getting detailed school class data and school class not exists");
             // then
         } catch (BusinessException e) {
@@ -96,12 +88,10 @@ public class SchoolClassQueryIntegrationTest extends BaseIntegrationTest {
 
     @Test
     public void shouldThrowExceptionWhileGettingSchoolClassConfigurationDataAndSchoolClassNotExists() {
-        // given
-        GetDetailedSchoolClassQuery query = new GetDetailedSchoolClassQuery(SchoolClassId.create());
-
         try {
+            // given
             // when
-            dispatcher.dispatch(query);
+            schoolClassQueryDao.getSchoolClassConfigSummaryView(SchoolClassId.create());
             Assertions.fail("Should throw exception when getting school class configuration data and school class not exists");
             // then
         } catch (BusinessException e) {

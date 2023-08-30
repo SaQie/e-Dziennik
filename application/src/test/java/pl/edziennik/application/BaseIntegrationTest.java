@@ -18,6 +18,17 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
+import pl.edziennik.application.query.classroom.ClassRoomQueryDao;
+import pl.edziennik.application.query.classroomschedule.ClassRoomScheduleQueryDao;
+import pl.edziennik.application.query.director.DirectorQueryDao;
+import pl.edziennik.application.query.groovy.GroovyQueryDao;
+import pl.edziennik.application.query.school.SchoolQueryDao;
+import pl.edziennik.application.query.schoolclass.SchoolClassQueryDao;
+import pl.edziennik.application.query.student.StudentQueryDao;
+import pl.edziennik.application.query.subject.SubjectQueryDao;
+import pl.edziennik.application.query.teacher.TeacherQueryDao;
+import pl.edziennik.application.query.teacherschedule.TeacherScheduleQueryDao;
+import pl.edziennik.application.query.users.UsersQueryDao;
 import pl.edziennik.common.properties.SchoolClassConfigurationProperties;
 import pl.edziennik.common.properties.SchoolConfigurationProperties;
 import pl.edziennik.common.valueobject.base.Identifier;
@@ -201,6 +212,28 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     protected ClassRoomCommandRepository classRoomCommandRepository;
     @Autowired
     protected ClassRoomQueryRepository classRoomQueryRepository;
+    @Autowired
+    protected SchoolQueryDao schoolQueryDao;
+    @Autowired
+    protected SchoolClassQueryDao schoolClassQueryDao;
+    @Autowired
+    protected ClassRoomQueryDao classRoomQueryDao;
+    @Autowired
+    protected StudentQueryDao studentQueryDao;
+    @Autowired
+    protected SubjectQueryDao subjectQueryDao;
+    @Autowired
+    protected TeacherQueryDao teacherQueryDao;
+    @Autowired
+    protected UsersQueryDao usersQueryDao;
+    @Autowired
+    protected TeacherScheduleQueryDao teacherScheduleQueryDao;
+    @Autowired
+    protected ClassRoomScheduleQueryDao classRoomScheduleQueryDao;
+    @Autowired
+    protected GroovyQueryDao groovyQueryDao;
+    @Autowired
+    protected DirectorQueryDao directorQueryDao;
 
     protected TransactionTemplate transactionTemplate;
 
@@ -234,8 +267,13 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         this.successGroovyScriptStatus = groovyScriptStatusQueryRepository.getByGroovyScriptStatusId(GroovyScriptStatusId.PredefinedRow.SUCCESS);
 
 
-        Mockito.when(resourceCreator.of(Mockito.anyString(), Mockito.any())).thenAnswer(invocation -> invocation.<String>getArgument(0));
-        Mockito.when(resourceCreator.of(Mockito.anyString())).thenAnswer(invocation -> invocation.<String>getArgument(0));
+        Mockito.when(resourceCreator.of(Mockito.anyString(), Mockito.any()))
+                .thenAnswer(invocation -> invocation.<String>getArgument(0));
+        Mockito.when(resourceCreator.of(Mockito.anyString()))
+                .thenAnswer(invocation -> invocation.<String>getArgument(0));
+        Mockito.when(resourceCreator.notFoundError(Mockito.any(Identifier.class)))
+                .thenAnswer(invocationOnMock -> new ValidationError(invocationOnMock.<Identifier>getArgument(0).getClass().getSimpleName()
+                        , "not.found.message", ErrorCode.OBJECT_NOT_EXISTS.errorCode()));
 
         Mockito.when(resourceCreator.notFoundError(Mockito.anyString(), Mockito.any(Identifier.class)))
                 .thenAnswer(invocationOnMock -> new ValidationError(invocationOnMock.<String>getArgument(0), "not.found.message", ErrorCode.OBJECT_NOT_EXISTS.errorCode()));

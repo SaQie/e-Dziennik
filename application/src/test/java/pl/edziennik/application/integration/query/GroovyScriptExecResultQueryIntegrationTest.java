@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.edziennik.application.BaseIntegrationTest;
-import pl.edziennik.application.query.groovy.byscript.GetGroovyScriptExecResultQuery;
-import pl.edziennik.application.query.groovy.byuser.GetGroovyScriptExecResultByUserQuery;
 import pl.edziennik.common.valueobject.id.GroovyScriptId;
 import pl.edziennik.common.valueobject.vo.Username;
 import pl.edziennik.common.view.PageView;
@@ -26,17 +24,15 @@ public class GroovyScriptExecResultQueryIntegrationTest extends BaseIntegrationT
 
     @Test
     public void shouldThrowExceptionIfGroovyScriptNotExists() {
-        // given
-        GetGroovyScriptExecResultQuery query = new GetGroovyScriptExecResultQuery(GroovyScriptId.create());
-
         try {
+            // given
             // when
-            dispatcher.dispatch(query);
+            groovyQueryDao.getGroovyScriptResultView(GroovyScriptId.create());
             fail("Should throw exception if groovy script id not exsits");
         } catch (BusinessException e) {
             List<ValidationError> errors = e.getErrors();
             assertEquals(1, errors.size());
-            assertEquals(errors.get(0).field(), GetGroovyScriptExecResultQuery.GROOVY_SCRIPT_ID);
+            assertEquals(errors.get(0).field(), GroovyScriptId.class.getSimpleName());
             assertEquals(errors.get(0).errorCode(), ErrorCode.OBJECT_NOT_EXISTS.errorCode());
         }
     }
@@ -49,10 +45,8 @@ public class GroovyScriptExecResultQueryIntegrationTest extends BaseIntegrationT
 
         GroovyScriptId groovyScriptId = execSimpleGroovyScript(user);
 
-        GetGroovyScriptExecResultQuery query = new GetGroovyScriptExecResultQuery(groovyScriptId);
-
         // when
-        GroovyScriptResultView view = dispatcher.dispatch(query);
+        GroovyScriptResultView view = groovyQueryDao.getGroovyScriptResultView(groovyScriptId);
 
         // then
         Assertions.assertNotNull(view);
@@ -66,10 +60,8 @@ public class GroovyScriptExecResultQueryIntegrationTest extends BaseIntegrationT
 
         execSimpleGroovyScript(user);
 
-        GetGroovyScriptExecResultByUserQuery query = new GetGroovyScriptExecResultByUserQuery(user.userId(), Pageable.unpaged());
-
         // when
-        PageView<GroovyScriptResultView> view = dispatcher.dispatch(query);
+        PageView<GroovyScriptResultView> view = groovyQueryDao.getGroovyScriptExecResultByUser(Pageable.unpaged(),user.userId());
 
         // then
         Assertions.assertNotNull(view);

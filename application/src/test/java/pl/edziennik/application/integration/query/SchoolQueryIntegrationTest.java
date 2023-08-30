@@ -5,9 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.edziennik.application.BaseIntegrationTest;
-import pl.edziennik.application.query.school.config.GetSchoolConfigSummaryQuery;
-import pl.edziennik.application.query.school.detailed.GetDetailedSchoolQuery;
-import pl.edziennik.application.query.school.summary.GetSchoolSummaryQuery;
 import pl.edziennik.common.enums.AverageType;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.view.PageView;
@@ -31,10 +28,8 @@ public class SchoolQueryIntegrationTest extends BaseIntegrationTest {
         // given
         SchoolId schoolId = createSchool("Test", "123123", "123123");
 
-        GetDetailedSchoolQuery query = new GetDetailedSchoolQuery(schoolId);
-
         // when
-        DetailedSchoolView view = dispatcher.dispatch(query);
+        DetailedSchoolView view = schoolQueryDao.getDetailedSchoolView(schoolId);
 
         // then
         assertNotNull(view);
@@ -46,10 +41,8 @@ public class SchoolQueryIntegrationTest extends BaseIntegrationTest {
         // given
         createSchool("Test", "123123", "123123");
 
-        GetSchoolSummaryQuery query = new GetSchoolSummaryQuery(Pageable.unpaged());
-
         // when
-        PageView<SchoolSummaryView> pageView = dispatcher.dispatch(query);
+        PageView<SchoolSummaryView> pageView = schoolQueryDao.getSchoolSummaryView(Pageable.unpaged());
 
         // then
         assertNotNull(pageView);
@@ -58,12 +51,10 @@ public class SchoolQueryIntegrationTest extends BaseIntegrationTest {
 
     @Test
     public void shouldThrowExceptionWhileGettingDetailedSchoolDataAndSchoolNotExists() {
-        // given
-        GetDetailedSchoolQuery query = new GetDetailedSchoolQuery(SchoolId.create());
-
         try {
+            // given
             // when
-            dispatcher.dispatch(query);
+            schoolQueryDao.getDetailedSchoolView(SchoolId.create());
             Assertions.fail("Should throw exception while getting detailed school data and school not exists");
         } catch (BusinessException e) {
             // then
@@ -78,10 +69,8 @@ public class SchoolQueryIntegrationTest extends BaseIntegrationTest {
         // given
         SchoolId schoolId = createSchool("Test", "123123", "123123");
 
-        GetSchoolConfigSummaryQuery query = new GetSchoolConfigSummaryQuery(schoolId);
-
         // when
-        SchoolConfigSummaryView view = dispatcher.dispatch(query);
+        SchoolConfigSummaryView view = schoolQueryDao.getSchoolConfigSummaryView(schoolId);
 
         // then
         assertNotNull(view);
@@ -91,12 +80,12 @@ public class SchoolQueryIntegrationTest extends BaseIntegrationTest {
 
     @Test
     public void shouldThrowExceptionWhileGettingSchoolConfigurationDataAndSchoolNotExists() {
-        // given
-        GetSchoolConfigSummaryQuery query = new GetSchoolConfigSummaryQuery(SchoolId.create());
+
 
         try {
+            // given
             // when
-            dispatcher.dispatch(query);
+            schoolQueryDao.getSchoolConfigSummaryView(SchoolId.create());
             Assertions.fail("Should throw exception while getting school configuration data and school not exists");
         } catch (BusinessException e) {
             // then

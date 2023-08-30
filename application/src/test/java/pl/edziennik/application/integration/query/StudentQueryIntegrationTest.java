@@ -6,8 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.BaseIntegrationTest;
-import pl.edziennik.application.query.student.detailed.GetDetailedStudentQuery;
-import pl.edziennik.application.query.student.summary.GetStudentSummaryQuery;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.StudentId;
@@ -36,10 +34,8 @@ public class StudentQueryIntegrationTest extends BaseIntegrationTest {
         SchoolClassId schoolClassId = createSchoolClass(schoolId, teacherId, "1A");
         StudentId studentId = createStudent("Test", "123123", "123123", schoolId, schoolClassId);
 
-        GetDetailedStudentQuery query = new GetDetailedStudentQuery(studentId);
-
         // when
-        DetailedStudentView view = dispatcher.dispatch(query);
+        DetailedStudentView view = studentQueryDao.getDetailedStudentView(studentId);
 
         // then
         assertNotNull(view);
@@ -49,12 +45,10 @@ public class StudentQueryIntegrationTest extends BaseIntegrationTest {
     @Test
     @Transactional
     public void shouldThrowExceptionWhileGettingDetailedStudentDataAndStudentNotExists() {
-        // given
-        GetDetailedStudentQuery query = new GetDetailedStudentQuery(StudentId.create());
-
         try {
+            // given
             // when
-            dispatcher.dispatch(query);
+            studentQueryDao.getDetailedStudentView(StudentId.create());
             Assertions.fail("Should throw exception while getting detailed student data and student not exists");
         } catch (BusinessException e) {
             // then
@@ -73,10 +67,8 @@ public class StudentQueryIntegrationTest extends BaseIntegrationTest {
         SchoolClassId schoolClassId = createSchoolClass(schoolId, teacherId, "1A");
         createStudent("Test", "123123", "123123", schoolId, schoolClassId);
 
-        GetStudentSummaryQuery query = new GetStudentSummaryQuery(Pageable.unpaged());
-
         // when
-        PageView<StudentSummaryView> pageView = dispatcher.dispatch(query);
+        PageView<StudentSummaryView> pageView = studentQueryDao.getStudentSummaryView(Pageable.unpaged());
 
         // then
         assertNotNull(pageView);

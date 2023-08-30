@@ -6,9 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.BaseIntegrationTest;
-import pl.edziennik.application.query.teacher.detailed.GetDetailedTeacherQuery;
-import pl.edziennik.application.query.teacher.subjects.GetTeacherSubjectsSummaryQuery;
-import pl.edziennik.application.query.teacher.summary.GetTeacherSummaryQuery;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.TeacherId;
@@ -34,10 +31,8 @@ public class TeacherQueryIntegrationTest extends BaseIntegrationTest {
         // given
         SchoolId schoolId = createSchool("Test", "123123132", "123123");
         createTeacher("Test", "111@o2.pl", "123123", schoolId);
-        GetTeacherSummaryQuery query = new GetTeacherSummaryQuery(Pageable.unpaged());
-
         // when
-        PageView<TeacherSummaryView> view = dispatcher.dispatch(query);
+        PageView<TeacherSummaryView> view = teacherQueryDao.getTeacherSummaryView(Pageable.unpaged());
 
         // then
         assertNotNull(view);
@@ -53,10 +48,8 @@ public class TeacherQueryIntegrationTest extends BaseIntegrationTest {
         SchoolClassId schoolClassId = createSchoolClass(schoolId, teacherId, "1A");
         createSubject("Przyroda", schoolClassId, teacherId);
 
-        GetTeacherSubjectsSummaryQuery query = new GetTeacherSubjectsSummaryQuery(Pageable.unpaged(), teacherId);
-
         // when
-        PageView<TeacherSubjectsSummaryView> pageView = dispatcher.dispatch(query);
+        PageView<TeacherSubjectsSummaryView> pageView = teacherQueryDao.getTeacherSubjectsSummaryView(Pageable.unpaged(), teacherId);
 
         // then
         assertNotNull(pageView);
@@ -69,10 +62,8 @@ public class TeacherQueryIntegrationTest extends BaseIntegrationTest {
         SchoolId schoolId = createSchool("Test", "123123132", "123123");
         TeacherId teacherId = createTeacher("Test", "111@o2.pl", "123123", schoolId);
 
-        GetDetailedTeacherQuery query = new GetDetailedTeacherQuery(teacherId);
-
         // when
-        DetailedTeacherView view = dispatcher.dispatch(query);
+        DetailedTeacherView view = teacherQueryDao.getDetailedTeacherView(teacherId);
 
         // then
         assertNotNull(view);
@@ -80,12 +71,10 @@ public class TeacherQueryIntegrationTest extends BaseIntegrationTest {
 
     @Test
     public void shouldThrowExceptionWhileGettingDetailedTeacherAndTeacherNotExists() {
-        // given
-        GetDetailedTeacherQuery query = new GetDetailedTeacherQuery(TeacherId.create());
-
         try {
+            // given
             // when
-            dispatcher.dispatch(query);
+            teacherQueryDao.getDetailedTeacherView(TeacherId.create());
             Assertions.fail("Should throw exception when trying to get detailed teacher data and teacher not exists");
         } catch (BusinessException e) {
             // then

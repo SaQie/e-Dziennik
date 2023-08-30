@@ -5,10 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.BaseIntegrationTest;
-import pl.edziennik.application.query.subject.detailed.GetDetailedSubjectQuery;
-import pl.edziennik.application.query.subject.specificstudentgrades.GetGradesOfSpecificStudentBySubjectQuery;
-import pl.edziennik.application.query.subject.studentsgrades.all.GetAllSubjectsGradesOfSpecificStudentQuery;
-import pl.edziennik.application.query.subject.studentsgrades.bysubject.GetStudentsGradesBySubjectQuery;
 import pl.edziennik.common.valueobject.id.*;
 import pl.edziennik.common.view.grade.allsubjects.StudentAllSubjectsGradesHeaderView;
 import pl.edziennik.common.view.grade.bysubject.StudentGradesBySubjectView;
@@ -35,10 +31,8 @@ public class SubjectQueryIntegrationTest extends BaseIntegrationTest {
         SchoolClassId schoolClassId = createSchoolClass(schoolId, teacherId, "1A");
         SubjectId subjectId = createSubject("Przyroda", schoolClassId, teacherId);
 
-        GetDetailedSubjectQuery query = new GetDetailedSubjectQuery(subjectId);
-
         // when
-        DetailedSubjectView view = dispatcher.dispatch(query);
+        DetailedSubjectView view = subjectQueryDao.getDetailedSubjectView(subjectId);
 
         // then
         assertNotNull(view);
@@ -46,12 +40,10 @@ public class SubjectQueryIntegrationTest extends BaseIntegrationTest {
 
     @Test
     public void shouldThrowExceptionWhileGettingDetailedSubjectIfSubjectNotExists() {
-        // given
-        GetDetailedSubjectQuery query = new GetDetailedSubjectQuery(SubjectId.create());
-
         try {
+            // given
             // when
-            dispatcher.dispatch(query);
+            subjectQueryDao.getDetailedSubjectView(SubjectId.create());
             Assertions.fail("Should throw exception when getting detailed subject data and subject not exists");
             // then
         } catch (BusinessException e) {
@@ -73,10 +65,8 @@ public class SubjectQueryIntegrationTest extends BaseIntegrationTest {
         assignStudentToSubject(studentId, subjectId);
         assignGradeToStudentSubject(studentId, subjectId, teacherId);
 
-        GetAllSubjectsGradesOfSpecificStudentQuery query = new GetAllSubjectsGradesOfSpecificStudentQuery(studentId);
-
         // when
-        StudentAllSubjectsGradesHeaderView view = dispatcher.dispatch(query);
+        StudentAllSubjectsGradesHeaderView view = subjectQueryDao.getAllSubjectsGradesOfSpecificStudentView(studentId);
 
         // then
         assertNotNull(view);
@@ -95,10 +85,8 @@ public class SubjectQueryIntegrationTest extends BaseIntegrationTest {
         StudentSubjectId studentSubjectId = assignStudentToSubject(studentId, subjectId);
         assignGradeToStudentSubject(studentId, subjectId, teacherId);
 
-        GetGradesOfSpecificStudentBySubjectQuery query = new GetGradesOfSpecificStudentBySubjectQuery(subjectId, studentId);
-
         // when
-        StudentGradesBySubjectView view = dispatcher.dispatch(query);
+        StudentGradesBySubjectView view = subjectQueryDao.getStudentGradesBySubjectView(subjectId, studentId);
 
         // then
         assertNotNull(view);
@@ -118,10 +106,8 @@ public class SubjectQueryIntegrationTest extends BaseIntegrationTest {
         assignStudentToSubject(studentId, subjectId);
         assignGradeToStudentSubject(studentId, subjectId, teacherId);
 
-        GetStudentsGradesBySubjectQuery query = new GetStudentsGradesBySubjectQuery(subjectId);
-
         // when
-        List<StudentGradesBySubjectView> view = dispatcher.dispatch(query);
+        List<StudentGradesBySubjectView> view = subjectQueryDao.getAllStudentGradesBySubjectView(subjectId);
 
         // then
         assertNotNull(view);

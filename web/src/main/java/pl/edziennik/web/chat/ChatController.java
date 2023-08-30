@@ -13,34 +13,30 @@ import pl.edziennik.application.command.chat.chatmessage.CreateChatMessageComman
 import pl.edziennik.application.command.chat.chatroom.CreateChatRoomCommand;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.query.chat.chatmessage.GetChatMessagesHistoryQuery;
-import pl.edziennik.application.query.chat.chatroom.GetChatRoomQuery;
-import pl.edziennik.common.view.PageView;
-import pl.edziennik.common.view.chat.ChatMessageView;
+import pl.edziennik.application.query.chat.ChatQueryDao;
 import pl.edziennik.common.valueobject.id.ChatId;
 import pl.edziennik.common.valueobject.id.RecipientId;
 import pl.edziennik.common.valueobject.id.SenderId;
+import pl.edziennik.common.view.PageView;
+import pl.edziennik.common.view.chat.ChatMessageView;
 
 @RestController
 @RequestMapping("/api/v1/chat")
 @AllArgsConstructor
 public class ChatController {
 
-    private final Dispatcher dispatcher;
     private final SimpMessagingTemplate template;
+    private final ChatQueryDao dao;
+    private final Dispatcher dispatcher;
 
     @GetMapping("/history/{chatId}")
     public PageView<ChatMessageView> getChatHistory(Pageable pageable, @PathVariable ChatId chatId) {
-        GetChatMessagesHistoryQuery getChatMessagesHistoryQuery = new GetChatMessagesHistoryQuery(chatId, pageable);
-
-        return dispatcher.dispatch(getChatMessagesHistoryQuery);
+        return dao.getChatMessageHistoryView(pageable, chatId);
     }
 
     @GetMapping("/chatroom/{recipientId}/{senderId}")
     public ChatId getChatRoomId(@PathVariable RecipientId recipientId, @PathVariable SenderId senderId) {
-        GetChatRoomQuery query = new GetChatRoomQuery(recipientId, senderId);
-
-        return dispatcher.dispatch(query)
+        return dao.getChatIdByRecipientAndSender(senderId,recipientId)
                 .orElseGet(() -> {
                     // If chatRoom doesn't exist yet
                     CreateChatRoomCommand command = new CreateChatRoomCommand(senderId, recipientId);

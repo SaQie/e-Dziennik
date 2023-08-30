@@ -40,8 +40,11 @@ class SchoolClassQueryDaoImpl implements SchoolClassQueryDao {
 
     @Override
     public SchoolClassConfigSummaryView getSchoolClassConfigSummaryView(SchoolClassId schoolClassId) {
+        SchoolClassConfigSummaryView view = schoolClassConfigurationQueryRepository.getSchoolClassConfigurationSummaryView(schoolClassId);
 
-        return null;
+        requireNonNull(view, schoolClassId);
+
+        return view;
     }
 
     private void requireNonNull(Object view, Identifier id) {
