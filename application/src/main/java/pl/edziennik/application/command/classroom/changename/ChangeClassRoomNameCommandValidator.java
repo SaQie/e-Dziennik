@@ -2,8 +2,8 @@ package pl.edziennik.application.command.classroom.changename;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.IBaseValidator;
 import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
+import pl.edziennik.application.common.dispatcher.Validator;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.vo.ClassRoomName;
 import pl.edziennik.domain.classroom.ClassRoom;
@@ -12,7 +12,7 @@ import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
 @Component
 @AllArgsConstructor
-class ChangeClassRoomNameCommandValidator implements IBaseValidator<ChangeClassRoomNameCommand> {
+class ChangeClassRoomNameCommandValidator implements Validator<ChangeClassRoomNameCommand> {
 
     public static final String CLASS_ROOM_NAME_EQUAL_TO_OLD_MESSAGE_KEY = "class.room.name.equal.to.old";
     public static final String CLASS_ROOM_NAME_ALREADY_EXISTS_MESSAGE_KEY = "class.room.already.exists";

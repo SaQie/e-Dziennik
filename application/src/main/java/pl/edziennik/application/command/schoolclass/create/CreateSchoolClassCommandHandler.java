@@ -3,10 +3,8 @@ package pl.edziennik.application.command.schoolclass.create;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.ICommandHandler;
+import pl.edziennik.application.common.dispatcher.CommandHandler;
 import pl.edziennik.common.properties.SchoolClassConfigurationProperties;
-import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.teacher.Teacher;
@@ -16,7 +14,7 @@ import pl.edziennik.infrastructure.repository.teacher.TeacherCommandRepository;
 
 @Component
 @AllArgsConstructor
-class CreateSchoolClassCommandHandler implements ICommandHandler<CreateSchoolClassCommand, OperationResult> {
+class CreateSchoolClassCommandHandler implements CommandHandler<CreateSchoolClassCommand> {
 
     private final SchoolCommandRepository schoolCommandRepository;
     private final TeacherCommandRepository teacherCommandRepository;
@@ -25,7 +23,7 @@ class CreateSchoolClassCommandHandler implements ICommandHandler<CreateSchoolCla
 
     @Override
     @CacheEvict(allEntries = true, value = "schoolClasses")
-    public OperationResult handle(CreateSchoolClassCommand command) {
+    public void handle(CreateSchoolClassCommand command) {
         Teacher teacher = teacherCommandRepository.getReferenceById(command.teacherId());
         School school = schoolCommandRepository.getReferenceById(command.schoolId());
 
@@ -36,8 +34,6 @@ class CreateSchoolClassCommandHandler implements ICommandHandler<CreateSchoolCla
                 .properties(configurationProperties)
                 .build();
 
-        SchoolClassId schoolClassId = schoolClassCommandRepository.save(schoolClass).schoolClassId();
-
-        return OperationResult.success(schoolClassId);
+        schoolClassCommandRepository.save(schoolClass);
     }
 }

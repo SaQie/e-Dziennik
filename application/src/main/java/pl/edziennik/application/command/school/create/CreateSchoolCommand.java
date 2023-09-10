@@ -3,18 +3,15 @@ package pl.edziennik.application.command.school.create;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.HandledBy;
-import pl.edziennik.application.common.dispatcher.ValidatedBy;
-import pl.edziennik.application.common.dispatcher.ICommand;
+import pl.edziennik.application.common.dispatcher.Command;
+import pl.edziennik.application.common.dispatcher.Handler;
 import pl.edziennik.common.valueobject.id.SchoolLevelId;
 import pl.edziennik.common.valueobject.vo.*;
 
 /**
  * A command used for creating a new school
  */
-@HandledBy(handler = CreateSchoolCommandHandler.class)
-@ValidatedBy(validator = CreateSchoolCommandValidator.class)
+@Handler(handler = CreateSchoolCommandHandler.class, validator = CreateSchoolCommandValidator.class)
 public record CreateSchoolCommand(
 
         @Valid @NotNull(message = "{name.empty}") Name name,
@@ -26,7 +23,7 @@ public record CreateSchoolCommand(
         @Valid @NotNull(message = "{phone.invalid}") PhoneNumber phoneNumber,
         @Valid @NotNull(message = "{schoolLevel.empty}") SchoolLevelId schoolLevelId
 
-) implements ICommand<OperationResult> {
+) implements Command {
 
     public static final String NAME = "name";
     public static final String ADDRESS = "address";

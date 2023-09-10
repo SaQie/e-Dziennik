@@ -2,9 +2,8 @@ package pl.edziennik.application.command.schoolclass.changeconfig;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.HandledBy;
-import pl.edziennik.application.common.dispatcher.ICommand;
+import pl.edziennik.application.common.dispatcher.Command;
+import pl.edziennik.application.common.dispatcher.Handler;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 
 /**
@@ -13,7 +12,7 @@ import pl.edziennik.common.valueobject.id.SchoolClassId;
  * <b>maxStudentsSize</b> -> Student limit in the school class <br>
  * <b>autoAssignSubjects</b> -> Auto assign subjects(from the school class) to student while creating a new student account
  */
-@HandledBy(handler = ChangeSchoolClassConfigurationValuesCommandHandler.class)
+@Handler(handler = ChangeSchoolClassConfigurationValuesCommandHandler.class)
 public record ChangeSchoolClassConfigurationValuesCommand(
 
         SchoolClassId schoolClassId,
@@ -25,7 +24,7 @@ public record ChangeSchoolClassConfigurationValuesCommand(
         @NotNull(message = "{field.empty}") Boolean autoAssignSubjects
 
 
-) implements ICommand<OperationResult> {
+) implements Command {
 
 
     public static final String SCHOOL_CLASS_ID = "schoolClassId";

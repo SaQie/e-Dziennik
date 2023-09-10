@@ -2,15 +2,15 @@ package pl.edziennik.application.command.student.create;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.IBaseValidator;
 import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
+import pl.edziennik.application.common.dispatcher.Validator;
 import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassCommandRepository;
 import pl.edziennik.infrastructure.repository.user.UserCommandRepository;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
 @Component
 @AllArgsConstructor
-class CreateStudentCommandValidator implements IBaseValidator<CreateStudentCommand> {
+class CreateStudentCommandValidator implements Validator<CreateStudentCommand> {
 
     public static final String MESSAGE_KEY_USER_ALREADY_EXISTS_BY_EMAIL = "user.already.exists.by.email";
     public static final String MESSAGE_KEY_USER_ALREADY_EXISTS_BY_USERNAME = "user.already.exists";

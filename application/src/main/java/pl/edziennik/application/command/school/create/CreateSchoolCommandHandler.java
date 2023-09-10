@@ -3,10 +3,8 @@ package pl.edziennik.application.command.school.create;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.ICommandHandler;
-import pl.edziennik.application.common.dispatcher.OperationResult;
+import pl.edziennik.application.common.dispatcher.CommandHandler;
 import pl.edziennik.common.properties.SchoolConfigurationProperties;
-import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.schoollevel.SchoolLevel;
@@ -17,7 +15,7 @@ import pl.edziennik.infrastructure.spring.exception.BusinessException;
 
 @Component
 @AllArgsConstructor
-class CreateSchoolCommandHandler implements ICommandHandler<CreateSchoolCommand, OperationResult> {
+class CreateSchoolCommandHandler implements CommandHandler<CreateSchoolCommand> {
 
     private final SchoolLevelCommandRepository schoolLevelCommandRepository;
     private final SchoolCommandRepository schoolCommandRepository;
@@ -26,7 +24,7 @@ class CreateSchoolCommandHandler implements ICommandHandler<CreateSchoolCommand,
 
     @Override
     @CacheEvict(allEntries = true, value = "schools")
-    public OperationResult handle(CreateSchoolCommand command) {
+    public void handle(CreateSchoolCommand command) {
         SchoolLevel schoolLevel = schoolLevelCommandRepository.findById(command.schoolLevelId())
                 .orElseThrow(() -> new BusinessException(
                         res.notFoundError(CreateSchoolCommand.SCHOOL_LEVEL_ID, command.schoolLevelId())
@@ -44,9 +42,7 @@ class CreateSchoolCommandHandler implements ICommandHandler<CreateSchoolCommand,
                 .properties(configurationProperties)
                 .build();
 
-        SchoolId schoolId = schoolCommandRepository.save(school).schoolId();
-
-        return OperationResult.success(schoolId);
+        schoolCommandRepository.save(school);
     }
 
     private Address createAddress(CreateSchoolCommand command) {

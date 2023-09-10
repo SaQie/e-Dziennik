@@ -2,8 +2,8 @@ package pl.edziennik.application.command.subjectmanagment.assigntostudent;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.IBaseValidator;
 import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
+import pl.edziennik.application.common.dispatcher.Validator;
 import pl.edziennik.infrastructure.repository.student.StudentCommandRepository;
 import pl.edziennik.infrastructure.repository.studentsubject.StudentSubjectCommandRepository;
 import pl.edziennik.infrastructure.repository.subject.SubjectCommandRepository;
@@ -11,7 +11,7 @@ import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
 @Component
 @AllArgsConstructor
-class AssignSubjectToStudentCommandValidator implements IBaseValidator<AssignSubjectToStudentCommand> {
+class AssignSubjectToStudentCommandValidator implements Validator<AssignSubjectToStudentCommand> {
 
     public static final String MESSAGE_KEY_SUBJECT_IS_FROM_ANOTHER_SCHOOL_CLASS = "student.assign.subject.from.another.class";
     public static final String MESSAGE_KEY_STUDENT_STUDENT_ALREADY_ASSIGNED_TO_SUBJECT = "student.subject.already.exists";

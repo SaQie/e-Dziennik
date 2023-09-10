@@ -3,8 +3,8 @@ package pl.edziennik.application.command.teacherschedule.create;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.command.lessonplan.create.CreateLessonPlanCommand;
-import pl.edziennik.application.common.dispatcher.IBaseValidator;
 import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
+import pl.edziennik.application.common.dispatcher.Validator;
 import pl.edziennik.common.valueobject.vo.Description;
 import pl.edziennik.common.valueobject.vo.TimeFrame;
 import pl.edziennik.common.valueobject.vo.TimeFrameDuration;
@@ -18,7 +18,7 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-class CreateTeacherScheduleCommandValidator implements IBaseValidator<CreateTeacherScheduleCommand> {
+class CreateTeacherScheduleCommandValidator implements Validator<CreateTeacherScheduleCommand> {
 
     public static final String BUSY_TEACHER_SCHEDULE_MESSAGE_KEY = "teacher.schedule.busy";
     public static final String END_DATE_CANNOT_BE_BEFORE_START_DATE = "end.date.cannot.be.before.start.date";

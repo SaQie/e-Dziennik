@@ -6,13 +6,11 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.ICommandHandler;
+import pl.edziennik.application.common.dispatcher.CommandHandler;
 import pl.edziennik.application.events.event.UserAccountCreatedEvent;
+import pl.edziennik.common.valueobject.id.RoleId;
 import pl.edziennik.common.valueobject.vo.Password;
 import pl.edziennik.common.valueobject.vo.PersonInformation;
-import pl.edziennik.common.valueobject.id.RoleId;
-import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.role.Role;
 import pl.edziennik.domain.school.School;
@@ -24,7 +22,7 @@ import pl.edziennik.infrastructure.repository.teacher.TeacherCommandRepository;
 
 @Component
 @AllArgsConstructor
-class CreateTeacherCommandHandler implements ICommandHandler<CreateTeacherCommand, OperationResult> {
+class CreateTeacherCommandHandler implements CommandHandler<CreateTeacherCommand> {
 
     private final TeacherCommandRepository teacherCommandRepository;
     private final SchoolCommandRepository schoolCommandRepository;
@@ -35,7 +33,7 @@ class CreateTeacherCommandHandler implements ICommandHandler<CreateTeacherComman
     @Override
     @Transactional
     @CacheEvict(allEntries = true, value = "teachers")
-    public OperationResult handle(CreateTeacherCommand command) {
+    public void handle(CreateTeacherCommand command) {
         School school = schoolCommandRepository.getReferenceById(command.schoolId());
 
         User user = createUser(command);
@@ -49,12 +47,10 @@ class CreateTeacherCommandHandler implements ICommandHandler<CreateTeacherComman
                 .address(address)
                 .build();
 
-        TeacherId teacherId = teacherCommandRepository.save(teacher).teacherId();
+        teacherCommandRepository.save(teacher);
 
         UserAccountCreatedEvent accountCreatedEvent = new UserAccountCreatedEvent(user.userId());
         eventPublisher.publishEvent(accountCreatedEvent);
-
-        return OperationResult.success(teacherId);
     }
 
     private User createUser(CreateTeacherCommand command) {

@@ -5,8 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.ICommandHandler;
+import pl.edziennik.application.common.dispatcher.CommandHandler;
 import pl.edziennik.common.valueobject.id.GroovyScriptStatusId;
 import pl.edziennik.common.valueobject.vo.GroovyScriptExecTime;
 import pl.edziennik.common.valueobject.vo.ScriptResult;
@@ -29,7 +28,7 @@ import java.time.Instant;
 @Component
 @AllArgsConstructor
 @Slf4j
-class ExecuteGroovyScriptCommandHandler implements ICommandHandler<ExecuteGroovyScriptCommand, OperationResult> {
+class ExecuteGroovyScriptCommandHandler implements CommandHandler<ExecuteGroovyScriptCommand> {
 
     private final GroovyShellExecutor groovyShellExecutor;
     private final UserCommandRepository userCommandRepository;
@@ -39,7 +38,7 @@ class ExecuteGroovyScriptCommandHandler implements ICommandHandler<ExecuteGroovy
 
     @Override
     @Transactional(noRollbackFor = BusinessException.class)
-    public OperationResult handle(ExecuteGroovyScriptCommand command) {
+    public void handle(ExecuteGroovyScriptCommand command) {
         // 1. Get required information
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userCommandRepository.getByUsername(Username.of(name));
@@ -93,8 +92,6 @@ class ExecuteGroovyScriptCommandHandler implements ICommandHandler<ExecuteGroovy
 
             throw scriptExecResult.error();
         }
-
-        return OperationResult.success(script.groovyScriptId());
     }
 
     /**

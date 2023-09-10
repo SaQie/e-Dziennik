@@ -2,9 +2,7 @@ package pl.edziennik.application.command.teacherschedule.create;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.ICommandHandler;
-import pl.edziennik.common.valueobject.id.TeacherScheduleId;
+import pl.edziennik.application.common.dispatcher.CommandHandler;
 import pl.edziennik.common.valueobject.vo.TimeFrame;
 import pl.edziennik.domain.teacher.Teacher;
 import pl.edziennik.domain.teacher.TeacherSchedule;
@@ -13,13 +11,13 @@ import pl.edziennik.infrastructure.repository.teacherschedule.TeacherScheduleCom
 
 @Component
 @AllArgsConstructor
-class CreateTeacherScheduleCommandHandler implements ICommandHandler<CreateTeacherScheduleCommand, OperationResult> {
+class CreateTeacherScheduleCommandHandler implements CommandHandler<CreateTeacherScheduleCommand> {
 
     private final TeacherCommandRepository teacherCommandRepository;
     private final TeacherScheduleCommandRepository teacherScheduleCommandRepository;
 
     @Override
-    public OperationResult handle(CreateTeacherScheduleCommand command) {
+    public void handle(CreateTeacherScheduleCommand command) {
         Teacher teacher = teacherCommandRepository.getByTeacherId(command.teacherId());
 
         TeacherSchedule teacherSchedule = TeacherSchedule.builder()
@@ -28,8 +26,6 @@ class CreateTeacherScheduleCommandHandler implements ICommandHandler<CreateTeach
                 .timeFrame(TimeFrame.of(command.startDate(), command.endDate()))
                 .build();
 
-        TeacherScheduleId teacherScheduleId = teacherScheduleCommandRepository.save(teacherSchedule).teacherScheduleId();
-
-        return OperationResult.success(teacherScheduleId);
+        teacherScheduleCommandRepository.save(teacherSchedule);
     }
 }

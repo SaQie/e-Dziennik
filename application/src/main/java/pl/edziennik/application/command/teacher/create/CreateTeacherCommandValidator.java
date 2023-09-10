@@ -2,8 +2,8 @@ package pl.edziennik.application.command.teacher.create;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.IBaseValidator;
 import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
+import pl.edziennik.application.common.dispatcher.Validator;
 import pl.edziennik.infrastructure.repository.school.SchoolCommandRepository;
 import pl.edziennik.infrastructure.repository.teacher.TeacherCommandRepository;
 import pl.edziennik.infrastructure.repository.user.UserCommandRepository;
@@ -11,7 +11,7 @@ import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
 @Component
 @AllArgsConstructor
-class CreateTeacherCommandValidator implements IBaseValidator<CreateTeacherCommand> {
+class CreateTeacherCommandValidator implements Validator<CreateTeacherCommand> {
 
     public static final String MESSAGE_KEY_USER_ALREADY_EXISTS_BY_EMAIL = "user.already.exists.by.email";
     public static final String MESSAGE_KEY_TEACHER_PESEL_NOT_UNIQUE = "teacher.pesel.not.unique";

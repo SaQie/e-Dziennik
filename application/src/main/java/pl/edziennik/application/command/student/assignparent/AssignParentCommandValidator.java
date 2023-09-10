@@ -2,15 +2,15 @@ package pl.edziennik.application.command.student.assignparent;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.IBaseValidator;
 import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
+import pl.edziennik.application.common.dispatcher.Validator;
 import pl.edziennik.infrastructure.repository.parent.ParentCommandRepository;
 import pl.edziennik.infrastructure.repository.student.StudentCommandRepository;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
 @Component
 @AllArgsConstructor
-class AssignParentCommandValidator implements IBaseValidator<AssignParentCommand> {
+class AssignParentCommandValidator implements Validator<AssignParentCommand> {
 
     public static final String MESSAGE_KEY_PARENT_ALREADY_HAS_STUDENT = "parent.already.has.student";
     public static final String MESSAGE_KEY_STUDENT_ALREADY_HAS_PARENT = "student.already.has.parent";

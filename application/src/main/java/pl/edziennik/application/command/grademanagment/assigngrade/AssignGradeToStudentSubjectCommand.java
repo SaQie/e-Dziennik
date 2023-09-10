@@ -2,24 +2,21 @@ package pl.edziennik.application.command.grademanagment.assigngrade;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.HandledBy;
-import pl.edziennik.application.common.dispatcher.ValidatedBy;
-import pl.edziennik.application.common.dispatcher.ICommand;
+import pl.edziennik.application.common.dispatcher.Command;
+import pl.edziennik.application.common.dispatcher.Handler;
 import pl.edziennik.common.enums.Grade;
-import pl.edziennik.common.valueobject.vo.Description;
-import pl.edziennik.common.valueobject.vo.Weight;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.id.SubjectId;
 import pl.edziennik.common.valueobject.id.TeacherId;
+import pl.edziennik.common.valueobject.vo.Description;
+import pl.edziennik.common.valueobject.vo.Weight;
 
 /**
  * A command used for assigning grades to student's subject
  * <br>
  * Available grades see {@link Grade}
  */
-@HandledBy(handler = AssignGradeToStudentSubjectCommandHandler.class)
-@ValidatedBy(validator = AssignGradeToStudentSubjectCommandValidator.class)
+@Handler(handler = AssignGradeToStudentSubjectCommandHandler.class, validator = AssignGradeToStudentSubjectCommandValidator.class)
 public record AssignGradeToStudentSubjectCommand(
 
         @NotNull(message = "{student.empty}") StudentId studentId,
@@ -30,7 +27,7 @@ public record AssignGradeToStudentSubjectCommand(
         @NotNull(message = "{teacher.empty}") TeacherId teacherId
 
 
-) implements ICommand<OperationResult> {
+) implements Command {
 
     public static final String STUDENT_ID = "studentId";
     public static final String SUBJECT_ID = "subjectId";

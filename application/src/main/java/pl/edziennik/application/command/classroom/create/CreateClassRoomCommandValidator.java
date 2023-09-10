@@ -2,15 +2,15 @@ package pl.edziennik.application.command.classroom.create;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.IBaseValidator;
 import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
+import pl.edziennik.application.common.dispatcher.Validator;
 import pl.edziennik.infrastructure.repository.classroom.ClassRoomCommandRepository;
 import pl.edziennik.infrastructure.repository.school.SchoolCommandRepository;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
 @Component
 @AllArgsConstructor
-class CreateClassRoomCommandValidator implements IBaseValidator<CreateClassRoomCommand> {
+class CreateClassRoomCommandValidator implements Validator<CreateClassRoomCommand> {
 
     public static final String CLASS_ROOM_NAME_ALREADY_EXISTS_MESSAGE_KEY = "class.room.already.exists";
 

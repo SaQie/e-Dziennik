@@ -2,8 +2,8 @@ package pl.edziennik.application.command.lessonplan.create;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.IBaseValidator;
 import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
+import pl.edziennik.application.common.dispatcher.Validator;
 import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.common.valueobject.vo.Description;
 import pl.edziennik.common.valueobject.vo.TimeFrame;
@@ -26,7 +26,7 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-class CreateLessonPlanCommandValidator implements IBaseValidator<CreateLessonPlanCommand> {
+class CreateLessonPlanCommandValidator implements Validator<CreateLessonPlanCommand> {
 
     public static final String BUSY_TEACHER_SCHEDULE_MESSAGE_KEY = "teacher.schedule.busy";
     public static final String BUSY_CLASS_ROOM_SCHEDULE_MESSAGE_KEY = "classroom.schedule.busy";

@@ -1,8 +1,7 @@
 package pl.edziennik.application.command.school.changeconfig;
 
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.HandledBy;
-import pl.edziennik.application.common.dispatcher.ICommand;
+import pl.edziennik.application.common.dispatcher.Command;
+import pl.edziennik.application.common.dispatcher.Handler;
 import pl.edziennik.common.enums.AverageType;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.vo.TimeFrameDuration;
@@ -10,7 +9,7 @@ import pl.edziennik.common.valueobject.vo.TimeFrameDuration;
 /**
  * A command used for changing the school configuration values
  */
-@HandledBy(handler = ChangeSchoolConfigurationValuesCommandHandler.class)
+@Handler(handler = ChangeSchoolConfigurationValuesCommandHandler.class)
 public record ChangeSchoolConfigurationValuesCommand(
 
         SchoolId schoolId,
@@ -19,7 +18,7 @@ public record ChangeSchoolConfigurationValuesCommand(
         TimeFrameDuration minScheduleTime
 
 
-) implements ICommand<OperationResult> {
+) implements Command {
 
     public static final String SCHOOL_ID = "schoolId";
     public static final String AVERAGE_TYPE = "averageType";

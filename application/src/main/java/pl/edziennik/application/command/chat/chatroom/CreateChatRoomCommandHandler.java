@@ -2,8 +2,7 @@ package pl.edziennik.application.command.chat.chatroom;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.ICommandHandler;
+import pl.edziennik.application.common.dispatcher.CommandHandler;
 import pl.edziennik.common.valueobject.id.ChatId;
 import pl.edziennik.common.valueobject.id.RecipientId;
 import pl.edziennik.common.valueobject.id.SenderId;
@@ -12,12 +11,12 @@ import pl.edziennik.infrastructure.repository.chat.chatroom.ChatRoomCommandRepos
 
 @Component
 @AllArgsConstructor
-class CreateChatRoomCommandHandler implements ICommandHandler<CreateChatRoomCommand, OperationResult> {
+class CreateChatRoomCommandHandler implements CommandHandler<CreateChatRoomCommand> {
 
     private final ChatRoomCommandRepository commandRepository;
 
     @Override
-    public OperationResult handle(CreateChatRoomCommand command) {
+    public void handle(CreateChatRoomCommand command) {
         ChatId chatId = ChatId.create();
 
         ChatRoom recipientChatRoom = ChatRoom.builder()
@@ -35,7 +34,5 @@ class CreateChatRoomCommandHandler implements ICommandHandler<CreateChatRoomComm
 
         commandRepository.save(recipientChatRoom);
         commandRepository.save(senderChatRoom);
-
-        return OperationResult.success(chatId);
     }
 }

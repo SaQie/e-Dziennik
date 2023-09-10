@@ -2,20 +2,19 @@ package pl.edziennik.application.command.student.delete;
 
 
 import jakarta.validation.constraints.NotNull;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.HandledBy;
-import pl.edziennik.application.common.dispatcher.ICommand;
+import pl.edziennik.application.common.dispatcher.Command;
+import pl.edziennik.application.common.dispatcher.Handler;
 import pl.edziennik.common.valueobject.id.StudentId;
 
 /**
  * A command used for deleting the existing user account
  */
-@HandledBy(handler = DeleteStudentCommandHandler.class)
+@Handler(handler = DeleteStudentCommandHandler.class)
 public record DeleteStudentCommand(
 
         @NotNull(message = "{student.empty}") StudentId studentId
 
-) implements ICommand<OperationResult> {
+) implements Command {
 
     public static final String STUDENT_ID = "studentId";
 

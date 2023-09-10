@@ -1,9 +1,8 @@
 package pl.edziennik.application.command.address.changeaddress;
 
 import jakarta.validation.Valid;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.HandledBy;
-import pl.edziennik.application.common.dispatcher.ICommand;
+import pl.edziennik.application.common.dispatcher.Command;
+import pl.edziennik.application.common.dispatcher.Handler;
 import pl.edziennik.common.valueobject.vo.Address;
 import pl.edziennik.common.valueobject.vo.City;
 import pl.edziennik.common.valueobject.vo.PostalCode;
@@ -15,14 +14,14 @@ import java.util.UUID;
  * <br>
  * <b>Note that, this command is common for student,teacher,parent and school entities</b>
  */
-@HandledBy(handler = ChangeAddressCommandHandler.class)
+@Handler(handler = ChangeAddressCommandHandler.class)
 public record ChangeAddressCommand(
         UUID id,
         @Valid Address address,
         @Valid City city,
         @Valid PostalCode postalCode,
         CommandFor commandFor
-) implements ICommand<OperationResult> {
+) implements Command {
 
     public static final String ID = "id";
     public static final String ADDRESS = "address";

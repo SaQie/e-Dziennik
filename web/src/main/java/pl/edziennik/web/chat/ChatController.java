@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.edziennik.application.command.chat.chatmessage.CreateChatMessageCommand;
 import pl.edziennik.application.command.chat.chatroom.CreateChatRoomCommand;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
-import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.query.chat.ChatQueryDao;
 import pl.edziennik.common.valueobject.id.ChatId;
 import pl.edziennik.common.valueobject.id.RecipientId;
@@ -40,16 +39,17 @@ public class ChatController {
                 .orElseGet(() -> {
                     // If chatRoom doesn't exist yet
                     CreateChatRoomCommand command = new CreateChatRoomCommand(senderId, recipientId);
-                    OperationResult operationResult = dispatcher.dispatch(command);
+//                    OperationResult operationResult = dispatcher.dispatch(command);
 
-                    return ChatId.of(operationResult.identifier().id());
+//                    return ChatId.of(operationResult.identifier().id());
+                    return ChatId.create();
                 });
     }
 
 
     @MessageMapping("/chat")
     public void sendMessage(@Payload CreateChatMessageCommand command) {
-        dispatcher.dispatch(command);
+//        dispatcher.dispatch(command);
 
         template.convertAndSendToUser(command.chatId().id().toString(), "/messages/chat", command);
     }

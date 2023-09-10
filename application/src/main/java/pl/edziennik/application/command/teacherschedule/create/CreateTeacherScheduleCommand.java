@@ -4,10 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.HandledBy;
-import pl.edziennik.application.common.dispatcher.ValidatedBy;
-import pl.edziennik.application.common.dispatcher.ICommand;
+import pl.edziennik.application.common.dispatcher.Command;
+import pl.edziennik.application.common.dispatcher.Handler;
 import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.common.valueobject.vo.Description;
 
@@ -16,8 +14,7 @@ import java.time.LocalDateTime;
 /**
  * A command used for add something on teacher schedule
  */
-@HandledBy(handler = CreateTeacherScheduleCommandHandler.class)
-@ValidatedBy(validator = CreateTeacherScheduleCommandValidator.class)
+@Handler(handler = CreateTeacherScheduleCommandHandler.class, validator = CreateTeacherScheduleCommandValidator.class)
 public record CreateTeacherScheduleCommand(
 
         @JsonIgnore TeacherId teacherId,
@@ -25,7 +22,7 @@ public record CreateTeacherScheduleCommand(
         @Valid @NotNull(message = "{field.empty}") @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDate,
         @Valid @NotNull(message = "{field.empty}") @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDate
 
-) implements ICommand<OperationResult> {
+) implements Command {
 
     public static final String TEACHER_ID = "teacherId";
     public static final String DESCRIPTION = "description";

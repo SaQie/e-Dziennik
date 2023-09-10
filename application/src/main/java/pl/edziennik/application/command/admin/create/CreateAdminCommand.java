@@ -2,10 +2,8 @@ package pl.edziennik.application.command.admin.create;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.HandledBy;
-import pl.edziennik.application.common.dispatcher.ValidatedBy;
-import pl.edziennik.application.common.dispatcher.ICommand;
+import pl.edziennik.application.common.dispatcher.Command;
+import pl.edziennik.application.common.dispatcher.Handler;
 import pl.edziennik.common.valueobject.vo.Email;
 import pl.edziennik.common.valueobject.vo.Password;
 import pl.edziennik.common.valueobject.vo.Pesel;
@@ -16,8 +14,7 @@ import pl.edziennik.common.valueobject.vo.Username;
  * <br>
  * <b>Only one admin account can exist</b>
  */
-@HandledBy(handler = CreateAdminCommandHandler.class)
-@ValidatedBy(validator = CreateAdminCommandValidator.class)
+@Handler(handler = CreateAdminCommandHandler.class, validator = CreateAdminCommandValidator.class)
 public record CreateAdminCommand(
 
         @Valid @NotNull(message = "{username.empty}") Username username,
@@ -25,7 +22,7 @@ public record CreateAdminCommand(
         @Valid @NotNull(message = "{password.empty}") Password password,
         @Valid @NotNull(message = "{pesel.empty}") Pesel pesel
 
-) implements ICommand<OperationResult> {
+) implements Command {
 
     public static final String USERNAME = "username";
     public static final String EMAIL = "email";

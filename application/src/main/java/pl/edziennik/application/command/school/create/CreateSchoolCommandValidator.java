@@ -2,14 +2,14 @@ package pl.edziennik.application.command.school.create;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.IBaseValidator;
 import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
+import pl.edziennik.application.common.dispatcher.Validator;
 import pl.edziennik.infrastructure.repository.school.SchoolCommandRepository;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
 @Component
 @AllArgsConstructor
-class CreateSchoolCommandValidator implements IBaseValidator<CreateSchoolCommand> {
+class CreateSchoolCommandValidator implements Validator<CreateSchoolCommand> {
 
     public static final String MESSAGE_KEY_SCHOOL_ALREADY_EXISTS = "school.already.exists";
     public static final String MESSAGE_KEY_SCHOOL_WITH_NIP_ALREADY_EXISTS = "school.with.nip.already.exists";

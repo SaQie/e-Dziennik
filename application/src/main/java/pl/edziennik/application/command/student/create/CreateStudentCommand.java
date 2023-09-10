@@ -2,18 +2,15 @@ package pl.edziennik.application.command.student.create;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.HandledBy;
-import pl.edziennik.application.common.dispatcher.ValidatedBy;
-import pl.edziennik.application.common.dispatcher.ICommand;
+import pl.edziennik.application.common.dispatcher.Command;
+import pl.edziennik.application.common.dispatcher.Handler;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.vo.*;
 
 /**
  * A command used for creating a new student account
  */
-@HandledBy(handler = CreateStudentCommandHandler.class)
-@ValidatedBy(validator = CreateStudentCommandValidator.class)
+@Handler(handler = CreateStudentCommandHandler.class, validator = CreateStudentCommandValidator.class)
 public record CreateStudentCommand(
 
         @Valid @NotNull(message = "{password.empty}") Password password,
@@ -28,7 +25,7 @@ public record CreateStudentCommand(
         @Valid @NotNull(message = "{phone.invalid}") PhoneNumber phoneNumber,
         SchoolClassId schoolClassId
 
-) implements ICommand<OperationResult> {
+) implements Command {
 
     public static final String USERNAME = "username";
     public static final String FIRST_NAME = "firstName";

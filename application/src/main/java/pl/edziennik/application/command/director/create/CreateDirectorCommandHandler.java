@@ -5,12 +5,10 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.ICommandHandler;
+import pl.edziennik.application.common.dispatcher.CommandHandler;
+import pl.edziennik.common.valueobject.id.RoleId;
 import pl.edziennik.common.valueobject.vo.Password;
 import pl.edziennik.common.valueobject.vo.PersonInformation;
-import pl.edziennik.common.valueobject.id.DirectorId;
-import pl.edziennik.common.valueobject.id.RoleId;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.director.Director;
 import pl.edziennik.domain.role.Role;
@@ -22,7 +20,7 @@ import pl.edziennik.infrastructure.repository.school.SchoolCommandRepository;
 
 @Component
 @AllArgsConstructor
-class CreateDirectorCommandHandler implements ICommandHandler<CreateDirectorCommand, OperationResult> {
+class CreateDirectorCommandHandler implements CommandHandler<CreateDirectorCommand> {
 
     private final DirectorCommandRepository directorCommandRepository;
     private final SchoolCommandRepository schoolCommandRepository;
@@ -32,7 +30,7 @@ class CreateDirectorCommandHandler implements ICommandHandler<CreateDirectorComm
     @Override
     @Transactional
     @CacheEvict(allEntries = true, value = "directors")
-    public OperationResult handle(CreateDirectorCommand command) {
+    public void handle(CreateDirectorCommand command) {
         School school = schoolCommandRepository.getReferenceById(command.schoolId());
 
         User user = createUser(command);
@@ -46,9 +44,7 @@ class CreateDirectorCommandHandler implements ICommandHandler<CreateDirectorComm
                 .user(user)
                 .build();
 
-        DirectorId directorId = directorCommandRepository.save(director).directorId();
-
-        return OperationResult.success(directorId);
+        directorCommandRepository.save(director);
     }
 
 

@@ -2,9 +2,7 @@ package pl.edziennik.application.command.chat.chatmessage;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.ICommandHandler;
-import pl.edziennik.common.valueobject.id.ChatMessageId;
+import pl.edziennik.application.common.dispatcher.CommandHandler;
 import pl.edziennik.common.valueobject.id.MessageStatusId;
 import pl.edziennik.domain.chat.ChatMessage;
 import pl.edziennik.domain.chat.MessageStatus;
@@ -13,13 +11,13 @@ import pl.edziennik.infrastructure.repository.chat.messagestatus.MessageStatusQu
 
 @Component
 @AllArgsConstructor
-class CreateChatMessageCommandHandler implements ICommandHandler<CreateChatMessageCommand, OperationResult> {
+class CreateChatMessageCommandHandler implements CommandHandler<CreateChatMessageCommand> {
 
     private final ChatMessageCommandRepository commandRepository;
     private final MessageStatusQueryRepository messageStatusQueryRepository;
 
     @Override
-    public OperationResult handle(CreateChatMessageCommand command) {
+    public void handle(CreateChatMessageCommand command) {
         MessageStatus messageStatus = messageStatusQueryRepository.getByMessageStatusId(MessageStatusId.PredefinedRow.DELIVERED);
 
         ChatMessage entity = ChatMessage.builder()
@@ -32,8 +30,6 @@ class CreateChatMessageCommandHandler implements ICommandHandler<CreateChatMessa
                 .messageStatus(messageStatus)
                 .build();
 
-        ChatMessageId chatMessageId = commandRepository.save(entity).chatMessageId();
-
-        return OperationResult.success(chatMessageId);
+        commandRepository.save(entity);
     }
 }

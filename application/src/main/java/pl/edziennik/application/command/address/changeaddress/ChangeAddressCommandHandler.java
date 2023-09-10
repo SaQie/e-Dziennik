@@ -2,8 +2,7 @@ package pl.edziennik.application.command.address.changeaddress;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.ICommandHandler;
-import pl.edziennik.application.common.dispatcher.OperationResult;
+import pl.edziennik.application.common.dispatcher.CommandHandler;
 import pl.edziennik.common.valueobject.id.*;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.director.Director;
@@ -21,7 +20,7 @@ import pl.edziennik.infrastructure.spring.exception.BusinessException;
 
 @Component
 @AllArgsConstructor
-class ChangeAddressCommandHandler implements ICommandHandler<ChangeAddressCommand, OperationResult> {
+class ChangeAddressCommandHandler implements CommandHandler<ChangeAddressCommand> {
 
     private final SchoolCommandRepository schoolCommandRepository;
     private final StudentCommandRepository studentCommandRepository;
@@ -31,7 +30,7 @@ class ChangeAddressCommandHandler implements ICommandHandler<ChangeAddressComman
     private final ResourceCreator res;
 
     @Override
-    public OperationResult handle(ChangeAddressCommand command) {
+    public void handle(ChangeAddressCommand command) {
         switch (command.commandFor()) {
             case PARENT -> updateParentAddress(command);
             case SCHOOL -> updateSchoolAddress(command);
@@ -39,7 +38,6 @@ class ChangeAddressCommandHandler implements ICommandHandler<ChangeAddressComman
             case STUDENT -> updateStudentAddress(command);
             case DIRECTOR -> updateDirectorAddress(command);
         }
-        return OperationResult.success();
     }
 
     private void updateDirectorAddress(ChangeAddressCommand command) {

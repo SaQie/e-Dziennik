@@ -2,18 +2,15 @@ package pl.edziennik.application.command.parent.create;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.HandledBy;
-import pl.edziennik.application.common.dispatcher.ValidatedBy;
-import pl.edziennik.application.common.dispatcher.ICommand;
+import pl.edziennik.application.common.dispatcher.Command;
+import pl.edziennik.application.common.dispatcher.Handler;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.vo.*;
 
 /**
  * A command used for creating a new parent command
  */
-@HandledBy(handler = CreateParentCommandHandler.class)
-@ValidatedBy(validator = CreateParentCommandValidator.class)
+@Handler(handler = CreateParentCommandHandler.class, validator = CreateParentCommandValidator.class)
 public record CreateParentCommand(
 
         @Valid @NotNull(message = "{password.empty}") Password password,
@@ -28,7 +25,7 @@ public record CreateParentCommand(
         @Valid @NotNull(message = "{phone.invalid}") PhoneNumber phoneNumber,
         StudentId studentId
 
-) implements ICommand<OperationResult> {
+) implements Command {
 
     public static final String PASSWORD = "password";
     public static final String USERNAME = "username";

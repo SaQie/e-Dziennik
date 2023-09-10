@@ -6,8 +6,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.ICommandHandler;
+import pl.edziennik.application.common.dispatcher.CommandHandler;
 import pl.edziennik.application.events.event.StudentAccountCreatedEvent;
 import pl.edziennik.application.events.event.UserAccountCreatedEvent;
 import pl.edziennik.common.valueobject.id.RoleId;
@@ -27,7 +26,7 @@ import pl.edziennik.infrastructure.repository.student.StudentCommandRepository;
 
 @Component
 @AllArgsConstructor
-class CreateStudentCommandHandler implements ICommandHandler<CreateStudentCommand, OperationResult> {
+class CreateStudentCommandHandler implements CommandHandler<CreateStudentCommand> {
 
     private final SchoolClassCommandRepository schoolClassCommandRepository;
     private final SchoolCommandRepository schoolCommandRepository;
@@ -41,7 +40,7 @@ class CreateStudentCommandHandler implements ICommandHandler<CreateStudentComman
     @Override
     @Transactional
     @CacheEvict(allEntries = true, value = "students")
-    public OperationResult handle(CreateStudentCommand command) {
+    public void handle(CreateStudentCommand command) {
         SchoolClass schoolClass = schoolClassCommandRepository.getBySchoolClassId(command.schoolClassId());
         School school = schoolClass.school();
 
@@ -64,8 +63,6 @@ class CreateStudentCommandHandler implements ICommandHandler<CreateStudentComman
 
         eventPublisher.publishEvent(userAccountCreatedEvent);
         eventPublisher.publishEvent(studentAccountCreatedEvent);
-
-        return OperationResult.success(studentId);
     }
 
 

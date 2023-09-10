@@ -4,10 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.HandledBy;
-import pl.edziennik.application.common.dispatcher.ValidatedBy;
-import pl.edziennik.application.common.dispatcher.ICommand;
+import pl.edziennik.application.common.dispatcher.Command;
+import pl.edziennik.application.common.dispatcher.Handler;
 import pl.edziennik.common.valueobject.id.ClassRoomId;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.SubjectId;
@@ -18,8 +16,7 @@ import java.time.LocalDateTime;
 /**
  * A command used for creating new lesson plan
  */
-@HandledBy(handler = CreateLessonPlanCommandHandler.class)
-@ValidatedBy(validator = CreateLessonPlanCommandValidator.class)
+@Handler(handler = CreateLessonPlanCommandHandler.class, validator = CreateLessonPlanCommandValidator.class)
 public record CreateLessonPlanCommand(
 
         @Valid @NotNull(message = "{subject.empty}") SubjectId subjectId,
@@ -29,7 +26,7 @@ public record CreateLessonPlanCommand(
         @Valid @NotNull(message = "{field.empty}") @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDate,
         @JsonIgnore SchoolClassId schoolClassId
 
-) implements ICommand<OperationResult> {
+) implements Command {
 
     public static final String SUBJECT_ID = "subjectId";
     public static final String CLASS_ROOM_ID = "classRoomId";

@@ -2,8 +2,8 @@ package pl.edziennik.application.command.grademanagment.assigngrade;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.IBaseValidator;
 import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
+import pl.edziennik.application.common.dispatcher.Validator;
 import pl.edziennik.infrastructure.repository.student.StudentCommandRepository;
 import pl.edziennik.infrastructure.repository.studentsubject.StudentSubjectCommandRepository;
 import pl.edziennik.infrastructure.repository.subject.SubjectCommandRepository;
@@ -12,7 +12,7 @@ import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
 @Component
 @AllArgsConstructor
-class AssignGradeToStudentSubjectCommandValidator implements IBaseValidator<AssignGradeToStudentSubjectCommand> {
+class AssignGradeToStudentSubjectCommandValidator implements Validator<AssignGradeToStudentSubjectCommand> {
 
     public static final String MESSAGE_KEY_STUDENT_SUBJECT_NOT_EXISTS = "student.subject.not.exists";
     public static final String MESSAGE_KEY_ACCOUNT_INACTIVE = "account.inactive";
@@ -38,7 +38,7 @@ class AssignGradeToStudentSubjectCommandValidator implements IBaseValidator<Assi
     }
 
     /**
-     *  Check given student account is active
+     * Check given student account is active
      */
     private void checkStudentAccountIsActive(AssignGradeToStudentSubjectCommand command, ValidationErrorBuilder errorBuilder) {
         if (studentCommandRepository.isStudentAccountNotActive(command.studentId())) {

@@ -2,8 +2,7 @@ package pl.edziennik.application.command.schoolclass.changeconfig;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.ICommandHandler;
-import pl.edziennik.application.common.dispatcher.OperationResult;
+import pl.edziennik.application.common.dispatcher.CommandHandler;
 import pl.edziennik.common.valueobject.id.SchoolClassConfigurationId;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.schoolclass.SchoolClassConfiguration;
@@ -14,14 +13,14 @@ import pl.edziennik.infrastructure.spring.exception.BusinessException;
 
 @Component
 @AllArgsConstructor
-class ChangeSchoolClassConfigurationValuesCommandHandler implements ICommandHandler<ChangeSchoolClassConfigurationValuesCommand, OperationResult> {
+class ChangeSchoolClassConfigurationValuesCommandHandler implements CommandHandler<ChangeSchoolClassConfigurationValuesCommand> {
 
     private final ResourceCreator res;
     private final SchoolClassCommandRepository schoolClassCommandRepository;
     private final SchoolClassConfigurationCommandRepository schoolClassConfigurationCommandRepository;
 
     @Override
-    public OperationResult handle(ChangeSchoolClassConfigurationValuesCommand command) {
+    public void handle(ChangeSchoolClassConfigurationValuesCommand command) {
         SchoolClass schoolClass = schoolClassCommandRepository.findById(command.schoolClassId())
                 .orElseThrow(() -> new BusinessException(
                         res.notFoundError(ChangeSchoolClassConfigurationValuesCommand.SCHOOL_CLASS_ID, command.schoolClassId())
@@ -34,7 +33,5 @@ class ChangeSchoolClassConfigurationValuesCommandHandler implements ICommandHand
         schoolClassConfiguration.changeMaxStudentsSize(command.maxStudentsSize());
 
         schoolClassConfigurationCommandRepository.save(schoolClassConfiguration);
-
-        return OperationResult.success();
     }
 }

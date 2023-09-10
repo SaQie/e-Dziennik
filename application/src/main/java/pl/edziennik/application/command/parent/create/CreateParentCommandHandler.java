@@ -6,13 +6,11 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.application.common.dispatcher.ICommandHandler;
+import pl.edziennik.application.common.dispatcher.CommandHandler;
 import pl.edziennik.application.events.event.UserAccountCreatedEvent;
+import pl.edziennik.common.valueobject.id.RoleId;
 import pl.edziennik.common.valueobject.vo.Password;
 import pl.edziennik.common.valueobject.vo.PersonInformation;
-import pl.edziennik.common.valueobject.id.ParentId;
-import pl.edziennik.common.valueobject.id.RoleId;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.parent.Parent;
 import pl.edziennik.domain.role.Role;
@@ -22,7 +20,7 @@ import pl.edziennik.infrastructure.repository.role.RoleCommandRepository;
 
 @Component
 @AllArgsConstructor
-class CreateParentCommandHandler implements ICommandHandler<CreateParentCommand, OperationResult> {
+class CreateParentCommandHandler implements CommandHandler<CreateParentCommand> {
 
     private final ParentCommandRepository parentCommandRepository;
     private final PasswordEncoder passwordEncoder;
@@ -32,7 +30,7 @@ class CreateParentCommandHandler implements ICommandHandler<CreateParentCommand,
     @Override
     @Transactional
     @CacheEvict(allEntries = true, value = "parents")
-    public OperationResult handle(CreateParentCommand command) {
+    public void handle(CreateParentCommand command) {
         User user = createUser(command);
         PersonInformation personInformation = createPersonInformation(command);
         Address address = createAddress(command);
@@ -43,13 +41,10 @@ class CreateParentCommandHandler implements ICommandHandler<CreateParentCommand,
                 .address(address)
                 .build();
 
-        ParentId parentId = parentCommandRepository.save(parent).parentId();
+        parentCommandRepository.save(parent);
 
         UserAccountCreatedEvent event = new UserAccountCreatedEvent(user.userId());
         eventPublisher.publishEvent(event);
-
-        return OperationResult.success(parentId);
-
     }
 
     private User createUser(CreateParentCommand command) {

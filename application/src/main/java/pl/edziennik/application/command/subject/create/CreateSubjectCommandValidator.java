@@ -2,8 +2,8 @@ package pl.edziennik.application.command.subject.create;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.edziennik.application.common.dispatcher.IBaseValidator;
 import pl.edziennik.application.common.dispatcher.ValidationErrorBuilder;
+import pl.edziennik.application.common.dispatcher.Validator;
 import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassCommandRepository;
 import pl.edziennik.infrastructure.repository.subject.SubjectCommandRepository;
 import pl.edziennik.infrastructure.repository.teacher.TeacherCommandRepository;
@@ -11,7 +11,7 @@ import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
 @Component
 @AllArgsConstructor
-class CreateSubjectCommandValidator implements IBaseValidator<CreateSubjectCommand> {
+class CreateSubjectCommandValidator implements Validator<CreateSubjectCommand> {
 
     public static final String MESSAGE_KEY_SUBJECT_ALREADY_EXISTS = "subject.already.exist";
     public static final String MESSAGE_KEY_TEACHER_IS_FROM_ANOTHER_SCHOOL = "subject.teacher.is.from.another.school";
