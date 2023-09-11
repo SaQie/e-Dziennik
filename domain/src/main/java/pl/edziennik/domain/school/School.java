@@ -4,11 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
 import pl.edziennik.common.properties.SchoolConfigurationProperties;
+import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.vo.Name;
 import pl.edziennik.common.valueobject.vo.Nip;
 import pl.edziennik.common.valueobject.vo.PhoneNumber;
 import pl.edziennik.common.valueobject.vo.Regon;
-import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.director.Director;
 import pl.edziennik.domain.schoolclass.SchoolClass;
@@ -29,7 +29,7 @@ import java.util.List;
 public class School {
 
     @EmbeddedId
-    private SchoolId schoolId = SchoolId.create();
+    private SchoolId schoolId;
 
     @Embedded
     @AttributeOverrides({
@@ -80,7 +80,7 @@ public class School {
     private Long version;
 
     @Builder
-    public static School of(Name name, Nip nip, Regon regon, PhoneNumber phoneNumber, Address address,
+    public static School of(SchoolId schoolId, Name name, Nip nip, Regon regon, PhoneNumber phoneNumber, Address address,
                             SchoolLevel schoolLevel, SchoolConfigurationProperties properties) {
         School school = new School();
 
@@ -90,6 +90,7 @@ public class School {
         school.phoneNumber = phoneNumber;
         school.schoolLevel = schoolLevel;
         school.nip = nip;
+        school.schoolId = schoolId;
         school.schoolConfiguration = SchoolConfiguration.createConfigFromProperties(properties);
 
         return school;

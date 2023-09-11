@@ -41,6 +41,7 @@ class CreateTeacherCommandHandler implements CommandHandler<CreateTeacherCommand
         Address address = createAddress(command);
 
         Teacher teacher = Teacher.builder()
+                .teacherId(command.teacherId())
                 .user(user)
                 .school(school)
                 .personInformation(personInformation)

@@ -7,8 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.application.command.director.create.CreateDirectorCommand;
-import pl.edziennik.application.common.dispatcher.Dispatcher;
-import pl.edziennik.application.common.dispatcher.OperationResult;
+import pl.edziennik.application.common.dispatcher.newapi.Dispatcher2;
 import pl.edziennik.common.valueobject.id.SchoolId;
 
 import java.net.URI;
@@ -18,19 +17,20 @@ import java.net.URI;
 @RequestMapping("/api/v1")
 public class DirectorCommandController {
 
-    private final Dispatcher dispatcher;
+    private final Dispatcher2 dispatcher;
 
     @PostMapping("/schools/{schoolId}/directors")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> createDirector(@PathVariable @NotNull(message = "${school.empty}") SchoolId schoolId,
                                                @RequestBody CreateDirectorCommand requestCommand) {
         CreateDirectorCommand command = new CreateDirectorCommand(schoolId, requestCommand);
-        OperationResult operationResult = dispatcher.dispatch(command);
+
+        dispatcher.run(command);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequestUri()
                 .path("/{id}")
-                .buildAndExpand(operationResult.identifier().id())
+                .buildAndExpand(command.directorId().id())
                 .toUri();
 
         return ResponseEntity.created(location).build();

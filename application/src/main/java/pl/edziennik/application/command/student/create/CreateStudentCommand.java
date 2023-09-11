@@ -1,10 +1,13 @@
 package pl.edziennik.application.command.student.create;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.Command;
 import pl.edziennik.application.common.dispatcher.Handler;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
+import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.vo.*;
 
 /**
@@ -13,6 +16,7 @@ import pl.edziennik.common.valueobject.vo.*;
 @Handler(handler = CreateStudentCommandHandler.class, validator = CreateStudentCommandValidator.class)
 public record CreateStudentCommand(
 
+        @JsonIgnore StudentId studentId,
         @Valid @NotNull(message = "{password.empty}") Password password,
         @Valid @NotNull(message = "{username.empty}") Username username,
         @Valid @NotNull(message = "{firstName.empty}") FirstName firstName,
@@ -39,8 +43,15 @@ public record CreateStudentCommand(
     public static final String SCHOOL_CLASS_ID = "schoolClassId";
     public static final String EMAIL = "email";
 
+    @JsonCreator
+    public CreateStudentCommand(Password password, Username username, FirstName firstName, LastName lastName,
+                                Address address, PostalCode postalCode, City city, Pesel pesel, Email email,
+                                PhoneNumber phoneNumber, SchoolClassId schoolClassId) {
+        this(StudentId.create(), password, username, firstName, lastName, address, postalCode, city, pesel, email, phoneNumber, schoolClassId);
+    }
+
     public CreateStudentCommand(SchoolClassId schoolClassId, CreateStudentCommand command) {
-        this(command.password, command.username, command.firstName, command.lastName, command.address,
+        this(StudentId.create(), command.password, command.username, command.firstName, command.lastName, command.address,
                 command.postalCode, command.city, command.pesel, command.email, command.phoneNumber, schoolClassId);
     }
 }

@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.edziennik.application.command.teacherschedule.create.CreateTeacherScheduleCommand;
-import pl.edziennik.application.common.dispatcher.Dispatcher;
+import pl.edziennik.application.common.dispatcher.newapi.Dispatcher2;
 import pl.edziennik.common.valueobject.id.TeacherId;
 
 @RestController
@@ -13,7 +13,7 @@ import pl.edziennik.common.valueobject.id.TeacherId;
 @RequestMapping("/api/v1")
 public class TeacherScheduleCommandController {
 
-    private final Dispatcher dispatcher;
+    private final Dispatcher2 dispatcher;
 
     @PostMapping("/teachers/{teacherId}/schedules")
     @ResponseStatus(HttpStatus.CREATED)
@@ -22,7 +22,7 @@ public class TeacherScheduleCommandController {
 
         // TODO dorob uri jak zrobisz query
 
-        dispatcher.dispatch(command);
+        dispatcher.run(command);
     }
 
 }

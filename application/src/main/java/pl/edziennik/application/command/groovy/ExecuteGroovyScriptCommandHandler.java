@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.common.dispatcher.CommandHandler;
+import pl.edziennik.common.valueobject.id.GroovyScriptResultId;
 import pl.edziennik.common.valueobject.id.GroovyScriptStatusId;
 import pl.edziennik.common.valueobject.vo.GroovyScriptExecTime;
 import pl.edziennik.common.valueobject.vo.ScriptResult;
@@ -46,6 +47,7 @@ class ExecuteGroovyScriptCommandHandler implements CommandHandler<ExecuteGroovyS
                 GroovyScriptStatusId.PredefinedRow.EXECUTING);
 
         GroovyScript groovyScript = GroovyScript.builder()
+                .groovyScriptId(command.groovyScriptId())
                 .user(user)
                 .scriptStatus(scriptStatus)
                 .scriptContent(command.scriptContent())
@@ -71,6 +73,7 @@ class ExecuteGroovyScriptCommandHandler implements CommandHandler<ExecuteGroovyS
             Duration execTime = Duration.between(start, end);
 
             GroovyScriptResult groovyScriptResult = GroovyScriptResult.builder()
+                    .groovyScriptResultId(GroovyScriptResultId.create())
                     .groovyScript(script)
                     .scriptResult(scriptExecResult.result())
                     .execTime(GroovyScriptExecTime.of(execTime))
@@ -83,6 +86,7 @@ class ExecuteGroovyScriptCommandHandler implements CommandHandler<ExecuteGroovyS
             changeStatus(scriptExecResult.scriptStatusId(), script);
 
             GroovyScriptResult groovyScriptResult = GroovyScriptResult.builder()
+                    .groovyScriptResultId(GroovyScriptResultId.create())
                     .groovyScript(script)
                     .scriptResult(ScriptResult.of(scriptExecResult.error().getMessage()))
                     .execTime(GroovyScriptExecTime.none())

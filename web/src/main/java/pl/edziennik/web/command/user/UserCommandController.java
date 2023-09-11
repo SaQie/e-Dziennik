@@ -7,23 +7,23 @@ import org.springframework.web.bind.annotation.*;
 import pl.edziennik.application.command.user.activate.ActivateUserCommand;
 import pl.edziennik.application.command.user.changepassword.ChangePasswordCommand;
 import pl.edziennik.application.command.user.changeuserdata.ChangeUserDataCommand;
-import pl.edziennik.application.common.dispatcher.Dispatcher;
-import pl.edziennik.common.valueobject.vo.Token;
+import pl.edziennik.application.common.dispatcher.newapi.Dispatcher2;
 import pl.edziennik.common.valueobject.id.UserId;
+import pl.edziennik.common.valueobject.vo.Token;
 
 @RestController
 @RequestMapping("/api/v1/users")
 @AllArgsConstructor
 public class UserCommandController {
 
-    private final Dispatcher dispatcher;
+    private final Dispatcher2 dispatcher;
 
     @PatchMapping("/activate")
     @ResponseStatus(HttpStatus.OK)
     public void activateUser(@RequestParam(name = "token") String token) {
         ActivateUserCommand command = new ActivateUserCommand(Token.of(token));
 
-        dispatcher.dispatch(command);
+        dispatcher.run(command);
     }
 
     @PatchMapping("/{userId}")
@@ -31,7 +31,7 @@ public class UserCommandController {
     public void changeUserData(@PathVariable UserId userId, @RequestBody @Valid ChangeUserDataCommand command) {
         command = new ChangeUserDataCommand(userId, command.username(), command.email());
 
-        dispatcher.dispatch(command);
+        dispatcher.run(command);
     }
 
     @PatchMapping("/{userId}/change-password")
@@ -39,7 +39,7 @@ public class UserCommandController {
     public void changePassword(@PathVariable UserId userId, @RequestBody @Valid ChangePasswordCommand command) {
         command = new ChangePasswordCommand(userId, command.oldPassword(), command.newPassword());
 
-        dispatcher.dispatch(command);
+        dispatcher.run(command);
     }
 
 }

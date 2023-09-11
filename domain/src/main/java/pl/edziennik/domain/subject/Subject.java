@@ -3,9 +3,9 @@ package pl.edziennik.domain.subject;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
+import pl.edziennik.common.valueobject.id.SubjectId;
 import pl.edziennik.common.valueobject.vo.Description;
 import pl.edziennik.common.valueobject.vo.Name;
-import pl.edziennik.common.valueobject.id.SubjectId;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.teacher.Teacher;
 
@@ -20,7 +20,7 @@ public class Subject {
 
 
     @EmbeddedId
-    private SubjectId subjectId = SubjectId.create();
+    private SubjectId subjectId;
 
     @Embedded
     @AttributeOverrides({
@@ -45,13 +45,14 @@ public class Subject {
 
 
     @Builder
-    public static Subject of(Name subjectName, Description description, SchoolClass schoolClass, Teacher teacher) {
+    public static Subject of(SubjectId subjectId, Name subjectName, Description description, SchoolClass schoolClass, Teacher teacher) {
         Subject subject = new Subject();
 
         subject.description = description;
         subject.name = subjectName;
         subject.schoolClass = schoolClass;
         subject.teacher = teacher;
+        subject.subjectId = subjectId;
 
         schoolClass.subjects().add(subject);
 

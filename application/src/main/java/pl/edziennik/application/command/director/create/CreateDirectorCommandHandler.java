@@ -38,6 +38,7 @@ class CreateDirectorCommandHandler implements CommandHandler<CreateDirectorComma
         Address address = createAddress(command);
 
         Director director = Director.builder()
+                .directorId(command.directorId())
                 .address(address)
                 .personInformation(personInformation)
                 .school(school)

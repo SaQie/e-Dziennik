@@ -10,8 +10,7 @@ import pl.edziennik.application.command.address.changeaddress.ChangeAddressComma
 import pl.edziennik.application.command.school.changeconfig.ChangeSchoolConfigurationValuesCommand;
 import pl.edziennik.application.command.school.create.CreateSchoolCommand;
 import pl.edziennik.application.command.school.delete.DeleteSchoolCommand;
-import pl.edziennik.application.common.dispatcher.Dispatcher;
-import pl.edziennik.application.common.dispatcher.OperationResult;
+import pl.edziennik.application.common.dispatcher.newapi.Dispatcher2;
 import pl.edziennik.common.valueobject.id.SchoolId;
 
 import java.net.URI;
@@ -21,17 +20,17 @@ import java.net.URI;
 @AllArgsConstructor
 public class SchoolCommandController {
 
-    private final Dispatcher dispatcher;
+    private final Dispatcher2 dispatcher;
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> createSchool(@RequestBody @Valid CreateSchoolCommand createSchoolCommand) {
-        OperationResult operationResult = dispatcher.dispatch(createSchoolCommand);
+    public ResponseEntity<Void> createSchool(@RequestBody @Valid CreateSchoolCommand command) {
+        dispatcher.run(command);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequestUri()
                 .path("/{id}")
-                .buildAndExpand(operationResult.identifier().id())
+                .buildAndExpand(command.schoolId().id())
                 .toUri();
 
         return ResponseEntity.created(location).build();
@@ -43,7 +42,7 @@ public class SchoolCommandController {
     public void deleteSchool(@PathVariable SchoolId schoolId) {
         DeleteSchoolCommand deleteSchoolCommand = new DeleteSchoolCommand(schoolId);
 
-        dispatcher.dispatch(deleteSchoolCommand);
+        dispatcher.run(deleteSchoolCommand);
     }
 
     @PutMapping("/{schoolId}/addresses")
@@ -55,15 +54,16 @@ public class SchoolCommandController {
                 command.postalCode(),
                 ChangeAddressCommand.CommandFor.SCHOOL);
 
-        dispatcher.dispatch(command);
+        dispatcher.run(command);
     }
 
     @PatchMapping("/{schoolId}/configurations")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void changeSchoolConfigurationValues(@RequestBody @Valid ChangeSchoolConfigurationValuesCommand command, @PathVariable SchoolId schoolId) {
+    public void changeSchoolConfigurationValues(@RequestBody @Valid ChangeSchoolConfigurationValuesCommand command,
+                                                @PathVariable SchoolId schoolId) {
         command = new ChangeSchoolConfigurationValuesCommand(schoolId, command.averageType(), command.maxLessonTime(), command.minScheduleTime());
 
-        dispatcher.dispatch(command);
+        dispatcher.run(command);
     }
 
 

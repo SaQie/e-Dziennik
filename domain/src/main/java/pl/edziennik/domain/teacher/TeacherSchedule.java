@@ -17,7 +17,7 @@ import pl.edziennik.common.valueobject.vo.TimeFrame;
 public class TeacherSchedule {
 
     @EmbeddedId
-    private TeacherScheduleId teacherScheduleId = TeacherScheduleId.create();
+    private TeacherScheduleId teacherScheduleId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Teacher teacher;
@@ -36,12 +36,13 @@ public class TeacherSchedule {
     private Long version;
 
     @Builder
-    public static TeacherSchedule of(Teacher teacher, TimeFrame timeFrame, Description description) {
+    public static TeacherSchedule of(TeacherScheduleId teacherScheduleId, Teacher teacher, TimeFrame timeFrame, Description description) {
         TeacherSchedule teacherSchedule = new TeacherSchedule();
 
         teacherSchedule.teacher = teacher;
         teacherSchedule.timeFrame = timeFrame;
         teacherSchedule.description = description;
+        teacherSchedule.teacherScheduleId = teacherScheduleId;
 
         return teacherSchedule;
     }

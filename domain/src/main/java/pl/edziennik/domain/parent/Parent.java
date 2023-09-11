@@ -3,8 +3,8 @@ package pl.edziennik.domain.parent;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
-import pl.edziennik.common.valueobject.vo.PersonInformation;
 import pl.edziennik.common.valueobject.id.ParentId;
+import pl.edziennik.common.valueobject.vo.PersonInformation;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.student.Student;
 import pl.edziennik.domain.user.User;
@@ -19,7 +19,7 @@ import pl.edziennik.domain.user.User;
 public class Parent {
 
     @EmbeddedId
-    private ParentId parentId = ParentId.create();
+    private ParentId parentId;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
@@ -41,13 +41,14 @@ public class Parent {
 
 
     @Builder
-    public static Parent of(User user, PersonInformation personInformation, Address address, Student student) {
+    public static Parent of(ParentId parentId, User user, PersonInformation personInformation, Address address, Student student) {
         Parent parent = new Parent();
 
         parent.address = address;
         parent.personInformation = personInformation;
         parent.user = user;
         parent.student = student;
+        parent.parentId = parentId;
 
         return parent;
     }

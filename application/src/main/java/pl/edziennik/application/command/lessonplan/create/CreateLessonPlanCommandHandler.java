@@ -55,6 +55,7 @@ class CreateLessonPlanCommandHandler implements CommandHandler<CreateLessonPlanC
         }
 
         LessonPlan lessonPlan = LessonPlan.builder()
+                .lessonPlanId(command.lessonPlanId())
                 .lessonOrder(lessonOrder)
                 .classRoom(classRoom)
                 .subject(subject)

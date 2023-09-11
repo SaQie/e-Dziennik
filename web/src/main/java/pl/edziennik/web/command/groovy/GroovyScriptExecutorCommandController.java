@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.application.command.groovy.ExecuteGroovyScriptCommand;
-import pl.edziennik.application.common.dispatcher.Dispatcher;
-import pl.edziennik.application.common.dispatcher.OperationResult;
+import pl.edziennik.application.common.dispatcher.newapi.Dispatcher2;
+import pl.edziennik.common.valueobject.id.GroovyScriptId;
 import pl.edziennik.common.valueobject.vo.ScriptContent;
 
 import java.net.URI;
@@ -18,18 +18,18 @@ import java.net.URI;
 @RequestMapping("/api/v1/scripts")
 public class GroovyScriptExecutorCommandController {
 
-    private final Dispatcher dispatcher;
+    private final Dispatcher2 dispatcher;
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody()
     public ResponseEntity<Void> executeGroovyScript(@RequestBody ExecuteGroovyScriptCommand command) {
-        OperationResult operationResult = dispatcher.dispatch(command);
+        dispatcher.run(command);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
                 .path("/api/v1/scripts/results/{groovyScriptId}")
-                .buildAndExpand(operationResult.identifier().id())
+                .buildAndExpand(command.groovyScriptId().id())
                 .toUri();
 
         return ResponseEntity.ok().location(location).build();
@@ -38,13 +38,16 @@ public class GroovyScriptExecutorCommandController {
     @PostMapping("/file")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Void> executeGroovyScriptFile(@RequestPart("file") MultipartFile file) {
-        ExecuteGroovyScriptCommand command = new ExecuteGroovyScriptCommand(ScriptContent.of(file));
-        OperationResult operationResult = dispatcher.dispatch(command);
+        GroovyScriptId groovyScriptId = GroovyScriptId.create();
+
+        ExecuteGroovyScriptCommand command = new ExecuteGroovyScriptCommand(groovyScriptId, ScriptContent.of(file));
+
+        dispatcher.run(command);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
                 .path("/api/v1/scripts/results/{groovyScriptId}")
-                .buildAndExpand(operationResult.identifier().id())
+                .buildAndExpand(groovyScriptId.id())
                 .toUri();
 
         return ResponseEntity.ok().location(location).build();

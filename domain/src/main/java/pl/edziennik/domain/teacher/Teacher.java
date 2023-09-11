@@ -3,8 +3,8 @@ package pl.edziennik.domain.teacher;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
-import pl.edziennik.common.valueobject.vo.PersonInformation;
 import pl.edziennik.common.valueobject.id.TeacherId;
+import pl.edziennik.common.valueobject.vo.PersonInformation;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.user.User;
@@ -19,7 +19,7 @@ import pl.edziennik.domain.user.User;
 public class Teacher {
 
     @EmbeddedId
-    private TeacherId teacherId = TeacherId.create();
+    private TeacherId teacherId;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
@@ -41,13 +41,14 @@ public class Teacher {
 
 
     @Builder
-    public static Teacher of(User user, School school, PersonInformation personInformation, Address address) {
+    public static Teacher of(TeacherId teacherId, User user, School school, PersonInformation personInformation, Address address) {
         Teacher teacher = new Teacher();
 
         teacher.school = school;
         teacher.address = address;
         teacher.personInformation = personInformation;
         teacher.user = user;
+        teacher.teacherId = teacherId;
 
         school.teachers().add(teacher);
 

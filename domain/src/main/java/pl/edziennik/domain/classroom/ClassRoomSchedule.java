@@ -17,7 +17,7 @@ import pl.edziennik.common.valueobject.vo.TimeFrame;
 public class ClassRoomSchedule {
 
     @EmbeddedId
-    private ClassRoomScheduleId classRoomScheduleId = ClassRoomScheduleId.create();
+    private ClassRoomScheduleId classRoomScheduleId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private ClassRoom classRoom;
@@ -36,12 +36,13 @@ public class ClassRoomSchedule {
     private Long version;
 
     @Builder
-    public static ClassRoomSchedule of(ClassRoom classRoom, TimeFrame timeFrame, Description description) {
+    public static ClassRoomSchedule of(ClassRoomScheduleId classRoomScheduleId, ClassRoom classRoom, TimeFrame timeFrame, Description description) {
         ClassRoomSchedule classRoomSchedule = new ClassRoomSchedule();
 
         classRoomSchedule.classRoom = classRoom;
         classRoomSchedule.timeFrame = timeFrame;
         classRoomSchedule.description = description;
+        classRoomSchedule.classRoomScheduleId = classRoomScheduleId;
 
         return classRoomSchedule;
     }

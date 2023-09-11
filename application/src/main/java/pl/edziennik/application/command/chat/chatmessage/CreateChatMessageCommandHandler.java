@@ -21,6 +21,7 @@ class CreateChatMessageCommandHandler implements CommandHandler<CreateChatMessag
         MessageStatus messageStatus = messageStatusQueryRepository.getByMessageStatusId(MessageStatusId.PredefinedRow.DELIVERED);
 
         ChatMessage entity = ChatMessage.builder()
+                .chatMessageId(command.chatMessageId())
                 .recipientId(command.recipientId())
                 .senderId(command.senderId())
                 .chatContent(command.chatContent())

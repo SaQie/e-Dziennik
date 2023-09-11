@@ -30,6 +30,7 @@ class AssignGradeToStudentSubjectCommandHandler implements CommandHandler<Assign
         Teacher teacher = teacherCommandRepository.getReferenceById(command.teacherId());
 
         Grade grade = Grade.builder()
+                .gradeId(command.gradeId())
                 .gradeConst(command.grade())
                 .weight(command.weight())
                 .description(command.description())
@@ -37,7 +38,7 @@ class AssignGradeToStudentSubjectCommandHandler implements CommandHandler<Assign
                 .teacher(teacher)
                 .build();
 
-        gradeCommandRepository.save(grade).gradeId();
+        gradeCommandRepository.save(grade);
 
         GradeAddedEvent event = new GradeAddedEvent(studentSubject.studentSubjectId());
         eventPublisher.publishEvent(event);

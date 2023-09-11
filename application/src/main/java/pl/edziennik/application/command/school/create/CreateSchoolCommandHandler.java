@@ -33,6 +33,7 @@ class CreateSchoolCommandHandler implements CommandHandler<CreateSchoolCommand> 
         Address address = createAddress(command);
 
         School school = School.builder()
+                .schoolId(command.schoolId())
                 .name(command.name())
                 .nip(command.nip())
                 .regon(command.regon())

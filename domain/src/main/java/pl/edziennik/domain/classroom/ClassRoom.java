@@ -17,7 +17,7 @@ import pl.edziennik.domain.school.School;
 public class ClassRoom {
 
     @EmbeddedId
-    private ClassRoomId classRoomId = ClassRoomId.create();
+    private ClassRoomId classRoomId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private School school;
@@ -33,11 +33,12 @@ public class ClassRoom {
 
 
     @Builder
-    public static ClassRoom of(School school, ClassRoomName classRoomName) {
+    public static ClassRoom of(ClassRoomId classRoomId, School school, ClassRoomName classRoomName) {
         ClassRoom classRoom = new ClassRoom();
 
         classRoom.school = school;
         classRoom.classRoomName = classRoomName;
+        classRoom.classRoomId = classRoomId;
 
         return classRoom;
     }

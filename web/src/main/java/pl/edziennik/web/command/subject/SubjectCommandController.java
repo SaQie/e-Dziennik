@@ -7,8 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.application.command.subject.create.CreateSubjectCommand;
-import pl.edziennik.application.common.dispatcher.Dispatcher;
-import pl.edziennik.application.common.dispatcher.OperationResult;
+import pl.edziennik.application.common.dispatcher.newapi.Dispatcher2;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 
 import java.net.URI;
@@ -18,19 +17,20 @@ import java.net.URI;
 @AllArgsConstructor
 public class SubjectCommandController {
 
-    private final Dispatcher dispatcher;
+    private final Dispatcher2 dispatcher;
 
 
     @PostMapping("/schoolclasses/{schoolClassId}/subjects")
     public ResponseEntity<Void> createSubject(@PathVariable @NotNull(message = "{schoolClass.empty}") SchoolClassId schoolClassId,
                                               @RequestBody @Valid CreateSubjectCommand requestCommand) {
         CreateSubjectCommand command = new CreateSubjectCommand(schoolClassId, requestCommand);
-        OperationResult operationResult = dispatcher.dispatch(command);
+
+        dispatcher.run(command);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequestUri()
                 .path("/{id}")
-                .buildAndExpand(operationResult.identifier().id())
+                .buildAndExpand(command.subjectId().id())
                 .toUri();
 
         return ResponseEntity.created(location).build();

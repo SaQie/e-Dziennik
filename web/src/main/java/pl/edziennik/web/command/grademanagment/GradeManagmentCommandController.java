@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.application.command.grademanagment.assigngrade.AssignGradeToStudentSubjectCommand;
-import pl.edziennik.application.common.dispatcher.Dispatcher;
+import pl.edziennik.application.common.dispatcher.newapi.Dispatcher2;
 
 import java.net.URI;
 
@@ -18,11 +18,11 @@ import java.net.URI;
 @RequestMapping("/api/v1/grade-managment")
 public class GradeManagmentCommandController {
 
-    private final Dispatcher dispatcher;
+    private final Dispatcher2 dispatcher;
 
     @PostMapping
     public ResponseEntity<Void> addStudentSubjectGrade(@RequestBody @Valid AssignGradeToStudentSubjectCommand command) {
-        dispatcher.dispatch(command);
+        dispatcher.run(command);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath()

@@ -1,15 +1,13 @@
 package pl.edziennik.application.command.lessonplan.create;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.Command;
 import pl.edziennik.application.common.dispatcher.Handler;
-import pl.edziennik.common.valueobject.id.ClassRoomId;
-import pl.edziennik.common.valueobject.id.SchoolClassId;
-import pl.edziennik.common.valueobject.id.SubjectId;
-import pl.edziennik.common.valueobject.id.TeacherId;
+import pl.edziennik.common.valueobject.id.*;
 
 import java.time.LocalDateTime;
 
@@ -19,6 +17,7 @@ import java.time.LocalDateTime;
 @Handler(handler = CreateLessonPlanCommandHandler.class, validator = CreateLessonPlanCommandValidator.class)
 public record CreateLessonPlanCommand(
 
+        @JsonIgnore LessonPlanId lessonPlanId,
         @Valid @NotNull(message = "{subject.empty}") SubjectId subjectId,
         TeacherId teacherId,
         @Valid @NotNull(message = "{field.empty}") ClassRoomId classRoomId,
@@ -35,9 +34,14 @@ public record CreateLessonPlanCommand(
     public static final String SCHOOL_CLASS_ID = "schoolClassId";
     public static final String TEACHER_ID = "teacherId";
 
+    @JsonCreator
+    public CreateLessonPlanCommand(SubjectId subjectId, TeacherId teacherId, ClassRoomId classRoomId, LocalDateTime startDate,
+                                   LocalDateTime endDate, SchoolClassId schoolClassId) {
+        this(LessonPlanId.create(), subjectId, teacherId, classRoomId, startDate, endDate, schoolClassId);
+    }
 
     public CreateLessonPlanCommand(SchoolClassId schoolClassId, CreateLessonPlanCommand command) {
-        this(command.subjectId, command.teacherId, command.classRoomId, command.startDate, command.endDate, schoolClassId);
+        this(LessonPlanId.create(), command.subjectId, command.teacherId, command.classRoomId, command.startDate, command.endDate, schoolClassId);
     }
 
 }

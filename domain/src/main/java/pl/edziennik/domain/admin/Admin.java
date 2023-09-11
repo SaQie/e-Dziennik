@@ -16,7 +16,7 @@ import pl.edziennik.domain.user.User;
 public class Admin {
 
     @EmbeddedId
-    private AdminId adminId = AdminId.create();
+    private AdminId adminId;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
@@ -27,10 +27,11 @@ public class Admin {
 
 
     @Builder
-    public static Admin of(User user){
+    public static Admin of(AdminId adminId, User user){
         Admin admin = new Admin();
 
         admin.user = user;
+        admin.adminId = adminId;
 
         return admin;
     }

@@ -1,10 +1,12 @@
 package pl.edziennik.application.command.classroom.create;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.Command;
 import pl.edziennik.application.common.dispatcher.Handler;
+import pl.edziennik.common.valueobject.id.ClassRoomId;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.vo.ClassRoomName;
 
@@ -14,6 +16,7 @@ import pl.edziennik.common.valueobject.vo.ClassRoomName;
 @Handler(handler = CreateClassRoomCommandHandler.class, validator = CreateClassRoomCommandValidator.class)
 public record CreateClassRoomCommand(
 
+        @JsonIgnore ClassRoomId classRoomId,
         @JsonIgnore SchoolId schoolId,
         @Valid @NotNull(message = "${field.empty}") ClassRoomName classRoomName
 
@@ -21,8 +24,11 @@ public record CreateClassRoomCommand(
 
     public static final String CLASS_ROOM_NAME = "classRoomName";
     public static final String SCHOOL_ID = "schoolId";
+    public static final String CLASS_ROOM_ID = "classRoomId";
 
-    public CreateClassRoomCommand(SchoolId schoolId, CreateClassRoomCommand command) {
-        this(schoolId, command.classRoomName);
+
+    @JsonCreator
+    public CreateClassRoomCommand(SchoolId schoolId, ClassRoomName classRoomName) {
+        this(ClassRoomId.create(), schoolId, classRoomName);
     }
 }

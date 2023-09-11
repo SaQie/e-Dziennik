@@ -3,9 +3,9 @@ package pl.edziennik.domain.student;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
+import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.vo.JournalNumber;
 import pl.edziennik.common.valueobject.vo.PersonInformation;
-import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.parent.Parent;
 import pl.edziennik.domain.school.School;
@@ -23,7 +23,7 @@ import pl.edziennik.domain.user.User;
 public class Student {
 
     @EmbeddedId
-    private StudentId studentId = StudentId.create();
+    private StudentId studentId;
 
     private boolean hasParentAccount;
 
@@ -58,7 +58,7 @@ public class Student {
 
 
     @Builder
-    public static Student of(User user, School school, SchoolClass schoolClass, PersonInformation personInformation,
+    public static Student of(StudentId studentId, User user, School school, SchoolClass schoolClass, PersonInformation personInformation,
                              Address address) {
         Student student = new Student();
 
@@ -67,6 +67,7 @@ public class Student {
         student.school = school;
         student.schoolClass = schoolClass;
         student.user = user;
+        student.studentId = studentId;
 
         school.students().add(student);
         schoolClass.students().add(student);

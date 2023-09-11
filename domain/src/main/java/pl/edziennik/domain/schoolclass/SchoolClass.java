@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
 import pl.edziennik.common.properties.SchoolClassConfigurationProperties;
-import pl.edziennik.common.valueobject.vo.Name;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
+import pl.edziennik.common.valueobject.vo.Name;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.student.Student;
 import pl.edziennik.domain.subject.Subject;
@@ -25,7 +25,7 @@ import java.util.List;
 public class SchoolClass {
 
     @EmbeddedId
-    private SchoolClassId schoolClassId = SchoolClassId.create();
+    private SchoolClassId schoolClassId;
 
     @Embedded
     @AttributeOverrides({
@@ -55,9 +55,10 @@ public class SchoolClass {
     private Long version;
 
     @Builder
-    public static SchoolClass of(Name name, School school, Teacher teacher, SchoolClassConfigurationProperties properties) {
+    public static SchoolClass of(SchoolClassId schoolClassId, Name name, School school, Teacher teacher, SchoolClassConfigurationProperties properties) {
         SchoolClass schoolClass = new SchoolClass();
 
+        schoolClass.schoolClassId = schoolClassId;
         schoolClass.className = name;
         schoolClass.school = school;
         schoolClass.teacher = teacher;

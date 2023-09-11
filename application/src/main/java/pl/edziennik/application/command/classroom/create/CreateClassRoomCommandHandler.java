@@ -20,6 +20,7 @@ class CreateClassRoomCommandHandler implements CommandHandler<CreateClassRoomCom
         School school = schoolCommandRepository.getReferenceById(command.schoolId());
 
         ClassRoom classRoom = ClassRoom.builder()
+                .classRoomId(command.classRoomId())
                 .classRoomName(command.classRoomName())
                 .school(school)
                 .build();

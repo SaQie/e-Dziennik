@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.application.command.address.changeaddress.ChangeAddressCommand;
 import pl.edziennik.application.command.teacher.create.CreateTeacherCommand;
-import pl.edziennik.application.common.dispatcher.Dispatcher;
-import pl.edziennik.application.common.dispatcher.OperationResult;
+import pl.edziennik.application.common.dispatcher.newapi.Dispatcher2;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.TeacherId;
 
@@ -21,18 +20,19 @@ import java.net.URI;
 @RequestMapping("/api/v1")
 public class TeacherCommandController {
 
-    private final Dispatcher dispatcher;
+    private final Dispatcher2 dispatcher;
 
     @PostMapping("/schools/{schoolId}/teachers")
     public ResponseEntity<Void> createTeacher(@PathVariable @NotNull(message = "{school.empty}") SchoolId schoolId,
                                               @RequestBody @Valid CreateTeacherCommand requestCommand) {
         CreateTeacherCommand command = new CreateTeacherCommand(schoolId, requestCommand);
-        OperationResult operationResult = dispatcher.dispatch(command);
+
+        dispatcher.run(command);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequestUri()
                 .path("/{id}")
-                .buildAndExpand(operationResult.identifier().id())
+                .buildAndExpand(command.teacherId().id())
                 .toUri();
 
         return ResponseEntity.created(location).build();
@@ -48,7 +48,7 @@ public class TeacherCommandController {
                 command.postalCode(),
                 ChangeAddressCommand.CommandFor.TEACHER);
 
-        dispatcher.dispatch(command);
+        dispatcher.run(command);
     }
 
 }

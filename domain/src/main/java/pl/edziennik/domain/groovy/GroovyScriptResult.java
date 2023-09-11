@@ -19,7 +19,7 @@ import pl.edziennik.common.valueobject.vo.ScriptResult;
 public class GroovyScriptResult {
 
     @EmbeddedId
-    private GroovyScriptResultId groovyScriptResultId = GroovyScriptResultId.create();
+    private GroovyScriptResultId groovyScriptResultId;
 
     @Embedded
     @Lob
@@ -43,12 +43,13 @@ public class GroovyScriptResult {
     private Long version;
 
     @Builder
-    public static GroovyScriptResult of(ScriptResult scriptResult, GroovyScript groovyScript, GroovyScriptExecTime execTime) {
+    public static GroovyScriptResult of(GroovyScriptResultId groovyScriptResultId, ScriptResult scriptResult, GroovyScript groovyScript, GroovyScriptExecTime execTime) {
         GroovyScriptResult groovyScriptResult = new GroovyScriptResult();
 
         groovyScriptResult.groovyScript = groovyScript;
         groovyScriptResult.scriptResult = scriptResult;
         groovyScriptResult.execTime = execTime;
+        groovyScriptResult.groovyScriptResultId = groovyScriptResultId;
 
         return groovyScriptResult;
     }

@@ -8,8 +8,6 @@ import pl.edziennik.application.common.dispatcher.CommandHandler;
 import pl.edziennik.application.common.dispatcher.Handler;
 import pl.edziennik.infrastructure.spring.exception.ResolverException;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.Map;
 
 @Component
@@ -37,21 +35,7 @@ public class HandlerResolver2 {
         // 6. Check command handlers size
         checkMoreThanOneHandlerExists(beansOfType, command);
 
-        // 7. Check argument types correct
-        checkGenericArgumentTypes(beansOfType, command);
-
         return beansOfType.values().iterator().next();
-
-    }
-
-    private void checkGenericArgumentTypes(Map<String, ? extends CommandHandler<? extends Command>> beansOfType, Command command) {
-        CommandHandler<? extends Command> commandHandler = beansOfType.values().iterator().next();
-        Type[] typeArgumentsHandler = ((ParameterizedType) commandHandler.getClass().getGenericInterfaces()[0]).getActualTypeArguments();
-        Class<?> commandTypeParameter = (Class<?>) typeArgumentsHandler[0];
-
-        if (!commandTypeParameter.equals(command.getClass())) {
-            throw new RuntimeException("Class " + commandHandler.getClass().getSimpleName() + " has invalid generic parameter ");
-        }
 
     }
 

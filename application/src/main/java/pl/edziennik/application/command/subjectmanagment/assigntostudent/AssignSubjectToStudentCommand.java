@@ -9,7 +9,7 @@ import pl.edziennik.common.valueobject.id.SubjectId;
 /**
  * A command used for assigning the subject to the student
  */
-@Handler(handler = AssignSubjectToStudentCommandHandler.class,validator = AssignSubjectToStudentCommandValidator.class)
+@Handler(handler = AssignSubjectToStudentCommandHandler.class, validator = AssignSubjectToStudentCommandValidator.class)
 public record AssignSubjectToStudentCommand(
 
         @NotNull(message = "{student.empty}") StudentId studentId,

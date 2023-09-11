@@ -1,10 +1,13 @@
 package pl.edziennik.application.command.school.create;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.Command;
 import pl.edziennik.application.common.dispatcher.Handler;
+import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.SchoolLevelId;
 import pl.edziennik.common.valueobject.vo.*;
 
@@ -14,6 +17,7 @@ import pl.edziennik.common.valueobject.vo.*;
 @Handler(handler = CreateSchoolCommandHandler.class, validator = CreateSchoolCommandValidator.class)
 public record CreateSchoolCommand(
 
+        @JsonIgnore SchoolId schoolId,
         @Valid @NotNull(message = "{name.empty}") Name name,
         @Valid @NotNull(message = "{address.empty}") Address address,
         @Valid @NotNull(message = "{postalCode.empty}") PostalCode postalCode,
@@ -34,4 +38,10 @@ public record CreateSchoolCommand(
     public static final String PHONE_NUMBER = "phoneNumber";
     public static final String SCHOOL_LEVEL_ID = "schoolLevelId";
 
+
+    @JsonCreator
+    public CreateSchoolCommand(Name name, Address address, PostalCode postalCode, City city, Nip nip, Regon regon,
+                               PhoneNumber phoneNumber, SchoolLevelId schoolLevelId) {
+        this(SchoolId.create(), name, address, postalCode, city, nip, regon, phoneNumber, schoolLevelId);
+    }
 }

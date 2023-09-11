@@ -11,8 +11,7 @@ import pl.edziennik.application.command.address.changeaddress.ChangeAddressComma
 import pl.edziennik.application.command.student.assignparent.AssignParentCommand;
 import pl.edziennik.application.command.student.create.CreateStudentCommand;
 import pl.edziennik.application.command.student.delete.DeleteStudentCommand;
-import pl.edziennik.application.common.dispatcher.Dispatcher;
-import pl.edziennik.application.common.dispatcher.OperationResult;
+import pl.edziennik.application.common.dispatcher.newapi.Dispatcher2;
 import pl.edziennik.common.valueobject.id.ParentId;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.StudentId;
@@ -24,18 +23,19 @@ import java.net.URI;
 @AllArgsConstructor
 public class StudentCommandController {
 
-    private final Dispatcher dispatcher;
+    private final Dispatcher2 dispatcher;
 
     @PostMapping("/schoolclasses/{schoolClassId}/students")
     public ResponseEntity<Void> createStudent(@PathVariable @NotNull(message = "{schoolClass.empty}") SchoolClassId schoolClassId,
                                               @RequestBody @Valid CreateStudentCommand requestCommand) {
         CreateStudentCommand command = new CreateStudentCommand(schoolClassId, requestCommand);
-        OperationResult operationResult = dispatcher.dispatch(command);
+
+        dispatcher.run(command);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequestUri()
                 .path("/{id}")
-                .buildAndExpand(operationResult.identifier().id())
+                .buildAndExpand(command.studentId().id())
                 .toUri();
 
         return ResponseEntity.created(location).build();
@@ -44,7 +44,7 @@ public class StudentCommandController {
     @DeleteMapping("/students/{studentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteStudent(@PathVariable StudentId studentId) {
-        dispatcher.dispatch(new DeleteStudentCommand(studentId));
+        dispatcher.run(new DeleteStudentCommand(studentId));
 
         return ResponseEntity.noContent().build();
     }
@@ -54,7 +54,7 @@ public class StudentCommandController {
     public ResponseEntity<Void> assignParent(@PathVariable StudentId studentId, @PathVariable ParentId parentId) {
         AssignParentCommand command = new AssignParentCommand(studentId, parentId);
 
-        dispatcher.dispatch(command);
+        dispatcher.run(command);
 
         return ResponseEntity.noContent().build();
     }
@@ -68,7 +68,7 @@ public class StudentCommandController {
                 command.postalCode(),
                 ChangeAddressCommand.CommandFor.STUDENT);
 
-        dispatcher.dispatch(command);
+        dispatcher.run(command);
     }
 
 }

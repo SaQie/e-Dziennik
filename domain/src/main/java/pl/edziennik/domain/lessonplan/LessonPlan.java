@@ -21,7 +21,7 @@ import pl.edziennik.domain.teacher.Teacher;
 public class LessonPlan {
 
     @EmbeddedId
-    private LessonPlanId lessonPlanId = LessonPlanId.create();
+    private LessonPlanId lessonPlanId;
 
     @Embedded
     @Column(nullable = false)
@@ -52,7 +52,7 @@ public class LessonPlan {
     private Long version;
 
     @Builder
-    public static LessonPlan of(SchoolClass schoolClass, Subject subject, ClassRoom classRoom, Teacher teacher,
+    public static LessonPlan of(LessonPlanId lessonPlanId, SchoolClass schoolClass, Subject subject, ClassRoom classRoom, Teacher teacher,
                                 Boolean isSubstitute, TimeFrame timeFrame, LessonOrder lessonOrder) {
         LessonPlan lessonPlan = new LessonPlan();
 
@@ -63,6 +63,7 @@ public class LessonPlan {
         lessonPlan.timeFrame = timeFrame;
         lessonPlan.teacher = teacher;
         lessonPlan.isSubstitute = isSubstitute;
+        lessonPlan.lessonPlanId = lessonPlanId;
 
         return lessonPlan;
     }

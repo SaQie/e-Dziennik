@@ -3,8 +3,8 @@ package pl.edziennik.domain.director;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
-import pl.edziennik.common.valueobject.vo.PersonInformation;
 import pl.edziennik.common.valueobject.id.DirectorId;
+import pl.edziennik.common.valueobject.vo.PersonInformation;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.user.User;
@@ -19,7 +19,7 @@ import pl.edziennik.domain.user.User;
 public class Director {
 
     @EmbeddedId
-    private DirectorId directorId = DirectorId.create();
+    private DirectorId directorId;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
@@ -41,13 +41,14 @@ public class Director {
     private Long version;
 
     @Builder
-    public static Director of(User user, PersonInformation personInformation, Address address, School school) {
+    public static Director of(DirectorId directorId, User user, PersonInformation personInformation, Address address, School school) {
         Director director = new Director();
 
         director.school = school;
         director.address = address;
         director.personInformation = personInformation;
         director.user = user;
+        director.directorId = directorId;
 
         school.assignDirector(director);
 

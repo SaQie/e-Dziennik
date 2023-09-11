@@ -28,6 +28,7 @@ class CreateSubjectCommandHandler implements CommandHandler<CreateSubjectCommand
         Teacher teacher = teacherCommandRepository.getReferenceById(command.teacherId());
 
         Subject subject = Subject.builder()
+                .subjectId(command.subjectId())
                 .schoolClass(schoolClass)
                 .description(command.description())
                 .teacher(teacher)

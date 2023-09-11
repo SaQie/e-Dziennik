@@ -1,10 +1,13 @@
 package pl.edziennik.application.command.teacher.create;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.Command;
 import pl.edziennik.application.common.dispatcher.Handler;
 import pl.edziennik.common.valueobject.id.SchoolId;
+import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.common.valueobject.vo.*;
 
 /**
@@ -13,6 +16,7 @@ import pl.edziennik.common.valueobject.vo.*;
 @Handler(handler = CreateTeacherCommandHandler.class, validator = CreateTeacherCommandValidator.class)
 public record CreateTeacherCommand(
 
+        @JsonIgnore TeacherId teacherId,
         @Valid @NotNull(message = "{password.empty}") Password password,
         @Valid @NotNull(message = "{username.empty}") Username username,
         @Valid @NotNull(message = "{firstName.empty}") FirstName firstName,
@@ -38,8 +42,14 @@ public record CreateTeacherCommand(
     public static final String SCHOOL_ID = "schoolId";
     public static final String EMAIL = "email";
 
+    @JsonCreator
+    public CreateTeacherCommand(Password password, Username username, FirstName firstName, LastName lastName, Address address, PostalCode postalCode,
+                                City city, Pesel pesel, Email email, PhoneNumber phoneNumber, SchoolId schoolId) {
+        this(TeacherId.create(), password, username, firstName, lastName, address, postalCode, city, pesel, email, phoneNumber, schoolId);
+    }
+
     public CreateTeacherCommand(SchoolId schoolId, CreateTeacherCommand command) {
-        this(command.password, command.username, command.firstName, command.lastName, command.address,
+        this(TeacherId.create(), command.password, command.username, command.firstName, command.lastName, command.address,
                 command.postalCode, command.city, command.pesel, command.email, command.phoneNumber, schoolId);
     }
 }

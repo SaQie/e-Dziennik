@@ -22,6 +22,7 @@ class CreateClassRoomScheduleCommandHandler implements CommandHandler<CreateClas
         TimeFrame timeFrame = TimeFrame.of(command.startDate(), command.endDate());
 
         ClassRoomSchedule classRoomSchedule = ClassRoomSchedule.builder()
+                .classRoomScheduleId(command.classRoomScheduleId())
                 .timeFrame(timeFrame)
                 .classRoom(classRoom)
                 .description(command.description())

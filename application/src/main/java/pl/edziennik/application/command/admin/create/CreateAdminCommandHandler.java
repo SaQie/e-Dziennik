@@ -26,7 +26,7 @@ class CreateAdminCommandHandler implements CommandHandler<CreateAdminCommand> {
 
         user.activate();
 
-        adminCommandRepository.save(Admin.of(user));
+        adminCommandRepository.save(Admin.of(command.adminId(), user));
     }
 
     private User createUser(CreateAdminCommand command) {

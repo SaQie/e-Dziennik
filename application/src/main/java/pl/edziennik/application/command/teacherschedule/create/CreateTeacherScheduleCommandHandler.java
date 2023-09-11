@@ -21,6 +21,7 @@ class CreateTeacherScheduleCommandHandler implements CommandHandler<CreateTeache
         Teacher teacher = teacherCommandRepository.getByTeacherId(command.teacherId());
 
         TeacherSchedule teacherSchedule = TeacherSchedule.builder()
+                .teacherScheduleId(command.teacherScheduleId())
                 .teacher(teacher)
                 .description(command.description())
                 .timeFrame(TimeFrame.of(command.startDate(), command.endDate()))

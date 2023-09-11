@@ -3,9 +3,9 @@ package pl.edziennik.domain.grade;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
+import pl.edziennik.common.valueobject.id.GradeId;
 import pl.edziennik.common.valueobject.vo.Description;
 import pl.edziennik.common.valueobject.vo.Weight;
-import pl.edziennik.common.valueobject.id.GradeId;
 import pl.edziennik.domain.studentsubject.StudentSubject;
 import pl.edziennik.domain.teacher.Teacher;
 
@@ -21,7 +21,7 @@ import java.time.LocalDate;
 public class Grade {
 
     @EmbeddedId
-    private GradeId gradeId = GradeId.create();
+    private GradeId gradeId;
 
     @Column(nullable = false)
     private pl.edziennik.common.enums.Grade grade = pl.edziennik.common.enums.Grade.ONE;
@@ -51,10 +51,11 @@ public class Grade {
     private Long version;
 
     @Builder
-    public static Grade of(pl.edziennik.common.enums.Grade gradeConst, Weight weight, Description description, StudentSubject studentSubject,
+    public static Grade of(GradeId gradeId, pl.edziennik.common.enums.Grade gradeConst, Weight weight, Description description, StudentSubject studentSubject,
                            Teacher teacher) {
         Grade grade = new Grade();
 
+        grade.gradeId = gradeId;
         grade.createdDate = LocalDate.now();
         grade.teacher = teacher;
         grade.description = description;

@@ -3,9 +3,9 @@ package pl.edziennik.domain.groovy;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
-import pl.edziennik.common.valueobject.vo.ScriptContent;
 import pl.edziennik.common.valueobject.id.GroovyScriptId;
 import pl.edziennik.common.valueobject.id.GroovyScriptStatusId;
+import pl.edziennik.common.valueobject.vo.ScriptContent;
 import pl.edziennik.domain.user.User;
 
 import java.time.LocalDateTime;
@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 public class GroovyScript {
 
     @EmbeddedId
-    private GroovyScriptId groovyScriptId = GroovyScriptId.create();
+    private GroovyScriptId groovyScriptId;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
@@ -43,13 +43,14 @@ public class GroovyScript {
     private Long version;
 
     @Builder
-    public static GroovyScript of(User user, ScriptContent scriptContent, GroovyScriptStatus scriptStatus) {
+    public static GroovyScript of(GroovyScriptId groovyScriptId, User user, ScriptContent scriptContent, GroovyScriptStatus scriptStatus) {
         GroovyScript groovyScript = new GroovyScript();
 
         groovyScript.groovyScriptStatus = scriptStatus;
         groovyScript.user = user;
         groovyScript.scriptContent = scriptContent;
         groovyScript.startTime = LocalDateTime.now();
+        groovyScript.groovyScriptId = groovyScriptId;
 
         return groovyScript;
     }

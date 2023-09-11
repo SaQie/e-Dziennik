@@ -28,6 +28,7 @@ class CreateSchoolClassCommandHandler implements CommandHandler<CreateSchoolClas
         School school = schoolCommandRepository.getReferenceById(command.schoolId());
 
         SchoolClass schoolClass = SchoolClass.builder()
+                .schoolClassId(command.schoolClassId())
                 .name(command.className())
                 .school(school)
                 .teacher(teacher)

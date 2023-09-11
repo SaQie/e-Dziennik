@@ -49,6 +49,7 @@ class CreateStudentCommandHandler implements CommandHandler<CreateStudentCommand
         Address address = createAddress(command);
 
         Student student = Student.builder()
+                .studentId(command.studentId())
                 .user(user)
                 .school(school)
                 .schoolClass(schoolClass)

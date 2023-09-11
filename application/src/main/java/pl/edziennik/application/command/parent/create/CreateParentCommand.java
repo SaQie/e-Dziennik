@@ -1,9 +1,12 @@
 package pl.edziennik.application.command.parent.create;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.Command;
 import pl.edziennik.application.common.dispatcher.Handler;
+import pl.edziennik.common.valueobject.id.ParentId;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.vo.*;
 
@@ -13,6 +16,7 @@ import pl.edziennik.common.valueobject.vo.*;
 @Handler(handler = CreateParentCommandHandler.class, validator = CreateParentCommandValidator.class)
 public record CreateParentCommand(
 
+        @JsonIgnore ParentId parentId,
         @Valid @NotNull(message = "{password.empty}") Password password,
         @Valid @NotNull(message = "{username.empty}") Username username,
         @Valid @NotNull(message = "{firstName.empty}") FirstName firstName,
@@ -39,4 +43,11 @@ public record CreateParentCommand(
     public static final String PHONE_NUMBER = "phoneNumber";
     public static final String STUDENT_ID = "studentId";
 
+
+    @JsonCreator
+    public CreateParentCommand(Password password, Username username, FirstName firstName, LastName lastName,
+                               Address address, PostalCode postalCode, City city, Pesel pesel, Email email,
+                               PhoneNumber phoneNumber, StudentId studentId) {
+        this(ParentId.create(), password, username, firstName, lastName, address, postalCode, city, pesel, email, phoneNumber, studentId);
+    }
 }

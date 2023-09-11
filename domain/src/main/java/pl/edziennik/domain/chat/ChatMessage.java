@@ -3,12 +3,12 @@ package pl.edziennik.domain.chat;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
-import pl.edziennik.common.valueobject.vo.ChatContent;
-import pl.edziennik.common.valueobject.vo.FullName;
 import pl.edziennik.common.valueobject.id.ChatId;
 import pl.edziennik.common.valueobject.id.ChatMessageId;
 import pl.edziennik.common.valueobject.id.RecipientId;
 import pl.edziennik.common.valueobject.id.SenderId;
+import pl.edziennik.common.valueobject.vo.ChatContent;
+import pl.edziennik.common.valueobject.vo.FullName;
 
 import java.time.LocalDateTime;
 
@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 public class ChatMessage {
 
     @EmbeddedId
-    private ChatMessageId chatMessageId = ChatMessageId.create();
+    private ChatMessageId chatMessageId;
 
     @Embedded
     @AttributeOverrides({
@@ -71,10 +71,11 @@ public class ChatMessage {
     private Long version;
 
     @Builder
-    public static ChatMessage of(ChatId chatId, SenderId senderId, RecipientId recipientId, FullName senderName,
+    public static ChatMessage of(ChatMessageId chatMessageId, ChatId chatId, SenderId senderId, RecipientId recipientId, FullName senderName,
                                  FullName recipientName, ChatContent chatContent, MessageStatus messageStatus) {
         ChatMessage chatMessage = new ChatMessage();
 
+        chatMessage.chatMessageId = chatMessageId;
         chatMessage.chatId = chatId;
         chatMessage.chatContent = chatContent;
         chatMessage.senderName = senderName;

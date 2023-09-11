@@ -36,6 +36,7 @@ class CreateParentCommandHandler implements CommandHandler<CreateParentCommand> 
         Address address = createAddress(command);
 
         Parent parent = Parent.builder()
+                .parentId(command.parentId())
                 .user(user)
                 .personInformation(personInformation)
                 .address(address)
