@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.edziennik.application.command.classroomschedule.create.CreateClassRoomScheduleCommand;
-import pl.edziennik.application.common.dispatcher.newapi.Dispatcher2;
+import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.common.valueobject.id.ClassRoomId;
 
 @RestController
@@ -13,7 +13,7 @@ import pl.edziennik.common.valueobject.id.ClassRoomId;
 @RequestMapping("/api/v1")
 public class ClassRoomScheduleCommandController {
 
-    private final Dispatcher2 dispatcher;
+    private final Dispatcher dispatcher;
 
     @PostMapping("/classrooms/{classRoomId}/schedules")
     @ResponseStatus(HttpStatus.CREATED)

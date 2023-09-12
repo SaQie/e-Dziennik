@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.application.command.director.create.CreateDirectorCommand;
-import pl.edziennik.application.common.dispatcher.newapi.Dispatcher2;
+import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.common.valueobject.id.SchoolId;
 
 import java.net.URI;
@@ -17,7 +17,7 @@ import java.net.URI;
 @RequestMapping("/api/v1")
 public class DirectorCommandController {
 
-    private final Dispatcher2 dispatcher;
+    private final Dispatcher dispatcher;
 
     @PostMapping("/schools/{schoolId}/directors")
     @ResponseStatus(HttpStatus.CREATED)

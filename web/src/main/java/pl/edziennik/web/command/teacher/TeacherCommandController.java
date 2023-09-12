@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.application.command.address.changeaddress.ChangeAddressCommand;
 import pl.edziennik.application.command.teacher.create.CreateTeacherCommand;
-import pl.edziennik.application.common.dispatcher.newapi.Dispatcher2;
+import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.TeacherId;
 
@@ -20,7 +20,7 @@ import java.net.URI;
 @RequestMapping("/api/v1")
 public class TeacherCommandController {
 
-    private final Dispatcher2 dispatcher;
+    private final Dispatcher dispatcher;
 
     @PostMapping("/schools/{schoolId}/teachers")
     public ResponseEntity<Void> createTeacher(@PathVariable @NotNull(message = "{school.empty}") SchoolId schoolId,

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.application.command.admin.create.CreateAdminCommand;
-import pl.edziennik.application.common.dispatcher.newapi.Dispatcher2;
+import pl.edziennik.application.common.dispatcher.Dispatcher;
 
 import java.net.URI;
 
@@ -18,7 +18,7 @@ import java.net.URI;
 @RequestMapping("/api/v1/admins")
 public class AdminCommandController {
 
-    private final Dispatcher2 dispatcher;
+    private final Dispatcher dispatcher;
 
     @PostMapping()
     public ResponseEntity<Void> createAdmin(@RequestBody @Valid CreateAdminCommand command) {

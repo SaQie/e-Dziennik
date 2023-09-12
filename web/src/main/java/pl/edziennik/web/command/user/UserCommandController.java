@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.edziennik.application.command.user.activate.ActivateUserCommand;
 import pl.edziennik.application.command.user.changepassword.ChangePasswordCommand;
 import pl.edziennik.application.command.user.changeuserdata.ChangeUserDataCommand;
-import pl.edziennik.application.common.dispatcher.newapi.Dispatcher2;
+import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.common.valueobject.vo.Token;
 
@@ -16,7 +16,7 @@ import pl.edziennik.common.valueobject.vo.Token;
 @AllArgsConstructor
 public class UserCommandController {
 
-    private final Dispatcher2 dispatcher;
+    private final Dispatcher dispatcher;
 
     @PatchMapping("/activate")
     @ResponseStatus(HttpStatus.OK)

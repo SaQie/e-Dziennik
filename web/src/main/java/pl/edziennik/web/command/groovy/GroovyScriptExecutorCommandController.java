@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.application.command.groovy.ExecuteGroovyScriptCommand;
-import pl.edziennik.application.common.dispatcher.newapi.Dispatcher2;
+import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.common.valueobject.id.GroovyScriptId;
 import pl.edziennik.common.valueobject.vo.ScriptContent;
 
@@ -18,7 +18,7 @@ import java.net.URI;
 @RequestMapping("/api/v1/scripts")
 public class GroovyScriptExecutorCommandController {
 
-    private final Dispatcher2 dispatcher;
+    private final Dispatcher dispatcher;
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)

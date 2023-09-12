@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.application.command.subject.create.CreateSubjectCommand;
-import pl.edziennik.application.common.dispatcher.newapi.Dispatcher2;
+import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 
 import java.net.URI;
@@ -17,7 +17,7 @@ import java.net.URI;
 @AllArgsConstructor
 public class SubjectCommandController {
 
-    private final Dispatcher2 dispatcher;
+    private final Dispatcher dispatcher;
 
 
     @PostMapping("/schoolclasses/{schoolClassId}/subjects")

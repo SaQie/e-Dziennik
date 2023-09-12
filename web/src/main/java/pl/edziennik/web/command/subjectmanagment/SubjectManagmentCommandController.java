@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.application.command.subjectmanagment.assigntostudent.AssignSubjectToStudentCommand;
-import pl.edziennik.application.common.dispatcher.newapi.Dispatcher2;
+import pl.edziennik.application.common.dispatcher.Dispatcher;
 
 import java.net.URI;
 
@@ -18,7 +18,7 @@ import java.net.URI;
 @RequestMapping("/api/v1/subject-managment")
 public class SubjectManagmentCommandController {
 
-    private final Dispatcher2 dispatcher;
+    private final Dispatcher dispatcher;
 
     @PostMapping
     public ResponseEntity<Void> assignSubjectToStudent(@RequestBody @Valid AssignSubjectToStudentCommand command) {

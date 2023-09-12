@@ -11,7 +11,7 @@ import pl.edziennik.application.command.address.changeaddress.ChangeAddressComma
 import pl.edziennik.application.command.student.assignparent.AssignParentCommand;
 import pl.edziennik.application.command.student.create.CreateStudentCommand;
 import pl.edziennik.application.command.student.delete.DeleteStudentCommand;
-import pl.edziennik.application.common.dispatcher.newapi.Dispatcher2;
+import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.common.valueobject.id.ParentId;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.StudentId;
@@ -23,7 +23,7 @@ import java.net.URI;
 @AllArgsConstructor
 public class StudentCommandController {
 
-    private final Dispatcher2 dispatcher;
+    private final Dispatcher dispatcher;
 
     @PostMapping("/schoolclasses/{schoolClassId}/students")
     public ResponseEntity<Void> createStudent(@PathVariable @NotNull(message = "{schoolClass.empty}") SchoolClassId schoolClassId,

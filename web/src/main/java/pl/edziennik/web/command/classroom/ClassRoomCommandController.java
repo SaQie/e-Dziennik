@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.application.command.classroom.changename.ChangeClassRoomNameCommand;
 import pl.edziennik.application.command.classroom.create.CreateClassRoomCommand;
-import pl.edziennik.application.common.dispatcher.newapi.Dispatcher2;
+import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.common.valueobject.id.ClassRoomId;
 import pl.edziennik.common.valueobject.id.SchoolId;
 
@@ -19,13 +19,13 @@ import java.net.URI;
 @RequestMapping("/api/v1")
 public class ClassRoomCommandController {
 
-    private final Dispatcher2 dispatcher;
+    private final Dispatcher dispatcher;
 
 
     @PostMapping("/schools/{schoolId}/classrooms")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> createClassRoom(@PathVariable SchoolId schoolId, @RequestBody @Valid CreateClassRoomCommand requestCommand) {
-        CreateClassRoomCommand command = new CreateClassRoomCommand(schoolId, requestCommand);
+        CreateClassRoomCommand command = new CreateClassRoomCommand(schoolId, requestCommand.classRoomName());
 
         dispatcher.run(command);
 

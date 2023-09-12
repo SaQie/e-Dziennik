@@ -35,14 +35,13 @@ public class ChatController {
 
     @GetMapping("/chatroom/{recipientId}/{senderId}")
     public ChatId getChatRoomId(@PathVariable RecipientId recipientId, @PathVariable SenderId senderId) {
-        return dao.getChatIdByRecipientAndSender(senderId,recipientId)
+        return dao.getChatIdByRecipientAndSender(senderId, recipientId)
                 .orElseGet(() -> {
                     // If chatRoom doesn't exist yet
                     CreateChatRoomCommand command = new CreateChatRoomCommand(senderId, recipientId);
-//                    OperationResult operationResult = dispatcher.dispatch(command);
+                    dispatcher.run(command);
 
-//                    return ChatId.of(operationResult.identifier().id());
-                    return ChatId.create();
+                    return command.chatId();
                 });
     }
 

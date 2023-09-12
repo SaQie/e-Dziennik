@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.application.command.address.changeaddress.ChangeAddressCommand;
 import pl.edziennik.application.command.parent.create.CreateParentCommand;
-import pl.edziennik.application.common.dispatcher.newapi.Dispatcher2;
+import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.common.valueobject.id.ParentId;
 
 import java.net.URI;
@@ -18,7 +18,7 @@ import java.net.URI;
 @AllArgsConstructor
 public class ParentCommandController {
 
-    private final Dispatcher2 dispatcher;
+    private final Dispatcher dispatcher;
 
     @PostMapping()
     public ResponseEntity<Void> createParent(@RequestBody @Valid CreateParentCommand command) {

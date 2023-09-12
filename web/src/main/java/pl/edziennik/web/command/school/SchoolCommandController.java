@@ -10,7 +10,7 @@ import pl.edziennik.application.command.address.changeaddress.ChangeAddressComma
 import pl.edziennik.application.command.school.changeconfig.ChangeSchoolConfigurationValuesCommand;
 import pl.edziennik.application.command.school.create.CreateSchoolCommand;
 import pl.edziennik.application.command.school.delete.DeleteSchoolCommand;
-import pl.edziennik.application.common.dispatcher.newapi.Dispatcher2;
+import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.common.valueobject.id.SchoolId;
 
 import java.net.URI;
@@ -20,7 +20,7 @@ import java.net.URI;
 @AllArgsConstructor
 public class SchoolCommandController {
 
-    private final Dispatcher2 dispatcher;
+    private final Dispatcher dispatcher;
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
