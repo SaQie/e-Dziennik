@@ -68,7 +68,7 @@ public class ValidationErrorBuilder {
     }
 
 
-    public void build() {
+    protected void build() {
         if (!errors.isEmpty()) {
             throw new BusinessException(errors);
         }

@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
 import pl.edziennik.common.valueobject.id.TeacherId;
+import pl.edziennik.common.valueobject.id.TeacherScheduleId;
 import pl.edziennik.common.valueobject.vo.Description;
 import pl.edziennik.common.valueobject.vo.TimeFrame;
 import pl.edziennik.domain.school.School;
@@ -36,7 +37,8 @@ class CreateTeacherScheduleCommandValidatorTest extends BaseUnitTest {
     public void shouldThrowExceptionIfTeacherNotExists() {
         // given
         CreateTeacherScheduleCommand command =
-                new CreateTeacherScheduleCommand(TeacherId.create(), Description.of("TEST"), DATE_2022_01_01_10_00, DATE_2022_01_01_10_30);
+                new CreateTeacherScheduleCommand(TeacherScheduleId.create(), TeacherId.create(), Description.of("TEST"),
+                        DATE_2022_01_01_10_00, DATE_2022_01_01_10_30);
 
         // when
         // then
@@ -56,7 +58,8 @@ class CreateTeacherScheduleCommandValidatorTest extends BaseUnitTest {
         createTeacherSchedule(teacher, TimeFrame.of(DATE_2022_01_01_10_00, DATE_2022_01_01_10_30));
 
         CreateTeacherScheduleCommand command =
-                new CreateTeacherScheduleCommand(teacher.teacherId(), Description.of("TEST"), DATE_2022_01_01_10_00, DATE_2022_01_01_10_30);
+                new CreateTeacherScheduleCommand(TeacherScheduleId.create(),
+                        teacher.teacherId(), Description.of("TEST"), DATE_2022_01_01_10_00, DATE_2022_01_01_10_30);
 
         // when
         validator.validate(command, validationErrorBuilder);
@@ -77,7 +80,8 @@ class CreateTeacherScheduleCommandValidatorTest extends BaseUnitTest {
         teacher = teacherCommandRepository.save(teacher);
 
         CreateTeacherScheduleCommand command =
-                new CreateTeacherScheduleCommand(teacher.teacherId(), Description.of("TEST"), DATE_2022_01_01_10_30, DATE_2022_01_01_10_00);
+                new CreateTeacherScheduleCommand(TeacherScheduleId.create(), teacher.teacherId(),
+                        Description.of("TEST"), DATE_2022_01_01_10_30, DATE_2022_01_01_10_00);
 
         // when
         validator.validate(command, validationErrorBuilder);

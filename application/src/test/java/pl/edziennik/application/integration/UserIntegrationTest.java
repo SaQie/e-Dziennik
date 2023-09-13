@@ -7,8 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.command.student.create.CreateStudentCommand;
 import pl.edziennik.application.command.user.activate.ActivateUserCommand;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.common.valueobject.id.*;
+import pl.edziennik.common.valueobject.id.SchoolClassId;
+import pl.edziennik.common.valueobject.id.SchoolId;
+import pl.edziennik.common.valueobject.id.TeacherId;
+import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.student.Student;
 import pl.edziennik.domain.user.User;
@@ -43,10 +45,10 @@ public class UserIntegrationTest extends BaseIntegrationTest {
         );
 
         // when
-        OperationResult operationResult = dispatcher.dispatch(command);
+        dispatcher.run(command);
 
         // then
-        Student student = studentCommandRepository.getByStudentId(StudentId.of(operationResult.identifier().id()));
+        Student student = studentCommandRepository.getByStudentId(command.studentId());
         UserId userId = transactionTemplate.execute((i) -> student.user().userId());
         User user = userCommandRepository.getUserByUserId(userId);
         assertNotNull(user);
@@ -73,11 +75,10 @@ public class UserIntegrationTest extends BaseIntegrationTest {
                 PhoneNumber.of("123123"),
                 schoolClassId
         );
-        OperationResult result = dispatcher.dispatch(command);
-        StudentId studentId = StudentId.of(result.identifier().id());
+        dispatcher.run(command);
 
         UserId userId = transactionTemplate.execute((i) -> {
-            Student student = studentCommandRepository.getByStudentId(studentId);
+            Student student = studentCommandRepository.getByStudentId(command.studentId());
 
             return student.user().userId();
         });
@@ -90,7 +91,7 @@ public class UserIntegrationTest extends BaseIntegrationTest {
 
         ActivateUserCommand activateUserCommand = new ActivateUserCommand(token);
         // when
-        dispatcher.dispatch(activateUserCommand);
+        dispatcher.run(activateUserCommand);
 
         // then
         User user = userCommandRepository.getUserByUserId(userId);

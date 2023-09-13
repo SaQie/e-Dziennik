@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.command.schoolclass.create.CreateSchoolClassCommand;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.common.valueobject.vo.Name;
@@ -36,10 +34,10 @@ public class SchoolClassIntegrationTest extends BaseIntegrationTest {
         );
 
         // when
-        OperationResult operationResult = dispatcher.dispatch(command);
+        dispatcher.run(command);
 
         // then
-        SchoolClass schoolClass = schoolClassCommandRepository.getBySchoolClassId(SchoolClassId.of(operationResult.identifier().id()));
+        SchoolClass schoolClass = schoolClassCommandRepository.getBySchoolClassId(command.schoolClassId());
         assertNotNull(schoolClass);
     }
 
@@ -60,7 +58,7 @@ public class SchoolClassIntegrationTest extends BaseIntegrationTest {
 
         try {
             // when
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             Assertions.fail("Should throw exception when school class with given name exists in school");
         } catch (BusinessException e) {
             // then

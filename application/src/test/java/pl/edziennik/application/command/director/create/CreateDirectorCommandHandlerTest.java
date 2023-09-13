@@ -2,8 +2,6 @@ package pl.edziennik.application.command.director.create;
 
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.common.valueobject.id.DirectorId;
 import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.director.Director;
 import pl.edziennik.domain.school.School;
@@ -43,10 +41,10 @@ public class CreateDirectorCommandHandlerTest extends BaseUnitTest {
 
 
         // when
-        OperationResult operationResult = handler.handle(command);
+        handler.handle(command);
 
         // then
-        Director director = directorCommandRepository.getByDirectorId(DirectorId.of(operationResult.identifier().id()));
+        Director director = directorCommandRepository.getByDirectorId(command.directorId());
         assertNotNull(director);
     }
 

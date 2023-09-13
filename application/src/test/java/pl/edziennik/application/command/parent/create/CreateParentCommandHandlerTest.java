@@ -2,8 +2,6 @@ package pl.edziennik.application.command.parent.create;
 
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.common.valueobject.id.ParentId;
 import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.parent.Parent;
 
@@ -36,11 +34,10 @@ class CreateParentCommandHandlerTest extends BaseUnitTest {
         );
 
         // when
-        OperationResult operationResult = handler.handle(command);
+        handler.handle(command);
 
         // then
-        assertNotNull(operationResult.identifier());
-        Parent parent = parentCommandRepository.getReferenceById(ParentId.of(operationResult.identifier().id()));
+        Parent parent = parentCommandRepository.getReferenceById(command.parentId());
         assertNotNull(parent);
     }
 

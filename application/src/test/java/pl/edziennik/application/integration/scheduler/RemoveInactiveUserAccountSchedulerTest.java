@@ -8,9 +8,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.command.teacher.create.CreateTeacherCommand;
-import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.common.valueobject.id.SchoolId;
-import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.common.valueobject.id.UserId;
 import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.teacher.Teacher;
@@ -51,8 +49,8 @@ public class RemoveInactiveUserAccountSchedulerTest extends BaseIntegrationTest 
                 schoolId
         );
 
-        OperationResult operationResult = dispatcher.dispatch(command);
-        Teacher teacher = teacherCommandRepository.getByTeacherId(TeacherId.of(operationResult.identifier().id()));
+        dispatcher.run(command);
+        Teacher teacher = teacherCommandRepository.getByTeacherId(command.teacherId());
         List<UserId> userIds = List.of(teacher.user().userId());
 
         assertFalse(teacher.user().isActive());
@@ -62,7 +60,7 @@ public class RemoveInactiveUserAccountSchedulerTest extends BaseIntegrationTest 
         task.removeInactiveUserAccounts();
 
         // then
-        teacher = teacherCommandRepository.getByTeacherId(TeacherId.of(operationResult.identifier().id()));
+        teacher = teacherCommandRepository.getByTeacherId(command.teacherId());
         assertNull(teacher);
     }
 

@@ -11,6 +11,7 @@ import pl.edziennik.application.mock.repositories.*;
 import pl.edziennik.common.enums.AverageType;
 import pl.edziennik.common.properties.SchoolClassConfigurationProperties;
 import pl.edziennik.common.properties.SchoolConfigurationProperties;
+import pl.edziennik.common.valueobject.id.*;
 import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.address.Address;
 import pl.edziennik.domain.admin.Admin;
@@ -202,18 +203,19 @@ public class BaseUnitTest {
     }
 
     protected Admin createAdmin(User user) {
-        return Admin.of(user);
+        return Admin.of(AdminId.create(), user);
     }
 
 
     protected Director createDirector(User user, School school, PersonInformation personInformation, Address address) {
-        Director director = Director.of(user, personInformation, address, school);
+        Director director = Director.of(DirectorId.create(), user, personInformation, address, school);
         directorCommandRepository.save(director);
         return director;
     }
 
     protected Teacher createTeacher(User user, School school, PersonInformation personInformation, Address address) {
         Teacher teacher = Teacher.of(
+                TeacherId.create(),
                 user,
                 school,
                 personInformation,
@@ -225,6 +227,7 @@ public class BaseUnitTest {
 
     protected Student createStudent(User user, School school, SchoolClass schoolClass, PersonInformation personInformation, Address address) {
         Student student = Student.of(
+                StudentId.create(),
                 user,
                 school,
                 schoolClass,
@@ -246,6 +249,7 @@ public class BaseUnitTest {
 
     protected Parent createParent(User user, PersonInformation personInformation, Address address) {
         return Parent.builder()
+                .parentId(ParentId.create())
                 .user(user)
                 .personInformation(personInformation)
                 .address(address)
@@ -254,6 +258,7 @@ public class BaseUnitTest {
 
     protected Parent createParent(User user, PersonInformation personInformation, Address address, Student student) {
         return Parent.of(
+                ParentId.create(),
                 user,
                 personInformation,
                 address,
@@ -262,6 +267,7 @@ public class BaseUnitTest {
 
     protected SchoolClass createSchoolClass(String name, School school, Teacher teacher) {
         SchoolClass schoolClass = SchoolClass.of(
+                SchoolClassId.create(),
                 Name.of(name),
                 school,
                 teacher,
@@ -274,6 +280,7 @@ public class BaseUnitTest {
 
     protected Subject createSubject(String name, Teacher teacher, SchoolClass schoolClass) {
         Subject subject = Subject.of(
+                SubjectId.create(),
                 Name.of(name),
                 Description.of(StringUtil.randomIdentifer(5)),
                 schoolClass,
@@ -306,7 +313,7 @@ public class BaseUnitTest {
     }
 
     protected ClassRoom createClassRoom(String name, School school) {
-        ClassRoom classRoom = ClassRoom.of(school, ClassRoomName.of(name));
+        ClassRoom classRoom = ClassRoom.of(ClassRoomId.create(), school, ClassRoomName.of(name));
         return classRoomCommandRepository.save(classRoom);
     }
 
@@ -332,6 +339,7 @@ public class BaseUnitTest {
 
     protected School createSchool(String name, String nip, String regon, Address address) {
         return School.of(
+                SchoolId.create(),
                 Name.of(name),
                 Nip.of(nip),
                 Regon.of(regon),

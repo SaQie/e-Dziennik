@@ -16,7 +16,6 @@ import java.util.UUID;
 @RepositoryDefinition(domainClass = User.class, idClass = UserId.class)
 public interface UserQueryRepository {
 
-    // Todo pomysl nad przeniesieniem zapytan do zmiennych, sprobuj zrobic tutaj prywatna klase zagniezdzona
     String GET_LOGGED_USERS_QUERY =
             """
                     SELECT t.full_name, u.id, r.name, u.username FROM users u

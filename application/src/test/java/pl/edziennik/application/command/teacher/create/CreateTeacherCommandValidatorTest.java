@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
 import pl.edziennik.application.mock.repositories.RoleCommandMockRepo;
 import pl.edziennik.common.valueobject.id.SchoolId;
+import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.teacher.Teacher;
@@ -27,7 +28,10 @@ class CreateTeacherCommandValidatorTest extends BaseUnitTest {
     @Test
     public void shouldThrowExceptionWhenSchoolNotExists() {
         // given
+        TeacherId teacherId = TeacherId.create();
+
         CreateTeacherCommand command = new CreateTeacherCommand(
+                teacherId,
                 Password.of("password"),
                 Username.of("Test"),
                 FirstName.of("Test"),
@@ -61,7 +65,9 @@ class CreateTeacherCommandValidatorTest extends BaseUnitTest {
         Teacher teacher = createTeacher(user, school, personInformation, address);
         teacher = teacherCommandRepository.save(teacher);
 
+        TeacherId teacherId = TeacherId.create();
         CreateTeacherCommand command = new CreateTeacherCommand(
+                teacherId,
                 Password.of("password"),
                 Username.of("Test"),
                 FirstName.of("Test"),
@@ -95,7 +101,10 @@ class CreateTeacherCommandValidatorTest extends BaseUnitTest {
         Teacher teacher = createTeacher(user, school, personInformation, address);
         teacher = teacherCommandRepository.save(teacher);
 
+        TeacherId teacherId = TeacherId.create();
+
         CreateTeacherCommand command = new CreateTeacherCommand(
+                teacherId,
                 Password.of("password"),
                 Username.of("Test"),
                 FirstName.of("Test"),
@@ -129,7 +138,10 @@ class CreateTeacherCommandValidatorTest extends BaseUnitTest {
         Teacher teacher = createTeacher(user, school, personInformation, address);
         teacher = teacherCommandRepository.save(teacher);
 
+        TeacherId teacherId = TeacherId.create();
+
         CreateTeacherCommand command = new CreateTeacherCommand(
+                teacherId,
                 Password.of("password"),
                 Username.of("Test11"),
                 FirstName.of("Test"),

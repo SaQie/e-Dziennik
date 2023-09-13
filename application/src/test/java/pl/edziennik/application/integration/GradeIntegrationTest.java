@@ -5,11 +5,10 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.command.grademanagment.assigngrade.AssignGradeToStudentSubjectCommand;
-import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.common.enums.Grade;
+import pl.edziennik.common.valueobject.id.*;
 import pl.edziennik.common.valueobject.vo.Description;
 import pl.edziennik.common.valueobject.vo.Weight;
-import pl.edziennik.common.valueobject.id.*;
 import pl.edziennik.domain.studentsubject.StudentSubject;
 
 import java.math.BigDecimal;
@@ -45,10 +44,10 @@ public class GradeIntegrationTest extends BaseIntegrationTest {
         );
 
         // when
-        OperationResult operationResult = dispatcher.dispatch(command);
+        dispatcher.run(command);
 
         // then
-        pl.edziennik.domain.grade.Grade grade = gradeCommandRepository.getByGradeId(GradeId.of(operationResult.identifier().id()));
+        pl.edziennik.domain.grade.Grade grade = gradeCommandRepository.getByGradeId(command.gradeId());
         assertNotNull(grade);
         assertEquals(grade.studentSubject().studentSubjectId(), studentSubjectId);
         assertEquals(grade.teacher().teacherId(), teacherId);
@@ -80,10 +79,10 @@ public class GradeIntegrationTest extends BaseIntegrationTest {
         );
 
         // when
-        OperationResult operationResult = transactionTemplate.execute(result -> dispatcher.dispatch(command));
+        transactionTemplate.executeWithoutResult((x) -> dispatcher.run(command));
 
         // then
-        pl.edziennik.domain.grade.Grade grade = gradeCommandRepository.getByGradeId(GradeId.of(operationResult.identifier().id()));
+        pl.edziennik.domain.grade.Grade grade = gradeCommandRepository.getByGradeId(command.gradeId());
         assertNotNull(grade);
         StudentSubjectId studentSubjectIdSecond = transactionTemplate.execute((i) -> grade.studentSubject().studentSubjectId());
         assertEquals(studentSubjectIdSecond, studentSubjectId);

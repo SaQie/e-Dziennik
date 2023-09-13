@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.command.school.changeconfig.ChangeSchoolConfigurationValuesCommand;
 import pl.edziennik.application.command.school.create.CreateSchoolCommand;
-import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.common.enums.AverageType;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.SchoolLevelId;
@@ -38,10 +37,10 @@ public class SchoolIntegrationTest extends BaseIntegrationTest {
                 SchoolLevelId.PredefinedRow.PRIMARY_SCHOOL);
 
         // when
-        OperationResult operationResult = dispatcher.dispatch(command);
+        dispatcher.run(command);
 
         // then
-        School school = schoolCommandRepository.getBySchoolId(SchoolId.of(operationResult.identifier().id()));
+        School school = schoolCommandRepository.getBySchoolId(command.schoolId());
         Assertions.assertNotNull(school);
     }
 
@@ -49,7 +48,6 @@ public class SchoolIntegrationTest extends BaseIntegrationTest {
     public void shouldThrowExceptionIfSchoolWithRegonOrNameOrNipAlreadyExists() {
         // given
         createSchool("Test", "9999999", "9999999");
-
         CreateSchoolCommand command = new CreateSchoolCommand(
                 Name.of("Test"),
                 Address.of("Test"),
@@ -62,7 +60,7 @@ public class SchoolIntegrationTest extends BaseIntegrationTest {
 
         try {
             // when
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             Assertions.fail("Should throw business exception when school already exists with given name, pesel or nip");
         } catch (BusinessException e) {
             // then
@@ -84,7 +82,7 @@ public class SchoolIntegrationTest extends BaseIntegrationTest {
                 TimeFrameDuration.of(1), TimeFrameDuration.of(1));
 
         // when
-        dispatcher.dispatch(command);
+        dispatcher.run(command);
 
         // then
         School school = schoolCommandRepository.getBySchoolId(schoolId);

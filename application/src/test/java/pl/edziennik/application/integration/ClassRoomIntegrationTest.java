@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.command.classroom.create.CreateClassRoomCommand;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.common.valueobject.id.ClassRoomId;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.vo.ClassRoomName;
 import pl.edziennik.domain.classroom.ClassRoom;
@@ -30,10 +28,10 @@ public class ClassRoomIntegrationTest extends BaseIntegrationTest {
         CreateClassRoomCommand command = new CreateClassRoomCommand(schoolId, ClassRoomName.of("TEST"));
 
         // when
-        OperationResult operationResult = dispatcher.dispatch(command);
+        dispatcher.run(command);
 
         // then
-        ClassRoom classRoom = classRoomCommandRepository.getById(ClassRoomId.of(operationResult.identifier().id()));
+        ClassRoom classRoom = classRoomCommandRepository.getById(command.classRoomId());
         assertNotNull(classRoom);
     }
 
@@ -47,7 +45,7 @@ public class ClassRoomIntegrationTest extends BaseIntegrationTest {
 
         try {
             // when
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             Assertions.fail("Should throw exception if class room with given name already exists");
             // then
         } catch (BusinessException e) {
@@ -69,10 +67,10 @@ public class ClassRoomIntegrationTest extends BaseIntegrationTest {
         CreateClassRoomCommand command = new CreateClassRoomCommand(schoolIdSecond, ClassRoomName.of("TEST"));
 
         // when
-        OperationResult operationResult = dispatcher.dispatch(command);
+        dispatcher.run(command);
 
         // then
-        ClassRoom classRoom = classRoomCommandRepository.getById(ClassRoomId.of(operationResult.identifier().id()));
+        ClassRoom classRoom = classRoomCommandRepository.getById(command.classRoomId());
         assertNotNull(classRoom);
     }
 }

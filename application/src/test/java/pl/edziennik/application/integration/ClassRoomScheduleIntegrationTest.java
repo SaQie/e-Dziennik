@@ -5,9 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.command.classroomschedule.create.CreateClassRoomScheduleCommand;
-import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.common.valueobject.id.ClassRoomId;
-import pl.edziennik.common.valueobject.id.ClassRoomScheduleId;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.vo.Description;
 import pl.edziennik.common.valueobject.vo.TimeFrame;
@@ -43,14 +41,15 @@ public class ClassRoomScheduleIntegrationTest extends BaseIntegrationTest {
         SchoolId schoolId = createSchool("TEST", "123123", "123123");
         ClassRoomId classRoomId = createClassRoom(schoolId, "122A");
 
-        CreateClassRoomScheduleCommand command = new CreateClassRoomScheduleCommand(classRoomId, Description.of("TEST"),
+        CreateClassRoomScheduleCommand command = new CreateClassRoomScheduleCommand(classRoomId,
+                Description.of("TEST"),
                 DATE_2022_01_01_10_00, DATE_2022_01_01_10_30);
 
         // when
-        OperationResult operationResult = dispatcher.dispatch(command);
+        dispatcher.run(command);
 
         // then
-        ClassRoomSchedule classRoomSchedule = classRoomScheduleCommandRepository.getReferenceById(ClassRoomScheduleId.of(operationResult.identifier().id()));
+        ClassRoomSchedule classRoomSchedule = classRoomScheduleCommandRepository.getReferenceById(command.classRoomScheduleId());
         assertNotNull(classRoomSchedule);
     }
 
@@ -66,7 +65,7 @@ public class ClassRoomScheduleIntegrationTest extends BaseIntegrationTest {
 
         try {
             // when
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             Assertions.fail("Should throw exception if there are any class room schedule conflicts");
             // then
         } catch (BusinessException e) {

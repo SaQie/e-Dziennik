@@ -2,7 +2,6 @@ package pl.edziennik.application.command.subject.create;
 
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
-import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.common.valueobject.vo.Description;
 import pl.edziennik.common.valueobject.vo.Name;
 import pl.edziennik.domain.school.School;
@@ -10,7 +9,6 @@ import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.teacher.Teacher;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CreateSubjectCommandHandlerTest extends BaseUnitTest {
 
@@ -22,7 +20,7 @@ class CreateSubjectCommandHandlerTest extends BaseUnitTest {
 
 
     @Test
-    public void shouldCreateSubject(){
+    public void shouldCreateSubject() {
         // given
         SchoolClass schoolClass = createSchoolWithSchoolClass();
         School school = schoolClass.school();
@@ -36,11 +34,10 @@ class CreateSubjectCommandHandlerTest extends BaseUnitTest {
         );
 
         // when
-        OperationResult operationResult = handler.handle(command);
+        handler.handle(command);
 
         // then
-        assertTrue(operationResult.isSuccess());
-        assertNotNull(operationResult.identifier().id());
+        assertNotNull(command.schoolClassId().id());
     }
 
 }

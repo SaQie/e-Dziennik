@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.application.command.groovy.ExecuteGroovyScriptCommand;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
-import pl.edziennik.common.valueobject.id.GroovyScriptId;
 import pl.edziennik.common.valueobject.vo.ScriptContent;
 
 import java.net.URI;
@@ -38,16 +37,14 @@ public class GroovyScriptExecutorCommandController {
     @PostMapping("/file")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Void> executeGroovyScriptFile(@RequestPart("file") MultipartFile file) {
-        GroovyScriptId groovyScriptId = GroovyScriptId.create();
-
-        ExecuteGroovyScriptCommand command = new ExecuteGroovyScriptCommand(groovyScriptId, ScriptContent.of(file));
+        ExecuteGroovyScriptCommand command = new ExecuteGroovyScriptCommand(ScriptContent.of(file));
 
         dispatcher.run(command);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
                 .path("/api/v1/scripts/results/{groovyScriptId}")
-                .buildAndExpand(groovyScriptId.id())
+                .buildAndExpand(command.groovyScriptId().id())
                 .toUri();
 
         return ResponseEntity.ok().location(location).build();

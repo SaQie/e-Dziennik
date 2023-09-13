@@ -5,10 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.command.teacherschedule.create.CreateTeacherScheduleCommand;
-import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.TeacherId;
-import pl.edziennik.common.valueobject.id.TeacherScheduleId;
 import pl.edziennik.common.valueobject.vo.Description;
 import pl.edziennik.common.valueobject.vo.TimeFrame;
 import pl.edziennik.domain.teacher.TeacherSchedule;
@@ -47,10 +45,10 @@ public class TeacherScheduleIntegrationTest extends BaseIntegrationTest {
                 Description.of("TEST"), DATE_2022_01_01_10_00, DATE_2022_01_01_10_30);
 
         // when
-        OperationResult operationResult = dispatcher.dispatch(command);
+        dispatcher.run(command);
 
         // then
-        TeacherSchedule teacherSchedule = teacherScheduleCommandRepository.getReferenceById(TeacherScheduleId.of(operationResult.identifier().id()));
+        TeacherSchedule teacherSchedule = teacherScheduleCommandRepository.getReferenceById(command.teacherScheduleId());
         assertNotNull(teacherSchedule);
 
     }
@@ -68,7 +66,7 @@ public class TeacherScheduleIntegrationTest extends BaseIntegrationTest {
 
         try {
             // when
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             Assertions.fail("Should throw exception if there is any schedule conflicts");
             // then
         } catch (BusinessException e) {

@@ -6,43 +6,50 @@ import org.springframework.stereotype.Component;
 import pl.edziennik.infrastructure.spring.exception.ResolverException;
 
 import java.util.Map;
-import java.util.Optional;
 
 /**
- * Class responsible for obtaining the right validator from the command/query class if @ValidatedBy exists
+ * Class responsible for getting proper validator
  */
 @Component
 @AllArgsConstructor
-@SuppressWarnings("all")
-class ValidatorResolver {
+final class ValidatorResolver {
 
-    private final ApplicationContext context;
+    public final ApplicationContext applicationContext;
 
-    protected final <T> Optional<IBaseValidator<IDispatchable<T>>> resolve(IDispatchable<T> dispatchable) {
-        // get annotation above the command/query
-        ValidatedBy validatedBy = dispatchable.getClass().getAnnotation(ValidatedBy.class);
-        if (validatedBy == null) {
-            // If validatedBy is not provided
-            return Optional.empty();
-        }
-        // Get class, that is annotated
-        Class<? extends IBaseValidator> validator = validatedBy.validator();
+    Validator<? extends Command> resolve(Command command) {
+        // 1. Get annotation above command
+        Handler handler = command.getClass().getAnnotation(Handler.class);
 
-        // get from application context map, that key is bean name, and value is list of instances for that bean
-        Map<String, ? extends IBaseValidator> validators = context.getBeansOfType(validator);
+        // 2. Get validator from annotation
+        Class<? extends Validator<? extends Command>> validator = handler.validator();
 
-        if (validators.isEmpty()) {
-            // If ValidatedBy annotation is provided, but bean was not found
-            throw new ResolverException("Class " + dispatchable.getClass().getSimpleName() + " has defined @ValidatedBy " +
-                    "annotation, but provided validator not found (Make sure that validator is a spring bean)");
+        // 3. If only default validator provided
+        if (validator.equals(EmptyValidator.class)) {
+            return null;
         }
 
-        if (validators.size() > 1) {
-            // If there is more than one validator
-            throw new ResolverException("Class " + dispatchable.getClass().getSimpleName() + " has defined more than one validator");
-        }
+        // 4. Get beans of type
+        Map<String, ? extends Validator<? extends Command>> beansOfType = applicationContext.getBeansOfType(validator);
 
-        // return one specific validator to execute
-        return Optional.of(validators.values().iterator().next());
+        // 5. Check validator is a spring bean
+        checkValidatorFound(beansOfType, command);
+
+        // 6. Check more than one validator defined
+        checkMoreThanOneValidatorExists(beansOfType, command);
+
+        return beansOfType.values().iterator().next();
     }
+
+    private void checkValidatorFound(Map<String, ? extends Validator<? extends Command>> beansOfType, Command command) {
+        if (beansOfType.isEmpty()) {
+            throw new ResolverException("Class " + command.getClass().getSimpleName() + " has provided validator, but provided validator not found (Make sure that validator is a spring bean)");
+        }
+    }
+
+    private void checkMoreThanOneValidatorExists(Map<String, ? extends Validator<? extends Command>> beansOfType, Command command) {
+        if (beansOfType.size() > 1) {
+            throw new ResolverException("Class " + command.getClass().getSimpleName() + " has defined more than one validator");
+        }
+    }
+
 }

@@ -40,7 +40,7 @@ public class ClassRoomScheduleQueryProjectionTest extends BaseIntegrationTest {
         SchoolId schoolId = createSchool("Test", "123123123", "123123123");
         ClassRoomId classRoomIdFirst = createClassRoom(schoolId, "122A");
         // 10:30 -> 12:30
-        ClassRoomScheduleId classRoomScheduleId = createClassRoomSchedule(classRoomIdFirst, TimeFrame.of(DATE_2022_01_01_10_30, DATE_2022_01_01_12_30));
+        createClassRoomSchedule(classRoomIdFirst, TimeFrame.of(DATE_2022_01_01_10_30, DATE_2022_01_01_12_30));
 
         // when
         Page<ClassRoomScheduleSummaryView> view = classRoomScheduleQueryRepository.getClassRoomScheduleView(Pageable.unpaged(), classRoomIdFirst);

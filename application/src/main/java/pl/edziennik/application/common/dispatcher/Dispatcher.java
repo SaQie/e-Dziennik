@@ -7,68 +7,69 @@ import org.springframework.util.StopWatch;
 import pl.edziennik.infrastructure.spring.ResourceCreator;
 
 /**
- * Component that execute and validate concrete Query/Command handlers/validators for specific ICommand,IQuery instances
+ * Class responsible for call proper command handler for provided command
  */
 @Component
 @AllArgsConstructor
 @Slf4j
+@SuppressWarnings("all")
 public class Dispatcher {
 
-    private final HandlerResolver handlerResolver;
-    private final ValidatorResolver validatorResolver;
     private final ResourceCreator resourceCreator;
+    private final Resolver resolver;
 
-    public final <T> T dispatch(final IDispatchable<T> dispatchable) {
-        IBaseHandler<IDispatchable<T>, T> handler = handlerResolver.resolve(dispatchable);
+    /**
+     * Run handler defined for provided command
+     */
+    public final void run(final Command command) {
+        CommandBundle commandBundle = resolver.resolve(command);
 
-        executeValidators(dispatchable);
+        if (commandBundle.validator() != null) {
+            runValidator(command, commandBundle.validator());
+        }
 
-        log.info("Executing " + dispatchable.getClass().getSimpleName() + " via handler " + handler.getClass().getSimpleName());
-        return executeHandler(dispatchable, handler);
+        runHandler(command, commandBundle.handler());
+
     }
 
-    private <T> T executeHandler(IDispatchable<T> dispatchable, IBaseHandler<IDispatchable<T>, T> handler) {
+    private <T extends Command> void runValidator(T command, Validator<Command> validator) {
         if (log.isDebugEnabled()) {
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
 
-            T handlerResult = handler.handle(dispatchable);
-            stopWatch.stop();
+            executeValidator(command, validator);
 
-            log.debug("Dispatchable {} took {} ms to execute handler", dispatchable.getClass().getSimpleName(),
+            stopWatch.stop();
+            log.debug("Validator {} took {} ms to execute ", validator.getClass().getSimpleName(),
                     stopWatch.getTotalTimeMillis());
-            return handlerResult;
+            return;
         }
-        return handler.handle(dispatchable);
+
+        executeValidator(command, validator);
     }
 
+    private <T extends Command> void executeValidator(T command, Validator<T> validator) {
+        ValidationErrorBuilder errorBuilder = new ValidationErrorBuilder(resourceCreator);
+        validator.validate(command, errorBuilder);
+        if (errorBuilder.errorExists()) {
+            errorBuilder.build();
+        }
 
-    private <T> void executeValidators(IDispatchable<T> dispatchable) {
+    }
+
+    private void runHandler(Command command, CommandHandler<Command> handler) {
         if (log.isDebugEnabled()) {
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
 
-            runValidators(dispatchable);
+            handler.handle(command);
+
             stopWatch.stop();
-
-            log.debug("Dispatchable {} took {} ms to execute validators", dispatchable.getClass().getSimpleName(),
+            log.debug("Handler {} took {} ms to execute ", handler.getClass().getSimpleName(),
                     stopWatch.getTotalTimeMillis());
-        } else {
-            runValidators(dispatchable);
+            return;
         }
-    }
-
-    private <T> void runValidators(IDispatchable<T> dispatchable) {
-        validatorResolver.resolve(dispatchable)
-                .ifPresent(validator -> {
-                    log.info("Executing validator " + validator.getClass().getSimpleName());
-                    ValidationErrorBuilder validationErrorBuilder = new ValidationErrorBuilder(resourceCreator);
-                    validator.validate(dispatchable, validationErrorBuilder);
-                    if (validationErrorBuilder.errorExists()) {
-                        log.error("Error during validate " + dispatchable.getClass().getSimpleName());
-                    }
-                    validationErrorBuilder.build();
-                });
+        handler.handle(command);
     }
 
 }

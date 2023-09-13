@@ -2,7 +2,6 @@ package pl.edziennik.application.integration.groovy;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.edziennik.application.BaseIntegrationTest;
@@ -12,8 +11,6 @@ import pl.edziennik.common.valueobject.id.GroovyScriptStatusId;
 import pl.edziennik.common.valueobject.vo.ScriptContent;
 import pl.edziennik.domain.groovy.GroovyScriptStatus;
 import pl.edziennik.infrastructure.spring.exception.BusinessException;
-
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -42,13 +39,12 @@ public class GroovyScriptExecutorTest extends BaseIntegrationTest {
         ExecuteGroovyScriptCommand command = new ExecuteGroovyScriptCommand(scriptContent);
 
         // when
-        dispatcher.dispatch(command);
+        dispatcher.run(command);
 
         // then
         assertOneRowExists("groovy_script");
         assertOneRowExists("groovy_script_result");
-        GroovyScriptId groovyScriptId = getGroovyScriptId();
-        checkGroovyScriptStatus(groovyScriptId, GroovyScriptStatusId.PredefinedRow.SUCCESS);
+        checkGroovyScriptStatus(command.groovyScriptId(), GroovyScriptStatusId.PredefinedRow.SUCCESS);
     }
 
     @Test
@@ -66,14 +62,13 @@ public class GroovyScriptExecutorTest extends BaseIntegrationTest {
 
         // when
         try {
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             fail("Should throw exception if script contains not allowed constraints");
         } catch (BusinessException e) {
             // then
             assertOneRowExists("groovy_script");
             assertOneRowExists("groovy_script_result");
-            GroovyScriptId groovyScriptId = getGroovyScriptId();
-            checkGroovyScriptStatus(groovyScriptId, GroovyScriptStatusId.PredefinedRow.ERROR);
+            checkGroovyScriptStatus(command.groovyScriptId(), GroovyScriptStatusId.PredefinedRow.ERROR);
         }
     }
 
@@ -87,14 +82,13 @@ public class GroovyScriptExecutorTest extends BaseIntegrationTest {
 
         // when
         try {
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             fail("Should throw exception if script contains not allowed imports");
         } catch (BusinessException e) {
             // then
             assertOneRowExists("groovy_script");
             assertOneRowExists("groovy_script_result");
-            GroovyScriptId groovyScriptId = getGroovyScriptId();
-            checkGroovyScriptStatus(groovyScriptId, GroovyScriptStatusId.PredefinedRow.ERROR);
+            checkGroovyScriptStatus(command.groovyScriptId(), GroovyScriptStatusId.PredefinedRow.ERROR);
         }
     }
 
@@ -111,14 +105,13 @@ public class GroovyScriptExecutorTest extends BaseIntegrationTest {
 
         // when
         try {
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             fail("Should throw exception if script contains not allowed imports");
         } catch (BusinessException e) {
             // then
             assertOneRowExists("groovy_script");
             assertOneRowExists("groovy_script_result");
-            GroovyScriptId groovyScriptId = getGroovyScriptId();
-            checkGroovyScriptStatus(groovyScriptId, GroovyScriptStatusId.PredefinedRow.ERROR);
+            checkGroovyScriptStatus(command.groovyScriptId(), GroovyScriptStatusId.PredefinedRow.ERROR);
         }
     }
 
@@ -132,14 +125,13 @@ public class GroovyScriptExecutorTest extends BaseIntegrationTest {
 
         // when
         try {
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             fail("Should throw exception if script contains not allowed imports");
         } catch (BusinessException e) {
             // then
             assertOneRowExists("groovy_script");
             assertOneRowExists("groovy_script_result");
-            GroovyScriptId groovyScriptId = getGroovyScriptId();
-            checkGroovyScriptStatus(groovyScriptId, GroovyScriptStatusId.PredefinedRow.ERROR);
+            checkGroovyScriptStatus(command.groovyScriptId(), GroovyScriptStatusId.PredefinedRow.ERROR);
         }
     }
 
@@ -157,14 +149,13 @@ public class GroovyScriptExecutorTest extends BaseIntegrationTest {
 
         // when
         try {
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             fail("Should throw exception if script contains not allowed imports");
         } catch (BusinessException e) {
             // then
             assertOneRowExists("groovy_script");
             assertOneRowExists("groovy_script_result");
-            GroovyScriptId groovyScriptId = getGroovyScriptId();
-            checkGroovyScriptStatus(groovyScriptId, GroovyScriptStatusId.PredefinedRow.ERROR);
+            checkGroovyScriptStatus(command.groovyScriptId(), GroovyScriptStatusId.PredefinedRow.ERROR);
         }
     }
 
@@ -185,14 +176,13 @@ public class GroovyScriptExecutorTest extends BaseIntegrationTest {
 
         // when
         try {
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             fail("Should throw exception if script contains not allowed imports");
         } catch (BusinessException e) {
             // then
             assertOneRowExists("groovy_script");
             assertOneRowExists("groovy_script_result");
-            GroovyScriptId groovyScriptId = getGroovyScriptId();
-            checkGroovyScriptStatus(groovyScriptId, GroovyScriptStatusId.PredefinedRow.ERROR);
+            checkGroovyScriptStatus(command.groovyScriptId(), GroovyScriptStatusId.PredefinedRow.ERROR);
         }
     }
 
@@ -214,14 +204,13 @@ public class GroovyScriptExecutorTest extends BaseIntegrationTest {
 
         // when
         try {
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             fail("Should throw exception if script contains not allowed imports");
         } catch (BusinessException e) {
             // then
             assertOneRowExists("groovy_script");
             assertOneRowExists("groovy_script_result");
-            GroovyScriptId groovyScriptId = getGroovyScriptId();
-            checkGroovyScriptStatus(groovyScriptId, GroovyScriptStatusId.PredefinedRow.ERROR);
+            checkGroovyScriptStatus(command.groovyScriptId(), GroovyScriptStatusId.PredefinedRow.ERROR);
         }
     }
 
@@ -238,14 +227,13 @@ public class GroovyScriptExecutorTest extends BaseIntegrationTest {
 
         // when
         try {
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             fail("Should throw exception if script contains not allowed file readers");
         } catch (BusinessException e) {
             // then
             assertOneRowExists("groovy_script");
             assertOneRowExists("groovy_script_result");
-            GroovyScriptId groovyScriptId = getGroovyScriptId();
-            checkGroovyScriptStatus(groovyScriptId, GroovyScriptStatusId.PredefinedRow.ERROR);
+            checkGroovyScriptStatus(command.groovyScriptId(), GroovyScriptStatusId.PredefinedRow.ERROR);
         }
     }
 
@@ -262,14 +250,13 @@ public class GroovyScriptExecutorTest extends BaseIntegrationTest {
 
         // when
         try {
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             fail("Should throw exception if script contains not allowed file readers");
         } catch (BusinessException e) {
             // then
             assertOneRowExists("groovy_script");
             assertOneRowExists("groovy_script_result");
-            GroovyScriptId groovyScriptId = getGroovyScriptId();
-            checkGroovyScriptStatus(groovyScriptId, GroovyScriptStatusId.PredefinedRow.ERROR);
+            checkGroovyScriptStatus(command.groovyScriptId(), GroovyScriptStatusId.PredefinedRow.ERROR);
         }
     }
 
@@ -287,14 +274,13 @@ public class GroovyScriptExecutorTest extends BaseIntegrationTest {
 
         // when
         try {
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             fail("Should throw exception if script contains not allowed file readers");
         } catch (BusinessException e) {
             // then
             assertOneRowExists("groovy_script");
             assertOneRowExists("groovy_script_result");
-            GroovyScriptId groovyScriptId = getGroovyScriptId();
-            checkGroovyScriptStatus(groovyScriptId, GroovyScriptStatusId.PredefinedRow.ERROR);
+            checkGroovyScriptStatus(command.groovyScriptId(), GroovyScriptStatusId.PredefinedRow.ERROR);
         }
     }
 
@@ -311,14 +297,13 @@ public class GroovyScriptExecutorTest extends BaseIntegrationTest {
 
         // when
         try {
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             fail("Should throw exception if script contains not allowed file readers");
         } catch (BusinessException e) {
             // then
             assertOneRowExists("groovy_script");
             assertOneRowExists("groovy_script_result");
-            GroovyScriptId groovyScriptId = getGroovyScriptId();
-            checkGroovyScriptStatus(groovyScriptId, GroovyScriptStatusId.PredefinedRow.ERROR);
+            checkGroovyScriptStatus(command.groovyScriptId(), GroovyScriptStatusId.PredefinedRow.ERROR);
         }
     }
 
@@ -337,14 +322,13 @@ public class GroovyScriptExecutorTest extends BaseIntegrationTest {
 
         // when
         try {
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             fail("Should throw exception if script doesn't return script result object");
         } catch (BusinessException e) {
             // then
             assertOneRowExists("groovy_script");
             assertOneRowExists("groovy_script_result");
-            GroovyScriptId groovyScriptId = getGroovyScriptId();
-            checkGroovyScriptStatus(groovyScriptId, GroovyScriptStatusId.PredefinedRow.ERROR);
+            checkGroovyScriptStatus(command.groovyScriptId(), GroovyScriptStatusId.PredefinedRow.ERROR);
         }
     }
 
@@ -364,14 +348,13 @@ public class GroovyScriptExecutorTest extends BaseIntegrationTest {
 
         // when
         try {
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             fail("Should throw exception if script contains infinite loops");
         } catch (BusinessException e) {
             // then
             assertOneRowExists("groovy_script");
             assertOneRowExists("groovy_script_result");
-            GroovyScriptId groovyScriptId = getGroovyScriptId();
-            checkGroovyScriptStatus(groovyScriptId, GroovyScriptStatusId.PredefinedRow.ERROR);
+            checkGroovyScriptStatus(command.groovyScriptId(), GroovyScriptStatusId.PredefinedRow.ERROR);
         }
     }
 
@@ -389,14 +372,13 @@ public class GroovyScriptExecutorTest extends BaseIntegrationTest {
 
         // when
         try {
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             fail("Should throw exception if script contains exceptions");
         } catch (BusinessException e) {
             // then
             assertOneRowExists("groovy_script");
             assertOneRowExists("groovy_script_result");
-            GroovyScriptId groovyScriptId = getGroovyScriptId();
-            checkGroovyScriptStatus(groovyScriptId, GroovyScriptStatusId.PredefinedRow.ERROR);
+            checkGroovyScriptStatus(command.groovyScriptId(), GroovyScriptStatusId.PredefinedRow.ERROR);
         }
     }
 
@@ -406,22 +388,21 @@ public class GroovyScriptExecutorTest extends BaseIntegrationTest {
         // given
         String script =
                 """
-                    def num = -3;
-                    assert num >= 0 : "Number must be non-negative";
-                        """;
+                        def num = -3;
+                        assert num >= 0 : "Number must be non-negative";
+                            """;
         ScriptContent scriptContent = ScriptContent.of(script);
         ExecuteGroovyScriptCommand command = new ExecuteGroovyScriptCommand(scriptContent);
 
         // when
         try {
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             fail("Should throw exception if script contains assertions");
         } catch (BusinessException e) {
             // then
             assertOneRowExists("groovy_script");
             assertOneRowExists("groovy_script_result");
-            GroovyScriptId groovyScriptId = getGroovyScriptId();
-            checkGroovyScriptStatus(groovyScriptId, GroovyScriptStatusId.PredefinedRow.ERROR);
+            checkGroovyScriptStatus(command.groovyScriptId(), GroovyScriptStatusId.PredefinedRow.ERROR);
         }
     }
 
@@ -431,26 +412,25 @@ public class GroovyScriptExecutorTest extends BaseIntegrationTest {
         // given
         String script =
                 """
-                    def num = -3;
-                    try{
-                        println "Test";
-                    }catch(Exception e){
-                        println "Test";
-                    }
-                        """;
+                        def num = -3;
+                        try{
+                            println "Test";
+                        }catch(Exception e){
+                            println "Test";
+                        }
+                            """;
         ScriptContent scriptContent = ScriptContent.of(script);
         ExecuteGroovyScriptCommand command = new ExecuteGroovyScriptCommand(scriptContent);
 
         // when
         try {
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             fail("Should throw exception if script contains try catch");
         } catch (BusinessException e) {
             // then
             assertOneRowExists("groovy_script");
             assertOneRowExists("groovy_script_result");
-            GroovyScriptId groovyScriptId = getGroovyScriptId();
-            checkGroovyScriptStatus(groovyScriptId, GroovyScriptStatusId.PredefinedRow.ERROR);
+            checkGroovyScriptStatus(command.groovyScriptId(), GroovyScriptStatusId.PredefinedRow.ERROR);
         }
     }
 
@@ -469,16 +449,16 @@ public class GroovyScriptExecutorTest extends BaseIntegrationTest {
                         return new ScriptResult(randomNumber);
                 """;
         ScriptContent scriptContent = ScriptContent.of(script);
+
         ExecuteGroovyScriptCommand command = new ExecuteGroovyScriptCommand(scriptContent);
 
         // when
-        dispatcher.dispatch(command);
+        dispatcher.run(command);
 
         // then
         assertOneRowExists("groovy_script");
         assertOneRowExists("groovy_script_result");
-        GroovyScriptId groovyScriptId = getGroovyScriptId();
-        checkGroovyScriptStatus(groovyScriptId, GroovyScriptStatusId.PredefinedRow.SUCCESS);
+        checkGroovyScriptStatus(command.groovyScriptId(), GroovyScriptStatusId.PredefinedRow.SUCCESS);
     }
 
     @Test
@@ -496,24 +476,18 @@ public class GroovyScriptExecutorTest extends BaseIntegrationTest {
         ExecuteGroovyScriptCommand command = new ExecuteGroovyScriptCommand(scriptContent);
 
         // when
-        dispatcher.dispatch(command);
+        dispatcher.run(command);
 
         // then
         assertOneRowExists("groovy_script");
         assertOneRowExists("groovy_script_result");
-        GroovyScriptId groovyScriptId = getGroovyScriptId();
-        checkGroovyScriptStatus(groovyScriptId, GroovyScriptStatusId.PredefinedRow.SUCCESS);
+        checkGroovyScriptStatus(command.groovyScriptId(), GroovyScriptStatusId.PredefinedRow.SUCCESS);
     }
 
 
     private void checkGroovyScriptStatus(GroovyScriptId groovyScriptId, GroovyScriptStatusId groovyScriptStatusId) {
         GroovyScriptStatus groovyScriptStatus = groovyScriptStatusQueryRepository.getByGroovyScriptId(groovyScriptId);
         assertEquals(groovyScriptStatus.groovyScriptStatusId(), groovyScriptStatusId);
-    }
-
-    private GroovyScriptId getGroovyScriptId() {
-        UUID uuid = jdbcTemplate.queryForObject("SELECT gs.id FROM groovy_script gs", new MapSqlParameterSource(), UUID.class);
-        return GroovyScriptId.of(uuid);
     }
 
 }

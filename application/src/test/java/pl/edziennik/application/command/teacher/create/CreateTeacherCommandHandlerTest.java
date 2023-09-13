@@ -2,7 +2,6 @@ package pl.edziennik.application.command.teacher.create;
 
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
-import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.school.School;
@@ -24,7 +23,9 @@ class CreateTeacherCommandHandlerTest extends BaseUnitTest {
         School school = createSchool("Test", "1231231", "123123", address);
         school = schoolCommandRepository.save(school);
 
+        TeacherId teacherId = TeacherId.create();
         CreateTeacherCommand command = new CreateTeacherCommand(
+                teacherId,
                 Password.of("password"),
                 Username.of("Test"),
                 FirstName.of("Test"),
@@ -39,10 +40,10 @@ class CreateTeacherCommandHandlerTest extends BaseUnitTest {
         );
 
         // when
-        OperationResult operationResult = handler.handle(command);
+        handler.handle(command);
 
         // then
-        Teacher teacher = teacherCommandRepository.getReferenceById(TeacherId.of(operationResult.identifier().id()));
+        Teacher teacher = teacherCommandRepository.getReferenceById(teacherId);
         assertNotNull(teacher);
     }
 }

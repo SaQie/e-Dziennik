@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.command.director.create.CreateDirectorCommand;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.common.valueobject.id.DirectorId;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.director.Director;
@@ -26,6 +24,7 @@ public class DirectorIntegrationTest extends BaseIntegrationTest {
     public void shouldCreateDirector() {
         // given
         SchoolId schoolId = createSchool("Test", "12312313", "123123132");
+
         CreateDirectorCommand command = new CreateDirectorCommand(
                 Password.of("password"),
                 Username.of("Test"),
@@ -41,10 +40,10 @@ public class DirectorIntegrationTest extends BaseIntegrationTest {
         );
 
         // when
-        OperationResult operationResult = dispatcher.dispatch(command);
+        dispatcher.run(command);
 
         // then
-        Director director = directorCommandRepository.getByDirectorId(DirectorId.of(operationResult.identifier().id()));
+        Director director = directorCommandRepository.getByDirectorId(command.directorId());
         Assertions.assertNotNull(director);
         School school = schoolCommandRepository.getBySchoolId(schoolId);
         assertEquals(school.director().directorId(), director.directorId());
@@ -55,6 +54,7 @@ public class DirectorIntegrationTest extends BaseIntegrationTest {
         // given
         SchoolId schoolId = createSchool("Test", "12312313", "123123132");
         createDirector("Testowy", "aaa@o2.pl", "1112333444", schoolId);
+
         CreateDirectorCommand command = new CreateDirectorCommand(
                 Password.of("password"),
                 Username.of("Test1"),
@@ -71,7 +71,7 @@ public class DirectorIntegrationTest extends BaseIntegrationTest {
 
         try {
             // when
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             Assertions.fail("Should throw exception when creating new director and passed school already has assigned director");
         } catch (BusinessException e) {
             // then

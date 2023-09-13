@@ -2,7 +2,6 @@ package pl.edziennik.application.command.student.assignparent;
 
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
-import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.mock.repositories.RoleCommandMockRepo;
 import pl.edziennik.domain.parent.Parent;
 import pl.edziennik.domain.student.Student;
@@ -36,10 +35,9 @@ class AssignParentCommandHandlerTest extends BaseUnitTest {
         assertFalse(studentCommandRepository.hasAlreadyAssignedParent(student.studentId()));
 
         // when
-        OperationResult operationResult = handler.handle(command);
+        handler.handle(command);
 
         // then
-        assertTrue(operationResult.isSuccess());
         assertTrue(studentCommandRepository.hasAlreadyAssignedParent(student.studentId()));
 
     }

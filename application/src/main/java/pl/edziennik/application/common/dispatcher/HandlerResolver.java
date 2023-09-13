@@ -8,39 +8,57 @@ import pl.edziennik.infrastructure.spring.exception.ResolverException;
 import java.util.Map;
 
 /**
- * Class responsible for obtaining the right handler from the command/query class
+ * Class responsible for getting proper command handler
  */
 @Component
 @AllArgsConstructor
-@SuppressWarnings("all")
-class HandlerResolver {
+final class HandlerResolver {
 
-    private final ApplicationContext context;
+    public final ApplicationContext applicationContext;
 
-    protected final <T> IBaseHandler<IDispatchable<T>, T> resolve(final IDispatchable<T> dispatchable) {
-        // get annotation above the command/query
-        HandledBy handlerAnnotation = dispatchable.getClass().getAnnotation(HandledBy.class);
+    CommandHandler<? extends Command> resolve(Command command) {
+        // 1.Get annotation above command
+        Handler handler = command.getClass().getAnnotation(Handler.class);
 
+        // 2. Check annotation exists
+        requireHandler(handler, command);
 
-        // Get class, that is annotated
-        Class<? extends IBaseHandler> handlerType = handlerAnnotation.handler();
+        // 3. Get command handler
+        Class<? extends CommandHandler<? extends Command>> commandHandler = handler.handler();
 
-        // get from application context map, that key is bean name, and value is list of instances for that bean
-        Map<String, ? extends IBaseHandler> handlers = context.getBeansOfType(handlerType);
+        // 4. Get beans of type
+        Map<String, ? extends CommandHandler<? extends Command>> beansOfType = applicationContext.getBeansOfType(commandHandler);
 
-        if (handlers.isEmpty()) {
-            // If HandledBy annotation is provided, but bean was not found
-            throw new ResolverException("Class " + dispatchable.getClass().getSimpleName() + " has defined @HandledBy " +
+        // 5. Check command handler found
+        checkBeansMapIsEmpty(beansOfType, command);
+
+        // 6. Check command handlers size
+        checkMoreThanOneHandlerExists(beansOfType, command);
+
+        return beansOfType.values().iterator().next();
+
+    }
+
+    private static void checkMoreThanOneHandlerExists(Map<String, ? extends CommandHandler<? extends Command>> beansOfType, Command command) {
+        if (beansOfType.size() > 1) {
+            // If there is more than one handler
+            throw new ResolverException("Class " + command.getClass().getSimpleName() + " has more than one defined handler");
+        }
+    }
+
+    private void checkBeansMapIsEmpty(Map<String, ? extends CommandHandler<? extends Command>> beansOfType, Command command) {
+        if (beansOfType.isEmpty()) {
+            // If Handler annotation is provided, but bean was not found
+            throw new ResolverException("Class " + command.getClass().getSimpleName() + " has defined @Handler " +
                     "annotation, but provided handler not found (Make sure that handler is a spring bean)");
         }
+    }
 
-        if (handlers.size() > 1) {
-            // If there is more than one handler
-            throw new ResolverException("Class " + dispatchable.getClass().getSimpleName() + " has more than one defined handler");
+    private void requireHandler(Handler handler, Command command) {
+        if (handler == null) {
+            // Handler is required
+            throw new RuntimeException("No Handler annotation provided for class " + command.getClass().getSimpleName());
         }
-
-        // return one specific handler to execute
-        return handlers.values().iterator().next();
     }
 
 }

@@ -2,8 +2,6 @@ package pl.edziennik.application.command.student.create;
 
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.schoolclass.SchoolClass;
@@ -27,9 +25,8 @@ class CreateStudentCommandHandlerTest extends BaseUnitTest {
     }
 
 
-
     @Test
-    public void shouldCreateStudent(){
+    public void shouldCreateStudent() {
         // given
         School school = createSchool("Test", "1231231", "123123", address);
         school = schoolCommandRepository.save(school);
@@ -56,10 +53,10 @@ class CreateStudentCommandHandlerTest extends BaseUnitTest {
         );
 
         // when
-        OperationResult operationResult = handler.handle(command);
+        handler.handle(command);
 
         // then
-        Student student = studentCommandRepository.getReferenceById(StudentId.of(operationResult.identifier().id()));
+        Student student = studentCommandRepository.getReferenceById(command.studentId());
         assertNotNull(student);
     }
 }

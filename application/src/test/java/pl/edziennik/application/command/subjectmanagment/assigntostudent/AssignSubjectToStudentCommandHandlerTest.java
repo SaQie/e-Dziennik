@@ -2,7 +2,6 @@ package pl.edziennik.application.command.subjectmanagment.assigntostudent;
 
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
-import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.mock.repositories.RoleCommandMockRepo;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.schoolclass.SchoolClass;
@@ -45,10 +44,9 @@ class AssignSubjectToStudentCommandHandlerTest extends BaseUnitTest {
         );
 
         // when
-        OperationResult operationResult = handler.handle(command);
+        handler.handle(command);
 
         // then
-        assertTrue(operationResult.isSuccess());
         isStudentAssignedToSubject = studentSubjectCommandRepository.isStudentAlreadyAssignedToSubject(student.studentId(), subject.subjectId());
         assertTrue(isStudentAssignedToSubject);
     }

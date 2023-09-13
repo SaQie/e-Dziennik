@@ -2,8 +2,6 @@ package pl.edziennik.application.command.classroomschedule.create;
 
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.common.valueobject.id.ClassRoomScheduleId;
 import pl.edziennik.common.valueobject.vo.Description;
 import pl.edziennik.domain.classroom.ClassRoom;
 import pl.edziennik.domain.classroom.ClassRoomSchedule;
@@ -38,10 +36,10 @@ class CreateClassRoomScheduleCommandHandlerTest extends BaseUnitTest {
                 Description.of("TEST"), DATE_2022_01_01_10_00, DATE_2022_01_01_10_30);
 
         // when
-        OperationResult operationResult = handler.handle(command);
+        handler.handle(command);
 
         // then
-        ClassRoomSchedule schedule = classRoomScheduleCommandRepository.getReferenceById(ClassRoomScheduleId.of(operationResult.identifier().id()));
+        ClassRoomSchedule schedule = classRoomScheduleCommandRepository.getReferenceById(command.classRoomScheduleId());
         assertNotNull(schedule);
     }
 }

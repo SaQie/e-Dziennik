@@ -1,6 +1,7 @@
 package pl.edziennik.infrastructure;
 
 import org.junit.jupiter.api.Test;
+import pl.edziennik.common.valueobject.id.GradeId;
 import pl.edziennik.common.valueobject.vo.Weight;
 import pl.edziennik.domain.grade.Grade;
 import pl.edziennik.infrastructure.strategy.grades.CalculateAverageOfGradesStrategyInput;
@@ -79,7 +80,7 @@ public class CalculateAverageOfGradesStrategyUnitTest {
 
     private Grade getGrade(pl.edziennik.common.enums.Grade grade, int weight) {
         return Grade.of(
-                grade, Weight.of(weight), null, null, null
+                GradeId.create(), grade, Weight.of(weight), null, null, null
         );
     }
 

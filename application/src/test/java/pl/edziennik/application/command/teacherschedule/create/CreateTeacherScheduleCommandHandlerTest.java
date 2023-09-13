@@ -2,8 +2,6 @@ package pl.edziennik.application.command.teacherschedule.create;
 
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.common.valueobject.id.TeacherScheduleId;
 import pl.edziennik.common.valueobject.vo.Description;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.teacher.Teacher;
@@ -39,10 +37,10 @@ class CreateTeacherScheduleCommandHandlerTest extends BaseUnitTest {
                 new CreateTeacherScheduleCommand(teacher.teacherId(), Description.of("TEST"), DATE_2022_01_01_10_00, DATE_2022_01_01_10_30);
 
         // when
-        OperationResult operationResult = handler.handle(command);
+        handler.handle(command);
 
         // then
-        TeacherSchedule teacherSchedule = teacherScheduleCommandRepository.getReferenceById(TeacherScheduleId.of(operationResult.identifier().id()));
+        TeacherSchedule teacherSchedule = teacherScheduleCommandRepository.getReferenceById(command.teacherScheduleId());
         assertNotNull(teacherSchedule);
     }
 }

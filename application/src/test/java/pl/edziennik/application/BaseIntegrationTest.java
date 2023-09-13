@@ -283,6 +283,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
 
     protected SchoolId createSchool(String name, String nip, String regon) {
         School school = School.of(
+                SchoolId.create(),
                 Name.of(name),
                 Nip.of(nip),
                 Regon.of(regon),
@@ -312,6 +313,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
             PersonInformation personInformation = getPersonInformation(pesel);
 
             Director director = Director.of(
+                    DirectorId.create(),
                     user,
                     personInformation,
                     createAddress(),
@@ -339,6 +341,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
             PersonInformation personInformation = getPersonInformation(pesel);
 
             Teacher teacher = Teacher.of(
+                    TeacherId.create(),
                     user,
                     school,
                     personInformation,
@@ -363,6 +366,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         Teacher teacher = teacherCommandRepository.getReferenceById(teacherId);
 
         Grade grade = Grade.of(
+                GradeId.create(),
                 pl.edziennik.common.enums.Grade.SIX,
                 Weight.of(1),
                 Description.of("StudentAllSubjectGradesToPdfDocumentGeneratorStrategy"),
@@ -390,6 +394,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         SchoolClass schoolClass = schoolClassCommandRepository.getReferenceById(schoolClassId);
 
         Student student = Student.of(
+                StudentId.create(),
                 user,
                 school,
                 schoolClass,
@@ -406,6 +411,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         Teacher teacher = teacherCommandRepository.getReferenceById(teacherId);
 
         Subject subject = Subject.of(
+                SubjectId.create(),
                 Name.of(name),
                 Description.of("asd"),
                 schoolClass,
@@ -424,7 +430,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                 adminRole
         );
 
-        Admin admin = Admin.of(user);
+        Admin admin = Admin.of(AdminId.create(), user);
 
         return adminCommandRepository.save(admin).adminId();
     }
@@ -434,6 +440,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         Teacher teacher = teacherCommandRepository.getReferenceById(teacherId);
 
         SchoolClass schoolClass = SchoolClass.of(
+                SchoolClassId.create(),
                 Name.of(name),
                 school,
                 teacher,
@@ -472,12 +479,14 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     protected GroovyScriptId execSimpleGroovyScript(User user) {
 
         GroovyScript groovyScript = GroovyScript.builder()
+                .groovyScriptId(GroovyScriptId.create())
                 .scriptContent(ScriptContent.of("return new ScriptResult(\"Test\")"))
                 .scriptStatus(successGroovyScriptStatus)
                 .user(user)
                 .build();
 
         GroovyScriptResult scriptResult = GroovyScriptResult.builder()
+                .groovyScriptResultId(GroovyScriptResultId.create())
                 .groovyScript(groovyScript)
                 .scriptResult(ScriptResult.of("Test"))
                 .execTime(GroovyScriptExecTime.of(Duration.ZERO))
@@ -508,6 +517,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         Teacher teacher = teacherCommandRepository.getReferenceById(teacherId);
 
         TeacherSchedule teacherSchedule = TeacherSchedule.builder()
+                .teacherScheduleId(TeacherScheduleId.create())
                 .timeFrame(timeFrame)
                 .description(Description.of("Something special"))
                 .teacher(teacher)
@@ -520,6 +530,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         ClassRoom classRoom = classRoomCommandRepository.getById(classRoomId);
 
         ClassRoomSchedule classRoomSchedule = ClassRoomSchedule.builder()
+                .classRoomScheduleId(ClassRoomScheduleId.create())
                 .description(Description.of("Something special"))
                 .classRoom(classRoom)
                 .timeFrame(timeFrame)
@@ -532,6 +543,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         School school = schoolCommandRepository.getReferenceById(schoolId);
 
         ClassRoom classRoom = ClassRoom.builder()
+                .classRoomId(ClassRoomId.create())
                 .school(school)
                 .classRoomName(ClassRoomName.of(name))
                 .build();

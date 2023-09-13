@@ -3,9 +3,7 @@ package pl.edziennik.application.command.school.create;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
-import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.mock.repositories.SchoolLevelCommandMockRepo;
-import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.SchoolLevelId;
 import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.school.School;
@@ -44,12 +42,10 @@ class CreateSchoolCommandHandlerTest extends BaseUnitTest {
 
 
         // when
-        OperationResult operationResult = commandHandler.handle(command);
+        commandHandler.handle(command);
 
         // then
-        assertTrue(operationResult.isSuccess());
-
-        Optional<School> school = schoolCommandRepository.findById(SchoolId.of(operationResult.identifier().id()));
+        Optional<School> school = schoolCommandRepository.findById(command.schoolId());
         assertTrue(school.isPresent());
     }
 

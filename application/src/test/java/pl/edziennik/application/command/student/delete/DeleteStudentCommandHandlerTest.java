@@ -3,7 +3,6 @@ package pl.edziennik.application.command.student.delete;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
-import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.mock.repositories.RoleCommandMockRepo;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.domain.school.School;
@@ -12,7 +11,8 @@ import pl.edziennik.domain.student.Student;
 import pl.edziennik.domain.user.User;
 import pl.edziennik.infrastructure.spring.exception.BusinessException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class DeleteStudentCommandHandlerTest extends BaseUnitTest {
 
@@ -56,10 +56,9 @@ class DeleteStudentCommandHandlerTest extends BaseUnitTest {
         DeleteStudentCommand command = new DeleteStudentCommand(student.studentId());
 
         // when
-        OperationResult operationResult = handler.handle(command);
+        handler.handle(command);
 
         // then
-        assertTrue(operationResult.isSuccess());
         Student studentAfterDelete = studentCommandRepository.getReferenceById(student.studentId());
         assertNull(studentAfterDelete);
     }

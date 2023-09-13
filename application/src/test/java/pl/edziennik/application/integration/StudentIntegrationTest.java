@@ -6,7 +6,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.command.student.create.CreateStudentCommand;
-import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.valueobject.id.StudentId;
@@ -49,10 +48,10 @@ public class StudentIntegrationTest extends BaseIntegrationTest {
         );
 
         // when
-        OperationResult operationResult = dispatcher.dispatch(command);
+        dispatcher.run(command);
 
         // then
-        Student student = studentCommandRepository.getByStudentId(StudentId.of(operationResult.identifier().id()));
+        Student student = studentCommandRepository.getByStudentId(command.studentId());
         assertNotNull(student);
         assertNotNull(student.journalNumber());
     }
@@ -83,7 +82,7 @@ public class StudentIntegrationTest extends BaseIntegrationTest {
 
         try {
             // when
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             Assertions.fail("Should throw exception when student with given name or email or pesel already exists");
         } catch (BusinessException e) {
             // then
@@ -125,7 +124,7 @@ public class StudentIntegrationTest extends BaseIntegrationTest {
 
         try {
             // when
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             Assertions.fail("Should throw exception if school class student limit reached");
         } catch (BusinessException e) {
             // then

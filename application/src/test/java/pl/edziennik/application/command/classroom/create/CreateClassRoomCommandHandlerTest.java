@@ -2,8 +2,6 @@ package pl.edziennik.application.command.classroom.create;
 
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
-import pl.edziennik.application.common.dispatcher.OperationResult;
-import pl.edziennik.common.valueobject.id.ClassRoomId;
 import pl.edziennik.common.valueobject.vo.ClassRoomName;
 import pl.edziennik.domain.classroom.ClassRoom;
 import pl.edziennik.domain.school.School;
@@ -26,10 +24,10 @@ class CreateClassRoomCommandHandlerTest extends BaseUnitTest {
         CreateClassRoomCommand command = new CreateClassRoomCommand(school.schoolId(), ClassRoomName.of("TEST"));
 
         // when
-        OperationResult operationResult = handler.handle(command);
+        handler.handle(command);
 
         // then
-        ClassRoom classRoom = classRoomCommandRepository.getById(ClassRoomId.of(operationResult.identifier().id()));
+        ClassRoom classRoom = classRoomCommandRepository.getById(command.classRoomId());
         assertNotNull(classRoom);
     }
 }

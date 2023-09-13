@@ -2,12 +2,10 @@ package pl.edziennik.application.command.grademanagment.assigngrade;
 
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
-import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.application.mock.repositories.RoleCommandMockRepo;
 import pl.edziennik.common.enums.Grade;
 import pl.edziennik.common.valueobject.vo.Description;
 import pl.edziennik.common.valueobject.vo.Weight;
-import pl.edziennik.common.valueobject.id.GradeId;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.student.Student;
@@ -16,7 +14,8 @@ import pl.edziennik.domain.subject.Subject;
 import pl.edziennik.domain.teacher.Teacher;
 import pl.edziennik.domain.user.User;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class AssignGradeToStudentSubjectCommandHandlerTest extends BaseUnitTest {
 
@@ -56,11 +55,10 @@ class AssignGradeToStudentSubjectCommandHandlerTest extends BaseUnitTest {
                 teacher.teacherId()
         );
         // when
-        OperationResult operationResult = handler.handle(command);
+        handler.handle(command);
 
         // then
-        assertTrue(operationResult.isSuccess());
-        pl.edziennik.domain.grade.Grade grade = gradeCommandRepository.getReferenceById(GradeId.of(operationResult.identifier().id()));
+        pl.edziennik.domain.grade.Grade grade = gradeCommandRepository.getReferenceById(command.gradeId());
         assertNotNull(grade);
         assertEquals(grade.studentSubject().studentSubjectId(), studentSubject.studentSubjectId());
 

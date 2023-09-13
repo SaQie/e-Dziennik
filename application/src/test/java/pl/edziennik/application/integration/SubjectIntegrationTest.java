@@ -6,10 +6,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.command.subject.create.CreateSubjectCommand;
-import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.SchoolId;
-import pl.edziennik.common.valueobject.id.SubjectId;
 import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.common.valueobject.vo.Description;
 import pl.edziennik.common.valueobject.vo.Name;
@@ -42,10 +40,10 @@ public class SubjectIntegrationTest extends BaseIntegrationTest {
         );
 
         // when
-        OperationResult operationResult = dispatcher.dispatch(command);
+        dispatcher.run(command);
 
         // then
-        Subject subject = subjectCommandRepository.getBySubjectId(SubjectId.of(operationResult.identifier().id()));
+        Subject subject = subjectCommandRepository.getBySubjectId(command.subjectId());
         assertNotNull(subject);
         assertEquals(subject.schoolClass().schoolClassId(), schoolClassId);
     }
@@ -70,7 +68,7 @@ public class SubjectIntegrationTest extends BaseIntegrationTest {
 
         try {
             // when
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             Assertions.fail("Should throw exception when subject with given name already exists in school class");
         } catch (BusinessException e) {
             // then
@@ -104,7 +102,7 @@ public class SubjectIntegrationTest extends BaseIntegrationTest {
 
         try {
             // when
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             Assertions.fail("Should throw exception when given teacher is from another school than school class ");
         } catch (BusinessException e) {
             // then

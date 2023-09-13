@@ -3,10 +3,14 @@ package pl.edziennik.web.command.classroomschedule;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.application.command.classroomschedule.create.CreateClassRoomScheduleCommand;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.common.valueobject.id.ClassRoomId;
+
+import java.net.URI;
 
 @RestController
 @AllArgsConstructor
@@ -17,12 +21,19 @@ public class ClassRoomScheduleCommandController {
 
     @PostMapping("/classrooms/{classRoomId}/schedules")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createClassRoomSchedule(@PathVariable ClassRoomId classRoomId, @RequestBody @Valid CreateClassRoomScheduleCommand requestCommand) {
+    public ResponseEntity<Void> createClassRoomSchedule(@PathVariable ClassRoomId classRoomId, @RequestBody @Valid CreateClassRoomScheduleCommand requestCommand) {
         CreateClassRoomScheduleCommand command = new CreateClassRoomScheduleCommand(classRoomId, requestCommand);
 
-        // TODO dorob uri jak zrobisz query
-
         dispatcher.run(command);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequestUri()
+                .path("/classrooms/{classRoomId}/schedules")
+                .buildAndExpand(command.classRoomScheduleId().id())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
+
     }
 
 }

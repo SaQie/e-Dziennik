@@ -2,7 +2,6 @@ package pl.edziennik.application.command.admin.create;
 
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
-import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.common.valueobject.vo.Email;
 import pl.edziennik.common.valueobject.vo.Password;
 import pl.edziennik.common.valueobject.vo.Pesel;
@@ -29,10 +28,10 @@ class CreateAdminCommandHandlerTest extends BaseUnitTest {
         );
 
         // when
-        OperationResult operationResult = handler.handle(command);
+        handler.handle(command);
 
         // then
-        assertNotNull(operationResult.identifier());
+        assertNotNull(command.adminId());
     }
 
 }

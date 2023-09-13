@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.command.student.create.CreateStudentCommand;
 import pl.edziennik.application.command.subjectmanagment.assigntostudent.AssignSubjectToStudentCommand;
-import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.common.valueobject.id.*;
 import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.schoolclass.SchoolClass;
@@ -36,7 +35,7 @@ public class StudentSubjectIntegrationTest extends BaseIntegrationTest {
         );
 
         // when
-        dispatcher.dispatch(command);
+        dispatcher.run(command);
 
         // then
         StudentSubject studentSubject = studentSubjectCommandRepository.getByStudentStudentIdAndSubjectSubjectId(studentId, subjectId);
@@ -70,7 +69,7 @@ public class StudentSubjectIntegrationTest extends BaseIntegrationTest {
         );
 
         // when
-        OperationResult operationResult = dispatcher.dispatch(command);
+        dispatcher.run(command);
 
         // then
         assertOneRowExists("student_subject");
@@ -107,7 +106,7 @@ public class StudentSubjectIntegrationTest extends BaseIntegrationTest {
         );
 
         // when
-        dispatcher.dispatch(command);
+        dispatcher.run(command);
 
         // then
         assertNoOneRowExists("student_subject");

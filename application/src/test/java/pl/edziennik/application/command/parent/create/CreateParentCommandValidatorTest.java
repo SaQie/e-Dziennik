@@ -59,7 +59,7 @@ class CreateParentCommandValidatorTest extends BaseUnitTest {
         User user = createUser("Kamil", "Nowak@o2.pl", RoleCommandMockRepo.STUDENT_ROLE_NAME.value());
         user.activate();
         Parent parent = createParent(user, null, null);
-        Student student = createStudent(user, school, SchoolClass.of(null, null, null, schoolClassConfigurationProperties), null, null, parent);
+        Student student = createStudent(user, school, SchoolClass.of(null, null, null, null, schoolClassConfigurationProperties), null, null, parent);
         student = studentCommandRepository.save(student);
 
         CreateParentCommand command = new CreateParentCommand(

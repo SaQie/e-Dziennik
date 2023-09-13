@@ -5,9 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.command.teacher.create.CreateTeacherCommand;
-import pl.edziennik.application.common.dispatcher.OperationResult;
 import pl.edziennik.common.valueobject.id.SchoolId;
-import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.teacher.Teacher;
 import pl.edziennik.infrastructure.spring.exception.BusinessException;
@@ -25,6 +23,7 @@ public class TeacherIntegrationTest extends BaseIntegrationTest {
     public void shouldCreateTeacher() {
         // given
         SchoolId schoolId = createSchool("Test", "12312313", "123123132");
+
         CreateTeacherCommand command = new CreateTeacherCommand(
                 Password.of("password"),
                 Username.of("Test"),
@@ -40,10 +39,10 @@ public class TeacherIntegrationTest extends BaseIntegrationTest {
         );
 
         // when
-        OperationResult operationResult = dispatcher.dispatch(command);
+        dispatcher.run(command);
 
         // then
-        Teacher teacher = teacherCommandRepository.getByTeacherId(TeacherId.of(operationResult.identifier().id()));
+        Teacher teacher = teacherCommandRepository.getByTeacherId(command.teacherId());
         Assertions.assertNotNull(teacher);
     }
 
@@ -69,7 +68,7 @@ public class TeacherIntegrationTest extends BaseIntegrationTest {
 
         try {
             // when
-            dispatcher.dispatch(command);
+            dispatcher.run(command);
             Assertions.fail("Should throw exception when Teacher with given username or email or pesel already exists");
         } catch (BusinessException e) {
             // then
