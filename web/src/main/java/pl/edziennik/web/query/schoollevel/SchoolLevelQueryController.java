@@ -10,7 +10,7 @@ import pl.edziennik.common.view.schoollevel.SchoolLevelView;
 import java.util.List;
 
 @AllArgsConstructor
-@RequestMapping("/api/v1/schoollevels")
+@RequestMapping("/api/v1/school-levels")
 @RestController
 public class SchoolLevelQueryController {
 

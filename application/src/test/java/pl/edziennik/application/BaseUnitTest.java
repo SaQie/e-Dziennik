@@ -35,6 +35,7 @@ import pl.edziennik.infrastructure.repository.classroom.ClassRoomCommandReposito
 import pl.edziennik.infrastructure.repository.classroomschedule.ClassRoomScheduleCommandRepository;
 import pl.edziennik.infrastructure.repository.director.DirectorCommandRepository;
 import pl.edziennik.infrastructure.repository.grade.GradeCommandRepository;
+import pl.edziennik.infrastructure.repository.lessonplan.LessonPlanCommandRepository;
 import pl.edziennik.infrastructure.repository.parent.ParentCommandRepository;
 import pl.edziennik.infrastructure.repository.role.RoleCommandRepository;
 import pl.edziennik.infrastructure.repository.school.SchoolCommandRepository;
@@ -84,6 +85,7 @@ public class BaseUnitTest {
     protected TeacherScheduleCommandRepository teacherScheduleCommandRepository;
     protected ClassRoomScheduleCommandRepository classRoomScheduleCommandRepository;
     protected ClassRoomCommandRepository classRoomCommandRepository;
+    protected LessonPlanCommandRepository lessonPlanCommandRepository;
 
     protected BaseUnitTest() {
         this.gradeCommandRepository = new GradeCommandMockRepo();
@@ -107,6 +109,7 @@ public class BaseUnitTest {
         this.classRoomCommandRepository = new ClassRoomCommandMockRepo();
         this.classRoomScheduleCommandRepository = new ClassRoomScheduleCommandMockRepo();
         this.teacherScheduleCommandRepository = new TeacherScheduleCommandMockRepo();
+        this.lessonPlanCommandRepository = new LessonPlanCommandMockRepo();
 
         this.address = Address.of(
                 pl.edziennik.common.valueobject.vo.Address.of(StringUtil.randomIdentifer(5)),
@@ -121,7 +124,7 @@ public class BaseUnitTest {
 
         SchoolConfigurationProperties schoolConfigurationProperties = new SchoolConfigurationProperties();
         schoolConfigurationProperties.setAverageType(AverageType.ARITHMETIC);
-        schoolConfigurationProperties.setMaxLessonTime(TimeFrameDuration.of(1));
+        schoolConfigurationProperties.setMaxLessonTime(TimeFrameDuration.of(60));
         schoolConfigurationProperties.setMinScheduleTime(TimeFrameDuration.of(10));
 
         this.schoolConfigurationProperties = schoolConfigurationProperties;
@@ -222,7 +225,7 @@ public class BaseUnitTest {
                 address
         );
         school.teachers().add(teacher);
-        return teacher;
+        return teacherCommandRepository.save(teacher);
     }
 
     protected Student createStudent(User user, School school, SchoolClass schoolClass, PersonInformation personInformation, Address address) {
@@ -275,7 +278,7 @@ public class BaseUnitTest {
         );
         schoolClassConfigurationCommandRepository.save(schoolClass.schoolClassConfiguration());
         school.schoolClasses().add(schoolClass);
-        return schoolClass;
+        return schoolClassCommandRepository.save(schoolClass);
     }
 
     protected Subject createSubject(String name, Teacher teacher, SchoolClass schoolClass) {
@@ -287,6 +290,7 @@ public class BaseUnitTest {
                 teacher
         );
         schoolClass.subjects().add(subject);
+        subject = subjectCommandRepository.save(subject);
         return subject;
     }
 

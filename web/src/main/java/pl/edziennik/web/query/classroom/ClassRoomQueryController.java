@@ -16,7 +16,7 @@ public class ClassRoomQueryController {
 
     private final ClassRoomQueryDao dao;
 
-    @GetMapping("/schools/{schoolId}/classrooms")
+    @GetMapping("/schools/{schoolId}/class-rooms")
     @ResponseStatus(HttpStatus.OK)
     public PageView<ClassRoomForSchoolView> getClassRoomsForSchool(Pageable pageable, @PathVariable SchoolId schoolId) {
         return dao.getClassRoomSummaryForSchoolView(pageable, schoolId);

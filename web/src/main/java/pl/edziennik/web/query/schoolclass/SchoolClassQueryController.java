@@ -19,19 +19,19 @@ public class SchoolClassQueryController {
 
     private final SchoolClassQueryDao dao;
 
-    @GetMapping("/schoolclasses/{schoolClassId}")
+    @GetMapping("/school-classes/{schoolClassId}")
     @ResponseStatus(HttpStatus.OK)
     public DetailedSchoolClassView getDetailedSchoolClass(@PathVariable SchoolClassId schoolClassId) {
         return dao.getDetailedSchoolClassView(schoolClassId);
     }
 
-    @GetMapping("/schools/{schoolId}/schoolclasses")
+    @GetMapping("/schools/{schoolId}/school-classes")
     @ResponseStatus(HttpStatus.OK)
     public PageView<SchoolClassSummaryForSchoolView> getSchoolClassSummaryForSchool(@PathVariable SchoolId schoolId, Pageable pageable) {
         return dao.getSchoolClassSummaryForSchoolView(schoolId, pageable);
     }
 
-    @GetMapping("/schoolclasses/{schoolClassId}/configurations")
+    @GetMapping("/school-classes/{schoolClassId}/configurations")
     @ResponseStatus(HttpStatus.OK)
     public SchoolClassConfigSummaryView getSchoolClassConfiguration(@PathVariable SchoolClassId schoolClassId) {
         return dao.getSchoolClassConfigSummaryView(schoolClassId);

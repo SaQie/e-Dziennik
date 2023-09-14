@@ -20,7 +20,7 @@ public class SubjectCommandController {
     private final Dispatcher dispatcher;
 
 
-    @PostMapping("/schoolclasses/{schoolClassId}/subjects")
+    @PostMapping("/school-classes/{schoolClassId}/subjects")
     public ResponseEntity<Void> createSubject(@PathVariable @NotNull(message = "{schoolClass.empty}") SchoolClassId schoolClassId,
                                               @RequestBody @Valid CreateSubjectCommand requestCommand) {
         CreateSubjectCommand command = new CreateSubjectCommand(schoolClassId, requestCommand);

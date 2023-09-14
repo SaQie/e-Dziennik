@@ -25,7 +25,7 @@ public class StudentCommandController {
 
     private final Dispatcher dispatcher;
 
-    @PostMapping("/schoolclasses/{schoolClassId}/students")
+    @PostMapping("/school-classes/{schoolClassId}/students")
     public ResponseEntity<Void> createStudent(@PathVariable @NotNull(message = "{schoolClass.empty}") SchoolClassId schoolClassId,
                                               @RequestBody @Valid CreateStudentCommand requestCommand) {
         CreateStudentCommand command = new CreateStudentCommand(schoolClassId, requestCommand);

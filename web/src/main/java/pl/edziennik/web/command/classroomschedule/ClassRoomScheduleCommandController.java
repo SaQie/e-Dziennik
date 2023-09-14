@@ -19,7 +19,7 @@ public class ClassRoomScheduleCommandController {
 
     private final Dispatcher dispatcher;
 
-    @PostMapping("/classrooms/{classRoomId}/schedules")
+    @PostMapping("/class-rooms/{classRoomId}/schedules")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> createClassRoomSchedule(@PathVariable ClassRoomId classRoomId, @RequestBody @Valid CreateClassRoomScheduleCommand requestCommand) {
         CreateClassRoomScheduleCommand command = new CreateClassRoomScheduleCommand(classRoomId, requestCommand);
@@ -28,7 +28,7 @@ public class ClassRoomScheduleCommandController {
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequestUri()
-                .path("/classrooms/{classRoomId}/schedules")
+                .path("/class-rooms/{classRoomId}/schedules")
                 .buildAndExpand(command.classRoomScheduleId().id())
                 .toUri();
 

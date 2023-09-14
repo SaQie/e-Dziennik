@@ -31,6 +31,7 @@ import pl.edziennik.domain.grade.Grade;
 import pl.edziennik.domain.groovy.GroovyScript;
 import pl.edziennik.domain.groovy.GroovyScriptResult;
 import pl.edziennik.domain.groovy.GroovyScriptStatus;
+import pl.edziennik.domain.lessonplan.LessonPlan;
 import pl.edziennik.domain.role.Role;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.schoolclass.SchoolClass;
@@ -61,6 +62,8 @@ import pl.edziennik.infrastructure.repository.groovy.GroovyScriptQueryRepository
 import pl.edziennik.infrastructure.repository.groovy.result.GroovyScriptResultCommandRepository;
 import pl.edziennik.infrastructure.repository.groovy.result.GroovyScriptResultQueryRepository;
 import pl.edziennik.infrastructure.repository.groovy.status.GroovyScriptStatusQueryRepository;
+import pl.edziennik.infrastructure.repository.lessonplan.LessonPlanCommandRepository;
+import pl.edziennik.infrastructure.repository.lessonplan.LessonPlanQueryRepository;
 import pl.edziennik.infrastructure.repository.parent.ParentCommandRepository;
 import pl.edziennik.infrastructure.repository.parent.ParentQueryRepository;
 import pl.edziennik.infrastructure.repository.role.RoleCommandRepository;
@@ -206,6 +209,10 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     protected ClassRoomCommandRepository classRoomCommandRepository;
     @Autowired
     protected ClassRoomQueryRepository classRoomQueryRepository;
+    @Autowired
+    protected LessonPlanCommandRepository lessonPlanCommandRepository;
+    @Autowired
+    protected LessonPlanQueryRepository lessonPlanQueryRepository;
 
     @Autowired
     protected EntityManager entityManager;
@@ -270,6 +277,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
 
         return schoolCommandRepository.save(school).schoolId();
     }
+
 
     public DirectorId createDirector(String username, String email, String pesel, SchoolId schoolId) {
         return transactionTemplate.execute((result) -> {
@@ -391,7 +399,7 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                 teacher
         );
 
-        return subjectCommandRepository.save(subject).subjectId();
+        return transactionTemplate.execute((x) -> subjectCommandRepository.save(subject).subjectId());
     }
 
     protected AdminId createAdmin(String username, String email) {
@@ -523,6 +531,27 @@ public class BaseIntegrationTest extends ContainerEnvironment {
                 .build();
 
         return classRoomScheduleCommandRepository.save(classRoomSchedule).classRoomScheduleId();
+    }
+
+    protected LessonPlanId createLessonPlan(SchoolClassId schoolClassId, TeacherId teacherId, SubjectId subjectId, ClassRoomId classRoomId, TimeFrame timeFrame) {
+        SchoolClass schoolClass = schoolClassCommandRepository.getBySchoolClassId(schoolClassId);
+        Teacher teacher = teacherCommandRepository.getByTeacherId(teacherId);
+        ClassRoom classRoom = classRoomCommandRepository.getById(classRoomId);
+        Subject subject = subjectCommandRepository.getBySubjectId(subjectId);
+
+        LessonPlanId lessonPlanId = LessonPlanId.create();
+        LessonPlan build = LessonPlan.builder()
+                .lessonPlanId(lessonPlanId)
+                .teacher(teacher)
+                .timeFrame(timeFrame)
+                .schoolClass(schoolClass)
+                .classRoom(classRoom)
+                .lessonOrder(LessonOrder.of(1))
+                .subject(subject)
+                .isSubstitute(false)
+                .build();
+
+        return lessonPlanCommandRepository.save(build).lessonPlanId();
     }
 
     protected ClassRoomId createClassRoom(SchoolId schoolId, String name) {

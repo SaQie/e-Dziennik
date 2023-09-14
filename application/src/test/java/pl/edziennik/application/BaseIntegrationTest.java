@@ -69,6 +69,7 @@ import pl.edziennik.infrastructure.repository.groovy.GroovyScriptQueryRepository
 import pl.edziennik.infrastructure.repository.groovy.result.GroovyScriptResultCommandRepository;
 import pl.edziennik.infrastructure.repository.groovy.result.GroovyScriptResultQueryRepository;
 import pl.edziennik.infrastructure.repository.groovy.status.GroovyScriptStatusQueryRepository;
+import pl.edziennik.infrastructure.repository.lessonplan.LessonPlanCommandRepository;
 import pl.edziennik.infrastructure.repository.parent.ParentCommandRepository;
 import pl.edziennik.infrastructure.repository.parent.ParentQueryRepository;
 import pl.edziennik.infrastructure.repository.role.RoleCommandRepository;
@@ -234,6 +235,8 @@ public class BaseIntegrationTest extends ContainerEnvironment {
     protected GroovyQueryDao groovyQueryDao;
     @Autowired
     protected DirectorQueryDao directorQueryDao;
+    @Autowired
+    protected LessonPlanCommandRepository lessonPlanCommandRepository;
 
     protected TransactionTemplate transactionTemplate;
 

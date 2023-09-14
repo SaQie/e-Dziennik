@@ -18,10 +18,19 @@ _____________
     <a href="https://github.com/SaQie/e-Dziennik/issues"><strong>Request Feature » </strong></a>
   </p>
 
+# 📰 Table of Contents
 
-<div>
-    <h3>About project <img src="images/Info.png" width="20"></h3>
-</div>
+- <strong>[About project »](#ℹ-about-project)</strong>
+- <strong>[Todo »](#-to-do)</strong>
+- <strong>[Milestones »](#-milestones)</strong>
+- <strong>[Tech-Stack »](#-tech-stack)</strong>
+- <strong>[Architecture look »](#-architecture-look)</strong>
+- <strong>[Chat - how it works »](#-chat---how-it-works)</strong>
+- <strong>[How to run »](#-how-to-run)</strong>
+- <strong>[Documentation »](#-documentation)</strong>
+- <strong>[Test coverage »](#-test-coverage)</strong>
+
+# ℹ️ About project
 
 _____________
 
@@ -37,7 +46,7 @@ _____________
 | **Students option**           | ![#00d1a0](images/Student_Male.png)        | **Internationalization**    | ![#00d1a0](images/Language_Skill.png) |
 | **Teachers option**           | ![#00d1a0](images/Teacher.png)             | **Real-Time Chat**          | ![#00d1a0](images/WeChat.png)         |
 | **Parents option**            | ![#00d1a0](images/Family.png)              | **Groovy script Execution** | ![#00d1a0](images/Code_File.png)      |
-| **Admins option**             | ![#00d1a0](images/Admin_Settings_Male.png) |                             |                                       |
+| **Admins option**             | ![#00d1a0](images/Admin_Settings_Male.png) | **Schedules**               | ![#00d1a0](images/Schedule.png)       |
 | **Subjects option**           | ![#00d1a0](images/Read.png)                |                             |                                       |
 | **Grades option**             | ![#00d1a0](images/Numbers.png)             |                             |                                       |
 | **Dynamic app configuration** | ![#FC0000](images/Services.png)            |                             |                                       |
@@ -83,6 +92,10 @@ ___
   Angular web client
 - *(30/07/2023)* My first face to WebSocket's - implemented a new one-to-one chat with message history |
   check <strong>[Chat »](#-chat---how-it-works)</strong>
+- *(14/09/2023)* I decided to delete IQuery and query classes, I came to conclusion, that better idea is to call
+  directly dao from controller, I didn't see any advantages to keeping IQuery and moving every call through Dispatcher,
+  check <strong>[Architecture Look »](#-architecture-look)</strong>
+  where are two looks of architecture, the old one and a new one.
 
 # 👨‍💻 Tech stack
 
@@ -115,6 +128,10 @@ ___
 *I am currently using CQRS architecture in my project.*
 *Architecture look is available in a picture below:*
 
+**NEW architecture:**
+![#FC0000](images/CQRS_new.png)
+
+**OLD architecture:**
 ![#FC0000](images/CQRS_architecture.png)
 
 # 💬 Chat - How it works
@@ -143,3 +160,9 @@ Project has a docker-compose file that allows to run application very simple:
 ____
 
 Project documentation is available on : */swagger-ui/index.html*
+
+# 🧪 Test coverage
+
+**(14/09/2023)** => Project contains over 200 tests (unit and integration)
+
+![#FC0000](images/test_coverage.png)

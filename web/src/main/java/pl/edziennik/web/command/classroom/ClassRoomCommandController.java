@@ -22,7 +22,7 @@ public class ClassRoomCommandController {
     private final Dispatcher dispatcher;
 
 
-    @PostMapping("/schools/{schoolId}/classrooms")
+    @PostMapping("/schools/{schoolId}/class-rooms")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> createClassRoom(@PathVariable SchoolId schoolId, @RequestBody @Valid CreateClassRoomCommand requestCommand) {
         CreateClassRoomCommand command = new CreateClassRoomCommand(schoolId, requestCommand.classRoomName());

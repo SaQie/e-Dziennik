@@ -18,13 +18,13 @@ public class ClassRoomScheduleQueryController {
 
     private final ClassRoomScheduleQueryDao dao;
 
-    @GetMapping("/classrooms/{classRoomId}/schedules")
+    @GetMapping("/class-rooms/{classRoomId}/schedules")
     @ResponseStatus(HttpStatus.OK)
     public PageView<ClassRoomScheduleSummaryView> getClassRoomSchedule(Pageable pageable, @PathVariable ClassRoomId classRoomId) {
         return dao.getClassRoomScheduleSummaryView(pageable, classRoomId);
     }
 
-    @GetMapping("/schools/{schoolId}/classrooms/schedules")
+    @GetMapping("/schools/{schoolId}/class-rooms/schedules")
     @ResponseStatus(HttpStatus.OK)
     public PageView<ClassRoomScheduleSummaryForSchoolView> getClassRoomsSchedule(Pageable pageable, @PathVariable SchoolId schoolId) {
         return dao.getClassRoomsSchedulesSummaryForSchoolView(pageable, schoolId);

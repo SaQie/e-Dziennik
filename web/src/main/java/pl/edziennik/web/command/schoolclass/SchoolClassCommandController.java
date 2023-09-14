@@ -22,7 +22,7 @@ public class SchoolClassCommandController {
 
     private final Dispatcher dispatcher;
 
-    @PostMapping("/schools/{schoolId}/schoolclasses")
+    @PostMapping("/schools/{schoolId}/school-classes")
     public ResponseEntity<Void> createSchoolClass(@PathVariable @NotNull(message = "${school.empty}") SchoolId schoolId,
                                                   @RequestBody @Valid CreateSchoolClassCommand requestCommand) {
         CreateSchoolClassCommand command = new CreateSchoolClassCommand(schoolId, requestCommand);
@@ -40,7 +40,7 @@ public class SchoolClassCommandController {
     }
 
 
-    @PatchMapping("/schoolclasses/{schoolClassId}/configurations")
+    @PatchMapping("/school-classes/{schoolClassId}/configurations")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void changeSchoolClassConfigurationValues(@RequestBody @Valid ChangeSchoolClassConfigurationValuesCommand commandBody,
                                                      @PathVariable SchoolClassId schoolClassId) {

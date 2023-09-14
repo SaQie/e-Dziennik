@@ -25,7 +25,8 @@ public class SubjectManagmentCommandController {
         dispatcher.run(command);
 
         URI location = ServletUriComponentsBuilder
-                .fromPath("/api/v1/students/{studentId}/subjects/{subjectId}/grades")
+                .fromCurrentContextPath()
+                .path("/api/v1/students/{studentId}/subjects/{subjectId}/grades")
                 .buildAndExpand(command.studentId().id(), command.studentId().id())
                 .toUri();
 

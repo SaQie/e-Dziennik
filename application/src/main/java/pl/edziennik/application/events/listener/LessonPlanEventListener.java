@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 import pl.edziennik.application.events.event.LessonPlanCreatedEvent;
+import pl.edziennik.common.valueobject.id.ClassRoomScheduleId;
+import pl.edziennik.common.valueobject.id.TeacherScheduleId;
 import pl.edziennik.common.valueobject.vo.*;
 import pl.edziennik.domain.classroom.ClassRoom;
 import pl.edziennik.domain.classroom.ClassRoomSchedule;
@@ -46,12 +48,14 @@ public class LessonPlanEventListener {
         Description classRoomScheduleDescription = createClassRoomScheduleDescription(teacherFullName, classRoomName, subjectName, timeFrame);
 
         TeacherSchedule teacherSchedule = TeacherSchedule.builder()
+                .teacherScheduleId(TeacherScheduleId.create())
                 .timeFrame(timeFrame)
                 .teacher(teacher)
                 .description(teacherScheduleDescription)
                 .build();
 
         ClassRoomSchedule classRoomSchedule = ClassRoomSchedule.builder()
+                .classRoomScheduleId(ClassRoomScheduleId.create())
                 .timeFrame(timeFrame)
                 .classRoom(classRoom)
                 .description(classRoomScheduleDescription)
