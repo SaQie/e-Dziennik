@@ -1,9 +1,11 @@
 package pl.edziennik.application.query.lessonplan;
 
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import pl.edziennik.common.cache.CacheValueConstants;
 import pl.edziennik.common.valueobject.base.Identifier;
 import pl.edziennik.common.valueobject.id.LessonPlanId;
 import pl.edziennik.common.valueobject.id.SchoolClassId;

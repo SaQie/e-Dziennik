@@ -1,7 +1,9 @@
 package pl.edziennik.application.query.subject;
 
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
+import pl.edziennik.common.cache.CacheValueConstants;
 import pl.edziennik.common.valueobject.base.Identifier;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.id.SubjectId;

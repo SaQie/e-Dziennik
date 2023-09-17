@@ -2,10 +2,12 @@ package pl.edziennik.application.command.groovy;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.common.dispatcher.CommandHandler;
+import pl.edziennik.common.cache.CacheValueConstants;
 import pl.edziennik.common.valueobject.id.GroovyScriptResultId;
 import pl.edziennik.common.valueobject.id.GroovyScriptStatusId;
 import pl.edziennik.common.valueobject.vo.GroovyScriptExecTime;

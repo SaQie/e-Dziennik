@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.common.dispatcher.CommandHandler;
 import pl.edziennik.application.events.event.UserAccountCreatedEvent;
+import pl.edziennik.common.cache.CacheValueConstants;
 import pl.edziennik.common.valueobject.id.RoleId;
 import pl.edziennik.common.valueobject.vo.Password;
 import pl.edziennik.common.valueobject.vo.PersonInformation;
@@ -32,7 +33,7 @@ class CreateTeacherCommandHandler implements CommandHandler<CreateTeacherCommand
 
     @Override
     @Transactional
-    @CacheEvict(allEntries = true, value = "teachers")
+    @CacheEvict(allEntries = true, value = CacheValueConstants.TEACHERS)
     public void handle(CreateTeacherCommand command) {
         School school = schoolCommandRepository.getReferenceById(command.schoolId());
 

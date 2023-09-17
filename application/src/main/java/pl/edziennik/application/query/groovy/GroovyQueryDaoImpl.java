@@ -1,8 +1,10 @@
 package pl.edziennik.application.query.groovy;
 
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import pl.edziennik.common.cache.CacheValueConstants;
 import pl.edziennik.common.valueobject.base.Identifier;
 import pl.edziennik.common.valueobject.id.GroovyScriptId;
 import pl.edziennik.common.valueobject.id.UserId;

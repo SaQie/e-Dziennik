@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.common.dispatcher.CommandHandler;
 import pl.edziennik.application.events.event.StudentAccountCreatedEvent;
 import pl.edziennik.application.events.event.UserAccountCreatedEvent;
+import pl.edziennik.common.cache.CacheValueConstants;
 import pl.edziennik.common.valueobject.id.RoleId;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.vo.Password;
@@ -39,7 +40,7 @@ class CreateStudentCommandHandler implements CommandHandler<CreateStudentCommand
 
     @Override
     @Transactional
-    @CacheEvict(allEntries = true, value = "students")
+    @CacheEvict(allEntries = true, value = CacheValueConstants.STUDENTS)
     public void handle(CreateStudentCommand command) {
         SchoolClass schoolClass = schoolClassCommandRepository.getBySchoolClassId(command.schoolClassId());
         School school = schoolClass.school();

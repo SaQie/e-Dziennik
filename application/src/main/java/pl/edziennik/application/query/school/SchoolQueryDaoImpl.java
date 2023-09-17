@@ -1,8 +1,10 @@
 package pl.edziennik.application.query.school;
 
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import pl.edziennik.common.cache.CacheValueConstants;
 import pl.edziennik.common.valueobject.base.Identifier;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.common.view.PageView;
@@ -32,6 +34,7 @@ class SchoolQueryDaoImpl implements SchoolQueryDao {
     }
 
     @Override
+    @Cacheable(value = CacheValueConstants.SCHOOLS, key = "#root.method.name")
     public PageView<SchoolSummaryView> getSchoolSummaryView(Pageable pageable) {
         return PageView.fromPage(schoolQueryRepository.findAllWithPagination(pageable));
     }

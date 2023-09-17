@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.CommandHandler;
+import pl.edziennik.common.cache.CacheValueConstants;
 import pl.edziennik.common.properties.SchoolClassConfigurationProperties;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.schoolclass.SchoolClass;
@@ -22,7 +23,6 @@ class CreateSchoolClassCommandHandler implements CommandHandler<CreateSchoolClas
     private final SchoolClassConfigurationProperties configurationProperties;
 
     @Override
-    @CacheEvict(allEntries = true, value = "schoolClasses")
     public void handle(CreateSchoolClassCommand command) {
         Teacher teacher = teacherCommandRepository.getReferenceById(command.teacherId());
         School school = schoolCommandRepository.getReferenceById(command.schoolId());
