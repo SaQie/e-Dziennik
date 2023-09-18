@@ -1,13 +1,11 @@
-package pl.edziennik.application.command.grademanagment.assigngrade;
+package pl.edziennik.application.command.grademanagment.assign;
 
 import lombok.AllArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.common.dispatcher.CommandHandler;
 import pl.edziennik.application.events.event.GradeAddedEvent;
-import pl.edziennik.common.cache.CacheValueConstants;
 import pl.edziennik.domain.grade.Grade;
 import pl.edziennik.domain.studentsubject.StudentSubject;
 import pl.edziennik.domain.teacher.Teacher;

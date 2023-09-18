@@ -1,4 +1,4 @@
-package pl.edziennik.application.command.subjectmanagment.assigntostudent;
+package pl.edziennik.application.command.subjectmanagment.unassign;
 
 import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.Command;
@@ -7,10 +7,10 @@ import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.id.SubjectId;
 
 /**
- * A command used for assigning the subject to the student
+ * Command used for unassign student from subject
  */
-@Handler(handler = AssignSubjectToStudentCommandHandler.class, validator = AssignSubjectToStudentCommandValidator.class)
-public record AssignSubjectToStudentCommand(
+@Handler(handler = UnassignStudentFromSubjectCommandHandler.class, validator = UnassignStudentFromSubjectCommandValidator.class)
+public record UnassignStudentFromSubjectCommand(
 
         @NotNull(message = "{student.empty}") StudentId studentId,
         @NotNull(message = "{subject.empty}") SubjectId subjectId

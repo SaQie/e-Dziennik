@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pl.edziennik.application.command.grademanagment.assigngrade.AssignGradeToStudentSubjectCommand;
+import pl.edziennik.application.command.grademanagment.assign.AssignGradeToStudentSubjectCommand;
+import pl.edziennik.application.command.grademanagment.unassign.UnassignGradeFromStudentSubjectCommand;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 
 import java.net.URI;
@@ -20,8 +21,8 @@ public class GradeManagmentCommandController {
 
     private final Dispatcher dispatcher;
 
-    @PostMapping
-    public ResponseEntity<Void> addStudentSubjectGrade(@RequestBody @Valid AssignGradeToStudentSubjectCommand command) {
+    @PostMapping("/assign")
+    public ResponseEntity<Void> assignStudentSubjectGrade(@RequestBody @Valid AssignGradeToStudentSubjectCommand command) {
         dispatcher.run(command);
 
         URI location = ServletUriComponentsBuilder
@@ -31,6 +32,13 @@ public class GradeManagmentCommandController {
                 .toUri();
 
         return ResponseEntity.created(location).build();
+    }
+
+    @PostMapping("/unassign")
+    public ResponseEntity<Void> unassignStudentSubjectGrade(@RequestBody @Valid UnassignGradeFromStudentSubjectCommand command) {
+        dispatcher.run(command);
+
+        return ResponseEntity.noContent().build();
     }
 
 }

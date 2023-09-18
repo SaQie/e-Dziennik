@@ -18,6 +18,7 @@ import pl.edziennik.domain.admin.Admin;
 import pl.edziennik.domain.classroom.ClassRoom;
 import pl.edziennik.domain.classroom.ClassRoomSchedule;
 import pl.edziennik.domain.director.Director;
+import pl.edziennik.domain.grade.Grade;
 import pl.edziennik.domain.parent.Parent;
 import pl.edziennik.domain.role.Role;
 import pl.edziennik.domain.school.School;
@@ -94,7 +95,7 @@ public class BaseUnitTest {
         this.schoolClassCommandRepository = new SchoolClassCommandMockRepo();
         this.schoolLevelCommandRepository = new SchoolLevelCommandMockRepo();
         this.studentCommandRepository = new StudentCommandMockRepo();
-        this.subjectCommandRepository = new SubjectCommandMockRepo(schoolClassCommandRepository, studentCommandRepository);
+        this.subjectCommandRepository = new SubjectCommandMockRepo(schoolClassCommandRepository, studentCommandRepository, gradeCommandRepository);
         this.teacherCommandRepository = new TeacherCommandMockRepo();
         this.userCommandRepository = new UserCommandMockRepo();
         this.resourceCreator = new ResourceCreatorMock();
@@ -310,10 +311,19 @@ public class BaseUnitTest {
     }
 
     protected StudentSubject createStudentSubject(Student student, Subject subject) {
-        return StudentSubject.of(
+        StudentSubject studentSubject = StudentSubject.of(
                 student,
                 subject
         );
+        studentSubject = studentSubjectCommandRepository.save(studentSubject);
+
+        return studentSubject;
+    }
+
+    protected Grade assignGradeToStudentSubject(StudentSubject studentSubject, Teacher teacher, pl.edziennik.common.enums.Grade grade, Weight weight) {
+        Grade gradeEnum = Grade.of(GradeId.create(), grade, weight, Description.of("TEST"), studentSubject, teacher);
+        gradeEnum = gradeCommandRepository.save(gradeEnum);
+        return gradeEnum;
     }
 
     protected ClassRoom createClassRoom(String name, School school) {

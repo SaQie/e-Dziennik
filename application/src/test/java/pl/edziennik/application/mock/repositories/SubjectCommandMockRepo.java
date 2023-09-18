@@ -5,9 +5,11 @@ import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.StudentId;
 import pl.edziennik.common.valueobject.id.SubjectId;
 import pl.edziennik.common.valueobject.id.TeacherId;
+import pl.edziennik.domain.grade.Grade;
 import pl.edziennik.domain.schoolclass.SchoolClass;
 import pl.edziennik.domain.student.Student;
 import pl.edziennik.domain.subject.Subject;
+import pl.edziennik.infrastructure.repository.grade.GradeCommandRepository;
 import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassCommandRepository;
 import pl.edziennik.infrastructure.repository.student.StudentCommandRepository;
 import pl.edziennik.infrastructure.repository.subject.SubjectCommandRepository;
@@ -22,12 +24,14 @@ public class SubjectCommandMockRepo implements SubjectCommandRepository {
     private final Map<SubjectId, Subject> database;
     private final SchoolClassCommandRepository schoolClassMockRepo;
     private final StudentCommandRepository studentCommandMockRepo;
+    private final GradeCommandRepository gradeCommandRepository;
 
     public SubjectCommandMockRepo(SchoolClassCommandRepository schoolClassCommandRepository,
-                                  StudentCommandRepository studentCommandRepository) {
+                                  StudentCommandRepository studentCommandRepository, GradeCommandRepository gradeCommandRepository) {
         this.database = new HashMap<>();
         this.schoolClassMockRepo = schoolClassCommandRepository;
         this.studentCommandMockRepo = studentCommandRepository;
+        this.gradeCommandRepository = gradeCommandRepository;
 
     }
 
@@ -81,5 +85,24 @@ public class SubjectCommandMockRepo implements SubjectCommandRepository {
     public boolean isTeacherFromProvidedSubject(TeacherId teacherId, SubjectId subjectId) {
         Subject subject = getReferenceById(subjectId);
         return subject.teacher().teacherId().equals(teacherId);
+    }
+
+    @Override
+    public boolean existsGradesAssignedToSubject(SubjectId subjectId) {
+        long count = gradeCommandRepository.getGradesBySubjectId(subjectId)
+                .stream()
+                .filter(grade -> grade.studentSubject().subject().subjectId().equals(subjectId))
+                .count();
+        return count > 0;
+    }
+
+    @Override
+    public Name getNameBySubjectId(SubjectId subjectId) {
+        return database.get(subjectId).name();
+    }
+
+    @Override
+    public void deleteBySubjectId(SubjectId subjectId) {
+        database.remove(subjectId);
     }
 }

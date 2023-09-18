@@ -1,10 +1,8 @@
-package pl.edziennik.application.command.subjectmanagment.assigntostudent;
+package pl.edziennik.application.command.subjectmanagment.assign;
 
 import lombok.AllArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Component;
 import pl.edziennik.application.common.dispatcher.CommandHandler;
-import pl.edziennik.common.cache.CacheValueConstants;
 import pl.edziennik.domain.student.Student;
 import pl.edziennik.domain.studentsubject.StudentSubject;
 import pl.edziennik.domain.subject.Subject;

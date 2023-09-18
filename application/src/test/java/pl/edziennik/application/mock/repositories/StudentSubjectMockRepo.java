@@ -64,4 +64,27 @@ public class StudentSubjectMockRepo implements StudentSubjectCommandRepository {
         }
         return list.get(0);
     }
+
+    @Override
+    public void deleteByStudentIdAndSubjectId(StudentId studentId, SubjectId subjectId) {
+        List<StudentSubject> studentSubjects = database.values().stream()
+                .filter(studentSubject -> studentSubject.student().studentId().equals(studentId))
+                .filter(studentSubject -> studentSubject.subject().subjectId().equals(subjectId))
+                .toList();
+
+        if (studentSubjects.isEmpty()) {
+            return;
+        }
+
+        database.remove(studentSubjects.get(0).studentSubjectId());
+    }
+
+    @Override
+    public boolean existsGradesAssignedToStudentSubject(StudentId studentId, SubjectId subjectId) {
+        return database.values()
+                .stream()
+                .filter(studentSubject -> studentSubject.student().studentId().equals(studentId))
+                .filter(studentSubject -> studentSubject.subject().subjectId().equals(subjectId))
+                .anyMatch(studentSubject -> !studentSubject.grades().isEmpty());
+    }
 }

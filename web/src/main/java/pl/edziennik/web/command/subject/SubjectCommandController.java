@@ -7,8 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.application.command.subject.create.CreateSubjectCommand;
+import pl.edziennik.application.command.subject.delete.DeleteSubjectCommand;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
+import pl.edziennik.common.valueobject.id.SubjectId;
 
 import java.net.URI;
 
@@ -35,6 +37,15 @@ public class SubjectCommandController {
 
         return ResponseEntity.created(location).build();
 
+    }
+
+    @DeleteMapping("/subjects/{subjectId}")
+    public ResponseEntity<Void> deleteSubject(@PathVariable SubjectId subjectId) {
+        DeleteSubjectCommand command = new DeleteSubjectCommand(subjectId);
+
+        dispatcher.run(command);
+
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -8,19 +8,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pl.edziennik.application.command.subjectmanagment.assigntostudent.AssignSubjectToStudentCommand;
+import pl.edziennik.application.command.subjectmanagment.assign.AssignSubjectToStudentCommand;
+import pl.edziennik.application.command.subjectmanagment.unassign.UnassignStudentFromSubjectCommand;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 
 import java.net.URI;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/subject-managment")
+@RequestMapping("/api/v1/subject-management")
 public class SubjectManagmentCommandController {
 
     private final Dispatcher dispatcher;
 
-    @PostMapping
+    @PostMapping("/assign")
     public ResponseEntity<Void> assignSubjectToStudent(@RequestBody @Valid AssignSubjectToStudentCommand command) {
         dispatcher.run(command);
 
@@ -31,6 +32,13 @@ public class SubjectManagmentCommandController {
                 .toUri();
 
         return ResponseEntity.created(location).build();
+    }
+
+    @PostMapping("/unassign")
+    public ResponseEntity<Void> unassignSubjectFromStudent(@RequestBody @Valid UnassignStudentFromSubjectCommand command){
+        dispatcher.run(command);
+
+        return ResponseEntity.noContent().build();
     }
 
 }

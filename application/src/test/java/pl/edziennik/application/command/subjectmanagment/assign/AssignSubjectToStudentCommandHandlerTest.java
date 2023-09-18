@@ -1,4 +1,4 @@
-package pl.edziennik.application.command.subjectmanagment.assigntostudent;
+package pl.edziennik.application.command.subjectmanagment.assign;
 
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;

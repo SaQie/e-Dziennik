@@ -407,6 +407,22 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         return studentCommandRepository.save(student).studentId();
     }
 
+    protected StudentSubjectId assignSubjectToStudent(SubjectId subjectId, StudentId studentId) {
+        Student student = studentCommandRepository.getByStudentId(studentId);
+        Subject subject = subjectCommandRepository.getBySubjectId(subjectId);
+
+        StudentSubject studentSubject = StudentSubject.of(student, subject);
+        return studentSubjectCommandRepository.save(studentSubject).studentSubjectId();
+    }
+
+    protected GradeId assignGradeToStudentSubject(StudentSubjectId studentSubjectId, pl.edziennik.common.enums.Grade grade, TeacherId teacherId) {
+        StudentSubject studentSubject = studentSubjectCommandRepository.findById(studentSubjectId).get();
+        Teacher teacher = teacherCommandRepository.getByTeacherId(teacherId);
+
+        Grade gradeEntity = Grade.of(GradeId.create(), grade, Weight.of(1), Description.of("Test"), studentSubject, teacher);
+        return gradeCommandRepository.save(gradeEntity).gradeId();
+    }
+
     protected SubjectId createSubject(String name, SchoolClassId schoolClassId, TeacherId teacherId) {
 
         SchoolClass schoolClass = schoolClassCommandRepository.getReferenceById(schoolClassId);

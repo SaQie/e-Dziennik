@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edziennik.application.BaseIntegrationTest;
-import pl.edziennik.application.command.grademanagment.assigngrade.AssignGradeToStudentSubjectCommand;
+import pl.edziennik.application.command.grademanagment.assign.AssignGradeToStudentSubjectCommand;
 import pl.edziennik.common.enums.Grade;
 import pl.edziennik.common.valueobject.id.*;
 import pl.edziennik.common.valueobject.vo.Description;

@@ -1,4 +1,4 @@
-package pl.edziennik.application.command.grademanagment.assigngrade;
+package pl.edziennik.application.command.grademanagment.assign;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

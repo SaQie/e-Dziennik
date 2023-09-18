@@ -1,4 +1,4 @@
-package pl.edziennik.application.command.subjectmanagment.assigntostudent;
+package pl.edziennik.application.command.subjectmanagment.assign;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

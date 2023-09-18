@@ -1,4 +1,4 @@
-package pl.edziennik.application.command.grademanagment.assigngrade;
+package pl.edziennik.application.command.grademanagment.assign;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;

@@ -1,4 +1,4 @@
-package pl.edziennik.application.command.grademanagment.assigngrade;
+package pl.edziennik.application.command.grademanagment.assign;
 
 import org.junit.jupiter.api.Test;
 import pl.edziennik.application.BaseUnitTest;
@@ -41,10 +41,8 @@ class AssignGradeToStudentSubjectCommandHandlerTest extends BaseUnitTest {
         student = studentCommandRepository.save(student);
 
         Subject subject = createSubject("Przyroda", teacher, schoolClass);
-        subject = subjectCommandRepository.save(subject);
 
         StudentSubject studentSubject = createStudentSubject(student, subject);
-        studentSubject = studentSubjectCommandRepository.save(studentSubject);
 
         AssignGradeToStudentSubjectCommand command = new AssignGradeToStudentSubjectCommand(
                 student.studentId(),

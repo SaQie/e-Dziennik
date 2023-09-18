@@ -26,6 +26,7 @@ public enum ErrorCode {
     GROOVY_SCRIPT_ERROR(1200),
     CONFIGURATION_CONFLICT(1220),
     DATE_CONFLICT(1230),
+    RELEATED_OBJECT_EXISTS(1240),
     BUSY_SCHEDULE(1210);
 
     private final Integer errorCode;

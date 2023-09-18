@@ -1,5 +1,6 @@
 package pl.edziennik.infrastructure.repository.studentsubject;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.RepositoryDefinition;
 import pl.edziennik.common.valueobject.id.StudentId;
@@ -35,4 +36,17 @@ public interface StudentSubjectCommandRepository {
     StudentSubject getReferenceByStudentStudentIdAndSubjectSubjectId(StudentId studentId, SubjectId subjectId);
 
     StudentSubject getByStudentStudentIdAndSubjectSubjectId(StudentId studentId, SubjectId subjectId);
+
+    @Query("DELETE FROM StudentSubject ss " +
+            "WHERE ss.student.studentId = :studentId " +
+            "AND ss.subject.subjectId = :subjectId ")
+    @Modifying
+    void deleteByStudentIdAndSubjectId(StudentId studentId, SubjectId subjectId);
+
+    @Query("SELECT CASE WHEN COUNT(g) > 0 THEN TRUE ELSE FALSE END " +
+            "FROM StudentSubject ss " +
+            "JOIN ss.grades g " +
+            "WHERE ss.student.studentId = :studentId " +
+            "AND ss.subject.subjectId = :subjectId ")
+    boolean existsGradesAssignedToStudentSubject(StudentId studentId, SubjectId subjectId);
 }

@@ -1,4 +1,4 @@
-package pl.edziennik.application.command.subjectmanagment.assigntostudent;
+package pl.edziennik.application.command.subjectmanagment.assign;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;

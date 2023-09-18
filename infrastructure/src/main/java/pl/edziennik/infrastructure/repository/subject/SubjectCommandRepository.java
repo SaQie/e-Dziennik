@@ -1,5 +1,6 @@
 package pl.edziennik.infrastructure.repository.subject;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.RepositoryDefinition;
 import pl.edziennik.common.valueobject.vo.Name;
@@ -49,4 +50,18 @@ public interface SubjectCommandRepository {
             "WHERE s.subjectId = :subjectId " +
             "AND t.teacherId = :teacherId ")
     boolean isTeacherFromProvidedSubject(TeacherId teacherId, SubjectId subjectId);
+
+    @Query("SELECT CASE WHEN COUNT(g) > 0 THEN TRUE ELSE FALSE END " +
+            "FROM Subject s " +
+            "JOIN StudentSubject ss ON (ss.subject.subjectId = s.subjectId) " +
+            "JOIN ss.grades g " +
+            "WHERE s.subjectId = :subjectId")
+    boolean existsGradesAssignedToSubject(SubjectId subjectId);
+
+    @Query("SELECT s.name FROM Subject s where s.subjectId = :subjectId ")
+    Name getNameBySubjectId(SubjectId subjectId);
+
+    @Query("DELETE FROM Subject s WHERE s.subjectId = :subjectId")
+    @Modifying
+    void deleteBySubjectId(SubjectId subjectId);
 }
