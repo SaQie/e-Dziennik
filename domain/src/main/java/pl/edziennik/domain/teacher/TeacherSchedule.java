@@ -6,6 +6,7 @@ import lombok.experimental.Accessors;
 import pl.edziennik.common.valueobject.id.TeacherScheduleId;
 import pl.edziennik.common.valueobject.vo.Description;
 import pl.edziennik.common.valueobject.vo.TimeFrame;
+import pl.edziennik.domain.lessonplan.LessonPlan;
 
 @Entity
 @Getter
@@ -22,6 +23,9 @@ public class TeacherSchedule {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Teacher teacher;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private LessonPlan lessonPlan;
+
     @Embedded
     @Column(nullable = false)
     private TimeFrame timeFrame;
@@ -36,13 +40,14 @@ public class TeacherSchedule {
     private Long version;
 
     @Builder
-    public static TeacherSchedule of(TeacherScheduleId teacherScheduleId, Teacher teacher, TimeFrame timeFrame, Description description) {
+    public static TeacherSchedule of(TeacherScheduleId teacherScheduleId, Teacher teacher, TimeFrame timeFrame, Description description, LessonPlan lessonPlan) {
         TeacherSchedule teacherSchedule = new TeacherSchedule();
 
         teacherSchedule.teacher = teacher;
         teacherSchedule.timeFrame = timeFrame;
         teacherSchedule.description = description;
         teacherSchedule.teacherScheduleId = teacherScheduleId;
+        teacherSchedule.lessonPlan = lessonPlan;
 
         return teacherSchedule;
     }

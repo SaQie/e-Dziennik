@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.RepositoryDefinition;
 import pl.edziennik.common.valueobject.id.ClassRoomId;
 import pl.edziennik.common.valueobject.id.ClassRoomScheduleId;
+import pl.edziennik.common.valueobject.id.LessonPlanId;
 import pl.edziennik.domain.classroom.ClassRoomSchedule;
 
 import java.time.LocalDateTime;
@@ -20,4 +21,10 @@ public interface ClassRoomScheduleCommandRepository {
             "AND crs.timeFrame.endDate BETWEEN :startDate and :endDate ")
     List<ClassRoomSchedule> getClassRoomSchedulesInTimeFrame(LocalDateTime startDate,
                                                        LocalDateTime endDate, ClassRoomId classRoomId);
+
+    @Query("SELECT crs.classRoomScheduleId FROM ClassRoomSchedule crs " +
+            "WHERE crs.lessonPlan.lessonPlanId IN (:lessonPlanIds)")
+    List<ClassRoomScheduleId> getClassRoomSchedulesByLessonPlans(List<LessonPlanId> lessonPlanIds);
+
+    void deleteById(ClassRoomScheduleId classRoomScheduleId);
 }

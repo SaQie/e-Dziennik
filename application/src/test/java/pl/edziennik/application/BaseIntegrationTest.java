@@ -17,6 +17,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
+import pl.edziennik.application.command.lessonplan.create.CreateLessonPlanCommand;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.application.query.classroom.ClassRoomQueryDao;
 import pl.edziennik.application.query.classroomschedule.ClassRoomScheduleQueryDao;
@@ -43,6 +44,7 @@ import pl.edziennik.domain.grade.Grade;
 import pl.edziennik.domain.groovy.GroovyScript;
 import pl.edziennik.domain.groovy.GroovyScriptResult;
 import pl.edziennik.domain.groovy.GroovyScriptStatus;
+import pl.edziennik.domain.lessonplan.LessonPlan;
 import pl.edziennik.domain.role.Role;
 import pl.edziennik.domain.school.School;
 import pl.edziennik.domain.schoolclass.SchoolClass;
@@ -467,6 +469,16 @@ public class BaseIntegrationTest extends ContainerEnvironment {
         );
 
         return schoolClassCommandRepository.save(schoolClass).schoolClassId();
+    }
+
+    protected LessonPlanId createLessonPlan(TimeFrame timeFrame, SchoolClassId schoolClassId, SubjectId subjectId, ClassRoomId classRoomId) {
+        CreateLessonPlanCommand command = new CreateLessonPlanCommand(subjectId, null, classRoomId,
+                timeFrame.startDate(), timeFrame.endDate(), schoolClassId);
+
+        return transactionTemplate.execute((x) -> {
+            dispatcher.run(command);
+            return lessonPlanCommandRepository.getById(command.lessonPlanId()).lessonPlanId();
+        });
     }
 
     protected StudentSubjectId assignStudentToSubject(StudentId studentId, SubjectId subjectId) {

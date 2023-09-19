@@ -1,15 +1,14 @@
 package pl.edziennik.application.mock.repositories;
 
+import pl.edziennik.common.valueobject.id.LessonPlanId;
 import pl.edziennik.common.valueobject.vo.Name;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.SchoolId;
 import pl.edziennik.domain.schoolclass.SchoolClass;
+import pl.edziennik.domain.teacher.TeacherSchedule;
 import pl.edziennik.infrastructure.repository.schoolclass.SchoolClassCommandRepository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class SchoolClassCommandMockRepo implements SchoolClassCommandRepository {
 
@@ -66,5 +65,29 @@ public class SchoolClassCommandMockRepo implements SchoolClassCommandRepository 
         Integer maxStudentsSize = schoolClass.schoolClassConfiguration().maxStudentsSize();
 
         return studentsCount == maxStudentsSize;
+    }
+
+    @Override
+    public boolean isStudentsExists(SchoolClassId schoolClassId) {
+        return database.values()
+                .stream()
+                .anyMatch(x -> !x.students().isEmpty());
+    }
+
+    @Override
+    public boolean isSubjectsExists(SchoolClassId schoolClassId) {
+        return database.values()
+                .stream()
+                .anyMatch(schoolClass -> !schoolClass.students().isEmpty());
+    }
+
+    @Override
+    public void deleteById(SchoolClassId schoolClassId) {
+        database.remove(schoolClassId);
+    }
+
+    @Override
+    public List<LessonPlanId> getLessonPlansIdsBySchoolClassId(SchoolClassId schoolClassId) {
+        return Collections.emptyList();
     }
 }

@@ -2,6 +2,7 @@ package pl.edziennik.infrastructure.repository.teacherschedule;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.RepositoryDefinition;
+import pl.edziennik.common.valueobject.id.LessonPlanId;
 import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.common.valueobject.id.TeacherScheduleId;
 import pl.edziennik.domain.teacher.TeacherSchedule;
@@ -21,4 +22,10 @@ public interface TeacherScheduleCommandRepository {
             "AND ts.timeFrame.endDate BETWEEN :startDate and :endDate ")
     List<TeacherSchedule> getTeacherSchedulesInTimeFrame(LocalDateTime startDate, LocalDateTime endDate,
                                                          TeacherId teacherId);
+
+    @Query("SELECT ts.teacherScheduleId FROM TeacherSchedule ts " +
+            "WHERE ts.lessonPlan.lessonPlanId IN (:lessonPlanIds)")
+    List<TeacherScheduleId> getTeacherSchedulesByLessonPlans(List<LessonPlanId> lessonPlanIds);
+
+    void deleteById(TeacherScheduleId teacherScheduleId);
 }

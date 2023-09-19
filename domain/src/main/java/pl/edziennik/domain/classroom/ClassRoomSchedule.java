@@ -6,6 +6,7 @@ import lombok.experimental.Accessors;
 import pl.edziennik.common.valueobject.id.ClassRoomScheduleId;
 import pl.edziennik.common.valueobject.vo.Description;
 import pl.edziennik.common.valueobject.vo.TimeFrame;
+import pl.edziennik.domain.lessonplan.LessonPlan;
 
 @Entity
 @Getter
@@ -22,6 +23,9 @@ public class ClassRoomSchedule {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private ClassRoom classRoom;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE,CascadeType.DETACH,CascadeType.REFRESH})
+    private LessonPlan lessonPlan;
+
     @Embedded
     @Column(nullable = false)
     private TimeFrame timeFrame;
@@ -36,13 +40,15 @@ public class ClassRoomSchedule {
     private Long version;
 
     @Builder
-    public static ClassRoomSchedule of(ClassRoomScheduleId classRoomScheduleId, ClassRoom classRoom, TimeFrame timeFrame, Description description) {
+    public static ClassRoomSchedule of(ClassRoomScheduleId classRoomScheduleId, ClassRoom classRoom,
+                                       TimeFrame timeFrame, Description description, LessonPlan lessonPlan) {
         ClassRoomSchedule classRoomSchedule = new ClassRoomSchedule();
 
         classRoomSchedule.classRoom = classRoom;
         classRoomSchedule.timeFrame = timeFrame;
         classRoomSchedule.description = description;
         classRoomSchedule.classRoomScheduleId = classRoomScheduleId;
+        classRoomSchedule.lessonPlan = lessonPlan;
 
         return classRoomSchedule;
     }

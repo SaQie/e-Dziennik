@@ -51,12 +51,14 @@ public class LessonPlanEventListener {
                 .teacherScheduleId(TeacherScheduleId.create())
                 .timeFrame(timeFrame)
                 .teacher(teacher)
+                .lessonPlan(lessonPlan)
                 .description(teacherScheduleDescription)
                 .build();
 
         ClassRoomSchedule classRoomSchedule = ClassRoomSchedule.builder()
                 .classRoomScheduleId(ClassRoomScheduleId.create())
                 .timeFrame(timeFrame)
+                .lessonPlan(lessonPlan)
                 .classRoom(classRoom)
                 .description(classRoomScheduleDescription)
                 .build();

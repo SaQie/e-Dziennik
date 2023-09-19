@@ -1,5 +1,6 @@
 package pl.edziennik.application.mock.repositories;
 
+import pl.edziennik.common.valueobject.id.LessonPlanId;
 import pl.edziennik.common.valueobject.id.TeacherId;
 import pl.edziennik.common.valueobject.id.TeacherScheduleId;
 import pl.edziennik.domain.teacher.TeacherSchedule;
@@ -36,5 +37,19 @@ public class TeacherScheduleCommandMockRepo implements TeacherScheduleCommandRep
                 .filter(schedule -> schedule.timeFrame().endDate().isEqual(endDate))
                 .filter(schedule -> schedule.teacher().teacherId().equals(teacherId))
                 .toList();
+    }
+
+    @Override
+    public List<TeacherScheduleId> getTeacherSchedulesByLessonPlans(List<LessonPlanId> lessonPlanIds) {
+        return database.values()
+                .stream()
+                .filter(teacherSchedule -> lessonPlanIds.contains(teacherSchedule.lessonPlan().lessonPlanId()))
+                .map(TeacherSchedule::teacherScheduleId)
+                .toList();
+    }
+
+    @Override
+    public void deleteById(TeacherScheduleId teacherScheduleId) {
+        database.remove(teacherScheduleId);
     }
 }

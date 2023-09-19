@@ -44,7 +44,6 @@ public class LessonPlanIntegrationTest extends BaseIntegrationTest {
 
         List<ClassRoomSchedule> classRoomSchedulesInTimeFrame = classRoomScheduleCommandRepository.getClassRoomSchedulesInTimeFrame(DATE_2022_01_01_10_00, DATE_2022_01_01_10_30, classRoomId);
         assertEquals(1, classRoomSchedulesInTimeFrame.size());
-
     }
 
     @Test

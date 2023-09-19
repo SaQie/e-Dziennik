@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.application.command.schoolclass.changeconfig.ChangeSchoolClassConfigurationValuesCommand;
 import pl.edziennik.application.command.schoolclass.create.CreateSchoolClassCommand;
+import pl.edziennik.application.command.schoolclass.delete.DeleteSchoolClassCommand;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.common.valueobject.id.SchoolClassId;
 import pl.edziennik.common.valueobject.id.SchoolId;
@@ -45,6 +46,14 @@ public class SchoolClassCommandController {
     public void changeSchoolClassConfigurationValues(@RequestBody @Valid ChangeSchoolClassConfigurationValuesCommand commandBody,
                                                      @PathVariable SchoolClassId schoolClassId) {
         ChangeSchoolClassConfigurationValuesCommand command = new ChangeSchoolClassConfigurationValuesCommand(schoolClassId, commandBody.maxStudentsSize(), commandBody.autoAssignSubjects());
+
+        dispatcher.run(command);
+    }
+
+    @DeleteMapping("/school-classes/{schoolClassId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteSchoolClass(@PathVariable SchoolClassId schoolClassId){
+        DeleteSchoolClassCommand command = new DeleteSchoolClassCommand(schoolClassId);
 
         dispatcher.run(command);
     }
