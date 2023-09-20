@@ -1,5 +1,7 @@
 package pl.edziennik.web.query.teacherschedule;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
@@ -15,16 +17,21 @@ import pl.edziennik.common.view.teacherschedule.summaryforschool.TeacherSchedule
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1")
+@Tag(name = "Teacher API")
 public class TeacherScheduleQueryController {
 
     private final TeacherScheduleQueryDao dao;
 
+    @Operation(summary = "Get given teacher schedules",
+            description = "This API endpoint returns a paginated teacher schedules data")
     @GetMapping("/teachers/{teacherId}/schedules")
     @ResponseStatus(HttpStatus.OK)
     public PageView<TeacherScheduleSummaryView> getTeacherSchedule(Pageable pageable, @PathVariable TeacherId teacherId) {
         return dao.getTeacherSchedulesSummaryView(pageable, teacherId);
     }
 
+    @Operation(summary = "Get given school teachers schedules",
+            description = "This API endpoint returns a paginated teachers schedules data for given schoolId")
     @GetMapping("/schools/{schoolId}/teachers/schedules")
     @ResponseStatus(HttpStatus.OK)
     public PageView<TeacherScheduleSummaryForSchoolView> getTeachersScheduleForSchool(Pageable pageable, @PathVariable SchoolId schoolId) {

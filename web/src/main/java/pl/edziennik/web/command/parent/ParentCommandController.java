@@ -1,5 +1,7 @@
 package pl.edziennik.web.command.parent;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,10 +18,12 @@ import java.net.URI;
 @RestController
 @RequestMapping("/api/v1/parents")
 @AllArgsConstructor
+@Tag(name = "Parent API")
 public class ParentCommandController {
 
     private final Dispatcher dispatcher;
 
+    @Operation(summary = "Create a new parent account")
     @PostMapping()
     public ResponseEntity<Void> createParent(@RequestBody @Valid CreateParentCommand command) {
         dispatcher.run(command);
@@ -33,6 +37,7 @@ public class ParentCommandController {
         return ResponseEntity.created(location).build();
     }
 
+    @Operation(summary = "Change parent address data")
     @PutMapping("/{parentId}/addresses")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateAddress(@PathVariable ParentId parentId, @RequestBody ChangeAddressCommand command) {

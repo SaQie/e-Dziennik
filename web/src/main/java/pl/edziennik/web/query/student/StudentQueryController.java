@@ -1,5 +1,7 @@
 package pl.edziennik.web.query.student;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -13,16 +15,19 @@ import pl.edziennik.common.view.student.StudentSummaryView;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/students")
+@Tag(name = "Student API")
 public class StudentQueryController {
 
     private final StudentQueryDao dao;
 
+    @Operation(summary = "Get detailed information about given student")
     @GetMapping("/{studentId}")
     @ResponseStatus(HttpStatus.OK)
     public DetailedStudentView getStudentById(@PathVariable StudentId studentId) {
         return dao.getDetailedStudentView(studentId);
     }
 
+    @Operation(summary = "Get list of all students")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public PageView<StudentSummaryView> getAllStudents(Pageable pageable) {

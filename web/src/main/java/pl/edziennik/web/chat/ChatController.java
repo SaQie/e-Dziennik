@@ -1,5 +1,7 @@
 package pl.edziennik.web.chat;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -22,17 +24,23 @@ import pl.edziennik.common.view.chat.ChatMessageView;
 @RestController
 @RequestMapping("/api/v1/chat")
 @AllArgsConstructor
+@Tag(name = "Chat API")
 public class ChatController {
 
     private final SimpMessagingTemplate template;
     private final ChatQueryDao dao;
     private final Dispatcher dispatcher;
 
+    @Operation(summary = "Return list of messages for specific chatId",
+            description = "This api endpoint returns all messages that has been written for specific chatId, result is paginated")
     @GetMapping("/history/{chatId}")
     public PageView<ChatMessageView> getChatHistory(Pageable pageable, @PathVariable ChatId chatId) {
         return dao.getChatMessageHistoryView(pageable, chatId);
     }
 
+    @Operation(summary = "Return or create chatId for given senderId and recipientId",
+            description = "This api endpoint returns a new chatId if not exist yet for the given senderId and recipientId, " +
+                    "or returns existing chatId if chatId for given recipientId and senderId has been created before")
     @GetMapping("/chatroom/{recipientId}/{senderId}")
     public ChatId getChatRoomId(@PathVariable RecipientId recipientId, @PathVariable SenderId senderId) {
         return dao.getChatIdByRecipientAndSender(senderId, recipientId)
@@ -48,7 +56,7 @@ public class ChatController {
 
     @MessageMapping("/chat")
     public void sendMessage(@Payload CreateChatMessageCommand command) {
-//        dispatcher.dispatch(command);
+        dispatcher.run(command);
 
         template.convertAndSendToUser(command.chatId().id().toString(), "/messages/chat", command);
     }

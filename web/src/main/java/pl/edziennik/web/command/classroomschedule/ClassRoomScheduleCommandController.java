@@ -1,5 +1,7 @@
 package pl.edziennik.web.command.classroomschedule;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,10 +17,14 @@ import java.net.URI;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1")
+@Tag(name = "Class-room API")
 public class ClassRoomScheduleCommandController {
 
     private final Dispatcher dispatcher;
 
+    @Operation(summary = "Create a new class-room schedule",
+            description = "This API endpoint creates a new class room schedule, keep in mind that, always if you create lesson-plan for given class-room " +
+                    "the class-room schedule will be created in background automatically")
     @PostMapping("/class-rooms/{classRoomId}/schedules")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> createClassRoomSchedule(@PathVariable ClassRoomId classRoomId, @RequestBody @Valid CreateClassRoomScheduleCommand requestCommand) {

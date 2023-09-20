@@ -1,9 +1,11 @@
 package pl.edziennik.infrastructure.authentication.security.jwt.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -21,12 +23,14 @@ import java.io.IOException;
 
 @RestController
 @AllArgsConstructor
+@Tag(name = "Security API")
 public class JwtController {
 
     private final String AUTHORIZATION = "Authorization";
 
     private final JwtService jwtService;
 
+    @Operation(summary = "Login user")
     @PostMapping("/login")
     @ApiResponses({
             @ApiResponse(responseCode = "401", content = @Content(schema = @Schema(implementation = AuthErrorDto.class))),
@@ -38,11 +42,13 @@ public class JwtController {
 
     }
 
+    @Operation(hidden = true)
     @GetMapping("/login")
     public void loginDefaultEndpoint() {
 
     }
 
+    @Operation(summary = "Refresh JWT token")
     @PostMapping("/jwt/refreshtoken")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String refreshToken = request.getHeader(HttpHeaders.AUTHORIZATION);
@@ -50,6 +56,7 @@ public class JwtController {
         setRequiredHeaders(response, refreshToken.substring("Bearer ".length()), token);
     }
 
+    @Operation(summary = "Validate JWT token given in header")
     @PostMapping("/jwt/validate")
     public boolean validateToken(HttpServletRequest request) {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);

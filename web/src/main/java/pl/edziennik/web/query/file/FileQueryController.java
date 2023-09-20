@@ -1,5 +1,7 @@
 package pl.edziennik.web.query.file;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -16,10 +18,12 @@ import java.io.ByteArrayInputStream;
 @RestController
 @RequestMapping("/api/v1/files")
 @AllArgsConstructor
+@Tag(name = "Grade API")
 public class FileQueryController {
 
     private final FileQueryDao dao;
 
+    @Operation(summary = "Generate PDF with given student's grades")
     @GetMapping("/grades/{studentId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<InputStreamResource> getStudentAllSubjectsGradesSummaryFile(@PathVariable StudentId studentId, @RequestParam String type) {

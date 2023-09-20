@@ -1,5 +1,7 @@
 package pl.edziennik.web.command.classroom;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,11 +19,14 @@ import java.net.URI;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1")
+@Tag(name = "Class-room API")
 public class ClassRoomCommandController {
 
     private final Dispatcher dispatcher;
 
 
+    @Operation(summary = "Create a new class room",
+            description = "This API endpoint creates a new class-room that will be assigned to given schoolId")
     @PostMapping("/schools/{schoolId}/class-rooms")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> createClassRoom(@PathVariable SchoolId schoolId, @RequestBody @Valid CreateClassRoomCommand requestCommand) {
@@ -38,6 +43,8 @@ public class ClassRoomCommandController {
         return ResponseEntity.created(location).build();
     }
 
+    @Operation(summary = "Change class room name",
+            description = "This API endpoint changes the class room name")
     @PatchMapping("/{classRoomId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Void> changeClassRoomName(@PathVariable ClassRoomId classRoomId, @RequestBody @Valid ChangeClassRoomNameCommand request) {

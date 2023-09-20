@@ -1,5 +1,7 @@
 package pl.edziennik.web.command.subject;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -17,11 +19,14 @@ import java.net.URI;
 @RestController
 @RequestMapping("/api/v1")
 @AllArgsConstructor
+@Tag(name = "Subject API")
 public class SubjectCommandController {
 
     private final Dispatcher dispatcher;
 
 
+    @Operation(summary = "Create a new subject",
+            description = "This API endpoint creates a new subject that will be assigned to the given schoolClassId")
     @PostMapping("/school-classes/{schoolClassId}/subjects")
     public ResponseEntity<Void> createSubject(@PathVariable @NotNull(message = "{schoolClass.empty}") SchoolClassId schoolClassId,
                                               @RequestBody @Valid CreateSubjectCommand requestCommand) {
@@ -39,6 +44,7 @@ public class SubjectCommandController {
 
     }
 
+    @Operation(summary = "Delete subject with the given identifier")
     @DeleteMapping("/subjects/{subjectId}")
     public ResponseEntity<Void> deleteSubject(@PathVariable SubjectId subjectId) {
         DeleteSubjectCommand command = new DeleteSubjectCommand(subjectId);

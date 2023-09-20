@@ -1,5 +1,7 @@
 package pl.edziennik.web.command.teacherschedule;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,10 +17,13 @@ import java.net.URI;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1")
+@Tag(name = "Teacher API")
 public class TeacherScheduleCommandController {
 
     private final Dispatcher dispatcher;
 
+    @Operation(summary = "Create a new teacher schedule",
+            description = "This API creates a new teacher schedule a with specific time frame (from time -> to time)")
     @PostMapping("/teachers/{teacherId}/schedules")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> createTeacherSchedule(@PathVariable TeacherId teacherId, @RequestBody @Valid CreateTeacherScheduleCommand requestCommand) {

@@ -1,5 +1,7 @@
 package pl.edziennik.web.command.teacher;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -18,10 +20,12 @@ import java.net.URI;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1")
+@Tag(name = "Teacher API")
 public class TeacherCommandController {
 
     private final Dispatcher dispatcher;
 
+    @Operation(summary = "Create a new teacher")
     @PostMapping("/schools/{schoolId}/teachers")
     public ResponseEntity<Void> createTeacher(@PathVariable @NotNull(message = "{school.empty}") SchoolId schoolId,
                                               @RequestBody @Valid CreateTeacherCommand requestCommand) {
@@ -39,6 +43,7 @@ public class TeacherCommandController {
     }
 
 
+    @Operation(summary = "Change teacher address data")
     @PutMapping("/teachers/{teacherId}/address")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateAddress(@PathVariable TeacherId teacherId, @RequestBody ChangeAddressCommand command) {

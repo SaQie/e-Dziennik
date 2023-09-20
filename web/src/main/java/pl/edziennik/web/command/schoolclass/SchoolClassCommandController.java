@@ -1,5 +1,7 @@
 package pl.edziennik.web.command.schoolclass;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -19,10 +21,13 @@ import java.net.URI;
 @RestController
 @RequestMapping("/api/v1")
 @AllArgsConstructor
+@Tag(name = "School-class API")
 public class SchoolClassCommandController {
 
     private final Dispatcher dispatcher;
 
+    @Operation(summary = "Create a new school-class",
+            description = "This API endpoint creates a new school-class that will be assigned to the given schoolId")
     @PostMapping("/schools/{schoolId}/school-classes")
     public ResponseEntity<Void> createSchoolClass(@PathVariable @NotNull(message = "${school.empty}") SchoolId schoolId,
                                                   @RequestBody @Valid CreateSchoolClassCommand requestCommand) {
@@ -41,6 +46,7 @@ public class SchoolClassCommandController {
     }
 
 
+    @Operation(summary = "Change school-class configuration data")
     @PatchMapping("/school-classes/{schoolClassId}/configurations")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void changeSchoolClassConfigurationValues(@RequestBody @Valid ChangeSchoolClassConfigurationValuesCommand commandBody,
@@ -50,9 +56,10 @@ public class SchoolClassCommandController {
         dispatcher.run(command);
     }
 
+    @Operation(summary = "Delete school-class with given identifier")
     @DeleteMapping("/school-classes/{schoolClassId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteSchoolClass(@PathVariable SchoolClassId schoolClassId){
+    public void deleteSchoolClass(@PathVariable SchoolClassId schoolClassId) {
         DeleteSchoolClassCommand command = new DeleteSchoolClassCommand(schoolClassId);
 
         dispatcher.run(command);

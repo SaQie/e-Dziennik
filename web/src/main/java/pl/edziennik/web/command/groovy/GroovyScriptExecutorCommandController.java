@@ -1,5 +1,7 @@
 package pl.edziennik.web.command.groovy;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +17,16 @@ import java.net.URI;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/scripts")
+@Tag(name = "Groovy-script API")
 public class GroovyScriptExecutorCommandController {
 
     private final Dispatcher dispatcher;
 
+    @Operation(summary = "Execute groovy script",
+            description = "This API endpoint executes given in body groovy script, and saves an attempt to execute if fails, " +
+                    "or a result of groovy script of no error. Check location header after execute to see result")
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody()
     public ResponseEntity<Void> executeGroovyScript(@RequestBody ExecuteGroovyScriptCommand command) {
         dispatcher.run(command);
 
@@ -34,6 +39,9 @@ public class GroovyScriptExecutorCommandController {
         return ResponseEntity.ok().location(location).build();
     }
 
+    @Operation(summary = "Execute groovy script from file",
+            description = "This API endpoint executes given in file groovy script, and saves an attempt to execute if fails, " +
+                    "or a result of groovy script of no error. Check location header after execute to see result")
     @PostMapping("/file")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Void> executeGroovyScriptFile(@RequestPart("file") MultipartFile file) {
