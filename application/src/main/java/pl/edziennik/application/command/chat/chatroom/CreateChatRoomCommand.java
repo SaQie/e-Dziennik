@@ -2,6 +2,7 @@ package pl.edziennik.application.command.chat.chatroom;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.Command;
@@ -17,7 +18,11 @@ import pl.edziennik.common.valueobject.id.SenderId;
 public record CreateChatRoomCommand(
 
         @JsonIgnore ChatId chatId,
+
+        @Schema(example = "29b8ce56-5964-11ee-8c99-0242ac120002")
         @Valid @NotNull(message = "${field.empty}") SenderId senderId,
+
+        @Schema(example = "29b8ce56-5964-11ee-8c99-0242ac120002")
         @Valid @NotNull(message = "${field.empty}") RecipientId recipientId
 
 ) implements Command {

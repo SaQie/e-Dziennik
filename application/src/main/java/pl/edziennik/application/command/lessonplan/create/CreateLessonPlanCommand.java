@@ -3,6 +3,7 @@ package pl.edziennik.application.command.lessonplan.create;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.Command;
@@ -18,10 +19,20 @@ import java.time.LocalDateTime;
 public record CreateLessonPlanCommand(
 
         @JsonIgnore LessonPlanId lessonPlanId,
+
+        @Schema(example = "29b8d216-5964-11ee-8c99-0242ac120002")
         @Valid @NotNull(message = "{subject.empty}") SubjectId subjectId,
+
+        @Schema(description = "Optional value (substitute)")
         TeacherId teacherId,
+
+        @Schema(example = "29b8d216-5964-11ee-8c99-0242ac120002")
         @Valid @NotNull(message = "{field.empty}") ClassRoomId classRoomId,
+
+        @Schema(example = "2023-01-01 08:00:00")
         @Valid @NotNull(message = "{field.empty}") @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDate,
+
+        @Schema(example = "2023-01-01 08:45:00")
         @Valid @NotNull(message = "{field.empty}") @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDate,
         @JsonIgnore SchoolClassId schoolClassId
 

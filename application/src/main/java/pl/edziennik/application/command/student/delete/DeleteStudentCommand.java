@@ -1,6 +1,7 @@
 package pl.edziennik.application.command.student.delete;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.Command;
 import pl.edziennik.application.common.dispatcher.Handler;
@@ -12,6 +13,7 @@ import pl.edziennik.common.valueobject.id.StudentId;
 @Handler(handler = DeleteStudentCommandHandler.class)
 public record DeleteStudentCommand(
 
+        @JsonIgnore
         @NotNull(message = "{student.empty}") StudentId studentId
 
 ) implements Command {

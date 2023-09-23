@@ -2,6 +2,7 @@ package pl.edziennik.application.command.parent.create;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.Command;
@@ -17,15 +18,35 @@ import pl.edziennik.common.valueobject.vo.*;
 public record CreateParentCommand(
 
         @JsonIgnore ParentId parentId,
+
+        @Schema(example = "SuperSecretPassword123")
         @Valid @NotNull(message = "{password.empty}") Password password,
+
+        @Schema(example = "SuperUser")
         @Valid @NotNull(message = "{username.empty}") Username username,
+
+        @Schema(example = "Kamil")
         @Valid @NotNull(message = "{firstName.empty}") FirstName firstName,
+
+        @Schema(example = "Nowak")
         @Valid @NotNull(message = "{lastName.empty}") LastName lastName,
+
+        @Schema(example = "Mostowa 2/2")
         @Valid @NotNull(message = "{address.empty}") Address address,
+
+        @Schema(example = "22-200")
         @Valid @NotNull(message = "{postalCode.empty}") PostalCode postalCode,
+
+        @Schema(example = "Warszawa")
         @Valid @NotNull(message = "{city.empty}") City city,
+
+        @Schema(example = "22323213423")
         @Valid @NotNull(message = "{pesel.invalid}") Pesel pesel,
+
+        @Schema(example = "test@example.com")
         @Valid @NotNull(message = "{email.empty}") Email email,
+
+        @Schema(example = "601652322")
         @Valid @NotNull(message = "{phone.invalid}") PhoneNumber phoneNumber,
         StudentId studentId
 

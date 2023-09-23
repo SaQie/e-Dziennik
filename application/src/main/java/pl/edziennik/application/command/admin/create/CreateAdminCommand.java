@@ -2,6 +2,7 @@ package pl.edziennik.application.command.admin.create;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.Command;
@@ -21,9 +22,16 @@ import pl.edziennik.common.valueobject.vo.Username;
 public record CreateAdminCommand(
 
         @JsonIgnore AdminId adminId,
+
+        @Schema(example = "ExampleUsername")
         @Valid @NotNull(message = "{username.empty}") Username username,
+        @Schema(example = "Example@example.com")
         @Valid @NotNull(message = "{email.empty}") Email email,
+
+        @Schema(example = "SuperSecretPassword123")
         @Valid @NotNull(message = "{password.empty}") Password password,
+
+        @Schema(example = "22323213423")
         @Valid @NotNull(message = "{pesel.empty}") Pesel pesel
 
 ) implements Command {

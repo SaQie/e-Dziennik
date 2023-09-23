@@ -2,6 +2,7 @@ package pl.edziennik.application.command.schoolclass.create;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.Command;
@@ -18,8 +19,13 @@ import pl.edziennik.common.valueobject.vo.Name;
 public record CreateSchoolClassCommand(
 
         @JsonIgnore SchoolClassId schoolClassId,
+
+        @Schema(example = "1B")
         @Valid @NotNull(message = "{name.empty}") Name className,
+
+        @Schema(example = "29b8d0c2-5964-11ee-8c99-0242ac120002")
         @NotNull(message = "{teacher.empty}") TeacherId teacherId,
+
         @JsonIgnore SchoolId schoolId
 
 ) implements Command {

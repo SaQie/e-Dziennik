@@ -1,5 +1,7 @@
 package pl.edziennik.application.command.address.changeaddress;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import pl.edziennik.application.common.dispatcher.Command;
 import pl.edziennik.application.common.dispatcher.Handler;
@@ -17,10 +19,15 @@ import java.util.UUID;
 @Handler(handler = ChangeAddressCommandHandler.class)
 public record ChangeAddressCommand(
         UUID id,
+        @Schema(example = "Ogrodowa 2/2")
         @Valid Address address,
+
+        @Schema(example = "Warszawa")
         @Valid City city,
+
+        @Schema(example = "22-222")
         @Valid PostalCode postalCode,
-        CommandFor commandFor
+        @JsonIgnore CommandFor commandFor
 ) implements Command {
 
     public static final String ID = "id";

@@ -1,5 +1,6 @@
 package pl.edziennik.application.command.schoolclass.delete;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.Command;
 import pl.edziennik.application.common.dispatcher.Handler;
@@ -10,6 +11,7 @@ import pl.edziennik.common.valueobject.id.SchoolClassId;
  */
 @Handler(handler = DeleteSchoolClassCommandHandler.class, validator = DeleteSchoolClassCommandValidator.class)
 public record DeleteSchoolClassCommand(
+
         @NotNull(message = "${field.empty}") SchoolClassId schoolClassId
 ) implements Command {
 

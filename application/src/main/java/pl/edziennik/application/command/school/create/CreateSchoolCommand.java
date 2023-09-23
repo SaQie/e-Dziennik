@@ -3,6 +3,7 @@ package pl.edziennik.application.command.school.create;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.Command;
@@ -18,13 +19,29 @@ import pl.edziennik.common.valueobject.vo.*;
 public record CreateSchoolCommand(
 
         @JsonIgnore SchoolId schoolId,
+
+        @Schema(example = "University")
         @Valid @NotNull(message = "{name.empty}") Name name,
+
+        @Schema(example = "Ogrodowa 2/2")
         @Valid @NotNull(message = "{address.empty}") Address address,
+
+        @Schema(example = "22-222")
         @Valid @NotNull(message = "{postalCode.empty}") PostalCode postalCode,
+
+        @Schema(example = "Warszawa")
         @Valid @NotNull(message = "{city.empty}") City city,
+
+        @Schema(example = "8263989886")
         @Valid @NotNull(message = "{nip.invalid}") Nip nip,
+
+        @Schema(example = "476280628")
         @Valid @NotNull(message = "{regon.invalid}") Regon regon,
+
+        @Schema(example = "123123123")
         @Valid @NotNull(message = "{phone.invalid}") PhoneNumber phoneNumber,
+
+        @Schema(example = "ff131a86-1f42-11ee-be56-0242ac120002")
         @Valid @NotNull(message = "{schoolLevel.empty}") SchoolLevelId schoolLevelId
 
 ) implements Command {

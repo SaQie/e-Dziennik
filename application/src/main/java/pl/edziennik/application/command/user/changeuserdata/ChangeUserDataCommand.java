@@ -1,5 +1,6 @@
 package pl.edziennik.application.command.user.changeuserdata;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import pl.edziennik.application.common.dispatcher.*;
 import pl.edziennik.common.valueobject.vo.Email;
@@ -13,7 +14,11 @@ import pl.edziennik.common.valueobject.id.UserId;
 public record ChangeUserDataCommand(
 
         UserId userId,
+
+        @Schema(example = "newUsername")
         @Valid Username username,
+
+        @Schema(example = "newEmail@test.com")
         @Valid Email email
 
 ) implements Command {

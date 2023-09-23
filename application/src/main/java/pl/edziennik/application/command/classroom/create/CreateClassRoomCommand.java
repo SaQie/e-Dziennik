@@ -2,6 +2,7 @@ package pl.edziennik.application.command.classroom.create;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.Command;
@@ -18,6 +19,8 @@ public record CreateClassRoomCommand(
 
         @JsonIgnore ClassRoomId classRoomId,
         @JsonIgnore SchoolId schoolId,
+
+        @Schema(example = "1B")
         @Valid @NotNull(message = "${field.empty}") ClassRoomName classRoomName
 
 ) implements Command {

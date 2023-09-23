@@ -1,5 +1,6 @@
 package pl.edziennik.application.command.classroom.changename;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.Command;
@@ -14,6 +15,7 @@ import pl.edziennik.common.valueobject.vo.ClassRoomName;
 public record ChangeClassRoomNameCommand(
 
         ClassRoomId classRoomId,
+        @Schema(example = "1B")
         @Valid @NotNull(message = "${field.empty}") ClassRoomName classRoomName
 
 ) implements Command {

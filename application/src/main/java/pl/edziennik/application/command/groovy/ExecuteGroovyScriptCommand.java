@@ -2,6 +2,7 @@ package pl.edziennik.application.command.groovy;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.Command;
@@ -16,6 +17,8 @@ import pl.edziennik.common.valueobject.vo.ScriptContent;
 public record ExecuteGroovyScriptCommand(
 
         @JsonIgnore GroovyScriptId groovyScriptId,
+
+        @Schema(description = "Groovy script code")
         @Valid @NotNull(message = "${field.empty}") ScriptContent scriptContent
 
 ) implements Command {

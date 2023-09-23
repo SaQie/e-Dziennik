@@ -1,5 +1,6 @@
 package pl.edziennik.application.command.user.activate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import pl.edziennik.application.common.dispatcher.*;
 import pl.edziennik.common.valueobject.vo.Token;
 
@@ -8,7 +9,9 @@ import pl.edziennik.common.valueobject.vo.Token;
  */
 @Handler(handler = ActivateUserCommandHandler.class)
 public record ActivateUserCommand(
-        Token token
+
+        @JsonIgnore Token token
+
 ) implements Command {
 
     public static final String TOKEN = "token";

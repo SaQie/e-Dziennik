@@ -1,5 +1,7 @@
 package pl.edziennik.application.command.school.changeconfig;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import pl.edziennik.application.common.dispatcher.Command;
 import pl.edziennik.application.common.dispatcher.Handler;
 import pl.edziennik.common.enums.AverageType;
@@ -12,9 +14,15 @@ import pl.edziennik.common.valueobject.vo.TimeFrameDuration;
 @Handler(handler = ChangeSchoolConfigurationValuesCommandHandler.class)
 public record ChangeSchoolConfigurationValuesCommand(
 
-        SchoolId schoolId,
+        @JsonIgnore SchoolId schoolId,
+
+        @Schema(example = "WEIGHTED")
         AverageType averageType,
+
+        @Schema(example = "45")
         TimeFrameDuration maxLessonTime,
+
+        @Schema(example = "30")
         TimeFrameDuration minScheduleTime
 
 

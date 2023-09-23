@@ -2,6 +2,7 @@ package pl.edziennik.application.command.chat.chatmessage;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import pl.edziennik.application.common.dispatcher.Command;
@@ -20,11 +21,21 @@ import pl.edziennik.common.valueobject.vo.FullName;
 public record CreateChatMessageCommand(
 
         @JsonIgnore ChatMessageId chatMessageId,
+        @Schema(example = "29b8ce56-5964-11ee-8c99-0242ac120002")
         @Valid @NotNull(message = "${field.empty}") SenderId senderId,
+
+        @Schema(example = "29b8ce56-5964-11ee-8c99-0242ac120002")
         @Valid @NotNull(message = "${field.empty}") RecipientId recipientId,
+
+        @Schema(example = "29b8ce56-5964-11ee-8c99-0242ac120002")
         @Valid @NotNull(message = "${field.empty}") ChatId chatId,
+        @Schema(example = "Kamil Nowak")
         @Valid @NotNull(message = "${field.empty}") FullName senderName,
+
+        @Schema(example = "Dawid Nowak")
         @Valid @NotNull(message = "${field.empty}") FullName recipientName,
+
+        @Schema(example = "Hello !")
         @Valid @NotNull(message = "${field.empty}") ChatContent chatContent
 
 ) implements Command {

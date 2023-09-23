@@ -1,6 +1,7 @@
 package pl.edziennik.infrastructure.validator;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
 import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
 
 /**
@@ -12,9 +13,15 @@ import pl.edziennik.infrastructure.validator.errorcode.ErrorCode;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record ValidationError(
+        @Schema(example = "teacherId")
         String field,
+
+        @Schema(example = "1000")
         Integer errorCode,
+
+        @Schema(example = "Object with given id not exist")
         String message,
+
         String detail
 ) {
 
