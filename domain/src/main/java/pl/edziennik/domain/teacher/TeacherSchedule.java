@@ -51,4 +51,8 @@ public class TeacherSchedule {
 
         return teacherSchedule;
     }
+
+    public boolean isLinkedWithLessonPlan(){
+        return lessonPlan != null;
+    }
 }

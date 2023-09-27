@@ -9,10 +9,12 @@ import pl.edziennik.domain.teacher.TeacherSchedule;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RepositoryDefinition(domainClass = TeacherSchedule.class, idClass = TeacherScheduleId.class)
 public interface TeacherScheduleCommandRepository {
 
+    @Query("SELECT ts FROM TeacherSchedule ts where ts.teacherScheduleId = :teacherScheduleId ")
     TeacherSchedule getReferenceById(TeacherScheduleId teacherScheduleId);
 
     TeacherSchedule save(TeacherSchedule teacherSchedule);
@@ -28,4 +30,6 @@ public interface TeacherScheduleCommandRepository {
     List<TeacherScheduleId> getTeacherSchedulesByLessonPlans(List<LessonPlanId> lessonPlanIds);
 
     void deleteById(TeacherScheduleId teacherScheduleId);
+
+    Optional<TeacherSchedule> findById(TeacherScheduleId teacherScheduleId);
 }

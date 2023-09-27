@@ -9,8 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.edziennik.application.command.teacherschedule.create.CreateTeacherScheduleCommand;
+import pl.edziennik.application.command.teacherschedule.delete.DeleteTeacherScheduleCommand;
 import pl.edziennik.application.common.dispatcher.Dispatcher;
 import pl.edziennik.common.valueobject.id.TeacherId;
+import pl.edziennik.common.valueobject.id.TeacherScheduleId;
 
 import java.net.URI;
 
@@ -39,6 +41,15 @@ public class TeacherScheduleCommandController {
 
         return ResponseEntity.created(location).build();
 
+    }
+
+    @Operation(summary = "Delete existing teacher schedule")
+    @DeleteMapping("/teacher-schedules/{teacherScheduleId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteTeacherSchedule(@PathVariable TeacherScheduleId teacherScheduleId) {
+        DeleteTeacherScheduleCommand command = new DeleteTeacherScheduleCommand(teacherScheduleId);
+
+        dispatcher.run(command);
     }
 
 }

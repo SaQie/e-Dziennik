@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.edziennik.application.BaseIntegrationTest;
 import pl.edziennik.application.command.teacherschedule.create.CreateTeacherScheduleCommand;
-import pl.edziennik.common.valueobject.id.SchoolId;
-import pl.edziennik.common.valueobject.id.TeacherId;
+import pl.edziennik.application.command.teacherschedule.delete.DeleteTeacherScheduleCommand;
+import pl.edziennik.common.valueobject.id.*;
 import pl.edziennik.common.valueobject.vo.Description;
 import pl.edziennik.common.valueobject.vo.TimeFrame;
 import pl.edziennik.domain.teacher.TeacherSchedule;
@@ -17,8 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DirtiesContext
 public class TeacherScheduleIntegrationTest extends BaseIntegrationTest {
@@ -76,6 +75,87 @@ public class TeacherScheduleIntegrationTest extends BaseIntegrationTest {
                     .extracting(ValidationError::field)
                     .containsExactlyInAnyOrder(CreateTeacherScheduleCommand.START_DATE);
         }
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenDeleteTeacherScheduleLinkedWithLessonPlan() {
+        // given
+        SchoolId schoolId = createSchool("asdads", "123123", "123123");
+        TeacherId teacherId = createTeacher("Test", "test@example.com", "123123", schoolId);
+        SchoolClassId schoolClassId = createSchoolClass(schoolId, teacherId, "1");
+        ClassRoomId classRoomId = createClassRoom(schoolId, "122A");
+        SubjectId subjectId = transactionTemplate.execute((x) -> createSubject("Przyroda", schoolClassId, teacherId));
+
+        TimeFrame timeFrame = TimeFrame.of(LocalDateTime.now().plusMinutes(15), LocalDateTime.now().plusMinutes(35));
+        LessonPlanId lessonPlanId = createLessonPlan(timeFrame, schoolClassId, subjectId, classRoomId);
+        List<TeacherScheduleId> schedules = teacherScheduleCommandRepository.getTeacherSchedulesByLessonPlans(List.of(lessonPlanId));
+        assertEquals(1, schedules.size());
+
+        DeleteTeacherScheduleCommand command = new DeleteTeacherScheduleCommand(schedules.get(0));
+
+        try {
+            // when
+            dispatcher.run(command);
+            Assertions.fail("Should throw exception when teacher schedule is linked with lesson plan");
+        } catch (BusinessException e) {
+            // then
+            List<ValidationError> errors = e.getErrors();
+            assertEquals(1, errors.size());
+            assertThat(errors)
+                    .extracting(ValidationError::field)
+                    .containsExactlyInAnyOrder(DeleteTeacherScheduleCommand.TEACHER_SCHEDULE_ID);
+        }
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenDeleteTeacherScheduleInProgress() {
+        // given
+        SchoolId schoolId = createSchool("asdads", "123123", "123123");
+        TeacherId teacherId = createTeacher("Test", "test@example.com", "123123", schoolId);
+        SchoolClassId schoolClassId = createSchoolClass(schoolId, teacherId, "1");
+        ClassRoomId classRoomId = createClassRoom(schoolId, "122A");
+        SubjectId subjectId = transactionTemplate.execute((x) -> createSubject("Przyroda", schoolClassId, teacherId));
+
+        TimeFrame timeFrame = TimeFrame.of(LocalDateTime.now(), LocalDateTime.now().plusMinutes(35));
+        TeacherScheduleId teacherScheduleId = createTeacherSchedule(teacherId, timeFrame);
+
+        DeleteTeacherScheduleCommand command = new DeleteTeacherScheduleCommand(teacherScheduleId);
+
+        try {
+            // when
+            dispatcher.run(command);
+            Assertions.fail("Should throw exception when teacher schedule is in progress");
+        } catch (BusinessException e) {
+            // then
+            List<ValidationError> errors = e.getErrors();
+            assertEquals(1, errors.size());
+            assertThat(errors)
+                    .extracting(ValidationError::field)
+                    .containsExactlyInAnyOrder(DeleteTeacherScheduleCommand.TEACHER_SCHEDULE_ID);
+        }
+    }
+
+    @Test
+    public void shouldDeleteTeacherSchedule() {
+        // given
+        SchoolId schoolId = createSchool("asdads", "123123", "123123");
+        TeacherId teacherId = createTeacher("Test", "test@example.com", "123123", schoolId);
+        SchoolClassId schoolClassId = createSchoolClass(schoolId, teacherId, "1");
+        ClassRoomId classRoomId = createClassRoom(schoolId, "122A");
+        SubjectId subjectId = transactionTemplate.execute((x) -> createSubject("Przyroda", schoolClassId, teacherId));
+
+        TimeFrame timeFrame = TimeFrame.of(LocalDateTime.now().plusMinutes(15), LocalDateTime.now().plusMinutes(35));
+        TeacherScheduleId teacherScheduleId = createTeacherSchedule(teacherId, timeFrame);
+
+        assertTrue(teacherScheduleCommandRepository.findById(teacherScheduleId).isPresent());
+
+        DeleteTeacherScheduleCommand command = new DeleteTeacherScheduleCommand(teacherScheduleId);
+
+        // when
+        dispatcher.run(command);
+
+        // then
+        assertFalse(teacherScheduleCommandRepository.findById(teacherScheduleId).isPresent());
     }
 
 }

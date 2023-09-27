@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class TeacherScheduleCommandMockRepo implements TeacherScheduleCommandRepository {
 
@@ -51,5 +52,10 @@ public class TeacherScheduleCommandMockRepo implements TeacherScheduleCommandRep
     @Override
     public void deleteById(TeacherScheduleId teacherScheduleId) {
         database.remove(teacherScheduleId);
+    }
+
+    @Override
+    public Optional<TeacherSchedule> findById(TeacherScheduleId teacherScheduleId) {
+        return Optional.ofNullable(database.get(teacherScheduleId));
     }
 }
