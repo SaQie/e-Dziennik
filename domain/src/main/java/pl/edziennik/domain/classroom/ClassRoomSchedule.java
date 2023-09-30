@@ -23,7 +23,7 @@ public class ClassRoomSchedule {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private ClassRoom classRoom;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE,CascadeType.DETACH,CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.REFRESH})
     private LessonPlan lessonPlan;
 
     @Embedded
@@ -51,6 +51,10 @@ public class ClassRoomSchedule {
         classRoomSchedule.lessonPlan = lessonPlan;
 
         return classRoomSchedule;
+    }
+
+    public boolean isLinkedWithLessonPlan() {
+        return lessonPlan != null;
     }
 
 

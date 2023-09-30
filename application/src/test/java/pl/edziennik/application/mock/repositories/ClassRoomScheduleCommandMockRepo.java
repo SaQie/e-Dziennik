@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class ClassRoomScheduleCommandMockRepo implements ClassRoomScheduleCommandRepository {
 
@@ -52,5 +53,10 @@ public class ClassRoomScheduleCommandMockRepo implements ClassRoomScheduleComman
     @Override
     public void deleteById(ClassRoomScheduleId classRoomScheduleId) {
         database.remove(classRoomScheduleId);
+    }
+
+    @Override
+    public Optional<ClassRoomSchedule> findById(ClassRoomScheduleId classRoomScheduleId) {
+        return Optional.ofNullable(database.get(classRoomScheduleId));
     }
 }
