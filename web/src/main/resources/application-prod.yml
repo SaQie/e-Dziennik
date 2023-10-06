@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://postgresql-e-diary.alwaysdata.net:5432/e-diary_db
+    username: e-diary
+    password: admino123
+
+redis:
+  host: redis
+  port: 6379

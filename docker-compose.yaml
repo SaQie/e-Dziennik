@@ -2,7 +2,9 @@ services:
   app:
     container_name: app-e-dziennik
     image: app-e-dziennik
-    build: ./
+    build:
+      context: ./
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     depends_on:
@@ -17,6 +19,11 @@ services:
       - POSTGRES_PASSWORD=admin
       - POSTGRES_USER=postgres
       - POSTGRES_DB=diary_db
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "diary_db", "-h", "postgres"]
+      interval: 5s
+      timeout: 1s
+      retries: 10
   redis:
     image: redis
     restart: always

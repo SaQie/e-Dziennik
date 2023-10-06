@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/diary_db
+    username: postgres
+    password: admin
+
+redis:
+  host: 127.0.0.1
+  port: 6379
+
