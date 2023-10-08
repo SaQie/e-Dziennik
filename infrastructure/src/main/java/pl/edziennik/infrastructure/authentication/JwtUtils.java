@@ -36,7 +36,9 @@ public class JwtUtils {
     @Value("${jwt.token.prefix}")
     private String tokenPrefix;
 
-    @Autowired
+    // Unfortunately I needed to "dirty" my code with that autowired because
+    // on alwaysdata i don't have access to redis(prod profile)
+    @Autowired(required = false)
     private SpringCacheService springCacheService;
 
     public String generateJwtToken(UserDetails userDetails, UUID id, UUID superId) {

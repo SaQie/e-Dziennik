@@ -3,6 +3,12 @@ spring:
     url: jdbc:postgresql://localhost:5432/diary_db
     username: postgres
     password: admin
+  data:
+    redis:
+      repositories:
+        enabled: true
+  cache:
+    type: redis
 
 redis:
   host: 127.0.0.1

@@ -1,6 +1,7 @@
 package pl.edziennik.application.query.users;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
@@ -12,11 +13,17 @@ import pl.edziennik.infrastructure.spring.cache.SpringCacheService;
 import java.util.List;
 
 @Repository
-@AllArgsConstructor
 class UsersQueryDaoImpl implements UsersQueryDao {
 
-    private final SpringCacheService springCacheService;
-    private final UserQueryRepository userQueryRepository;
+    // Unfortunately I needed to "dirty" my code with that autowired because
+    // on alwaysdata i don't have access to redis(prod profile)
+    @Autowired(required = false)
+    private SpringCacheService springCacheService;
+
+    @Autowired
+    private UserQueryRepository userQueryRepository;
+
+
 
     @Override
     public List<LoggedUserView> getLoggedUsersView() {

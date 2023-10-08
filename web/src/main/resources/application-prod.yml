@@ -3,6 +3,13 @@ spring:
     url: ${CONNECTION_STRING}
     username: ${POSTGRES_USERNAME}
     password: ${POSTGRES_PASSWORD}
+  data:
+    redis:
+      repositories:
+        enabled: false
+  cache:
+    type: none
+#Redis cache will be off for prod profile(alwaysdata doesn't have redis on free plan)
 
 redis:
   host: ${REDIS_HOST}

@@ -1,6 +1,7 @@
 package pl.edziennik.infrastructure.spring.cache;
 
 import lombok.AllArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import pl.edziennik.common.valueobject.id.UserId;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@ConditionalOnProperty(prefix = "spring", name = "cache.type", havingValue = "redis")
 public class SpringCacheService {
 
     public static final String LOGGED_USERS_KEY = "loggedUsers";
