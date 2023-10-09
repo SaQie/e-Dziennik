@@ -24,20 +24,8 @@ jobs:
         run: mvn clean
       - name: 🧪 Run tests 🧪
         run: mvn test --file pom.xml
-  Delete_old_version:
-    needs: [Run_tests]
-    runs-on: ubuntu-latest
-    steps:
-      - name: ✖️ Remove old version ✖️
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ SECRETS.SSH_HOST }}
-          username: ${{ SECRETS.SSH_USERNAME }}
-          password: ${{ SECRETS.SSH_PASSWORD }}
-          port: ${{ SECRETS.SSH_PORT }}
-          script: rm ${{ SECRETS.TARGET_PATH }}/E-Dziennik.jar
   Generate_new_version:
-    needs: [Delete_old_version]
+    needs: [Run_tests]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -56,6 +44,18 @@ jobs:
         with:
           name: E-dziennik-artifact
           path: web/target/E-Dziennik.jar
+  Delete_old_version:
+    needs: [Generate_new_version]
+    runs-on: ubuntu-latest
+    steps:
+      - name: ✖️ Remove old version ✖️
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ SECRETS.SSH_HOST }}
+          username: ${{ SECRETS.SSH_USERNAME }}
+          password: ${{ SECRETS.SSH_PASSWORD }}
+          port: ${{ SECRETS.SSH_PORT }}
+          script: rm ${{ SECRETS.TARGET_PATH }}/E-Dziennik.jar
   Upload_new_version:
     needs: [Generate_new_version]
     runs-on: ubuntu-latest
