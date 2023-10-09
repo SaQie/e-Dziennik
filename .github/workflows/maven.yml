@@ -2,7 +2,8 @@ name: E-Dziennik integration tests
 
 on:
   push:
-    branches: [ '**' ]
+    branches:
+      - main
 
 jobs:
   test:

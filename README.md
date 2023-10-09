@@ -26,6 +26,7 @@ _____________
 - <strong>[Tech-Stack »](#-tech-stack)</strong>
 - <strong>[Architecture look »](#-architecture-look)</strong>
 - <strong>[Chat - how it works »](#-chat---how-it-works)</strong>
+- <strong>[CI/CD »](#-CI-CD)</strong>
 - <strong>[How to run »](#-how-to-run)</strong>
 - <strong>[Documentation »](#-documentation)</strong>
 - <strong>[Test coverage »](#-test-coverage)</strong>
@@ -101,7 +102,7 @@ ___
 
 _____
 
-*Tech stack I actually using in this project*:
+*Tech stack I'm actually using in this project*:
 
 * Java 17
 * Spring Boot 3.0.5
@@ -139,6 +140,30 @@ ___
 ___
 
 ![#FC0000](images/one-to-one-chat.png)
+
+# ✈️ CI CD
+
+_____
+
+**CI:**
+
+* *My CI process is very simple, every commit on main branch runs workflow that runs all unit/integration tests*
+
+**CD:**
+
+*Unfortunately I'm using free hosting **alwaysdata** and i don't have enough space to upload redis together with my
+application(On prod profile redis is off)*
+
+*I have to delete my old versions from the server only because I don't have enough space to keep two versions of my
+application at the same time on the server.*
+
+* *CD process runs after commit on prod branch that automatically deploys a new version of the application to the server
+  using
+  FTP/SSH/HTTP*
+
+![#FC0000](images/CICD.png)
+
+<a href="https://github.com/SaQie/e-Dziennik/blob/main/.github/workflows/deploy.yml"><strong>Move to deploy workflow file » </strong></a>
 
 # 🖥️ How to run
 
