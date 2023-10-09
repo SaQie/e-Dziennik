@@ -1,6 +1,9 @@
 name: Deploy application
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - prod
 
 env:
   POSTGRES_USERNAME: ${{ SECRETS.POSTGRES_USERNAME }}
