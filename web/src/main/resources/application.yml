@@ -1,5 +1,6 @@
 server:
   port: 8100
+  forward-headers-strategy: framework
 spring:
   profiles:
     default: dev
@@ -23,6 +24,7 @@ spring:
     show-sql: true
   liquibase:
     change-log: classpath:liquibase-changeLog.xml
+
 
 
 
