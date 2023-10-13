@@ -37,7 +37,8 @@ _____________
 
 <div>
     This project is a backend server for <a href="https://github.com/SaQie/e-Dziennik-desktop"><b>client(D)</b></a> <a href="https://github.com/SaQie/"><b>client(W)</b></a> that consume REST API for receiving a data. That is a full school managment application that allows you to do this kind of operations at the moment
-
+    
+  <br>Demo:  <a href="https://e-diary.alwaysdata.net/swagger-ui/index.html#/"><strong>Demo » </strong></a>
 </div>
 
 | Description                   |                                            | Description                 |                                       |
@@ -163,7 +164,8 @@ application at the same time on the server.*
 
 ![#FC0000](images/CICD.png)
 
-<a href="https://github.com/SaQie/e-Dziennik/blob/main/.github/workflows/deploy.yml"><strong>Move to deploy workflow file » </strong></a>
+<a href="https://github.com/SaQie/e-Dziennik/blob/main/.github/workflows/deploy.yml"><strong>Move to deploy workflow
+file » </strong></a>
 
 # 🖥️ How to run
 
@@ -179,6 +181,8 @@ Project has a docker-compose file that allows to run application very simple:
 * Now, you can run this command that will build the docker containers and start them:
   <br> <code>docker-compose up</code>
 * End.
+
+* Or just use run.sh script (./run.sh)
 
 # 📄 Documentation
 
